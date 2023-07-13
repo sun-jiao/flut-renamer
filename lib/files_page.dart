@@ -13,13 +13,13 @@ class FilesPage extends StatefulWidget {
 }
 
 class _FilesPageState extends State<FilesPage> {
-  String dropdownValue = 'Files';
+  String _type = 'Files';
 
   final List<XFile> _list = [];
 
   bool _dragging = false;
 
-  String filter = '';
+  String _filter = '';
 
   Future<void> addFileFromPicker() async {
     FilePickerResult? result =
@@ -46,7 +46,14 @@ class _FilesPageState extends State<FilesPage> {
   }
 
   List<XFile> _filteredList() {
-    return _list.where((element) => element.name.contains(filter)).toList();
+    return _list
+        .where((element) =>
+            element.name
+                .toString()
+                .toLowerCase()
+                .contains(_filter.toLowerCase()) &&
+            _type.contains(element.fileOrDir()))
+        .toList();
   }
 
   List<TableRow> _tableRows() {
@@ -90,7 +97,52 @@ class _FilesPageState extends State<FilesPage> {
             ));
   }
 
-  Widget _table() => Table(
+  List<TableRow> _headerRow() => [
+    TableRow(
+      decoration: BoxDecoration(
+        color: Theme.of(context).scaffoldBackgroundColor,
+      ),
+      children: [
+        TableCell(
+          child: Checkbox(
+              value: _list.every((element) => element.selected),
+              onChanged: (_) {
+                setState(() {
+                  if (_list.every((element) => element.selected)) {
+                    SelectX.clear();
+                  } else {
+                    for (var element in _list) {
+                      element.selected = true;
+                    }
+                  }
+                });
+              }),
+        ),
+        const TableCell(
+          child: Center(
+            child: Text('Current Name'),
+          ),
+        ),
+        const TableCell(
+          child: Center(
+            child: Text('New Name'),
+          ),
+        ),
+        TableCell(
+          child: IconButton(
+            onPressed: () {
+              setState(() {
+                _list.clear();
+              });
+            },
+            icon: const Icon(Icons.clear),
+          ),
+        ),
+      ],
+    ),
+  ];
+
+  Widget _table(List<TableRow> children) => Table(
         columnWidths: const <int, TableColumnWidth>{
           0: IntrinsicColumnWidth(),
           1: FlexColumnWidth(),
@@ -99,49 +151,7 @@ class _FilesPageState extends State<FilesPage> {
         },
         defaultVerticalAlignment: TableCellVerticalAlignment.middle,
         border: TableBorder.all(width: 24, color: Colors.transparent),
-        children: [
-          TableRow(
-            decoration: BoxDecoration(
-              color: Theme.of(context).scaffoldBackgroundColor,
-            ),
-            children: [
-              TableCell(
-                child: Checkbox(
-                    value: _list.every((element) => element.selected),
-                    onChanged: (_) {
-                      setState(() {
-                        if (_list.every((element) => element.selected)) {
-                          SelectX.clear();
-                        } else {
-                          for (var element in _list) {
-                            element.selected = true;
-                          }
-                        }
-                      });
-                    }),
-              ),
-              const TableCell(
-                child: Center(
-                  child: Text('Current Name'),
-                ),
-              ),
-              const TableCell(
-                child: Center(
-                  child: Text('New Name'),
-                ),
-              ),
-              TableCell(
-                child: IconButton(
-                  onPressed: () {
-                    _list.clear();
-                  },
-                  icon: const Icon(Icons.clear),
-                ),
-              ),
-            ],
-          ),
-          ..._tableRows(),
-        ],
+        children: children,
       );
 
   @override
@@ -154,15 +164,15 @@ class _FilesPageState extends State<FilesPage> {
           Row(
             children: <Widget>[
               DropdownButton<String>(
-                value: dropdownValue,
+                value: _type,
                 focusColor: Colors.transparent,
                 underline: const SizedBox(),
                 onChanged: (String? newValue) {
                   setState(() {
-                    dropdownValue = newValue!;
+                    _type = newValue!;
                   });
                 },
-                items: <String>['Files', 'Folders', 'Files & Folders']
+                items: <String>['Files', 'Directories', 'Files & Dirs']
                     .map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
@@ -170,16 +180,22 @@ class _FilesPageState extends State<FilesPage> {
                   );
                 }).toList(),
               ),
-              const Expanded(
+              Expanded(
                 child: TextField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Filter',
                   ),
+                  onChanged: (val) {
+                    setState(() {
+                      _filter = val;
+                    });
+                  },
                 ),
               ),
             ],
           ),
           const SizedBox(height: 16),
+          _table(_headerRow()),
           Expanded(
             child: DropTarget(
               onDragDone: (detail) {
@@ -202,7 +218,9 @@ class _FilesPageState extends State<FilesPage> {
                 child: Stack(
                   children: [
                     if (_list.isNotEmpty)
-                      _table()
+                      SingleChildScrollView(
+                        child: _table(_tableRows()),
+                      )
                     else if (!_dragging)
                       const Center(
                         child: Text('Drag and drop to add files.'),
