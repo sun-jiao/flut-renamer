@@ -2,8 +2,9 @@ import 'package:cross_file/cross_file.dart';
 import 'package:desktop_drop/desktop_drop.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:renamer/widget/custom_drop.dart';
 
-import 'entity/select_x.dart';
+import '../entity/select_x.dart';
 
 class FilesPage extends StatefulWidget {
   const FilesPage({super.key});
@@ -28,7 +29,8 @@ class _FilesPageState extends State<FilesPage> {
     if (result != null) {
       setState(() {
         final resultFiles =
-            result.files.where((element) => element.path != null).toList();
+            result.files.where((e1) => e1.path != null &&
+                _list.every((e2) => e1.path != e2.path)).toList();
         _list.addAll(List.generate(
             resultFiles.length,
             (index) => XFile(
@@ -56,6 +58,17 @@ class _FilesPageState extends State<FilesPage> {
         .toList();
   }
 
+  TableCell _rowTextCell(XFile xFile, {bool isNew = false}) => TableCell(
+    child: Text(isNew ? getNewName(xFile.name) : xFile.name,
+      style: TextStyle(
+        fontSize: 16,
+        color: xFile.error ? Colors.red : Colors.black,
+      ),
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+    ),
+  );
+
   List<TableRow> _tableRows() {
     final filteredList = _filteredList();
     return List.generate(
@@ -76,12 +89,8 @@ class _FilesPageState extends State<FilesPage> {
                         }
                       }),
                 ),
-                TableCell(
-                  child: Text(filteredList[index].name),
-                ),
-                TableCell(
-                  child: Text(getNewName(filteredList[index].name)),
-                ),
+                _rowTextCell(filteredList[index]),
+                _rowTextCell(filteredList[index], isNew: true),
                 TableCell(
                   child: IconButton(
                     onPressed: () {
@@ -105,11 +114,11 @@ class _FilesPageState extends State<FilesPage> {
       children: [
         TableCell(
           child: Checkbox(
-              value: _list.every((element) => element.selected),
+              value: _list.isNotEmpty && _list.every((element) => element.selected),
               onChanged: (_) {
                 setState(() {
                   if (_list.every((element) => element.selected)) {
-                    SelectX.clear();
+                    SelectX.clearSelections();
                   } else {
                     for (var element in _list) {
                       element.selected = true;
@@ -163,22 +172,14 @@ class _FilesPageState extends State<FilesPage> {
         children: <Widget>[
           Row(
             children: <Widget>[
-              DropdownButton<String>(
+              CustomDrop<String>(
                 value: _type,
-                focusColor: Colors.transparent,
-                underline: const SizedBox(),
                 onChanged: (String? newValue) {
                   setState(() {
                     _type = newValue!;
                   });
                 },
-                items: <String>['Files', 'Directories', 'Files & Dirs']
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
+                items: const <String>['Files', 'Directories', 'Files & Dirs'],
               ),
               Expanded(
                 child: TextField(
@@ -200,7 +201,8 @@ class _FilesPageState extends State<FilesPage> {
             child: DropTarget(
               onDragDone: (detail) {
                 setState(() {
-                  _list.addAll(detail.files);
+                  _list.addAll(detail.files.where((e1) =>
+                      _list.every((e2) => e1.path != e2.path)));
                 });
               },
               onDragEntered: (detail) {
@@ -242,13 +244,18 @@ class _FilesPageState extends State<FilesPage> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               ElevatedButton(
+                onPressed: addFileFromPicker,
+                child: const Text('Add File'),
+              ),
+              const SizedBox(width: 16),
+              ElevatedButton(
                 onPressed: () {},
                 child: const Text('Rename'),
               ),
               const SizedBox(width: 16),
               ElevatedButton(
-                onPressed: addFileFromPicker,
-                child: const Text('Add File'),
+                onPressed: () {},
+                child: const Text('Rename & Clear All'),
               ),
             ],
           ),

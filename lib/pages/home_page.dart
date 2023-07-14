@@ -1,28 +1,24 @@
 import 'package:flutter/material.dart';
 
+import 'rules_page.dart';
 import 'files_page.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          const Expanded(
+          Expanded(
             flex: 3,
             child: FilesPage(),
           ),
           Expanded(
             flex: 2,
-            child: Container(),
+            child: RulesPage(),
           ),
         ],
       ),
