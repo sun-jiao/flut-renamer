@@ -35,8 +35,8 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cross_file: any
-  desktop_drop: ^0.4.1
-  file_picker: ^5.3.2
+  desktop_drop: ^0.4.3
+  file_picker: ^5.5.0
   path: any
 
 dev_dependencies:
