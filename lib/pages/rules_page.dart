@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:renamer/dialogs/replace.dart';
 
+import '../dialogs/insert.dart';
 import '../entity/rule.dart';
 import '../widget/custom_drop.dart';
 
@@ -41,6 +42,16 @@ class RulesPageState extends State<RulesPage> {
             widget.onRuleChanged.call();
           },
         );
+      case 'Insert':
+        showInsertDialog(
+          context,
+              (rule) {
+            setState(() {
+              _rules.add(rule);
+            });
+            widget.onRuleChanged.call();
+          },
+        );
     }
   }
 
@@ -58,7 +69,7 @@ class RulesPageState extends State<RulesPage> {
                   _addRule = newValue!;
                 });
               },
-              items: const <String>['Replace', 'Remove'],
+              items: const <String>['Replace', 'Remove', 'Insert'],
             ),
             title: ElevatedButton(
               onPressed: showRuleDialog,
