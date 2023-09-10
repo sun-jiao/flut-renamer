@@ -88,6 +88,27 @@ void main() {
     expect(newFileName, "data_example_data_name_data.file");
   });
 
+  test('replace, reserve capitalisation of unreplaced chars', () async {
+    String fileName = "File_ExamPle_file_NaMe_FILE.File";
+    String targetString = "file";
+    String replacementString = "Data";
+    int replaceCount = 0;
+    bool caseSensitive = false;
+    bool isRegex = false;
+    bool ignoreExtension = true;
+
+    String newFileName = RuleReplace(
+        targetString,
+        replacementString,
+        replaceCount,
+        caseSensitive,
+        isRegex,
+        ignoreExtension
+    ).newName(fileName);
+
+    expect(newFileName, "Data_ExamPle_Data_NaMe_Data.File");
+  });
+
   test('replace first', () async {
     String fileName = "file_example_file_name_file.file";
     String targetString = "file";
