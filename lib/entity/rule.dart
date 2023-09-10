@@ -36,16 +36,11 @@ class RuleReplace implements Rule {
       newName = oldName.substring(0, lastIndex);
     }
 
-    if (!caseSensitive) {
-      targetString = targetString.toLowerCase();
-      newName = newName.toLowerCase();
-    }
-
     Pattern target;
     String Function(Match) replacer;
 
     if (isRegex) {
-      target = RegExp(targetString);
+      target = RegExp(targetString, caseSensitive: caseSensitive);
       replacer = (match) {
         List<String?> groups = match
             .groups(List<int>.generate(match.groupCount + 1, (index) => index));
@@ -58,7 +53,7 @@ class RuleReplace implements Rule {
         return replacedString;
       };
     } else {
-      target = targetString;
+      target = RegExp(RegExp.escape(targetString), caseSensitive: caseSensitive);
       replacer = (match) => replacementString;
     }
 
