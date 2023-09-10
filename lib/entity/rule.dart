@@ -11,7 +11,7 @@ class RuleReplace implements Rule {
   RuleReplace(
     this.targetString,
     this.replacementString,
-    this.replaceCount,
+    this.replaceLimit,
     this.caseSensitive,
     this.isRegex,
     this.ignoreExtension,
@@ -19,7 +19,7 @@ class RuleReplace implements Rule {
 
   String targetString; // target to be matched and replaced.
   String replacementString; // `targetString` will be replaced to this.
-  int replaceCount; // 0: all matches; positive: from start; negative: from end.
+  int replaceLimit; // 0: all matches; positive: from start; negative: from end.
   bool caseSensitive;
   bool isRegex;
   bool ignoreExtension;
@@ -62,14 +62,14 @@ class RuleReplace implements Rule {
       replacer = (match) => replacementString;
     }
 
-    if (replaceCount == 0) {
+    if (replaceLimit == 0) {
       newName = newName.replaceAllMapped(target, replacer);
-    } else if (replaceCount > 0) {
-      for (int i = 0; i < replaceCount; i++) {
+    } else if (replaceLimit > 0) {
+      for (int i = 0; i < replaceLimit; i++) {
         newName = newName.replaceFirstMapped(target, replacer);
       }
     } else {
-      for (int i = 0; i > replaceCount; i--) {
+      for (int i = 0; i > replaceLimit; i--) {
         newName = newName.replaceLastMapped(target, replacer);
       }
     }
@@ -79,18 +79,18 @@ class RuleReplace implements Rule {
 
   @override
   String toString() {
-    return 'Replace $targetString with $replacementString.';
+    return 'Replace "$targetString" with "$replacementString".';
   }
 }
 
 class RuleRemove implements Rule {
   RuleRemove(
       this.targetString, // keyword to be searched and removed.
-      int removeCount, // 0: all matches; positive: from start; negative: from end.
+      int removeLimit, // 0: all matches; positive: from start; negative: from end.
       bool caseSensitive,
       bool isRegex,
       bool ignoreExtension) {
-    ruleReplace = RuleReplace(targetString, '', removeCount,
+    ruleReplace = RuleReplace(targetString, '', removeLimit,
         caseSensitive, isRegex, ignoreExtension);
   }
 
@@ -102,6 +102,6 @@ class RuleRemove implements Rule {
 
   @override
   String toString() {
-    return 'Remove $targetString';
+    return 'Remove "$targetString"';
   }
 }

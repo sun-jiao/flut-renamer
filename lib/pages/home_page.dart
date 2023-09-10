@@ -1,24 +1,42 @@
 import 'package:flutter/material.dart';
 
+import '../entity/rule.dart';
 import 'rules_page.dart';
 import 'files_page.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  HomePage({super.key});
+
+  final GlobalKey<FilesPageState> filesKey = GlobalKey<FilesPageState>();
+  final GlobalKey<RulesPageState> rulesKey = GlobalKey<RulesPageState>();
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Expanded(
             flex: 3,
-            child: FilesPage(),
+            child: FilesPage(
+              key: filesKey,
+              getNewName: (String name) {
+                for (Rule rule in rulesKey.currentState?.rules ?? []) {
+                  name = rule.newName(name);
+                }
+
+                return name;
+              },
+            ),
           ),
           Expanded(
             flex: 2,
-            child: RulesPage(),
+            child: RulesPage(
+              key: rulesKey,
+              onRuleChanged: () {
+                filesKey.currentState?.update();
+              },
+            ),
           ),
         ],
       ),

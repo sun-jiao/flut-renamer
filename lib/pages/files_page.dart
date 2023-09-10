@@ -2,18 +2,20 @@ import 'package:cross_file/cross_file.dart';
 import 'package:desktop_drop/desktop_drop.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:renamer/widget/custom_drop.dart';
 
+import '../widget/custom_drop.dart';
 import '../entity/select_x.dart';
 
 class FilesPage extends StatefulWidget {
-  const FilesPage({super.key});
+  const FilesPage({super.key, required this.getNewName});
+
+  final String Function(String name) getNewName;
 
   @override
-  State<FilesPage> createState() => _FilesPageState();
+  State<FilesPage> createState() => FilesPageState();
 }
 
-class _FilesPageState extends State<FilesPage> {
+class FilesPageState extends State<FilesPage> {
   String _type = 'Files';
 
   final List<XFile> _list = [];
@@ -44,8 +46,14 @@ class _FilesPageState extends State<FilesPage> {
     }
   }
 
+  void update() {
+    setState(() {
+
+    });
+  }
+
   String getNewName(String name) {
-    return name;
+    return widget.getNewName(name);
   }
 
   List<XFile> _filteredList() {
@@ -59,7 +67,8 @@ class _FilesPageState extends State<FilesPage> {
         .toList();
   }
 
-  TableCell _rowTextCell(XFile xFile, {bool isNew = false}) => TableCell(
+  TableCell _rowTextCell(XFile xFile, {bool isNew = false}) =>
+      TableCell(
         child: Text(
           isNew ? getNewName(xFile.name) : xFile.name,
           style: TextStyle(
