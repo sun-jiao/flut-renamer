@@ -28,9 +28,10 @@ class _FilesPageState extends State<FilesPage> {
 
     if (result != null) {
       setState(() {
-        final resultFiles =
-            result.files.where((e1) => e1.path != null &&
-                _list.every((e2) => e1.path != e2.path)).toList();
+        final resultFiles = result.files
+            .where((e1) =>
+                e1.path != null && _list.every((e2) => e1.path != e2.path))
+            .toList();
         _list.addAll(List.generate(
             resultFiles.length,
             (index) => XFile(
@@ -59,15 +60,16 @@ class _FilesPageState extends State<FilesPage> {
   }
 
   TableCell _rowTextCell(XFile xFile, {bool isNew = false}) => TableCell(
-    child: Text(isNew ? getNewName(xFile.name) : xFile.name,
-      style: TextStyle(
-        fontSize: 16,
-        color: xFile.error ? Colors.red : Colors.black,
-      ),
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
-    ),
-  );
+        child: Text(
+          isNew ? getNewName(xFile.name) : xFile.name,
+          style: TextStyle(
+            fontSize: 16,
+            color: xFile.error ? Colors.red : Colors.black,
+          ),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+      );
 
   List<TableRow> _tableRows() {
     final filteredList = _filteredList();
@@ -107,49 +109,59 @@ class _FilesPageState extends State<FilesPage> {
   }
 
   List<TableRow> _headerRow() => [
-    TableRow(
-      decoration: BoxDecoration(
-        color: Theme.of(context).scaffoldBackgroundColor,
-      ),
-      children: [
-        TableCell(
-          child: Checkbox(
-              value: _list.isNotEmpty && _list.every((element) => element.selected),
-              onChanged: (_) {
-                setState(() {
-                  if (_list.every((element) => element.selected)) {
-                    SelectX.clearSelections();
-                  } else {
-                    for (var element in _list) {
-                      element.selected = true;
-                    }
-                  }
-                });
-              }),
-        ),
-        const TableCell(
-          child: Center(
-            child: Text('Current Name'),
+        TableRow(
+          decoration: BoxDecoration(
+            color: Theme.of(context).scaffoldBackgroundColor,
           ),
+          children: [
+            TableCell(
+              child: Tooltip(
+                message: _list.isNotEmpty &&
+                        _list.every((element) => element.selected)
+                    ? 'Cancel All'
+                    : 'Select All',
+                child: Checkbox(
+                    value: _list.isNotEmpty &&
+                        _list.every((element) => element.selected),
+                    onChanged: (_) {
+                      setState(() {
+                        if (_list.every((element) => element.selected)) {
+                          SelectX.clearSelections();
+                        } else {
+                          for (var element in _list) {
+                            element.selected = true;
+                          }
+                        }
+                      });
+                    }),
+              ),
+            ),
+            const TableCell(
+              child: Center(
+                child: Text('Current Name'),
+              ),
+            ),
+            const TableCell(
+              child: Center(
+                child: Text('New Name'),
+              ),
+            ),
+            TableCell(
+              child: Tooltip(
+                message: 'Clear All',
+                child: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      _list.clear();
+                    });
+                  },
+                  icon: const Icon(Icons.clear),
+                ),
+              ),
+            ),
+          ],
         ),
-        const TableCell(
-          child: Center(
-            child: Text('New Name'),
-          ),
-        ),
-        TableCell(
-          child: IconButton(
-            onPressed: () {
-              setState(() {
-                _list.clear();
-              });
-            },
-            icon: const Icon(Icons.clear),
-          ),
-        ),
-      ],
-    ),
-  ];
+      ];
 
   Widget _table(List<TableRow> children) => Table(
         columnWidths: const <int, TableColumnWidth>{
@@ -201,8 +213,8 @@ class _FilesPageState extends State<FilesPage> {
             child: DropTarget(
               onDragDone: (detail) {
                 setState(() {
-                  _list.addAll(detail.files.where((e1) =>
-                      _list.every((e2) => e1.path != e2.path)));
+                  _list.addAll(detail.files
+                      .where((e1) => _list.every((e2) => e1.path != e2.path)));
                 });
               },
               onDragEntered: (detail) {

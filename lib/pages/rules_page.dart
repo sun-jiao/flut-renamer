@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../entity/rule.dart';
+
 class RulesPage extends StatefulWidget {
   const RulesPage({super.key});
 
@@ -8,7 +10,7 @@ class RulesPage extends StatefulWidget {
 }
 
 class _RulesPageState extends State<RulesPage> {
-  List<String> _rules = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'];
+  final List<Rule> _rules = [];
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,10 @@ class _RulesPageState extends State<RulesPage> {
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [
-          Container(),
+          ElevatedButton(
+            onPressed: (){ },
+            child: const Text('Add Rule'),
+          ),
           Expanded(
             child: ReorderableListView.builder(
               onReorder: (oldIndex, newIndex) {
@@ -32,18 +37,25 @@ class _RulesPageState extends State<RulesPage> {
               itemBuilder: (context, index) {
                 final item = _rules[index];
                 return ListTile(
-                  title: Text(item),
+                  title: Text(item.toString()),
                   key: ValueKey(item),
                   leading: ReorderableDragStartListener(
                     index: index,
                     child: const Icon(Icons.drag_handle),
+                  ),
+                  trailing: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _rules.removeAt(index);
+                      });
+                    },
+                    icon: const Icon(Icons.clear),
                   ),
                 );
               },
               itemCount: _rules.length,
             ),
           ),
-          Container(),
         ],
       ),
     );

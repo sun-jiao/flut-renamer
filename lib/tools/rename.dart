@@ -6,7 +6,7 @@ import 'package:path/path.dart' as path;
 
 import '../entity/rule.dart';
 
-XFile? rename(XFile xFile, Rule rule, {bool ignoreExtension = true}) {
+Future<XFile?> rename(XFile xFile, Rule rule) async {
   // files dir
   final String filePath = xFile.path;
 
@@ -15,30 +15,24 @@ XFile? rename(XFile xFile, Rule rule, {bool ignoreExtension = true}) {
 
   String extension = '';
 
-  if (ignoreExtension) {
-    final lastIndex = fileName.lastIndexOf('.');
-
-    extension = fileName.substring(lastIndex);
-    fileName = fileName.substring(0, lastIndex);
-  }
-
   // get the directory
   final String directory = filePath.substring(0, filePath.lastIndexOf('/'));
 
   // new filename
-  final String newFileName = rule.call(fileName);
+  final String newFileName = rule.newName(fileName);
 
   // join the new filename
   final String newFilePath = path.join(directory, newFileName + extension);
 
   // rename the file
   final File file = File(filePath);
-  file.rename(newFilePath).then((file) {
+
+  try {
+    await file.rename(newFilePath);
     return XFile(newFilePath, name: newFileName);
-  }).catchError((e, s) {
-    debugPrint('$e\r\n$s');
-    return null;
-  });
+  } catch (e, s) {
+    debugPrintStack(stackTrace: s);
+  }
 
   return null;
 }

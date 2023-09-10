@@ -19,6 +19,7 @@ class ExtFieldHandler<T> {
   void clearValues() => _values.clear();
 }
 
+// an extension to control file list selection.
 extension SelectX on XFile {
   static final ExtFieldHandler<String> _selectionHandler = ExtFieldHandler();
   static final ExtFieldHandler<String> _errorHandler = ExtFieldHandler();
