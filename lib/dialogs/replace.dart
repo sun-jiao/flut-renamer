@@ -4,13 +4,26 @@ import 'package:flutter/services.dart';
 import '../entity/rule.dart';
 
 void showReplaceDialog(BuildContext context, Function(Rule) onSave) =>
-    showDialog(context: context, builder: (context) =>
-        ReplaceDialog(onSave: onSave,));
+    showDialog(
+        context: context,
+        builder: (context) => ReplaceDialog(
+              onSave: onSave,
+              remove: false,
+            ));
+
+void showRemoveDialog(BuildContext context, Function(Rule) onSave) =>
+    showDialog(
+        context: context,
+        builder: (context) => ReplaceDialog(
+              onSave: onSave,
+              remove: true,
+            ));
 
 class ReplaceDialog extends StatefulWidget {
-  const ReplaceDialog({super.key, required this.onSave});
+  const ReplaceDialog({super.key, required this.onSave, required this.remove});
 
   final Function(Rule) onSave;
+  final bool remove;
 
   @override
   State<ReplaceDialog> createState() => _ReplaceDialogState();
@@ -19,37 +32,47 @@ class ReplaceDialog extends StatefulWidget {
 class _ReplaceDialogState extends State<ReplaceDialog> {
   TextEditingController targetController = TextEditingController();
   TextEditingController replacementController = TextEditingController();
-  TextEditingController replaceLimitController = TextEditingController(
+  TextEditingController limitController = TextEditingController(
     text: '0',
   );
   bool fromStart = true;
   bool caseSensitive = false;
   bool isRegex = false;
   bool ignoreExtension = true;
+  late bool remove;
+  late String ruleName;
+
+  @override
+  void initState() {
+    remove = widget.remove;
+    ruleName = remove ? 'Remove' : 'Replace';
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Add Rule: Replace'),
+      title: Text('Add Rule: $ruleName'),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextFormField(
               controller: targetController,
-              decoration: const InputDecoration(labelText: 'Replace Target'),
+              decoration: InputDecoration(labelText: '$ruleName Target'),
             ),
+            if (!remove)
+              TextFormField(
+                controller: replacementController,
+                decoration: const InputDecoration(labelText: 'Replacement'),
+              ),
             TextFormField(
-              controller: replacementController,
-              decoration: const InputDecoration(labelText: 'Replacement'),
-            ),
-            TextFormField(
-              controller: replaceLimitController,
+              controller: limitController,
               keyboardType: TextInputType.number,
               inputFormatters: <TextInputFormatter>[
                 FilteringTextInputFormatter.allow(RegExp(r'[0-9]')), // 只允许数字
               ],
-              decoration: const InputDecoration(labelText: 'Replace Limit'),
+              decoration: InputDecoration(labelText: '$ruleName Limit'),
             ),
             CheckboxListTile(
               title: const Text('From start'),
@@ -101,9 +124,16 @@ class _ReplaceDialogState extends State<ReplaceDialog> {
           onPressed: () {
             String targetString = targetController.text;
             String replacementString = replacementController.text;
-            int replaceLimit = int.tryParse(replaceLimitController.text) ?? 0;
+            int replaceLimit = int.tryParse(limitController.text) ?? 0;
             replaceLimit = replaceLimit.abs() * (fromStart ? 1 : -1);
-            final rule = RuleReplace(targetString, replacementString, replaceLimit, caseSensitive, isRegex, ignoreExtension);
+            final Rule rule;
+            if (remove) {
+              rule = RuleRemove(targetString,
+                  replaceLimit, caseSensitive, isRegex, ignoreExtension);
+            } else {
+              rule = RuleReplace(targetString, replacementString,
+                  replaceLimit, caseSensitive, isRegex, ignoreExtension);
+            }
             widget.onSave.call(rule);
             Navigator.of(context).pop();
           },

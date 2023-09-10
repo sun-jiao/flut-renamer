@@ -24,7 +24,6 @@ class HomePage extends StatelessWidget {
                 for (Rule rule in rulesKey.currentState?.rules ?? []) {
                   name = rule.newName(name);
                 }
-
                 return name;
               },
             ),

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:renamer/widget/rule_dialogs.dart';
+import 'package:renamer/dialogs/replace.dart';
 
 import '../entity/rule.dart';
 import '../widget/custom_drop.dart';
 
 class RulesPage extends StatefulWidget {
   const RulesPage({super.key, required this.onRuleChanged});
-  
+
   final VoidCallback onRuleChanged;
 
   @override
@@ -19,40 +19,58 @@ class RulesPageState extends State<RulesPage> {
 
   List<Rule> get rules => _rules;
 
+  void showRuleDialog() {
+    switch (_addRule) {
+      case 'Replace':
+        showReplaceDialog(
+          context,
+          (rule) => setState(() {
+            _rules.add(rule);
+          }),
+        );
+      case 'Remove':
+        showRemoveDialog(
+          context,
+          (rule) => setState(() {
+            _rules.add(rule);
+          }),
+        );
+    }
+    widget.onRuleChanged.call();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [
-          Row(
-            children: <Widget>[
-              CustomDrop<String>(
-                value: _addRule,
-                onChanged: (String? newValue) {
-                  setState(() {
-                    _addRule = newValue!;
-                  });
-                },
-                items: const <String>['Replace', 'Remove'],
-              ),
-              const SizedBox(width: 16),
-              ElevatedButton(
+          ListTile(
+            leading: CustomDrop<String>(
+              value: _addRule,
+              onChanged: (String? newValue) {
+                setState(() {
+                  _addRule = newValue!;
+                });
+              },
+              items: const <String>['Replace', 'Remove'],
+            ),
+            title: ElevatedButton(
+              onPressed: showRuleDialog,
+              child: const Text('Add Rule'),
+            ),
+            trailing: Tooltip(
+              message: 'Clear All',
+              child: IconButton(
                 onPressed: () {
-                  showReplaceDialog(
-                    context,
-                    (rule) {
-                      setState(() {
-                        _rules.add(rule);
-                      });
-
-                      widget.onRuleChanged.call();
-                    },
-                  );
+                  setState(() {
+                    _rules.clear();
+                  });
+                  widget.onRuleChanged.call();
                 },
-                child: const Text('Add Rule'),
+                icon: const Icon(Icons.clear),
               ),
-            ],
+            ),
           ),
           const SizedBox(height: 16),
           Expanded(

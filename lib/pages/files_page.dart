@@ -46,15 +46,9 @@ class FilesPageState extends State<FilesPage> {
     }
   }
 
-  void update() {
-    setState(() {
+  void update() => setState(() {});
 
-    });
-  }
-
-  String getNewName(String name) {
-    return widget.getNewName(name);
-  }
+  String getNewName(String name) => widget.getNewName(name);
 
   List<XFile> _filteredList() {
     return _list

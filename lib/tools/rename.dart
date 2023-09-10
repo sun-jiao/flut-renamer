@@ -4,9 +4,7 @@ import 'package:cross_file/cross_file.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path;
 
-import '../entity/rule.dart';
-
-Future<XFile?> rename(XFile xFile, Rule rule) async {
+Future<XFile?> rename(XFile xFile, String Function(String name) getNewName) async {
   // files dir
   final String filePath = xFile.path;
 
@@ -19,7 +17,7 @@ Future<XFile?> rename(XFile xFile, Rule rule) async {
   final String directory = filePath.substring(0, filePath.lastIndexOf('/'));
 
   // new filename
-  final String newFileName = rule.newName(fileName);
+  final String newFileName = getNewName.call(fileName);
 
   // join the new filename
   final String newFilePath = path.join(directory, newFileName + extension);
