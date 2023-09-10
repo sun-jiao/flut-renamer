@@ -24,19 +24,24 @@ class RulesPageState extends State<RulesPage> {
       case 'Replace':
         showReplaceDialog(
           context,
-          (rule) => setState(() {
-            _rules.add(rule);
-          }),
+          (rule) {
+            setState(() {
+              _rules.add(rule);
+            });
+            widget.onRuleChanged.call();
+          },
         );
       case 'Remove':
         showRemoveDialog(
           context,
-          (rule) => setState(() {
-            _rules.add(rule);
-          }),
+          (rule) {
+            setState(() {
+              _rules.add(rule);
+            });
+            widget.onRuleChanged.call();
+          },
         );
     }
-    widget.onRuleChanged.call();
   }
 
   @override
