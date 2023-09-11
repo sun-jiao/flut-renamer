@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:renamer/dialogs/replace.dart';
 
+import '../dialogs/replace.dart';
 import '../dialogs/insert.dart';
 import '../entity/rule.dart';
 import '../widget/custom_drop.dart';

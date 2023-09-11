@@ -2,8 +2,8 @@ import 'package:cross_file/cross_file.dart';
 import 'package:desktop_drop/desktop_drop.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:renamer/tools/rename.dart';
 
+import '../tools/rename.dart';
 import '../widget/custom_drop.dart';
 import '../entity/select_x.dart';
 

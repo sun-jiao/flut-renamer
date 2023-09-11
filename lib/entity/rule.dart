@@ -1,4 +1,4 @@
-import 'package:renamer/entity/string_x.dart';
+import 'string_x.dart';
 
 abstract class Rule {
   String newName(String oldName);
