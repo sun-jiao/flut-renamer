@@ -8,7 +8,11 @@
 import 'package:flutter_test/flutter_test.dart';
 
 import 'rule/replace.dart' as replace_test;
+import 'rule/insert.dart' as insert_test;
+import 'rule/rearrange.dart' as rearrange_test;
 
 void main() {
   group('rule replace', replace_test.main);
+  group('rule insert', insert_test.main);
+  group('rule rearrange', rearrange_test.main);
 }

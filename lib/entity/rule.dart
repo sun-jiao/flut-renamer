@@ -7,6 +7,20 @@ abstract class Rule {
   String toString();
 }
 
+(String, String) splitFileName(String oldName, bool ignoreExtension) {
+  String newName = oldName;
+  String extension = '';
+
+  if (ignoreExtension) {
+    final lastIndex = oldName.lastIndexOf('.');
+
+    extension = oldName.substring(lastIndex);
+    newName = oldName.substring(0, lastIndex);
+  }
+
+  return (newName, extension);
+}
+
 class RuleReplace implements Rule {
   RuleReplace(
     this.targetString,
@@ -19,22 +33,16 @@ class RuleReplace implements Rule {
 
   final String targetString; // target to be matched and replaced.
   final String replacementString; // `targetString` will be replaced to this.
-  final int replaceLimit; // 0: all matches; positive: from start; negative: from end.
+  final int
+      replaceLimit; // 0: all matches; positive: from start; negative: from end.
   final bool caseSensitive;
   final bool isRegex;
   final bool ignoreExtension;
 
   @override
   String newName(String oldName) {
-    String newName = oldName;
-    String extension = '';
-
-    if (ignoreExtension) {
-      final lastIndex = oldName.lastIndexOf('.');
-
-      extension = oldName.substring(lastIndex);
-      newName = oldName.substring(0, lastIndex);
-    }
+    String newName, extension;
+    (newName, extension) = splitFileName(oldName, ignoreExtension);
 
     Pattern target;
     String Function(Match) replacer;
@@ -53,7 +61,8 @@ class RuleReplace implements Rule {
         return replacedString;
       };
     } else {
-      target = RegExp(RegExp.escape(targetString), caseSensitive: caseSensitive);
+      target =
+          RegExp(RegExp.escape(targetString), caseSensitive: caseSensitive);
       replacer = (match) => replacementString;
     }
 
@@ -85,8 +94,8 @@ class RuleRemove implements Rule {
       bool caseSensitive,
       bool isRegex,
       bool ignoreExtension) {
-    ruleReplace = RuleReplace(targetString, '', removeLimit,
-        caseSensitive, isRegex, ignoreExtension);
+    ruleReplace = RuleReplace(
+        targetString, '', removeLimit, caseSensitive, isRegex, ignoreExtension);
   }
 
   final String targetString;
@@ -116,16 +125,9 @@ class RuleInsert implements Rule {
 
   @override
   String newName(String oldName) {
-    String newName = oldName;
-    String extension = '';
+    String newName, extension;
+    (newName, extension) = splitFileName(oldName, ignoreExtension);
 
-    if (ignoreExtension) {
-      final lastIndex = oldName.lastIndexOf('.');
-
-      extension = oldName.substring(lastIndex);
-      newName = oldName.substring(0, lastIndex);
-    }
-    
     int index = insertIndex;
 
     if (!fromStart) {
@@ -138,9 +140,7 @@ class RuleInsert implements Rule {
       index = newName.length;
     }
 
-    newName = newName.substring(0, index) +
-        insert +
-        newName.substring(index);
+    newName = newName.substring(0, index) + insert + newName.substring(index);
 
     return newName + extension;
   }
@@ -148,5 +148,45 @@ class RuleInsert implements Rule {
   @override
   String toString() {
     return 'Insert "$insert" at char #$insertIndex from ${fromStart ? 'start' : 'end'}';
+  }
+}
+
+class RuleRearrange implements Rule {
+  RuleRearrange(
+    this.delimiter,
+    this.order,
+    this.ignoreExtension,
+  );
+
+  final String delimiter; // split delimiter
+  final List<int> order; // true: count from start; false: from end.
+  final bool ignoreExtension;
+
+  @override
+  String newName(String oldName) {
+    String newName, extension;
+    (newName, extension) = splitFileName(oldName, ignoreExtension);
+
+    // split string
+    List<String> substrings = newName.split(delimiter);
+
+    // remove indexes out of limit
+    final order = this.order
+        .where((index) => index >= 1 && index <= substrings.length)
+        .toList();
+
+    // rearrange substrings
+    List<String> reorderedSubstrings =
+        order.map((index) => substrings[index - 1]).toList();
+
+    // join substrings
+    String result = reorderedSubstrings.join(delimiter);
+
+    return result + extension;
+  }
+
+  @override
+  String toString() {
+    return 'Rearrange: delimiter: "$delimiter", order: "$order".';
   }
 }
