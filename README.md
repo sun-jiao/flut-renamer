@@ -1,2 +1,3 @@
 # renamer
- Rename files.
+
+A flutter desktop app for renaming files.
