@@ -309,12 +309,14 @@ class FilesPageState extends State<FilesPage> {
   Future<void> renameFiles(
       {bool remove = true, bool onlySelected = false}) async {
     final List<Future> futures = [];
+    bool noError = true;
     _files.asMap().forEach((index, file) {
       // if file is selected or onlySelected = false (all files should be renamed)
       if (file.selected || !onlySelected) {
         futures.add(rename(file, (name) => getNewName(name), context: context)
             .then((value) {
           if (value == null) {
+            noError = false;
             setState(() {
               file.error = true;
             });
@@ -332,5 +334,9 @@ class FilesPageState extends State<FilesPage> {
     });
 
     await Future.wait(futures);
+
+    if (noError && remove) {
+      widget.clearRules.call();
+    }
   }
 }

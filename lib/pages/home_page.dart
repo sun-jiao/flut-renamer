@@ -27,7 +27,7 @@ class HomePage extends StatelessWidget {
                 return name;
               },
               clearRules: () {
-                rulesKey.currentState?.clearRule;
+                rulesKey.currentState?.clearRule();
               },
             ),
           ),
