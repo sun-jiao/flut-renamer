@@ -2,14 +2,20 @@ import 'package:cross_file/cross_file.dart';
 import 'package:desktop_drop/desktop_drop.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:renamer/tools/rename.dart';
 
 import '../widget/custom_drop.dart';
 import '../entity/select_x.dart';
 
 class FilesPage extends StatefulWidget {
-  const FilesPage({super.key, required this.getNewName});
+  const FilesPage({
+    super.key,
+    required this.getNewName,
+    required this.clearRules,
+  });
 
   final String Function(String name) getNewName;
+  final VoidCallback clearRules;
 
   @override
   State<FilesPage> createState() => FilesPageState();
@@ -17,12 +23,17 @@ class FilesPage extends StatefulWidget {
 
 class FilesPageState extends State<FilesPage> {
   String _type = 'Files';
-
-  final List<XFile> _list = [];
-
+  late final List<XFile> _files;
   bool _dragging = false;
-
+  bool _remove = true;
+  bool _onlySelected = false;
   String _filter = '';
+
+  @override
+  initState() {
+    _files = [];
+    super.initState();
+  }
 
   Future<void> addFileFromPicker() async {
     FilePickerResult? result =
@@ -32,9 +43,9 @@ class FilesPageState extends State<FilesPage> {
       setState(() {
         final resultFiles = result.files
             .where((e1) =>
-                e1.path != null && _list.every((e2) => e1.path != e2.path))
+                e1.path != null && _files.every((e2) => e1.path != e2.path))
             .toList();
-        _list.addAll(List.generate(
+        _files.addAll(List.generate(
             resultFiles.length,
             (index) => XFile(
                   resultFiles[index].path!,
@@ -51,7 +62,7 @@ class FilesPageState extends State<FilesPage> {
   String getNewName(String name) => widget.getNewName(name);
 
   List<XFile> _filteredList() {
-    return _list
+    return _files
         .where((element) =>
             element.name
                 .toString()
@@ -61,8 +72,7 @@ class FilesPageState extends State<FilesPage> {
         .toList();
   }
 
-  TableCell _rowTextCell(XFile xFile, {bool isNew = false}) =>
-      TableCell(
+  TableCell _rowTextCell(XFile xFile, {bool isNew = false}) => TableCell(
         child: Text(
           isNew ? getNewName(xFile.name) : xFile.name,
           style: TextStyle(
@@ -100,7 +110,7 @@ class FilesPageState extends State<FilesPage> {
                   child: IconButton(
                     onPressed: () {
                       setState(() {
-                        _list.removeWhere((element) =>
+                        _files.removeWhere((element) =>
                             element.path == filteredList[index].path);
                       });
                     },
@@ -119,19 +129,19 @@ class FilesPageState extends State<FilesPage> {
           children: [
             TableCell(
               child: Tooltip(
-                message: _list.isNotEmpty &&
-                        _list.every((element) => element.selected)
+                message: _files.isNotEmpty &&
+                        _files.every((element) => element.selected)
                     ? 'Cancel All'
                     : 'Select All',
                 child: Checkbox(
-                    value: _list.isNotEmpty &&
-                        _list.every((element) => element.selected),
+                    value: _files.isNotEmpty &&
+                        _files.every((element) => element.selected),
                     onChanged: (_) {
                       setState(() {
-                        if (_list.every((element) => element.selected)) {
+                        if (_files.every((element) => element.selected)) {
                           SelectX.clearSelections();
                         } else {
-                          for (var element in _list) {
+                          for (var element in _files) {
                             element.selected = true;
                           }
                         }
@@ -155,7 +165,7 @@ class FilesPageState extends State<FilesPage> {
                 child: IconButton(
                   onPressed: () {
                     setState(() {
-                      _list.clear();
+                      _files.clear();
                     });
                   },
                   icon: const Icon(Icons.clear),
@@ -169,8 +179,8 @@ class FilesPageState extends State<FilesPage> {
   Widget _table(List<TableRow> children) => Table(
         columnWidths: const <int, TableColumnWidth>{
           0: IntrinsicColumnWidth(),
-          1: FlexColumnWidth(),
-          2: FlexColumnWidth(),
+          1: FlexColumnWidth(1.0),
+          2: FlexColumnWidth(1.5),
           3: IntrinsicColumnWidth(),
         },
         defaultVerticalAlignment: TableCellVerticalAlignment.middle,
@@ -208,6 +218,10 @@ class FilesPageState extends State<FilesPage> {
                   },
                 ),
               ),
+              ElevatedButton(
+                onPressed: addFileFromPicker,
+                child: const Text('Add File'),
+              ),
             ],
           ),
           const SizedBox(height: 16),
@@ -216,8 +230,8 @@ class FilesPageState extends State<FilesPage> {
             child: DropTarget(
               onDragDone: (detail) {
                 setState(() {
-                  _list.addAll(detail.files
-                      .where((e1) => _list.every((e2) => e1.path != e2.path)));
+                  _files.addAll(detail.files
+                      .where((e1) => _files.every((e2) => e1.path != e2.path)));
                 });
               },
               onDragEntered: (detail) {
@@ -234,7 +248,7 @@ class FilesPageState extends State<FilesPage> {
                 color: Colors.white,
                 child: Stack(
                   children: [
-                    if (_list.isNotEmpty)
+                    if (_files.isNotEmpty)
                       SingleChildScrollView(
                         child: _table(_tableRows()),
                       )
@@ -258,24 +272,65 @@ class FilesPageState extends State<FilesPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
-              ElevatedButton(
-                onPressed: addFileFromPicker,
-                child: const Text('Add File'),
+              const SizedBox(width: 16),
+              Checkbox(
+                value: _onlySelected,
+                onChanged: (value) {
+                  setState(() {
+                    _onlySelected = value ?? _onlySelected;
+                  });
+                },
               ),
+              const Text('only selected'),
+              const SizedBox(width: 16),
+              Checkbox(
+                value: _remove,
+                onChanged: (value) {
+                  setState(() {
+                    _remove = value ?? _remove;
+                  });
+                },
+              ),
+              const Text('remove renamed'),
               const SizedBox(width: 16),
               ElevatedButton(
-                onPressed: () {},
-                child: const Text('Rename'),
-              ),
-              const SizedBox(width: 16),
-              ElevatedButton(
-                onPressed: () {},
-                child: const Text('Rename & Clear All'),
+                onPressed: () {
+                  renameFiles(remove: _remove, onlySelected: _onlySelected);
+                },
+                child: const Text('Rename All'),
               ),
             ],
           ),
         ],
       ),
     );
+  }
+
+  Future<void> renameFiles(
+      {bool remove = true, bool onlySelected = false}) async {
+    final List<Future> futures = [];
+    _files.asMap().forEach((index, file) {
+      // if file is selected or onlySelected = false (all files should be renamed)
+      if (file.selected || !onlySelected) {
+        futures.add(rename(file, (name) => getNewName(name), context: context)
+            .then((value) {
+          if (value == null) {
+            setState(() {
+              file.error = true;
+            });
+          } else if (remove) {
+            setState(() {
+              _files.remove(file);
+            });
+          } else {
+            setState(() {
+              _files[index] = value;
+            });
+          }
+        }));
+      }
+    });
+
+    await Future.wait(futures);
   }
 }

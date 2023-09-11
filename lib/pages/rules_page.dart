@@ -17,8 +17,17 @@ class RulesPage extends StatefulWidget {
 class RulesPageState extends State<RulesPage> {
   final List<Rule> _rules = [];
   String _addRule = 'Replace';
+  bool _clearRule = false;
 
   List<Rule> get rules => _rules;
+
+  void clearRule() {
+    if (_clearRule) {
+      setState(() {
+        rules.clear();
+      });
+    }
+  }
 
   void showRuleDialog() {
     switch (_addRule) {
@@ -125,6 +134,20 @@ class RulesPageState extends State<RulesPage> {
               itemCount: _rules.length,
             ),
           ),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              Checkbox(
+                value: _clearRule,
+                onChanged: (value) {
+                  setState(() {
+                    _clearRule = value ?? _clearRule;
+                  });
+                },
+              ),
+              const Text('Also remove all rules'),
+            ],
+          )
         ],
       ),
     );
