@@ -17,12 +17,12 @@ class RuleReplace implements Rule {
     this.ignoreExtension,
   );
 
-  String targetString; // target to be matched and replaced.
-  String replacementString; // `targetString` will be replaced to this.
-  int replaceLimit; // 0: all matches; positive: from start; negative: from end.
-  bool caseSensitive;
-  bool isRegex;
-  bool ignoreExtension;
+  final String targetString; // target to be matched and replaced.
+  final String replacementString; // `targetString` will be replaced to this.
+  final int replaceLimit; // 0: all matches; positive: from start; negative: from end.
+  final bool caseSensitive;
+  final bool isRegex;
+  final bool ignoreExtension;
 
   @override
   String newName(String oldName) {
@@ -89,7 +89,7 @@ class RuleRemove implements Rule {
         caseSensitive, isRegex, ignoreExtension);
   }
 
-  String targetString;
+  final String targetString;
   late final RuleReplace ruleReplace;
 
   @override
