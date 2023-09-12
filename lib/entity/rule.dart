@@ -49,8 +49,7 @@ class RuleReplace implements Rule {
     if (isRegex) {
       target = RegExp(targetString, caseSensitive: caseSensitive);
       replacer = (match) {
-        List<String?> groups = match
-            .groups(List<int>.generate(match.groupCount + 1, (index) => index));
+        List<String?> groups = match.groups(List<int>.generate(match.groupCount + 1, (index) => index));
 
         String replacedString = replacementString;
         for (int i = 0; i <= match.groupCount; i++) {
@@ -60,8 +59,7 @@ class RuleReplace implements Rule {
         return replacedString;
       };
     } else {
-      target =
-          RegExp(RegExp.escape(targetString), caseSensitive: caseSensitive);
+      target = RegExp(RegExp.escape(targetString), caseSensitive: caseSensitive);
       replacer = (match) => replacementString;
     }
 
@@ -93,8 +91,7 @@ class RuleRemove implements Rule {
       bool caseSensitive,
       bool isRegex,
       bool ignoreExtension) {
-    ruleReplace = RuleReplace(
-        targetString, '', removeLimit, caseSensitive, isRegex, ignoreExtension);
+    ruleReplace = RuleReplace(targetString, '', removeLimit, caseSensitive, isRegex, ignoreExtension);
   }
 
   final String targetString;
@@ -170,13 +167,10 @@ class RuleRearrange implements Rule {
     List<String> substrings = newName.split(delimiter);
 
     // remove indexes out of limit
-    final order = this.order
-        .where((index) => index >= 1 && index <= substrings.length)
-        .toList();
+    final order = this.order.where((index) => index >= 1 && index <= substrings.length).toList();
 
     // rearrange substrings
-    List<String> reorderedSubstrings =
-        order.map((index) => substrings[index - 1]).toList();
+    List<String> reorderedSubstrings = order.map((index) => substrings[index - 1]).toList();
 
     // join substrings
     String result = reorderedSubstrings.join(delimiter);
@@ -187,5 +181,52 @@ class RuleRearrange implements Rule {
   @override
   String toString() {
     return 'Rearrange: delimiter: "$delimiter", order: "$order".';
+  }
+}
+
+class RuleTruncate implements Rule {
+  RuleTruncate(
+    this.startIndex,
+    this.fromStart,
+    this.direction,
+    this.length,
+    this.ignoreExtension,
+  );
+
+  final int startIndex; // count from
+  final bool fromStart; // true: count from start, false: count from end.
+  final bool direction; // truncate direction
+  final int length; // truncate length
+  final bool ignoreExtension;
+
+  @override
+  String newName(String oldName) {
+    String newName, extension;
+    (newName, extension) = splitFileName(oldName, ignoreExtension);
+
+    int index = startIndex;
+
+    if (fromStart) {
+      index = newName.length + index;
+    }
+
+    if (index < 0) {
+      index = 0;
+    } else if (index >= newName.length) {
+      index = newName.length;
+    }
+
+    if (direction) {
+      newName = newName.substring(index, index + length);
+    } else {
+      newName = newName.substring(index - length + 1, index + 1);
+    }
+
+    return newName + extension;
+  }
+
+  @override
+  String toString() {
+    return 'Truncate.';
   }
 }
