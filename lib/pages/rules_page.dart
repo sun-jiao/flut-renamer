@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:renamer/dialogs/rearrange.dart';
 
 import '../dialogs/replace.dart';
 import '../dialogs/insert.dart';
@@ -16,7 +17,7 @@ class RulesPage extends StatefulWidget {
 
 class RulesPageState extends State<RulesPage> {
   final List<Rule> _rules = [];
-  String _addRule = 'Replace';
+  String _ruleName = 'Replace';
   bool _clearRule = false;
 
   List<Rule> get rules => _rules;
@@ -29,38 +30,23 @@ class RulesPageState extends State<RulesPage> {
     }
   }
 
+  void addRule(Rule rule) {
+    setState(() {
+      _rules.add(rule);
+    });
+    widget.onRuleChanged.call();
+  }
+
   void showRuleDialog() {
-    switch (_addRule) {
+    switch (_ruleName) {
       case 'Replace':
-        showReplaceDialog(
-          context,
-          (rule) {
-            setState(() {
-              _rules.add(rule);
-            });
-            widget.onRuleChanged.call();
-          },
-        );
+        showReplaceDialog(context, addRule);
       case 'Remove':
-        showRemoveDialog(
-          context,
-          (rule) {
-            setState(() {
-              _rules.add(rule);
-            });
-            widget.onRuleChanged.call();
-          },
-        );
+        showRemoveDialog(context, addRule);
       case 'Insert':
-        showInsertDialog(
-          context,
-              (rule) {
-            setState(() {
-              _rules.add(rule);
-            });
-            widget.onRuleChanged.call();
-          },
-        );
+        showInsertDialog(context, addRule);
+      case 'Rearrange':
+        showRearrangeDialog(context, addRule);
     }
   }
 
@@ -72,13 +58,13 @@ class RulesPageState extends State<RulesPage> {
         children: [
           ListTile(
             leading: CustomDrop<String>(
-              value: _addRule,
+              value: _ruleName,
               onChanged: (String? newValue) {
                 setState(() {
-                  _addRule = newValue!;
+                  _ruleName = newValue!;
                 });
               },
-              items: const <String>['Replace', 'Remove', 'Insert'],
+              items: const <String>['Replace', 'Remove', 'Insert', 'Rearrange'],
             ),
             title: ElevatedButton(
               onPressed: showRuleDialog,

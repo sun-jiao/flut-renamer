@@ -33,8 +33,7 @@ class RuleReplace implements Rule {
 
   final String targetString; // target to be matched and replaced.
   final String replacementString; // `targetString` will be replaced to this.
-  final int
-      replaceLimit; // 0: all matches; positive: from start; negative: from end.
+  final int replaceLimit; // 0: all matches; positive: from start; negative: from end.
   final bool caseSensitive;
   final bool isRegex;
   final bool ignoreExtension;
