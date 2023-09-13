@@ -90,7 +90,7 @@ class RuleRemove implements Rule {
       int removeLimit, // 0: all matches; positive: from start; negative: from end.
       bool caseSensitive,
       bool isRegex,
-      bool ignoreExtension) {
+      bool ignoreExtension,) {
     ruleReplace = RuleReplace(targetString, '', removeLimit, caseSensitive, isRegex, ignoreExtension);
   }
 

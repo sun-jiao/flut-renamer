@@ -133,7 +133,7 @@ class RulesPageState extends State<RulesPage> {
               ),
               const Text('Also remove all rules'),
             ],
-          )
+          ),
         ],
       ),
     );

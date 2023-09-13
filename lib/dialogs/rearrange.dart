@@ -8,7 +8,7 @@ void showRearrangeDialog(BuildContext context, Function(Rule) onSave) =>
         context: context,
         builder: (context) => RearrangeDialog(
           onSave: onSave,
-        ));
+        ),);
 
 class RearrangeDialog extends StatefulWidget {
   const RearrangeDialog({super.key, required this.onSave});
@@ -40,7 +40,7 @@ class _RearrangeDialogState extends State<RearrangeDialog> {
               controller: intArrayController,
               keyboardType: TextInputType.number,
               inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.allow(RegExp(r'[0-9,]')), // 只允许数字
+                FilteringTextInputFormatter.allow(RegExp('[0-9,]')), // 只允许数字
               ],
               decoration: const InputDecoration(labelText: 'Rearrange order (numbers with comma)'),
             ),

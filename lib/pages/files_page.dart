@@ -30,7 +30,7 @@ class FilesPageState extends State<FilesPage> {
   String _filter = '';
 
   @override
-  initState() {
+  void initState() {
     _files = [];
     super.initState();
   }
@@ -43,7 +43,7 @@ class FilesPageState extends State<FilesPage> {
       setState(() {
         final resultFiles = result.files
             .where((e1) =>
-                e1.path != null && _files.every((e2) => e1.path != e2.path))
+                e1.path != null && _files.every((e2) => e1.path != e2.path),)
             .toList();
         _files.addAll(List.generate(
             resultFiles.length,
@@ -52,7 +52,7 @@ class FilesPageState extends State<FilesPage> {
                   name: resultFiles[index].name,
                   length: resultFiles[index].size,
                   bytes: resultFiles[index].bytes,
-                )));
+                ),),);
       });
     }
   }
@@ -68,7 +68,7 @@ class FilesPageState extends State<FilesPage> {
                 .toString()
                 .toLowerCase()
                 .contains(_filter.toLowerCase()) &&
-            _type.contains(element.fileOrDir()))
+            _type.contains(element.fileOrDir()),)
         .toList();
   }
 
@@ -102,7 +102,7 @@ class FilesPageState extends State<FilesPage> {
                             filteredList[index].selected = val;
                           });
                         }
-                      }),
+                      },),
                 ),
                 _rowTextCell(filteredList[index]),
                 _rowTextCell(filteredList[index], isNew: true),
@@ -111,14 +111,14 @@ class FilesPageState extends State<FilesPage> {
                     onPressed: () {
                       setState(() {
                         _files.removeWhere((element) =>
-                            element.path == filteredList[index].path);
+                            element.path == filteredList[index].path,);
                       });
                     },
                     icon: const Icon(Icons.clear),
                   ),
                 ),
               ],
-            ));
+            ),);
   }
 
   List<TableRow> _headerRow() => [
@@ -146,7 +146,7 @@ class FilesPageState extends State<FilesPage> {
                           }
                         }
                       });
-                    }),
+                    },),
               ),
             ),
             const TableCell(
@@ -231,7 +231,7 @@ class FilesPageState extends State<FilesPage> {
               onDragDone: (detail) {
                 setState(() {
                   _files.addAll(detail.files
-                      .where((e1) => _files.every((e2) => e1.path != e2.path)));
+                      .where((e1) => _files.every((e2) => e1.path != e2.path)),);
                 });
               },
               onDragEntered: (detail) {
@@ -262,7 +262,7 @@ class FilesPageState extends State<FilesPage> {
                         child: const Center(
                           child: Text('Drop to add files.'),
                         ),
-                      )
+                      ),
                   ],
                 ),
               ),
@@ -307,7 +307,7 @@ class FilesPageState extends State<FilesPage> {
   }
 
   Future<void> renameFiles(
-      {bool remove = true, bool onlySelected = false}) async {
+      {bool remove = true, bool onlySelected = false,}) async {
     final List<Future> futures = [];
     bool noError = true;
     _files.asMap().forEach((index, file) {
@@ -329,7 +329,7 @@ class FilesPageState extends State<FilesPage> {
               _files[index] = value;
             });
           }
-        }));
+        }),);
       }
     });
 

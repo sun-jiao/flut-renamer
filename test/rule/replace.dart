@@ -19,7 +19,7 @@ void main() {
         replaceCount,
         caseSensitive,
         isRegex,
-        ignoreExtension
+        ignoreExtension,
     ).newName(fileName);
 
     expect(newFileName, "data_example_data_name_data.file");
@@ -40,7 +40,7 @@ void main() {
         replaceCount,
         caseSensitive,
         isRegex,
-        ignoreExtension
+        ignoreExtension,
     ).newName(fileName);
 
     expect(newFileName, "data_example_data_name_data.data");
@@ -61,7 +61,7 @@ void main() {
         replaceCount,
         caseSensitive,
         isRegex,
-        ignoreExtension
+        ignoreExtension,
     ).newName(fileName);
 
     expect(newFileName, "File_example_data_name_FILE.file");
@@ -82,7 +82,7 @@ void main() {
         replaceCount,
         caseSensitive,
         isRegex,
-        ignoreExtension
+        ignoreExtension,
     ).newName(fileName);
 
     expect(newFileName, "data_example_data_name_data.file");
@@ -103,7 +103,7 @@ void main() {
         replaceCount,
         caseSensitive,
         isRegex,
-        ignoreExtension
+        ignoreExtension,
     ).newName(fileName);
 
     expect(newFileName, "Data_ExamPle_Data_NaMe_Data.File");
@@ -124,7 +124,7 @@ void main() {
         replaceCount,
         caseSensitive,
         isRegex,
-        ignoreExtension
+        ignoreExtension,
     ).newName(fileName);
 
     expect(newFileName, "data_example_file_name_file.file");
@@ -145,7 +145,7 @@ void main() {
         replaceCount,
         caseSensitive,
         isRegex,
-        ignoreExtension
+        ignoreExtension,
     ).newName(fileName);
 
     expect(newFileName, "file_example_data_name_data.file");
@@ -153,7 +153,7 @@ void main() {
 
   test('replace with only target is regex', () async {
     String fileName = "example_file_name.txt";
-    String targetString = r"(.*)_file";
+    String targetString = "(.*)_file";
     String replacementString = "new_file_name";
     int replaceCount = 1;
     bool caseSensitive = false;
@@ -166,7 +166,7 @@ void main() {
         replaceCount,
         caseSensitive,
         isRegex,
-        ignoreExtension
+        ignoreExtension,
     ).newName(fileName);
 
     expect(newFileName, "new_file_name_name.txt");
@@ -174,7 +174,7 @@ void main() {
 
   test('replace with both target and replacement are regex', () async {
     String fileName = "example_file_name.txt";
-    String targetString = r"(.*)_file_(.*)";
+    String targetString = "(.*)_file_(.*)";
     String replacementString = r"\1_data_\2";
     int replaceCount = 1;
     bool caseSensitive = false;
@@ -187,7 +187,7 @@ void main() {
         replaceCount,
         caseSensitive,
         isRegex,
-        ignoreExtension
+        ignoreExtension,
     ).newName(fileName);
 
     expect(newFileName, "example_data_name.txt");

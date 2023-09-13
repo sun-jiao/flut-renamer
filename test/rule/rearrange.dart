@@ -13,7 +13,7 @@ void main() {
     String newFileName = RuleRearrange(
         delimiter,
         order,
-        ignoreExtension
+        ignoreExtension,
     ).newName(fileName);
 
     expect(newFileName, "Gangbusters-Wuhan-Hubei-China-20220820.ARW");

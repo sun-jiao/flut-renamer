@@ -6,7 +6,7 @@ class CustomDrop<T> extends StatelessWidget {
       required this.value,
       this.onChanged,
       required this.items,
-      String Function(T)? tToStr}) {
+      String Function(T)? tToStr,}) {
     this.tToStr = tToStr ?? (t) => t is String ? t : t.toString();
   }
 

@@ -8,7 +8,7 @@ void showInsertDialog(BuildContext context, Function(Rule) onSave) =>
         context: context,
         builder: (context) => InsertDialog(
           onSave: onSave,
-        ));
+        ),);
 
 class InsertDialog extends StatefulWidget {
   const InsertDialog({super.key, required this.onSave});
@@ -44,7 +44,7 @@ class _InsertDialogState extends State<InsertDialog> {
               controller: indexController,
               keyboardType: TextInputType.number,
               inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.allow(RegExp(r'[0-9]')), // 只允许数字
+                FilteringTextInputFormatter.allow(RegExp('[0-9]')), // 只允许数字
               ],
               decoration: const InputDecoration(labelText: 'Insert Index'),
             ),

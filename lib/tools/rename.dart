@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:path/path.dart' as path;
 
 Future<XFile?> rename(XFile xFile, String Function(String name) getNewName,
-    {BuildContext? context}) async {
+    {BuildContext? context,}) async {
   try {
     // files dir
     final String filePath = xFile.path;
@@ -47,7 +47,7 @@ Future<XFile?> rename(XFile xFile, String Function(String name) getNewName,
                 trailing: IconButton(
                   onPressed: () async {
                     await Clipboard.setData(ClipboardData(
-                        text: s.toString()));
+                        text: s.toString(),),);
 
                     if (dContext.mounted) {
                       Navigator.pop(dContext);

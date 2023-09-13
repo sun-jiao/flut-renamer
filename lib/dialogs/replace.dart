@@ -9,7 +9,7 @@ void showReplaceDialog(BuildContext context, Function(Rule) onSave) =>
         builder: (context) => ReplaceDialog(
               onSave: onSave,
               remove: false,
-            ));
+            ),);
 
 void showRemoveDialog(BuildContext context, Function(Rule) onSave) =>
     showDialog(
@@ -17,7 +17,7 @@ void showRemoveDialog(BuildContext context, Function(Rule) onSave) =>
         builder: (context) => ReplaceDialog(
               onSave: onSave,
               remove: true,
-            ));
+            ),);
 
 class ReplaceDialog extends StatefulWidget {
   const ReplaceDialog({super.key, required this.onSave, required this.remove});
@@ -70,7 +70,7 @@ class _ReplaceDialogState extends State<ReplaceDialog> {
               controller: limitController,
               keyboardType: TextInputType.number,
               inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.allow(RegExp(r'[0-9]')), // 只允许数字
+                FilteringTextInputFormatter.allow(RegExp('[0-9]')), // 只允许数字
               ],
               decoration: InputDecoration(labelText: '$ruleName Limit'),
             ),
@@ -129,10 +129,10 @@ class _ReplaceDialogState extends State<ReplaceDialog> {
             final Rule rule;
             if (remove) {
               rule = RuleRemove(targetString,
-                  replaceLimit, caseSensitive, isRegex, ignoreExtension);
+                  replaceLimit, caseSensitive, isRegex, ignoreExtension,);
             } else {
               rule = RuleReplace(targetString, replacementString,
-                  replaceLimit, caseSensitive, isRegex, ignoreExtension);
+                  replaceLimit, caseSensitive, isRegex, ignoreExtension,);
             }
             widget.onSave.call(rule);
             Navigator.of(context).pop();
