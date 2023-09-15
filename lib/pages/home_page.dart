@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../entity/rule.dart';
+import '../rules/rule.dart';
 import 'rules_page.dart';
 import 'files_page.dart';
 

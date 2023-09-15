@@ -1,7 +1,7 @@
 library renamer.test.rule.rearrange;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:renamer/entity/rule.dart';
+import 'package:renamer/rules/rule.dart';
 
 void main() {
   test('basic rearrange', () async {
@@ -11,9 +11,9 @@ void main() {
     bool ignoreExtension = true;
 
     String newFileName = RuleRearrange(
-        delimiter,
-        order,
-        ignoreExtension,
+      delimiter,
+      order,
+      ignoreExtension,
     ).newName(fileName);
 
     expect(newFileName, "Gangbusters-Wuhan-Hubei-China-20220820.ARW");

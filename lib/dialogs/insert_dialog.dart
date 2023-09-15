@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../entity/rule.dart';
+import '../rules/rule.dart';
 
 void showInsertDialog(BuildContext context, Function(Rule) onSave) =>
     showDialog(
-        context: context,
-        builder: (context) => InsertDialog(
-          onSave: onSave,
-        ),);
+      context: context,
+      builder: (context) => InsertDialog(
+        onSave: onSave,
+      ),
+    );
 
 class InsertDialog extends StatefulWidget {
   const InsertDialog({super.key, required this.onSave});
@@ -90,7 +91,8 @@ class _InsertDialogState extends State<InsertDialog> {
             String insertText = textController.text;
             int insertIndex = int.tryParse(indexController.text) ?? 0;
 
-            final Rule rule = RuleInsert(insertText, insertIndex, fromStart, ignoreExtension);
+            final Rule rule =
+                RuleInsert(insertText, insertIndex, fromStart, ignoreExtension);
 
             widget.onSave.call(rule);
             Navigator.of(context).pop();

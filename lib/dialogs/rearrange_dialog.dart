@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../entity/rule.dart';
+import '../rules/rule.dart';
 
 void showRearrangeDialog(BuildContext context, Function(Rule) onSave) =>
     showDialog(
-        context: context,
-        builder: (context) => RearrangeDialog(
-          onSave: onSave,
-        ),);
+      context: context,
+      builder: (context) => RearrangeDialog(
+        onSave: onSave,
+      ),
+    );
 
 class RearrangeDialog extends StatefulWidget {
   const RearrangeDialog({super.key, required this.onSave});
@@ -34,7 +35,8 @@ class _RearrangeDialogState extends State<RearrangeDialog> {
           children: [
             TextFormField(
               controller: delimiterController,
-              decoration: const InputDecoration(labelText: 'Rearrange delimiter'),
+              decoration:
+                  const InputDecoration(labelText: 'Rearrange delimiter'),
             ),
             TextFormField(
               controller: intArrayController,
@@ -42,7 +44,8 @@ class _RearrangeDialogState extends State<RearrangeDialog> {
               inputFormatters: <TextInputFormatter>[
                 FilteringTextInputFormatter.allow(RegExp('[0-9,]')), // 只允许数字
               ],
-              decoration: const InputDecoration(labelText: 'Rearrange order (numbers with comma)'),
+              decoration: const InputDecoration(
+                  labelText: 'Rearrange order (numbers with comma)'),
             ),
             CheckboxListTile(
               title: const Text('Ignore Extension'),
@@ -67,9 +70,13 @@ class _RearrangeDialogState extends State<RearrangeDialog> {
           onPressed: () {
             String delimiter = delimiterController.text;
             String order = intArrayController.text;
-            List<int> orderList = order.split(',').map((s) => int.tryParse(s.trim()) ?? 0).toList();
+            List<int> orderList = order
+                .split(',')
+                .map((s) => int.tryParse(s.trim()) ?? 0)
+                .toList();
 
-            final Rule rule = RuleRearrange(delimiter, orderList, ignoreExtension);
+            final Rule rule =
+                RuleRearrange(delimiter, orderList, ignoreExtension);
 
             widget.onSave.call(rule);
             Navigator.of(context).pop();

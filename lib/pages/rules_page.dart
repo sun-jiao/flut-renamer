@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:renamer/dialogs/rearrange.dart';
 
-import '../dialogs/replace.dart';
-import '../dialogs/insert.dart';
-import '../entity/rule.dart';
+import '../dialogs/rearrange_dialog.dart';
+import '../dialogs/remove_dialog.dart';
+import '../dialogs/replace_dialog.dart';
+import '../dialogs/insert_dialog.dart';
+import '../rules/rule.dart';
 import '../widget/custom_drop.dart';
 
 class RulesPage extends StatefulWidget {

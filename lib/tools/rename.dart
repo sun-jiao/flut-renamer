@@ -5,8 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart' as path;
 
-Future<XFile?> rename(XFile xFile, String Function(String name) getNewName,
-    {BuildContext? context,}) async {
+Future<XFile?> rename(
+  XFile xFile,
+  String Function(String name) getNewName, {
+  BuildContext? context,
+}) async {
   try {
     // files dir
     final String filePath = xFile.path;
@@ -46,8 +49,11 @@ Future<XFile?> rename(XFile xFile, String Function(String name) getNewName,
                 subtitle: Text(s.toString()),
                 trailing: IconButton(
                   onPressed: () async {
-                    await Clipboard.setData(ClipboardData(
-                        text: s.toString(),),);
+                    await Clipboard.setData(
+                      ClipboardData(
+                        text: s.toString(),
+                      ),
+                    );
 
                     if (dContext.mounted) {
                       Navigator.pop(dContext);
@@ -58,7 +64,8 @@ Future<XFile?> rename(XFile xFile, String Function(String name) getNewName,
                 titleAlignment: ListTileTitleAlignment.titleHeight,
               ),
               const ListTile(
-                title: Text('If files does not shown in file list, please clear all and continue.'),
+                title: Text(
+                    'If files does not shown in file list, please clear all and continue.'),
               ),
             ],
           ),

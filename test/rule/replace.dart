@@ -1,7 +1,7 @@
 library renamer.test.rule.replace;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:renamer/entity/rule.dart';
+import 'package:renamer/rules/rule.dart';
 
 void main() {
   test('basic replace', () async {
@@ -14,12 +14,12 @@ void main() {
     bool ignoreExtension = true;
 
     String newFileName = RuleReplace(
-        targetString,
-        replacementString,
-        replaceCount,
-        caseSensitive,
-        isRegex,
-        ignoreExtension,
+      targetString,
+      replacementString,
+      replaceCount,
+      caseSensitive,
+      isRegex,
+      ignoreExtension,
     ).newName(fileName);
 
     expect(newFileName, "data_example_data_name_data.file");
@@ -35,12 +35,12 @@ void main() {
     bool ignoreExtension = false;
 
     String newFileName = RuleReplace(
-        targetString,
-        replacementString,
-        replaceCount,
-        caseSensitive,
-        isRegex,
-        ignoreExtension,
+      targetString,
+      replacementString,
+      replaceCount,
+      caseSensitive,
+      isRegex,
+      ignoreExtension,
     ).newName(fileName);
 
     expect(newFileName, "data_example_data_name_data.data");
@@ -56,12 +56,12 @@ void main() {
     bool ignoreExtension = true;
 
     String newFileName = RuleReplace(
-        targetString,
-        replacementString,
-        replaceCount,
-        caseSensitive,
-        isRegex,
-        ignoreExtension,
+      targetString,
+      replacementString,
+      replaceCount,
+      caseSensitive,
+      isRegex,
+      ignoreExtension,
     ).newName(fileName);
 
     expect(newFileName, "File_example_data_name_FILE.file");
@@ -77,12 +77,12 @@ void main() {
     bool ignoreExtension = true;
 
     String newFileName = RuleReplace(
-        targetString,
-        replacementString,
-        replaceCount,
-        caseSensitive,
-        isRegex,
-        ignoreExtension,
+      targetString,
+      replacementString,
+      replaceCount,
+      caseSensitive,
+      isRegex,
+      ignoreExtension,
     ).newName(fileName);
 
     expect(newFileName, "data_example_data_name_data.file");
@@ -98,12 +98,12 @@ void main() {
     bool ignoreExtension = true;
 
     String newFileName = RuleReplace(
-        targetString,
-        replacementString,
-        replaceCount,
-        caseSensitive,
-        isRegex,
-        ignoreExtension,
+      targetString,
+      replacementString,
+      replaceCount,
+      caseSensitive,
+      isRegex,
+      ignoreExtension,
     ).newName(fileName);
 
     expect(newFileName, "Data_ExamPle_Data_NaMe_Data.File");
@@ -119,12 +119,12 @@ void main() {
     bool ignoreExtension = true;
 
     String newFileName = RuleReplace(
-        targetString,
-        replacementString,
-        replaceCount,
-        caseSensitive,
-        isRegex,
-        ignoreExtension,
+      targetString,
+      replacementString,
+      replaceCount,
+      caseSensitive,
+      isRegex,
+      ignoreExtension,
     ).newName(fileName);
 
     expect(newFileName, "data_example_file_name_file.file");
@@ -140,12 +140,12 @@ void main() {
     bool ignoreExtension = true;
 
     String newFileName = RuleReplace(
-        targetString,
-        replacementString,
-        replaceCount,
-        caseSensitive,
-        isRegex,
-        ignoreExtension,
+      targetString,
+      replacementString,
+      replaceCount,
+      caseSensitive,
+      isRegex,
+      ignoreExtension,
     ).newName(fileName);
 
     expect(newFileName, "file_example_data_name_data.file");
@@ -161,12 +161,12 @@ void main() {
     bool ignoreExtension = true;
 
     String newFileName = RuleReplace(
-        targetString,
-        replacementString,
-        replaceCount,
-        caseSensitive,
-        isRegex,
-        ignoreExtension,
+      targetString,
+      replacementString,
+      replaceCount,
+      caseSensitive,
+      isRegex,
+      ignoreExtension,
     ).newName(fileName);
 
     expect(newFileName, "new_file_name_name.txt");
@@ -182,12 +182,12 @@ void main() {
     bool ignoreExtension = true;
 
     String newFileName = RuleReplace(
-        targetString,
-        replacementString,
-        replaceCount,
-        caseSensitive,
-        isRegex,
-        ignoreExtension,
+      targetString,
+      replacementString,
+      replaceCount,
+      caseSensitive,
+      isRegex,
+      ignoreExtension,
     ).newName(fileName);
 
     expect(newFileName, "example_data_name.txt");

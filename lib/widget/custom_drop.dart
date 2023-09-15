@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
 class CustomDrop<T> extends StatelessWidget {
-  CustomDrop(
-      {super.key,
-      required this.value,
-      this.onChanged,
-      required this.items,
-      String Function(T)? tToStr,}) {
+  CustomDrop({
+    super.key,
+    required this.value,
+    this.onChanged,
+    required this.items,
+    String Function(T)? tToStr,
+  }) {
     this.tToStr = tToStr ?? (t) => t is String ? t : t.toString();
   }
 

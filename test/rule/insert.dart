@@ -1,7 +1,7 @@
 library renamer.test.rule.insert;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:renamer/entity/rule.dart';
+import 'package:renamer/rules/rule.dart';
 
 void main() {
   test('basic insert', () async {

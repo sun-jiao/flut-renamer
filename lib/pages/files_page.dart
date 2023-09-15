@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../tools/rename.dart';
 import '../widget/custom_drop.dart';
-import '../entity/select_x.dart';
+import '../tools/select_x.dart';
 
 class FilesPage extends StatefulWidget {
   const FilesPage({
@@ -42,17 +42,22 @@ class FilesPageState extends State<FilesPage> {
     if (result != null) {
       setState(() {
         final resultFiles = result.files
-            .where((e1) =>
-                e1.path != null && _files.every((e2) => e1.path != e2.path),)
+            .where(
+              (e1) =>
+                  e1.path != null && _files.every((e2) => e1.path != e2.path),
+            )
             .toList();
-        _files.addAll(List.generate(
+        _files.addAll(
+          List.generate(
             resultFiles.length,
             (index) => XFile(
-                  resultFiles[index].path!,
-                  name: resultFiles[index].name,
-                  length: resultFiles[index].size,
-                  bytes: resultFiles[index].bytes,
-                ),),);
+              resultFiles[index].path!,
+              name: resultFiles[index].name,
+              length: resultFiles[index].size,
+              bytes: resultFiles[index].bytes,
+            ),
+          ),
+        );
       });
     }
   }
@@ -63,12 +68,14 @@ class FilesPageState extends State<FilesPage> {
 
   List<XFile> _filteredList() {
     return _files
-        .where((element) =>
-            element.name
-                .toString()
-                .toLowerCase()
-                .contains(_filter.toLowerCase()) &&
-            _type.contains(element.fileOrDir()),)
+        .where(
+          (element) =>
+              element.name
+                  .toString()
+                  .toLowerCase()
+                  .contains(_filter.toLowerCase()) &&
+              _type.contains(element.fileOrDir()),
+        )
         .toList();
   }
 
@@ -87,38 +94,41 @@ class FilesPageState extends State<FilesPage> {
   List<TableRow> _tableRows() {
     final filteredList = _filteredList();
     return List.generate(
-        filteredList.length,
-        (index) => TableRow(
-              decoration: BoxDecoration(
-                color: index % 2 == 0 ? Colors.white : Colors.blueGrey.shade50,
-              ),
-              children: [
-                TableCell(
-                  child: Checkbox(
-                      value: filteredList[index].selected,
-                      onChanged: (val) {
-                        if (val != null) {
-                          setState(() {
-                            filteredList[index].selected = val;
-                          });
-                        }
-                      },),
-                ),
-                _rowTextCell(filteredList[index]),
-                _rowTextCell(filteredList[index], isNew: true),
-                TableCell(
-                  child: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        _files.removeWhere((element) =>
-                            element.path == filteredList[index].path,);
-                      });
-                    },
-                    icon: const Icon(Icons.clear),
-                  ),
-                ),
-              ],
-            ),);
+      filteredList.length,
+      (index) => TableRow(
+        decoration: BoxDecoration(
+          color: index % 2 == 0 ? Colors.white : Colors.blueGrey.shade50,
+        ),
+        children: [
+          TableCell(
+            child: Checkbox(
+              value: filteredList[index].selected,
+              onChanged: (val) {
+                if (val != null) {
+                  setState(() {
+                    filteredList[index].selected = val;
+                  });
+                }
+              },
+            ),
+          ),
+          _rowTextCell(filteredList[index]),
+          _rowTextCell(filteredList[index], isNew: true),
+          TableCell(
+            child: IconButton(
+              onPressed: () {
+                setState(() {
+                  _files.removeWhere(
+                    (element) => element.path == filteredList[index].path,
+                  );
+                });
+              },
+              icon: const Icon(Icons.clear),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   List<TableRow> _headerRow() => [
@@ -134,19 +144,20 @@ class FilesPageState extends State<FilesPage> {
                     ? 'Cancel All'
                     : 'Select All',
                 child: Checkbox(
-                    value: _files.isNotEmpty &&
-                        _files.every((element) => element.selected),
-                    onChanged: (_) {
-                      setState(() {
-                        if (_files.every((element) => element.selected)) {
-                          SelectX.clearSelections();
-                        } else {
-                          for (var element in _files) {
-                            element.selected = true;
-                          }
+                  value: _files.isNotEmpty &&
+                      _files.every((element) => element.selected),
+                  onChanged: (_) {
+                    setState(() {
+                      if (_files.every((element) => element.selected)) {
+                        SelectX.clearSelections();
+                      } else {
+                        for (var element in _files) {
+                          element.selected = true;
                         }
-                      });
-                    },),
+                      }
+                    });
+                  },
+                ),
               ),
             ),
             const TableCell(
@@ -230,8 +241,10 @@ class FilesPageState extends State<FilesPage> {
             child: DropTarget(
               onDragDone: (detail) {
                 setState(() {
-                  _files.addAll(detail.files
-                      .where((e1) => _files.every((e2) => e1.path != e2.path)),);
+                  _files.addAll(
+                    detail.files.where(
+                        (e1) => _files.every((e2) => e1.path != e2.path)),
+                  );
                 });
               },
               onDragEntered: (detail) {
@@ -306,30 +319,34 @@ class FilesPageState extends State<FilesPage> {
     );
   }
 
-  Future<void> renameFiles(
-      {bool remove = true, bool onlySelected = false,}) async {
+  Future<void> renameFiles({
+    bool remove = true,
+    bool onlySelected = false,
+  }) async {
     final List<Future> futures = [];
     bool noError = true;
     _files.asMap().forEach((index, file) {
       // if file is selected or onlySelected = false (all files should be renamed)
       if (file.selected || !onlySelected) {
-        futures.add(rename(file, (name) => getNewName(name), context: context)
-            .then((value) {
-          if (value == null) {
-            noError = false;
-            setState(() {
-              file.error = true;
-            });
-          } else if (remove) {
-            setState(() {
-              _files.remove(file);
-            });
-          } else {
-            setState(() {
-              _files[index] = value;
-            });
-          }
-        }),);
+        futures.add(
+          rename(file, (name) => getNewName(name), context: context)
+              .then((value) {
+            if (value == null) {
+              noError = false;
+              setState(() {
+                file.error = true;
+              });
+            } else if (remove) {
+              setState(() {
+                _files.remove(file);
+              });
+            } else {
+              setState(() {
+                _files[index] = value;
+              });
+            }
+          }),
+        );
       }
     });
 

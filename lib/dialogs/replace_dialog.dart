@@ -1,23 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../entity/rule.dart';
+import '../rules/rule.dart';
 
 void showReplaceDialog(BuildContext context, Function(Rule) onSave) =>
     showDialog(
-        context: context,
-        builder: (context) => ReplaceDialog(
-              onSave: onSave,
-              remove: false,
-            ),);
-
-void showRemoveDialog(BuildContext context, Function(Rule) onSave) =>
-    showDialog(
-        context: context,
-        builder: (context) => ReplaceDialog(
-              onSave: onSave,
-              remove: true,
-            ),);
+      context: context,
+      builder: (context) => ReplaceDialog(
+        onSave: onSave,
+        remove: false,
+      ),
+    );
 
 class ReplaceDialog extends StatefulWidget {
   const ReplaceDialog({super.key, required this.onSave, required this.remove});
@@ -128,11 +121,22 @@ class _ReplaceDialogState extends State<ReplaceDialog> {
             replaceLimit = replaceLimit.abs() * (fromStart ? 1 : -1);
             final Rule rule;
             if (remove) {
-              rule = RuleRemove(targetString,
-                  replaceLimit, caseSensitive, isRegex, ignoreExtension,);
+              rule = RuleRemove(
+                targetString,
+                replaceLimit,
+                caseSensitive,
+                isRegex,
+                ignoreExtension,
+              );
             } else {
-              rule = RuleReplace(targetString, replacementString,
-                  replaceLimit, caseSensitive, isRegex, ignoreExtension,);
+              rule = RuleReplace(
+                targetString,
+                replacementString,
+                replaceLimit,
+                caseSensitive,
+                isRegex,
+                ignoreExtension,
+              );
             }
             widget.onSave.call(rule);
             Navigator.of(context).pop();

@@ -35,7 +35,7 @@ extension SelectX on XFile {
   set error(bool val) => _errorHandler.setValue(path, val);
 
   static void clearErrors() => _errorHandler.clearValues();
-  
+
   String fileOrDir() {
     try {
       if (File(path).existsSync()) {
