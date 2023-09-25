@@ -4,8 +4,9 @@ import 'dart:typed_data';
 
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:exif/exif.dart';
-import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 import 'package:intl/intl.dart';
+// import 'package:metadata_god/metadata_god.dart';
+// import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 
 class MetadataParser {
   MetadataParser(this.file) {
@@ -16,7 +17,9 @@ class MetadataParser {
 
   void init() async {
     _stat = await file.stat();
-    _metadata = await MetadataRetriever.fromFile(file);
+    // _metadata = await MetadataRetriever.fromFile(file);
+    // MetadataGod.initialize();
+    // _metadata = await MetadataGod.readMetadata(file: file.path);
 
     _bytes = await file.readAsBytes();
     _exif = await readExifFromBytes(_bytes);
@@ -24,31 +27,56 @@ class MetadataParser {
 
   final File file;
   late final FileStat _stat;
-  late final Metadata _metadata;
+  // late final Metadata _metadata;
   late final Uint8List _bytes;
   late final Map<String, IfdTag> _exif;
 
   static final _key = utf8.encode('renamer');
-  static final _format = DateFormat.yMMMd();
+  static final _date = DateFormat.yMMMMd();
+  static final _time = DateFormat(DateFormat.HOUR24_MINUTE_SECOND);
 
-  String get now => _format.format(DateTime.now().toLocal());
+  String get today => _date.format(DateTime.now().toLocal());
+  String get now => _time.format(DateTime.now().toLocal());
   String get size => _formatFileSize(_stat.size);
-  String get createDate => _format.format(_stat.changed.toLocal());
-  String get modifyDate => _format.format(_stat.modified.toLocal());
+  String get createDate => _date.format(_stat.changed.toLocal());
+  String get createTime => _time.format(_stat.changed.toLocal());
+  String get modifyDate => _date.format(_stat.modified.toLocal());
+  String get modifyTime => _time.format(_stat.modified.toLocal());
   Future<String> get hash async => await _getMd5();
 
-  String? get albumName => _metadata.albumName;
-  String? get albumArtistName => _metadata.albumArtistName;
-  int? get albumLength => _metadata.albumLength;
-  int? get albumYear => _metadata.year;
+  //   flutter_media_metadata:
+  //   String? get albumName => _metadata.albumName;
+  //   String? get albumArtistName => _metadata.albumArtistName;
+  //   int? get albumLength => _metadata.albumLength;
+  //   int? get albumYear => _metadata.year;
+  //
+  //   int? get trackDuration => _metadata.trackDuration;
+  //   String? get trackName => _metadata.trackName;
+  //   String? get trackArtistNames => _metadata.trackArtistNames?.join(',');
+  //   int? get trackNumber => _metadata.trackNumber;
+  //
+  //   String? get musicAuthor => _metadata.authorName;
+  //   String? get musicWriter => _metadata.writerName;
 
-  int? get trackDuration => _metadata.trackDuration;
-  String? get trackName => _metadata.trackName;
-  String? get trackArtistNames => _metadata.trackArtistNames?.join(',');
-  int? get trackNumber => _metadata.trackNumber;
-
-  String? get musicAuthor => _metadata.authorName;
-  String? get musicWriter => _metadata.writerName;
+  // metadata_god:
+  // String get albumName => (_metadata.album ?? '').toString();
+  // String get albumArtist => (_metadata.albumArtist ?? '').toString();
+  // String get albumSize => (_metadata.discTotal ?? '').toString();
+  // String get albumYear => (_metadata.year ?? '').toString();
+  //
+  // String get trackName => (_metadata.title ?? '').toString();
+  // String get trackArtist => (_metadata.artist ?? '').toString();
+  // String get trackNumber => (_metadata.trackNumber ?? '').toString();
+  // String get trackTime {
+  //   if (_metadata.duration == null) {
+  //     return '';
+  //   }
+  //   final hr = (_metadata.duration!.inHours).toString().padLeft(2, '0');
+  //   final min = (_metadata.duration!.inMinutes % 60).toString().padLeft(2, '0');
+  //   final sec = (_metadata.duration!.inSeconds % 60).toString().padLeft(2, '0');
+  //
+  //   return '${hr}hrs-${min}mins-${sec}secs';
+  // }
 
   String get photoDateTime => (_exif['EXIF DateTime'] ??
           _exif['EXIF DateTimeOriginal'] ??

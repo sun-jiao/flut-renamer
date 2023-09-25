@@ -4,7 +4,6 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   desktop_drop
-  flutter_media_metadata
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST
