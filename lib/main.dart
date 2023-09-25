@@ -17,6 +17,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.pinkAccent),
         useMaterial3: true,
+        dialogTheme: const DialogTheme(
+          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.white,
+        ),
       ),
       home: HomePage(),
     );
