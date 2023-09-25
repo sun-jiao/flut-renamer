@@ -43,6 +43,6 @@ class RuleTruncate implements Rule {
 
   @override
   String toString() {
-    return 'Truncate.';
+    return 'Truncate ';
   }
 }
