@@ -5,8 +5,6 @@ import 'dart:typed_data';
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:exif/exif.dart';
 import 'package:intl/intl.dart';
-// import 'package:metadata_god/metadata_god.dart';
-// import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 
 class MetadataParser {
   MetadataParser(this.file) {
@@ -17,9 +15,6 @@ class MetadataParser {
 
   void init() async {
     _stat = await file.stat();
-    // _metadata = await MetadataRetriever.fromFile(file);
-    // MetadataGod.initialize();
-    // _metadata = await MetadataGod.readMetadata(file: file.path);
 
     _bytes = await file.readAsBytes();
     _exif = await readExifFromBytes(_bytes);
@@ -27,83 +22,68 @@ class MetadataParser {
 
   final File file;
   late final FileStat _stat;
-  // late final Metadata _metadata;
   late final Uint8List _bytes;
   late final Map<String, IfdTag> _exif;
 
   static final _key = utf8.encode('renamer');
-  static final _date = DateFormat.yMMMMd();
-  static final _time = DateFormat(DateFormat.HOUR24_MINUTE_SECOND);
+  static final _date = DateFormat('y-MM-d');
+  static final _time = DateFormat('y-MM-d HH-mm-ss');
 
-  String get today => _date.format(DateTime.now().toLocal());
-  String get now => _time.format(DateTime.now().toLocal());
-  String get size => _formatFileSize(_stat.size);
-  String get createDate => _date.format(_stat.changed.toLocal());
-  String get createTime => _time.format(_stat.changed.toLocal());
-  String get modifyDate => _date.format(_stat.modified.toLocal());
-  String get modifyTime => _time.format(_stat.modified.toLocal());
-  Future<String> get hash async => await _getMd5();
-
-  //   flutter_media_metadata:
-  //   String? get albumName => _metadata.albumName;
-  //   String? get albumArtistName => _metadata.albumArtistName;
-  //   int? get albumLength => _metadata.albumLength;
-  //   int? get albumYear => _metadata.year;
-  //
-  //   int? get trackDuration => _metadata.trackDuration;
-  //   String? get trackName => _metadata.trackName;
-  //   String? get trackArtistNames => _metadata.trackArtistNames?.join(',');
-  //   int? get trackNumber => _metadata.trackNumber;
-  //
-  //   String? get musicAuthor => _metadata.authorName;
-  //   String? get musicWriter => _metadata.writerName;
-
-  // metadata_god:
-  // String get albumName => (_metadata.album ?? '').toString();
-  // String get albumArtist => (_metadata.albumArtist ?? '').toString();
-  // String get albumSize => (_metadata.discTotal ?? '').toString();
-  // String get albumYear => (_metadata.year ?? '').toString();
-  //
-  // String get trackName => (_metadata.title ?? '').toString();
-  // String get trackArtist => (_metadata.artist ?? '').toString();
-  // String get trackNumber => (_metadata.trackNumber ?? '').toString();
-  // String get trackTime {
-  //   if (_metadata.duration == null) {
-  //     return '';
-  //   }
-  //   final hr = (_metadata.duration!.inHours).toString().padLeft(2, '0');
-  //   final min = (_metadata.duration!.inMinutes % 60).toString().padLeft(2, '0');
-  //   final sec = (_metadata.duration!.inSeconds % 60).toString().padLeft(2, '0');
-  //
-  //   return '${hr}hrs-${min}mins-${sec}secs';
-  // }
-
-  String get photoDateTime => (_exif['EXIF DateTime'] ??
-          _exif['EXIF DateTimeOriginal'] ??
-          _exif['EXIF DateTimeDigitized'] ??
-          '')
-      .toString()
-      .replaceAll(':', '-');
-  String get cameraModel {
-    final oem = (_exif['Image Make'] ?? '').toString();
-    final model = (_exif['Image Model'] ?? '').toString();
-    if (model.contains(oem)) {
-      return model;
-    } else {
-      return '$oem $model';
+  String getByName(String name) {
+    switch (name) {
+      case 'OS:TodayDate':
+        return _date.format(DateTime.now().toLocal());
+      case 'OS:NowTime':
+        return _time.format(DateTime.now().toLocal());
+      case 'File:Size':
+        return _formatFileSize(_stat.size);
+      case 'File:CreateDate':
+        return _date.format(_stat.changed.toLocal());
+      case 'File:CreateTime':
+        return _time.format(_stat.changed.toLocal());
+      case 'File:ModifyDate':
+        return _date.format(_stat.modified.toLocal());
+      case 'File:ModifyTime':
+        return _time.format(_stat.modified.toLocal());
+      case 'Photo:DateTime':
+        return (_exif['EXIF DateTime'] ??
+            _exif['EXIF DateTimeOriginal'] ??
+            _exif['EXIF DateTimeDigitized'] ??
+            '')
+            .toString()
+            .replaceAll(':', '-');
+      case 'Photo:CamName':
+        final oem = (_exif['Image Make'] ?? '').toString();
+        final model = (_exif['Image Model'] ?? '').toString();
+        if (model.contains(oem)) {
+          return model;
+        } else {
+          return '$oem $model';
+        }
+      case 'Photo:LensName':
+        return (_exif['EXIF LensModel'] ?? '').toString();
+      case 'Photo:FocalLength':
+        return _parseRatioTag(_exif['EXIF FocalLength']);
+      case 'Photo:Aperture':
+        return 'f/${_parseRatioTag(_exif['EXIF FNumber'])}';
+      case 'Photo:Shutter':
+        return (_exif['EXIF ExposureTime'] ?? '').toString();
+      case 'Photo:ISO':
+        return (_exif['EXIF ISOSpeedRatings'] ?? '').toString();
+      case 'Photo:Longitude':
+        return _getLatLng(_exif['GPS GPSLongitude'], _exif['GPS GPSLongitudeRef']);
+      case 'Photo:Latitude':
+        return _getLatLng(_exif['GPS GPSLatitude'], _exif['GPS GPSLatitudeRef']);
+      case 'Photo:Altitude':
+        return (_exif['GPS GPSAltitude'] ?? 0).toString();
+      case 'Photo:Photographer':
+        return (_exif['Image Artist'] ?? '').toString();
+      case 'Photo:Copyright':
+        return (_exif['Image Copyright'] ?? '').toString();
+      default:
+        return '';
     }
   }
-
-  String get lensModel => (_exif['EXIF LensModel'] ?? '').toString();
-  String get focalLength => _parseRatioTag(_exif['EXIF FocalLength']);
-  String get aperture => 'f/${_parseRatioTag(_exif['EXIF FNumber'])}';
-  String get shutterSpeed => (_exif['EXIF ExposureTime'] ?? '').toString();
-  String get isoSpeed => (_exif['EXIF ISOSpeedRatings'] ?? '').toString();
-  String get gpsLongitude => _getLatLng(_exif['GPS GPSLongitude'], _exif['GPS GPSLongitudeRef']);
-  String get gpsLatitude => _getLatLng(_exif['GPS GPSLatitude'], _exif['GPS GPSLatitudeRef']);
-  String get gpsAltitude => (_exif['GPS GPSAltitude'] ?? 0).toString();
-  String get imageArtist => (_exif['Image Artist'] ?? '').toString();
-  String get imageCopyright => (_exif['Image Copyright'] ?? '').toString();
 
   String _getLatLng(IfdTag? coordTag, IfdTag? refTag) {
     if (coordTag == null) {
@@ -140,7 +120,7 @@ class MetadataParser {
     return '';
   }
 
-  Future<String> _getMd5() async {
+  Future<String> get md5 async {
     var hash = crypto.Hmac(crypto.md5, _key); // HMAC-SHA256
     var digest = hash.convert(_bytes);
 
@@ -166,3 +146,42 @@ class MetadataParser {
     return '';
   }
 }
+
+// import 'package:metadata_god/metadata_god.dart';
+// import 'package:flutter_media_metadata/flutter_media_metadata.dart';
+
+// _metadata = await MetadataRetriever.fromFile(file);
+// MetadataGod.initialize();
+// _metadata = await MetadataGod.readMetadata(file: file.path);
+
+
+// flutter_media_metadata:
+// String? get albumName => _metadata.albumName;
+// String? get albumArtistName => _metadata.albumArtistName;
+// int? get albumLength => _metadata.albumLength;
+// int? get albumYear => _metadata.year;
+// int? get trackDuration => _metadata.trackDuration;
+// String? get trackName => _metadata.trackName;
+// String? get trackArtistNames => _metadata.trackArtistNames?.join(',');
+// int? get trackNumber => _metadata.trackNumber;
+// String? get musicAuthor => _metadata.authorName;
+// String? get musicWriter => _metadata.writerName;
+
+// metadata_god:
+// String get albumName => (_metadata.album ?? '').toString();
+// String get albumArtist => (_metadata.albumArtist ?? '').toString();
+// String get albumSize => (_metadata.discTotal ?? '').toString();
+// String get albumYear => (_metadata.year ?? '').toString();
+// String get trackName => (_metadata.title ?? '').toString();
+// String get trackArtist => (_metadata.artist ?? '').toString();
+// String get trackNumber => (_metadata.trackNumber ?? '').toString();
+// String get trackTime {
+//   if (_metadata.duration == null) {
+//     return '';
+//   }
+//   final hr = (_metadata.duration!.inHours).toString().padLeft(2, '0');
+//   final min = (_metadata.duration!.inMinutes % 60).toString().padLeft(2, '0');
+//   final sec = (_metadata.duration!.inSeconds % 60).toString().padLeft(2, '0');
+//
+//   return '${hr}hrs-${min}mins-${sec}secs';
+// }
