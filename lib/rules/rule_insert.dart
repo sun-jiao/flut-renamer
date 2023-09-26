@@ -5,12 +5,14 @@ class RuleInsert implements Rule {
     this.insert,
     this.insertIndex,
     this.fromStart,
+    this.withMetadata,
     this.ignoreExtension,
   );
 
   final String insert; // string to be inserted
   final int insertIndex; // insert before character at index
   final bool fromStart; // true: count from start; false: from end.
+  final bool withMetadata; // true: replace metadata tag with metadata
   final bool ignoreExtension;
 
   @override

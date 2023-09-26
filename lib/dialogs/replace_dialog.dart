@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../rules/rule.dart';
+import '../widget/checkbox_tile.dart';
 
-void showReplaceDialog(BuildContext context, Function(Rule) onSave) =>
-    showDialog(
+void showReplaceDialog(BuildContext context, Function(Rule) onSave) => showDialog(
       context: context,
       builder: (context) => ReplaceDialog(
         onSave: onSave,
@@ -29,6 +29,7 @@ class _ReplaceDialogState extends State<ReplaceDialog> {
     text: '0',
   );
   bool fromStart = true;
+  bool withMetadata = false;
   bool caseSensitive = false;
   bool isRegex = false;
   bool ignoreExtension = true;
@@ -67,7 +68,7 @@ class _ReplaceDialogState extends State<ReplaceDialog> {
               ],
               decoration: InputDecoration(labelText: '$ruleName Limit'),
             ),
-            CheckboxListTile(
+            CheckboxTile(
               title: const Text('From start'),
               value: fromStart,
               onChanged: (value) {
@@ -76,7 +77,23 @@ class _ReplaceDialogState extends State<ReplaceDialog> {
                 });
               },
             ),
-            CheckboxListTile(
+            CheckboxTile(
+              title: const Text(
+                'Metadata tags',
+                softWrap: false,
+              ),
+              value: withMetadata,
+              onChanged: (value) {
+                setState(() {
+                  withMetadata = value ?? withMetadata;
+                });
+              },
+              trailing: IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.info_outline_rounded),
+              ),
+            ),
+            CheckboxTile(
               title: const Text('Case sensitive'),
               value: caseSensitive,
               onChanged: (value) {
@@ -85,7 +102,7 @@ class _ReplaceDialogState extends State<ReplaceDialog> {
                 });
               },
             ),
-            CheckboxListTile(
+            CheckboxTile(
               title: const Text('Is regex'),
               value: isRegex,
               onChanged: (value) {
@@ -94,7 +111,7 @@ class _ReplaceDialogState extends State<ReplaceDialog> {
                 });
               },
             ),
-            CheckboxListTile(
+            CheckboxTile(
               title: const Text('Ignore Extension'),
               value: ignoreExtension,
               onChanged: (value) {
@@ -133,6 +150,7 @@ class _ReplaceDialogState extends State<ReplaceDialog> {
                 targetString,
                 replacementString,
                 replaceLimit,
+                withMetadata,
                 caseSensitive,
                 isRegex,
                 ignoreExtension,

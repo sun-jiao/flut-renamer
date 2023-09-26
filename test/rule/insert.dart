@@ -15,6 +15,7 @@ void main() {
       insert,
       index,
       fromStart,
+      false,
       ignoreExtension,
     ).newName(fileName);
 
@@ -32,6 +33,7 @@ void main() {
       insert,
       index,
       fromStart,
+      false,
       ignoreExtension,
     ).newName(fileName);
 
@@ -49,6 +51,7 @@ void main() {
       insert,
       index,
       fromStart,
+      false,
       ignoreExtension,
     );
 

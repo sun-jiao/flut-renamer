@@ -5,6 +5,7 @@ class RuleReplace implements Rule {
     this.targetString,
     this.replacementString,
     this.replaceLimit,
+    this.withMetadata,
     this.caseSensitive,
     this.isRegex,
     this.ignoreExtension,
@@ -12,8 +13,8 @@ class RuleReplace implements Rule {
 
   final String targetString; // target to be matched and replaced.
   final String replacementString; // `targetString` will be replaced to this.
-  final int
-      replaceLimit; // 0: all matches; positive: from start; negative: from end.
+  final int replaceLimit; // 0: all matches; positive: from start; negative: from end.
+  final bool withMetadata; // true: replace metadata tag with metadata
   final bool caseSensitive;
   final bool isRegex;
   final bool ignoreExtension;

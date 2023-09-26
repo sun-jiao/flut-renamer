@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../rules/rule.dart';
+import '../widget/checkbox_tile.dart';
 
 void showRearrangeDialog(BuildContext context, Function(Rule) onSave) =>
     showDialog(
@@ -48,7 +49,7 @@ class _RearrangeDialogState extends State<RearrangeDialog> {
                 labelText: 'Rearrange order (numbers with comma)',
               ),
             ),
-            CheckboxListTile(
+            CheckboxTile(
               title: const Text('Ignore Extension'),
               value: ignoreExtension,
               onChanged: (value) {

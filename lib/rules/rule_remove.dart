@@ -12,6 +12,7 @@ class RuleRemove implements Rule {
       targetString,
       '',
       removeLimit,
+      false,
       caseSensitive,
       isRegex,
       ignoreExtension,

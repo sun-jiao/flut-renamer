@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../rules/rule.dart';
+import '../widget/checkbox_tile.dart';
 
-void showInsertDialog(BuildContext context, Function(Rule) onSave) =>
-    showDialog(
+void showInsertDialog(BuildContext context, Function(Rule) onSave) => showDialog(
       context: context,
       builder: (context) => InsertDialog(
         onSave: onSave,
@@ -25,6 +25,7 @@ class _InsertDialogState extends State<InsertDialog> {
   TextEditingController indexController = TextEditingController(
     text: '0',
   );
+  bool withMetadata = false;
   bool fromStart = true;
   bool beforeIndex = true; // true: insert before index; false: after
   bool ignoreExtension = true;
@@ -49,7 +50,7 @@ class _InsertDialogState extends State<InsertDialog> {
               ],
               decoration: const InputDecoration(labelText: 'Insert Index'),
             ),
-            CheckboxListTile(
+            CheckboxTile(
               title: const Text('From start'),
               value: fromStart,
               onChanged: (value) {
@@ -58,7 +59,7 @@ class _InsertDialogState extends State<InsertDialog> {
                 });
               },
             ),
-            CheckboxListTile(
+            CheckboxTile(
               title: const Text('Insert before index'),
               value: beforeIndex,
               onChanged: (value) {
@@ -67,7 +68,23 @@ class _InsertDialogState extends State<InsertDialog> {
                 });
               },
             ),
-            CheckboxListTile(
+            CheckboxTile(
+              title: const Text(
+                'Metadata tags',
+                softWrap: false,
+              ),
+              value: withMetadata,
+              onChanged: (value) {
+                setState(() {
+                  withMetadata = value ?? withMetadata;
+                });
+              },
+              trailing: IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.info_outline_rounded),
+              ),
+            ),
+            CheckboxTile(
               title: const Text('Ignore Extension'),
               value: ignoreExtension,
               onChanged: (value) {
@@ -92,7 +109,7 @@ class _InsertDialogState extends State<InsertDialog> {
             int insertIndex = int.tryParse(indexController.text) ?? 0;
 
             final Rule rule =
-                RuleInsert(insertText, insertIndex, fromStart, ignoreExtension);
+                RuleInsert(insertText, insertIndex, fromStart, withMetadata, ignoreExtension);
 
             widget.onSave.call(rule);
             Navigator.of(context).pop();

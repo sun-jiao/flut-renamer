@@ -1,9 +1,7 @@
 part of 'rule.dart';
 
-abstract class Rule {
-  String newName(String oldName) {
-    throw UnimplementedError();
-  }
+abstract interface class Rule {
+  String newName(String oldName);
 
   @override
   String toString();
