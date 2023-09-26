@@ -9,7 +9,13 @@ class RuleRemove implements Rule {
     bool ignoreExtension,
   ) {
     ruleReplace = RuleReplace(
-        targetString, '', removeLimit, caseSensitive, isRegex, ignoreExtension);
+      targetString,
+      '',
+      removeLimit,
+      caseSensitive,
+      isRegex,
+      ignoreExtension,
+    );
   }
 
   final String targetString;

@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:cross_file/cross_file.dart';
 import 'package:flutter/material.dart';
 
 class ExtFieldHandler<T> {
@@ -20,7 +19,7 @@ class ExtFieldHandler<T> {
 }
 
 // an extension to control file list selection.
-extension SelectX on XFile {
+extension SelectX on File {
   static final ExtFieldHandler<String> _selectionHandler = ExtFieldHandler();
   static final ExtFieldHandler<String> _errorHandler = ExtFieldHandler();
 

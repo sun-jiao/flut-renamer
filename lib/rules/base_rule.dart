@@ -1,6 +1,6 @@
 part of 'rule.dart';
 
-class Rule {
+abstract class Rule {
   String newName(String oldName) {
     throw UnimplementedError();
   }

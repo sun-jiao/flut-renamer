@@ -47,9 +47,9 @@ class MetadataParser {
         return _time.format(_stat.modified.toLocal());
       case 'Photo:DateTime':
         return (_exif['EXIF DateTime'] ??
-            _exif['EXIF DateTimeOriginal'] ??
-            _exif['EXIF DateTimeDigitized'] ??
-            '')
+                _exif['EXIF DateTimeOriginal'] ??
+                _exif['EXIF DateTimeDigitized'] ??
+                '')
             .toString()
             .replaceAll(':', '-');
       case 'Photo:CamName':
@@ -127,7 +127,14 @@ class MetadataParser {
     return digest.toString();
   }
 
-  static const List<String> _sizeUnits = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB'];
+  static const List<String> _sizeUnits = [
+    'Bytes',
+    'KB',
+    'MB',
+    'GB',
+    'TB',
+    'PB',
+  ];
 
   String _formatFileSize(int bytes) {
     if (bytes < 0) {
@@ -153,7 +160,6 @@ class MetadataParser {
 // _metadata = await MetadataRetriever.fromFile(file);
 // MetadataGod.initialize();
 // _metadata = await MetadataGod.readMetadata(file: file.path);
-
 
 // flutter_media_metadata:
 // String? get albumName => _metadata.albumName;

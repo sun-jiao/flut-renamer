@@ -1,7 +1,9 @@
-import 'package:cross_file/cross_file.dart';
+import 'dart:io';
+
 import 'package:desktop_drop/desktop_drop.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:renamer/tools/ex_file.dart';
 
 import '../tools/rename.dart';
 import '../widget/custom_drop.dart';
@@ -23,7 +25,7 @@ class FilesPage extends StatefulWidget {
 
 class FilesPageState extends State<FilesPage> {
   String _type = 'Files';
-  late final List<XFile> _files;
+  late final List<File> _files;
   bool _dragging = false;
   bool _remove = true;
   bool _onlySelected = false;
@@ -50,12 +52,7 @@ class FilesPageState extends State<FilesPage> {
         _files.addAll(
           List.generate(
             resultFiles.length,
-            (index) => XFile(
-              resultFiles[index].path!,
-              name: resultFiles[index].name,
-              length: resultFiles[index].size,
-              bytes: resultFiles[index].bytes,
-            ),
+            (index) => File(resultFiles[index].path!),
           ),
         );
       });
@@ -66,7 +63,7 @@ class FilesPageState extends State<FilesPage> {
 
   String getNewName(String name) => widget.getNewName(name);
 
-  List<XFile> _filteredList() {
+  List<File> _filteredList() {
     return _files
         .where(
           (element) =>
@@ -79,12 +76,12 @@ class FilesPageState extends State<FilesPage> {
         .toList();
   }
 
-  TableCell _rowTextCell(XFile xFile, {bool isNew = false}) => TableCell(
+  TableCell _rowTextCell(File file, {bool isNew = false}) => TableCell(
         child: Text(
-          isNew ? getNewName(xFile.name) : xFile.name,
+          isNew ? getNewName(file.name) : file.name,
           style: TextStyle(
             fontSize: 16,
-            color: xFile.error ? Colors.red : Colors.black,
+            color: file.error ? Colors.red : Colors.black,
           ),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
@@ -242,8 +239,12 @@ class FilesPageState extends State<FilesPage> {
               onDragDone: (detail) {
                 setState(() {
                   _files.addAll(
-                    detail.files.where(
-                        (e1) => _files.every((e2) => e1.path != e2.path)),
+                    detail.files
+                        .where(
+                          (dragged) => _files
+                              .every((exist) => dragged.path != exist.path),
+                        )
+                        .map((xFile) => File(xFile.path)),
                   );
                 });
               },
@@ -329,7 +330,7 @@ class FilesPageState extends State<FilesPage> {
       // if file is selected or onlySelected = false (all files should be renamed)
       if (file.selected || !onlySelected) {
         futures.add(
-          rename(file, (name) => getNewName(name), context: context)
+          rename(file, (name, parser) => getNewName(name), context: context)
               .then((value) {
             if (value == null) {
               noError = false;

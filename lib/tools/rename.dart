@@ -1,38 +1,32 @@
 import 'dart:io';
 
-import 'package:cross_file/cross_file.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart' as path;
+import 'package:renamer/tools/ex_file.dart';
+import 'package:renamer/tools/metadata_parser.dart';
 
-Future<XFile?> rename(
-  XFile xFile,
-  String Function(String name) getNewName, {
+Future<File?> rename(
+  File file,
+  String Function(String name, MetadataParser parser) getNewName, {
   BuildContext? context,
 }) async {
   try {
-    // files dir
-    final String filePath = xFile.path;
-
     // get file name
-    String fileName = xFile.name;
-
-    String extension = '';
+    String fileName = file.name;
 
     // get the directory
-    final String directory = filePath.substring(0, filePath.lastIndexOf('/'));
+    final String directory = file.directory;
+
+    final parser = MetadataParser(file);
 
     // new filename
-    final String newFileName = getNewName.call(fileName);
+    final String newFileName = getNewName.call(fileName, parser);
 
     // join the new filename
-    final String newFilePath = path.join(directory, newFileName + extension);
+    final String newFilePath = path.join(directory, newFileName);
 
-    // rename the file
-    final File file = File(filePath);
-
-    await file.rename(newFilePath);
-    return XFile(newFilePath, name: newFileName);
+    return await file.rename(newFilePath);
   } catch (e, s) {
     debugPrintStack(stackTrace: s);
     if (context != null && context.mounted) {
@@ -65,7 +59,8 @@ Future<XFile?> rename(
               ),
               const ListTile(
                 title: Text(
-                    'If files does not shown in file list, please clear all and continue.'),
+                  'If files does not shown in file list, please clear all and continue.',
+                ),
               ),
             ],
           ),

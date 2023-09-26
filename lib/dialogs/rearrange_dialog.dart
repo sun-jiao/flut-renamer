@@ -45,7 +45,8 @@ class _RearrangeDialogState extends State<RearrangeDialog> {
                 FilteringTextInputFormatter.allow(RegExp('[0-9,]')), // 只允许数字
               ],
               decoration: const InputDecoration(
-                  labelText: 'Rearrange order (numbers with comma)'),
+                labelText: 'Rearrange order (numbers with comma)',
+              ),
             ),
             CheckboxListTile(
               title: const Text('Ignore Extension'),
