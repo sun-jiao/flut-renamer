@@ -7,6 +7,7 @@ class RuleTruncate implements Rule {
     this.direction,
     this.length,
     this.ignoreExtension,
+    this.keep,
   );
 
   final int startIndex; // count from
@@ -14,6 +15,7 @@ class RuleTruncate implements Rule {
   final bool direction; // truncate direction
   final int length; // truncate length
   final bool ignoreExtension;
+  final bool keep; // true: keep chars in ranges, false: keep out of range
 
   @override
   String newName(String oldName) {
@@ -22,20 +24,37 @@ class RuleTruncate implements Rule {
 
     int index = startIndex;
 
-    if (fromStart) {
-      index = newName.length + index;
+    if (!fromStart) {
+      index = newName.length - index + 1;
     }
 
-    if (index < 0) {
-      index = 0;
-    } else if (index >= newName.length) {
-      index = newName.length;
-    }
+    int start;
+    int end;
 
     if (direction) {
-      newName = newName.substring(index, index + length);
+      start = index - 1;
+      end = index + length - 1;
     } else {
-      newName = newName.substring(index - length + 1, index + 1);
+      start = index - length;
+      end = index;
+    }
+
+    if (start < 0) {
+      start = 0;
+    } else if (start >= newName.length) {
+      start = newName.length;
+    }
+
+    if (end < 0) {
+      end = 0;
+    } else if (end >= newName.length) {
+      end = newName.length;
+    }
+
+    if (keep) {
+      newName = newName.substring(start, end);
+    } else {
+      newName = newName.replaceRange(start, end, '');
     }
 
     return newName + extension;
@@ -43,6 +62,6 @@ class RuleTruncate implements Rule {
 
   @override
   String toString() {
-    return 'Truncate ';
+    return 'Truncate: ${keep ? 'Keep' : 'Remove'} $length characters starting from the ${startIndex.toOrdinal()}${fromStart ? '' : '-to-last'} character going ${direction ? 'forward' : 'backward'}.';
   }
 }

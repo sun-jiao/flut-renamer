@@ -1,3 +1,5 @@
+import 'package:renamer/tools/ex_int.dart';
+
 import '../tools/string_x.dart';
 
 part 'base_rule.dart';

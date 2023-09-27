@@ -23,19 +23,14 @@ class FilesPage extends StatefulWidget {
   State<FilesPage> createState() => FilesPageState();
 }
 
+final List<File> _files = [];
+
 class FilesPageState extends State<FilesPage> {
   String _type = 'Files';
-  late final List<File> _files;
   bool _dragging = false;
   bool _remove = true;
   bool _onlySelected = false;
   String _filter = '';
-
-  @override
-  void initState() {
-    _files = [];
-    super.initState();
-  }
 
   Future<void> addFileFromPicker() async {
     FilePickerResult? result =
