@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:renamer/dialogs/metadata_dialog.dart';
+import 'package:renamer/tools/ex_text_editing_controller.dart';
 
 import '../rules/rule.dart';
 import '../widget/checkbox_tile.dart';
@@ -71,7 +73,7 @@ class _InsertDialogState extends State<InsertDialog> {
             ),
             CheckboxTile(
               title: const Text(
-                'Metadata tags',
+                'Metadata tags ',
                 softWrap: false,
               ),
               value: withMetadata,
@@ -81,7 +83,12 @@ class _InsertDialogState extends State<InsertDialog> {
                 });
               },
               trailing: IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  showMetadataDialog(context, (tag) {
+                    textController.insertTag(tag, context);
+                    withMetadata = true;
+                  });
+                },
                 icon: const Icon(Icons.info_outline_rounded),
               ),
             ),
@@ -110,7 +117,7 @@ class _InsertDialogState extends State<InsertDialog> {
             int insertIndex = int.tryParse(indexController.text) ?? 0;
 
             final Rule rule = RuleInsert(insertText, insertIndex, fromStart,
-                withMetadata, ignoreExtension);
+                withMetadata, ignoreExtension,);
 
             widget.onSave.call(rule);
             Navigator.of(context).pop();

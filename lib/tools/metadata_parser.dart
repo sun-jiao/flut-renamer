@@ -45,11 +45,19 @@ class MetadataParser {
         return _date.format(_stat.modified.toLocal());
       case 'File:ModifyTime':
         return _time.format(_stat.modified.toLocal());
-      case 'Photo:DateTime':
+      case 'Photo:Date':
         return (_exif['EXIF DateTime'] ??
                 _exif['EXIF DateTimeOriginal'] ??
                 _exif['EXIF DateTimeDigitized'] ??
                 '')
+            .toString()
+            .split(' ').first
+            .replaceAll(':', '-');
+      case 'Photo:Time':
+        return (_exif['EXIF DateTime'] ??
+            _exif['EXIF DateTimeOriginal'] ??
+            _exif['EXIF DateTimeDigitized'] ??
+            '')
             .toString()
             .replaceAll(':', '-');
       case 'Photo:CamName':

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:renamer/tools/ex_text_editing_controller.dart';
 
 import '../rules/rule.dart';
 import '../widget/checkbox_tile.dart';
+import 'metadata_dialog.dart';
 
 void showReplaceDialog(BuildContext context, Function(Rule) onSave) =>
     showDialog(
@@ -80,7 +82,7 @@ class _ReplaceDialogState extends State<ReplaceDialog> {
             ),
             CheckboxTile(
               title: const Text(
-                'Metadata tags',
+                'Metadata tags ',
                 softWrap: false,
               ),
               value: withMetadata,
@@ -90,7 +92,12 @@ class _ReplaceDialogState extends State<ReplaceDialog> {
                 });
               },
               trailing: IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  showMetadataDialog(context, (tag) {
+                    replacementController.insertTag(tag, context);
+                    withMetadata = true;
+                  });
+                },
                 icon: const Icon(Icons.info_outline_rounded),
               ),
             ),

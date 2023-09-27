@@ -40,6 +40,7 @@ dependencies:
   file_picker: ^5.5.0
   intl: ^0.18.1
   path: any
+  toastification: ^0.0.3
 
 dev_dependencies:
   flutter_test:
