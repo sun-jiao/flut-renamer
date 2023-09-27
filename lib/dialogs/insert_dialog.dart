@@ -4,7 +4,8 @@ import 'package:flutter/services.dart';
 import '../rules/rule.dart';
 import '../widget/checkbox_tile.dart';
 
-void showInsertDialog(BuildContext context, Function(Rule) onSave) => showDialog(
+void showInsertDialog(BuildContext context, Function(Rule) onSave) =>
+    showDialog(
       context: context,
       builder: (context) => InsertDialog(
         onSave: onSave,
@@ -108,8 +109,8 @@ class _InsertDialogState extends State<InsertDialog> {
             String insertText = textController.text;
             int insertIndex = int.tryParse(indexController.text) ?? 0;
 
-            final Rule rule =
-                RuleInsert(insertText, insertIndex, fromStart, withMetadata, ignoreExtension);
+            final Rule rule = RuleInsert(insertText, insertIndex, fromStart,
+                withMetadata, ignoreExtension);
 
             widget.onSave.call(rule);
             Navigator.of(context).pop();
