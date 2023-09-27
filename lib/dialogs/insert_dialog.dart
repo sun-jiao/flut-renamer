@@ -86,7 +86,9 @@ class _InsertDialogState extends State<InsertDialog> {
                 onPressed: () {
                   showMetadataDialog(context, (tag) {
                     textController.insertTag(tag, context);
-                    withMetadata = true;
+                    setState(() {
+                      withMetadata = true;
+                    });
                   });
                 },
                 icon: const Icon(Icons.info_outline_rounded),
@@ -116,8 +118,13 @@ class _InsertDialogState extends State<InsertDialog> {
             String insertText = textController.text;
             int insertIndex = int.tryParse(indexController.text) ?? 0;
 
-            final Rule rule = RuleInsert(insertText, insertIndex, fromStart,
-                withMetadata, ignoreExtension,);
+            final Rule rule = RuleInsert(
+              insertText,
+              insertIndex,
+              fromStart,
+              withMetadata,
+              ignoreExtension,
+            );
 
             widget.onSave.call(rule);
             Navigator.of(context).pop();

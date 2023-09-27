@@ -13,7 +13,8 @@ class RuleReplace implements Rule {
 
   final String targetString; // target to be matched and replaced.
   final String replacementString; // `targetString` will be replaced to this.
-  final int replaceLimit; // 0: all matches; positive: from start; negative: from end.
+  // 0: all matches; positive: from start; negative: from end.
+  final int replaceLimit;
   final bool withMetadata; // true: replace metadata tag with metadata
   final bool caseSensitive;
   final bool isRegex;

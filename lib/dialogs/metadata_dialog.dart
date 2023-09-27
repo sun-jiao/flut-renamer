@@ -45,17 +45,17 @@ class MetadataDialog extends StatelessWidget {
           children: _list
               .map(
                 (e) => ListTile(
-              title: Text(e.key),
-              subtitle: Text(e.value),
-              trailing: IconButton(
-                icon: const Icon(Icons.add),
-                onPressed: () {
-                  onInsert.call('{${e.key}}');
-                  Navigator.pop(context);
-                },
-              ),
-            ),
-          )
+                  title: Text(e.key),
+                  subtitle: Text(e.value),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.add),
+                    onPressed: () {
+                      onInsert.call('{${e.key}}');
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+              )
               .toList(),
         ),
       ),

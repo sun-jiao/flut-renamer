@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:toastification/toastification.dart';
 
 final _regex = RegExp(r'\{([A-Za-z]+:[A-Za-z]+)\}');
@@ -13,6 +13,8 @@ extension ExTextEditingController on TextEditingController {
       if (cursorPos > match.start && cursorPos < match.end) {
         toastification.show(
           context: context,
+          backgroundColor: Theme.of(context).primaryColor,
+          foregroundColor: Colors.white,
           title: 'Do not insert a tag inside another tag.',
           autoCloseDuration: const Duration(seconds: 5),
         );
@@ -21,8 +23,9 @@ extension ExTextEditingController on TextEditingController {
     }
     value = value.copyWith(
       text: text.replaceRange(max(cursorPos, 0), max(cursorPos, 0), tag),
-      selection:
-          TextSelection.fromPosition(TextPosition(offset: max(cursorPos, 0) + tag.length)),
+      selection: TextSelection.fromPosition(
+          TextPosition(offset: max(cursorPos, 0) + tag.length),
+      ),
     );
   }
 }

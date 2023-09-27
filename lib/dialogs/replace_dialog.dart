@@ -95,7 +95,9 @@ class _ReplaceDialogState extends State<ReplaceDialog> {
                 onPressed: () {
                   showMetadataDialog(context, (tag) {
                     replacementController.insertTag(tag, context);
-                    withMetadata = true;
+                    setState(() {
+                      withMetadata = true;
+                    });
                   });
                 },
                 icon: const Icon(Icons.info_outline_rounded),

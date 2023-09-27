@@ -51,13 +51,14 @@ class MetadataParser {
                 _exif['EXIF DateTimeDigitized'] ??
                 '')
             .toString()
-            .split(' ').first
+            .split(' ')
+            .first
             .replaceAll(':', '-');
       case 'Photo:Time':
         return (_exif['EXIF DateTime'] ??
-            _exif['EXIF DateTimeOriginal'] ??
-            _exif['EXIF DateTimeDigitized'] ??
-            '')
+                _exif['EXIF DateTimeOriginal'] ??
+                _exif['EXIF DateTimeDigitized'] ??
+                '')
             .toString()
             .replaceAll(':', '-');
       case 'Photo:CamName':
