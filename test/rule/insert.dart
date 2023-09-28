@@ -11,7 +11,7 @@ void main() {
     bool fromStart = true; // true: count from start; false: from end.
     bool ignoreExtension = true;
 
-    String newFileName = RuleInsert(
+    String newFileName = await RuleInsert(
       insert,
       index,
       fromStart,
@@ -29,7 +29,7 @@ void main() {
     bool fromStart = false; // true: count from start; false: from end.
     bool ignoreExtension = true;
 
-    String newFileName = RuleInsert(
+    String newFileName = await RuleInsert(
       insert,
       index,
       fromStart,
@@ -55,15 +55,15 @@ void main() {
       ignoreExtension,
     );
 
-    String newFileName = rule.newName(fileName);
+    String newFileName = await rule.newName(fileName);
 
     expect(newFileName, "SJ62-Bamtho8901.ARW");
 
-    newFileName = rule.newName(newFileName);
+    newFileName = await rule.newName(newFileName);
 
     expect(newFileName, "SJ62-Bamtho-Bamtho8901.ARW");
 
-    newFileName = rule.newName(newFileName);
+    newFileName = await rule.newName(newFileName);
 
     expect(newFileName, "SJ62-Bamtho-Bamtho-Bamtho8901.ARW");
   });

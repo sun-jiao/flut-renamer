@@ -21,18 +21,19 @@ class RuleReplace implements Rule {
   final bool ignoreExtension;
 
   @override
-  String newName(String oldName, {MetadataParser? parser}) {
+  Future<String> newName(String oldName, {MetadataParser? parser}) async {
     if (withMetadata && parser == null) {
       throw ArgumentError('Contains metadata tag while MetadataParser was not provided.');
     }
-    
+
     String newName, extension;
     (newName, extension) = splitFileName(oldName, ignoreExtension);
 
     String targetString = this.targetString;
 
     if (withMetadata) {
-      targetString = parser!.parse(targetString);
+      await parser!.init();
+      targetString = parser.parse(targetString);
     }
 
     Pattern target;

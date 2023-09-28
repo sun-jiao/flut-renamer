@@ -15,17 +15,20 @@ class MetadataParser {
     }
   }
 
-  void init() async {
-    _stat = await file.stat();
-
-    _bytes = await file.readAsBytes();
-    _exif = await readExifFromBytes(_bytes);
+  Future<void> init() async {
+    if (!inited) {
+      _stat = await file.stat();
+      _bytes = await file.readAsBytes();
+      _exif = await readExifFromBytes(_bytes);
+      inited = true;
+    }
   }
 
   final File file;
-  late final FileStat _stat;
-  late final Uint8List _bytes;
-  late final Map<String, IfdTag> _exif;
+  late FileStat _stat;
+  late Uint8List _bytes;
+  late Map<String, IfdTag> _exif;
+  bool inited = false;
 
   static final _key = utf8.encode('renamer');
   static final _date = DateFormat('y-MM-d');
@@ -96,20 +99,8 @@ class MetadataParser {
     }
   }
 
-  String parse(String target) {
-    final matches = metadataTagRegex.allMatches(target);
-    String result = '';
-    Match? match = null;
-    for (match in matches) {
-      result += target.substring(0, match.start) + getByName(match.toString());
-    }
-
-    if (match != null) {
-      result += target.substring(match.end);
-    }
-
-    return result;
-  }
+  String parse(String target) =>
+      target.replaceAllMapped(metadataTagRegex, (match) => getByName(match.group(1).toString()));
 
   String _getLatLng(IfdTag? coordTag, IfdTag? refTag) {
     if (coordTag == null) {

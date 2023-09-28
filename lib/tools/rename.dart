@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -8,7 +9,7 @@ import 'package:renamer/tools/metadata_parser.dart';
 
 Future<File?> rename(
   File file,
-  String Function(String name, MetadataParser parser) getNewName, {
+  FutureOr<String> Function(String name, MetadataParser parser) getNewName, {
   BuildContext? context,
 }) async {
   try {
@@ -21,13 +22,16 @@ Future<File?> rename(
     final parser = MetadataParser(file);
 
     // new filename
-    final String newFileName = getNewName.call(fileName, parser);
+    String newFileName = await getNewName.call(fileName, parser);
+
+    newFileName = replaceSpecialCharacters(newFileName);
 
     // join the new filename
     final String newFilePath = path.join(directory, newFileName);
 
     return await file.rename(newFilePath);
   } catch (e, s) {
+    debugPrint(e.toString());
     debugPrintStack(stackTrace: s);
     if (context != null && context.mounted) {
       showDialog(
@@ -70,4 +74,17 @@ Future<File?> rename(
   }
 
   return null;
+}
+
+String replaceSpecialCharacters(String input) {
+  input = input.replaceAll(r'\', '⧵');
+  input = input.replaceAll('/', '∕');
+  input = input.replaceAll(':', '꞉');
+  input = input.replaceAll('*', '＊');
+  input = input.replaceAll('?', '﹖');
+  input = input.replaceAll('"', "''");
+  input = input.replaceAll('<', '〈');
+  input = input.replaceAll('>', '〉');
+  input = input.replaceAll('|', 'ǀ');
+  return input;
 }

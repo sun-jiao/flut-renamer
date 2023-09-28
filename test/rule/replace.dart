@@ -13,7 +13,7 @@ void main() {
     bool isRegex = false;
     bool ignoreExtension = true;
 
-    String newFileName = RuleReplace(
+    String newFileName = await RuleReplace(
       targetString,
       replacementString,
       replaceCount,
@@ -35,7 +35,7 @@ void main() {
     bool isRegex = false;
     bool ignoreExtension = false;
 
-    String newFileName = RuleReplace(
+    String newFileName = await RuleReplace(
       targetString,
       replacementString,
       replaceCount,
@@ -57,7 +57,7 @@ void main() {
     bool isRegex = false;
     bool ignoreExtension = true;
 
-    String newFileName = RuleReplace(
+    String newFileName = await RuleReplace(
       targetString,
       replacementString,
       replaceCount,
@@ -79,7 +79,7 @@ void main() {
     bool isRegex = false;
     bool ignoreExtension = true;
 
-    String newFileName = RuleReplace(
+    String newFileName = await RuleReplace(
       targetString,
       replacementString,
       replaceCount,
@@ -101,7 +101,7 @@ void main() {
     bool isRegex = false;
     bool ignoreExtension = true;
 
-    String newFileName = RuleReplace(
+    String newFileName = await RuleReplace(
       targetString,
       replacementString,
       replaceCount,
@@ -123,7 +123,7 @@ void main() {
     bool isRegex = false;
     bool ignoreExtension = true;
 
-    String newFileName = RuleReplace(
+    String newFileName = await RuleReplace(
       targetString,
       replacementString,
       replaceCount,
@@ -145,7 +145,7 @@ void main() {
     bool isRegex = false;
     bool ignoreExtension = true;
 
-    String newFileName = RuleReplace(
+    String newFileName = await RuleReplace(
       targetString,
       replacementString,
       replaceCount,
@@ -167,7 +167,7 @@ void main() {
     bool isRegex = true;
     bool ignoreExtension = true;
 
-    String newFileName = RuleReplace(
+    String newFileName = await RuleReplace(
       targetString,
       replacementString,
       replaceCount,
@@ -189,7 +189,7 @@ void main() {
     bool isRegex = true;
     bool ignoreExtension = true;
 
-    String newFileName = RuleReplace(
+    String newFileName = await RuleReplace(
       targetString,
       replacementString,
       replaceCount,

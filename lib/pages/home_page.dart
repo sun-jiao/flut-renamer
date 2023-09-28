@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../rules/rule.dart';
+import '../tools/metadata_parser.dart';
 import 'rules_page.dart';
 import 'files_page.dart';
 
@@ -20,9 +21,9 @@ class HomePage extends StatelessWidget {
             flex: 3,
             child: FilesPage(
               key: filesKey,
-              getNewName: (String name) {
+              getNewName: (String name, MetadataParser parser) async {
                 for (Rule rule in rulesKey.currentState?.rules ?? []) {
-                  name = rule.newName(name);
+                  name = await rule.newName(name, parser: parser);
                 }
                 return name;
               },
