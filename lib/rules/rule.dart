@@ -1,4 +1,5 @@
 import 'package:renamer/tools/ex_int.dart';
+import 'package:renamer/tools/metadata_parser.dart';
 
 import '../tools/string_x.dart';
 

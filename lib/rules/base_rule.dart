@@ -1,7 +1,7 @@
 part of 'rule.dart';
 
 abstract interface class Rule {
-  String newName(String oldName);
+  String newName(String oldName, {MetadataParser? parser});
 
   @override
   String toString();

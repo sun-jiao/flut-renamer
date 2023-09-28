@@ -3,12 +3,12 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:toastification/toastification.dart';
 
-final _regex = RegExp(r'\{([A-Za-z]+:[A-Za-z]+)\}');
+import 'metadata_parser.dart';
 
 extension ExTextEditingController on TextEditingController {
   void insertTag(String tag, BuildContext context) {
     final int cursorPos = selection.base.offset;
-    final matches = _regex.allMatches(text);
+    final matches = metadataTagRegex.allMatches(text);
     for (final match in matches) {
       if (cursorPos > match.start && cursorPos < match.end) {
         toastification.show(

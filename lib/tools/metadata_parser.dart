@@ -6,6 +6,8 @@ import 'package:crypto/crypto.dart' as crypto;
 import 'package:exif/exif.dart';
 import 'package:intl/intl.dart';
 
+final metadataTagRegex = RegExp(r'\{([A-Za-z]+:[A-Za-z]+)\}');
+
 class MetadataParser {
   MetadataParser(this.file) {
     if (!file.existsSync()) {
@@ -94,6 +96,21 @@ class MetadataParser {
     }
   }
 
+  String parse(String target) {
+    final matches = metadataTagRegex.allMatches(target);
+    String result = '';
+    Match? match = null;
+    for (match in matches) {
+      result += target.substring(0, match.start) + getByName(match.toString());
+    }
+
+    if (match != null) {
+      result += target.substring(match.end);
+    }
+
+    return result;
+  }
+
   String _getLatLng(IfdTag? coordTag, IfdTag? refTag) {
     if (coordTag == null) {
       return '';
@@ -159,7 +176,7 @@ class MetadataParser {
       }
     }
 
-    return '';
+    throw AssertionError('Unreachable');
   }
 }
 
