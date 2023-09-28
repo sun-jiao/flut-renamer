@@ -23,7 +23,8 @@ class RuleRemove implements Rule {
   late final RuleReplace ruleReplace;
 
   @override
-  Future<String> newName(String fileName, {MetadataParser? parser}) => ruleReplace.newName(fileName, parser: parser);
+  Future<String> newName(String fileName, {FileMetadata? metadata}) =>
+      ruleReplace.newName(fileName, metadata: metadata);
 
   @override
   String toString() {

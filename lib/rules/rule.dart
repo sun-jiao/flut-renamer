@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:renamer/tools/ex_int.dart';
-import 'package:renamer/tools/metadata_parser.dart';
+import 'package:renamer/tools/file_metadata.dart';
 
-import '../tools/string_x.dart';
+import '../tools/ex_string.dart';
 
 part 'base_rule.dart';
 

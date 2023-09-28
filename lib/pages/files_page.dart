@@ -5,11 +5,10 @@ import 'package:desktop_drop/desktop_drop.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:renamer/tools/ex_file.dart';
-import 'package:renamer/tools/metadata_parser.dart';
+import 'package:renamer/tools/file_metadata.dart';
 
 import '../tools/rename.dart';
 import '../widget/custom_drop.dart';
-import '../tools/select_x.dart';
 
 class FilesPage extends StatefulWidget {
   const FilesPage({
@@ -18,7 +17,7 @@ class FilesPage extends StatefulWidget {
     required this.clearRules,
   });
 
-  final FutureOr<String> Function(String name, MetadataParser parser) getNewName;
+  final FutureOr<String> Function(String name, FileMetadata metadata) getNewName;
   final VoidCallback clearRules;
 
   @override
@@ -56,8 +55,8 @@ class FilesPageState extends State<FilesPage> {
 
   void update() => setState(() {});
 
-  Future<String> getNewName(String name, MetadataParser parser) async =>
-      await widget.getNewName(name, parser);
+  Future<String> getNewName(String name, FileMetadata metadata) async =>
+      await widget.getNewName(name, metadata);
 
   List<File> _filteredList() {
     return _files
@@ -70,26 +69,28 @@ class FilesPageState extends State<FilesPage> {
   }
 
   TableCell _rowTextCell(File file, {bool isNew = false}) => TableCell(
-        child: FutureBuilder(
-          future: getNewName(file.name, MetadataParser(file)),
+        child: isNew ? FutureBuilder(
+          future: getNewName(file.name, FileMetadata(file)),
           builder: (context, snap) {
-            if ((snap.connectionState == ConnectionState.waiting ||
-                snap.connectionState == ConnectionState.none) &&
+            if ((snap.connectionState == ConnectionState.active ||
+                snap.connectionState == ConnectionState.done) &&
                 snap.hasData && (!snap.hasError)) {
-              return Text(
-                isNew ? snap.data as String : file.name,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: file.error ? Colors.red : Colors.black,
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              );
+              return getRowText(snap.data as String, file);
             }
             return const LinearProgressIndicator();
           },
-        ),
+        ) : getRowText(file.name, file),
       );
+
+  Widget getRowText(String text, File file) => Text(
+    text,
+    style: TextStyle(
+      fontSize: 16,
+      color: file.error ? Colors.red : Colors.black,
+    ),
+    maxLines: 1,
+    overflow: TextOverflow.ellipsis,
+  );
 
   List<TableRow> _tableRows() {
     final filteredList = _filteredList();
@@ -147,7 +148,7 @@ class FilesPageState extends State<FilesPage> {
                   onChanged: (_) {
                     setState(() {
                       if (_files.every((element) => element.selected)) {
-                        SelectX.clearSelections();
+                        ExFile.clearSelections();
                       } else {
                         for (var element in _files) {
                           element.selected = true;

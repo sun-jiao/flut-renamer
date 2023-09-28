@@ -16,8 +16,8 @@ class RuleInsert implements Rule {
   final bool ignoreExtension;
 
   @override
-  Future<String> newName(String oldName, {MetadataParser? parser}) async {
-    if (withMetadata && parser == null) {
+  Future<String> newName(String oldName, {FileMetadata? metadata}) async {
+    if (withMetadata && metadata == null) {
       throw ArgumentError('Contains metadata tag while MetadataParser was not provided.');
     }
 
@@ -27,8 +27,8 @@ class RuleInsert implements Rule {
     String insert = this.insert;
 
     if (withMetadata) {
-      await parser!.init();
-      insert = parser.parse(insert);
+      await metadata!.init();
+      insert = metadata.parse(insert);
     }
 
     int index = insertIndex;

@@ -12,7 +12,7 @@ class RuleRearrange implements Rule {
   final bool ignoreExtension;
 
   @override
-  String newName(String oldName, {MetadataParser? parser}) {
+  String newName(String oldName, {FileMetadata? metadata}) {
     String newName, extension;
     (newName, extension) = splitFileName(oldName, ignoreExtension);
 

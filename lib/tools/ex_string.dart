@@ -1,4 +1,4 @@
-extension StringX on String {
+extension ExString on String {
   String replaceLastMapped(Pattern from, String Function(Match match) replace) {
     int lastIndex = lastIndexOf(from);
     if (lastIndex != -1) {

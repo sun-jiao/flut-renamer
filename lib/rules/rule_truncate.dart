@@ -18,7 +18,7 @@ class RuleTruncate implements Rule {
   final bool keep; // true: keep chars in ranges, false: keep out of range
 
   @override
-  String newName(String oldName, {MetadataParser? parser}) {
+  String newName(String oldName, {FileMetadata? metadata}) {
     String newName, extension;
     (newName, extension) = splitFileName(oldName, ignoreExtension);
 

@@ -8,8 +8,8 @@ import 'package:intl/intl.dart';
 
 final metadataTagRegex = RegExp(r'\{([A-Za-z]+:[A-Za-z]+)\}');
 
-class MetadataParser {
-  MetadataParser(this.file) {
+class FileMetadata {
+  FileMetadata(this.file) {
     if (!file.existsSync()) {
       throw PathNotFoundException(file.path, const OSError());
     }

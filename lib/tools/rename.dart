@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart' as path;
 import 'package:renamer/tools/ex_file.dart';
-import 'package:renamer/tools/metadata_parser.dart';
+import 'package:renamer/tools/file_metadata.dart';
 
 Future<File?> rename(
   File file,
-  FutureOr<String> Function(String name, MetadataParser parser) getNewName, {
+  FutureOr<String> Function(String name, FileMetadata metadata) getNewName, {
   BuildContext? context,
 }) async {
   try {
@@ -19,7 +19,7 @@ Future<File?> rename(
     // get the directory
     final String directory = file.directory;
 
-    final parser = MetadataParser(file);
+    final parser = FileMetadata(file);
 
     // new filename
     String newFileName = await getNewName.call(fileName, parser);

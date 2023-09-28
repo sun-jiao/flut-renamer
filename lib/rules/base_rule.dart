@@ -1,7 +1,7 @@
 part of 'rule.dart';
 
 abstract interface class Rule {
-  FutureOr<String> newName(String oldName, {MetadataParser? parser});
+  FutureOr<String> newName(String oldName, {FileMetadata? metadata});
 
   @override
   String toString();

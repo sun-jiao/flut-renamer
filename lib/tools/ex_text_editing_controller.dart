@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:toastification/toastification.dart';
 
-import 'metadata_parser.dart';
+import 'file_metadata.dart';
 
 extension ExTextEditingController on TextEditingController {
   void insertTag(String tag, BuildContext context) {
