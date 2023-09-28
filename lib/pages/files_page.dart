@@ -73,10 +73,9 @@ class FilesPageState extends State<FilesPage> {
         child: FutureBuilder(
           future: getNewName(file.name, MetadataParser(file)),
           builder: (context, snap) {
-            if (snap.connectionState == ConnectionState.waiting ||
-                snap.connectionState == ConnectionState.none) {
-              return const LinearProgressIndicator();
-            } else {
+            if ((snap.connectionState == ConnectionState.waiting ||
+                snap.connectionState == ConnectionState.none) &&
+                snap.hasData && (!snap.hasError)) {
               return Text(
                 isNew ? snap.data as String : file.name,
                 style: TextStyle(
@@ -87,6 +86,7 @@ class FilesPageState extends State<FilesPage> {
                 overflow: TextOverflow.ellipsis,
               );
             }
+            return const LinearProgressIndicator();
           },
         ),
       );

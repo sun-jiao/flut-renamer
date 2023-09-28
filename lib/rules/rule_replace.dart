@@ -29,11 +29,11 @@ class RuleReplace implements Rule {
     String newName, extension;
     (newName, extension) = splitFileName(oldName, ignoreExtension);
 
-    String targetString = this.targetString;
+    String replacementString = this.replacementString;
 
     if (withMetadata) {
       await parser!.init();
-      targetString = parser.parse(targetString);
+      replacementString = parser.parse(replacementString);
     }
 
     Pattern target;
