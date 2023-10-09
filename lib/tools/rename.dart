@@ -4,8 +4,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart' as path;
-import 'package:renamer/tools/ex_file.dart';
-import 'package:renamer/tools/file_metadata.dart';
+
+import '../tools/ex_file.dart';
+import '../tools/file_metadata.dart';
 
 Future<File?> rename(
   File file,

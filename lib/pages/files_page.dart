@@ -4,9 +4,9 @@ import 'dart:io';
 import 'package:desktop_drop/desktop_drop.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:renamer/tools/ex_file.dart';
-import 'package:renamer/tools/file_metadata.dart';
 
+import '../tools/ex_file.dart';
+import '../tools/file_metadata.dart';
 import '../entity/sharedpref.dart';
 import '../tools/rename.dart';
 import '../widget/custom_drop.dart';
@@ -18,7 +18,8 @@ class FilesPage extends StatefulWidget {
     required this.clearRules,
   });
 
-  final FutureOr<String> Function(String name, FileMetadata metadata) getNewName;
+  final FutureOr<String> Function(String name, FileMetadata metadata)
+      getNewName;
   final VoidCallback clearRules;
 
   @override
@@ -28,18 +29,19 @@ class FilesPage extends StatefulWidget {
 final List<File> _files = [];
 
 class FilesPageState extends State<FilesPage> {
-  String _type = 'Files';
   bool _dragging = false;
   String _filter = '';
 
   Future<void> addFileFromPicker() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true);
+    FilePickerResult? result =
+        await FilePicker.platform.pickFiles(allowMultiple: true);
 
     if (result != null) {
       setState(() {
         final resultFiles = result.files
             .where(
-              (e1) => e1.path != null && _files.every((e2) => e1.path != e2.path),
+              (e1) =>
+                  e1.path != null && _files.every((e2) => e1.path != e2.path),
             )
             .toList();
         _files.addAll(
@@ -61,35 +63,41 @@ class FilesPageState extends State<FilesPage> {
     return _files
         .where(
           (element) =>
-              element.name.toString().toLowerCase().contains(_filter.toLowerCase()) &&
-              _type.contains(element.fileOrDir()),
+              element.name
+                  .toString()
+                  .toLowerCase()
+                  .contains(_filter.toLowerCase()) &&
+              Shared.fileOrDir.contains(element.fileOrDir()),
         )
         .toList();
   }
 
   TableCell _rowTextCell(File file, {bool isNew = false}) => TableCell(
-        child: isNew ? FutureBuilder(
-          future: getNewName(file.name, FileMetadata(file)),
-          builder: (context, snap) {
-            if ((snap.connectionState == ConnectionState.active ||
-                snap.connectionState == ConnectionState.done) &&
-                snap.hasData && (!snap.hasError)) {
-              return getRowText(snap.data as String, file);
-            }
-            return const LinearProgressIndicator();
-          },
-        ) : getRowText(file.name, file),
+        child: isNew
+            ? FutureBuilder(
+                future: getNewName(file.name, FileMetadata(file)),
+                builder: (context, snap) {
+                  if ((snap.connectionState == ConnectionState.active ||
+                          snap.connectionState == ConnectionState.done) &&
+                      snap.hasData &&
+                      (!snap.hasError)) {
+                    return getRowText(snap.data as String, file);
+                  }
+                  return const LinearProgressIndicator();
+                },
+              )
+            : getRowText(file.name, file),
       );
 
   Widget getRowText(String text, File file) => Text(
-    text,
-    style: TextStyle(
-      fontSize: 16,
-      color: file.error ? Colors.red : Colors.black,
-    ),
-    maxLines: 1,
-    overflow: TextOverflow.ellipsis,
-  );
+        text,
+        style: TextStyle(
+          fontSize: 16,
+          color: file.error ? Colors.red : Colors.black,
+        ),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      );
 
   List<TableRow> _tableRows() {
     final filteredList = _filteredList();
@@ -139,11 +147,13 @@ class FilesPageState extends State<FilesPage> {
           children: [
             TableCell(
               child: Tooltip(
-                message: _files.isNotEmpty && _files.every((element) => element.selected)
+                message: _files.isNotEmpty &&
+                        _files.every((element) => element.selected)
                     ? 'Cancel All'
                     : 'Select All',
                 child: Checkbox(
-                  value: _files.isNotEmpty && _files.every((element) => element.selected),
+                  value: _files.isNotEmpty &&
+                      _files.every((element) => element.selected),
                   onChanged: (_) {
                     setState(() {
                       if (_files.every((element) => element.selected)) {
@@ -207,10 +217,10 @@ class FilesPageState extends State<FilesPage> {
           Row(
             children: <Widget>[
               CustomDrop<String>(
-                value: _type,
+                value: Shared.fileOrDir,
                 onChanged: (String? newValue) {
                   setState(() {
-                    _type = newValue!;
+                    Shared.fileOrDir = newValue!;
                   });
                 },
                 items: const <String>['Files', 'Directories', 'Files & Dirs'],
@@ -242,7 +252,8 @@ class FilesPageState extends State<FilesPage> {
                   _files.addAll(
                     detail.files
                         .where(
-                          (dragged) => _files.every((exist) => dragged.path != exist.path),
+                          (dragged) => _files
+                              .every((exist) => dragged.path != exist.path),
                         )
                         .map((xFile) => File(xFile.path)),
                   );
@@ -309,7 +320,10 @@ class FilesPageState extends State<FilesPage> {
               const SizedBox(width: 16),
               ElevatedButton(
                 onPressed: () {
-                  renameFiles(remove: Shared.removeRenamed, onlySelected: Shared.onlySelected);
+                  renameFiles(
+                    remove: Shared.removeRenamed,
+                    onlySelected: Shared.onlySelected,
+                  );
                 },
                 child: const Text('Rename All'),
               ),
@@ -330,7 +344,11 @@ class FilesPageState extends State<FilesPage> {
       // if file is selected or onlySelected = false (all files should be renamed)
       if (file.selected || !onlySelected) {
         futures.add(
-          rename(file, (name, parser) => getNewName(name, parser), context: context).then((value) {
+          rename(
+            file,
+            (name, parser) => getNewName(name, parser),
+            context: context,
+          ).then((value) {
             if (value == null) {
               noError = false;
               setState(() {

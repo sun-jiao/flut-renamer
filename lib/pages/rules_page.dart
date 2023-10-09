@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:renamer/dialogs/truncate_dialog.dart';
 
+import '../dialogs/truncate_dialog.dart';
 import '../dialogs/rearrange_dialog.dart';
 import '../dialogs/remove_dialog.dart';
 import '../dialogs/replace_dialog.dart';
@@ -66,7 +66,13 @@ class RulesPageState extends State<RulesPage> {
                   Shared.ruleName = newValue!;
                 });
               },
-              items: const <String>['Replace', 'Remove', 'Insert', 'Rearrange', 'Truncate'],
+              items: const <String>[
+                'Replace',
+                'Remove',
+                'Insert',
+                'Rearrange',
+                'Truncate',
+              ],
             ),
             title: ElevatedButton(
               onPressed: showRuleDialog,

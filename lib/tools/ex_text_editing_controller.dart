@@ -24,7 +24,7 @@ extension ExTextEditingController on TextEditingController {
     value = value.copyWith(
       text: text.replaceRange(max(cursorPos, 0), max(cursorPos, 0), tag),
       selection: TextSelection.fromPosition(
-          TextPosition(offset: max(cursorPos, 0) + tag.length),
+        TextPosition(offset: max(cursorPos, 0) + tag.length),
       ),
     );
   }

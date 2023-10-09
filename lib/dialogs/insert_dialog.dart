@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:renamer/dialogs/metadata_dialog.dart';
-import 'package:renamer/tools/ex_text_editing_controller.dart';
 
+import '../dialogs/metadata_dialog.dart';
+import '../tools/ex_text_editing_controller.dart';
 import '../rules/rule.dart';
 import '../widget/checkbox_tile.dart';
 

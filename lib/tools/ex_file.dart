@@ -1,7 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:renamer/tools/file_metadata.dart';
+
+import '../tools/file_metadata.dart';
 
 class ExtFieldHandler<T> {
   final Map<String, T> _values = {};

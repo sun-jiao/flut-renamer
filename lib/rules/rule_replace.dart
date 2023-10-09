@@ -23,7 +23,9 @@ class RuleReplace implements Rule {
   @override
   Future<String> newName(String oldName, {FileMetadata? metadata}) async {
     if (withMetadata && metadata == null) {
-      throw ArgumentError('Contains metadata tag while MetadataParser was not provided.');
+      throw ArgumentError(
+        'Contains metadata tag while MetadataParser was not provided.',
+      );
     }
 
     String newName, extension;

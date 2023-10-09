@@ -99,8 +99,10 @@ class FileMetadata {
     }
   }
 
-  String parse(String target) =>
-      target.replaceAllMapped(metadataTagRegex, (match) => getByName(match.group(1).toString()));
+  String parse(String target) => target.replaceAllMapped(
+        metadataTagRegex,
+        (match) => getByName(match.group(1).toString()),
+      );
 
   String _getLatLng(IfdTag? coordTag, IfdTag? refTag) {
     if (coordTag == null) {
@@ -117,8 +119,10 @@ class FileMetadata {
       final List<Ratio> coordinate = (tag.values as IfdRatios).ratios;
       if (coordinate.isNotEmpty) {
         int degrees = _parseRatio(coordinate[0]).toInt();
-        int minutes = coordinate.length > 1 ? _parseRatio(coordinate[1]).toInt() : 0;
-        double seconds = coordinate.length > 2 ? _parseRatio(coordinate[2]) : 0.0;
+        int minutes =
+            coordinate.length > 1 ? _parseRatio(coordinate[1]).toInt() : 0;
+        double seconds =
+            coordinate.length > 2 ? _parseRatio(coordinate[2]) : 0.0;
         return '$degrees°$minutes′$seconds″';
       }
     }

@@ -5,6 +5,7 @@ class Shared {
 
   static Future<void> init() async {
     _pref = await SharedPreferences.getInstance();
+    _fileOrDir = pref.getString(_fileOrDirKey) ?? _fileOrDir;
     _onlySelected = pref.getBool(_onlySelectedKey) ?? _onlySelected;
     _removeRenamed = pref.getBool(_removeRenamedKey) ?? _removeRenamed;
     _removeRules = pref.getBool(_removeRulesKey) ?? _removeRules;
@@ -15,10 +16,18 @@ class Shared {
 
   static bool get initialed => _pref != null;
 
+  static const _fileOrDirKey = 'file_or_dir';
   static const _onlySelectedKey = 'only_selected';
   static const _removeRenamedKey = 'remove_renamed';
   static const _removeRulesKey = 'remove_rules';
   static const _ruleNameKey = 'rule_name';
+
+  static String _fileOrDir = 'Files';
+  static String get fileOrDir => _fileOrDir;
+  static set fileOrDir(String value) {
+    _fileOrDir = value;
+    pref.setString(_fileOrDirKey, value);
+  }
 
   static bool _onlySelected = false;
   static bool get onlySelected => _onlySelected;
@@ -26,7 +35,7 @@ class Shared {
     _onlySelected = value;
     pref.setBool(_onlySelectedKey, value);
   }
-  
+
   static bool _removeRenamed = true;
   static bool get removeRenamed => _removeRenamed;
   static set removeRenamed(bool value) {
