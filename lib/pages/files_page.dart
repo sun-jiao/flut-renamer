@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:renamer/tools/ex_file.dart';
 import 'package:renamer/tools/file_metadata.dart';
 
+import '../entity/sharedpref.dart';
 import '../tools/rename.dart';
 import '../widget/custom_drop.dart';
 
@@ -29,8 +30,6 @@ final List<File> _files = [];
 class FilesPageState extends State<FilesPage> {
   String _type = 'Files';
   bool _dragging = false;
-  bool _remove = true;
-  bool _onlySelected = false;
   String _filter = '';
 
   Future<void> addFileFromPicker() async {
@@ -289,20 +288,20 @@ class FilesPageState extends State<FilesPage> {
             children: <Widget>[
               const SizedBox(width: 16),
               Checkbox(
-                value: _onlySelected,
+                value: Shared.onlySelected,
                 onChanged: (value) {
                   setState(() {
-                    _onlySelected = value ?? _onlySelected;
+                    Shared.onlySelected = value ?? Shared.onlySelected;
                   });
                 },
               ),
               const Text('only selected'),
               const SizedBox(width: 16),
               Checkbox(
-                value: _remove,
+                value: Shared.removeRenamed,
                 onChanged: (value) {
                   setState(() {
-                    _remove = value ?? _remove;
+                    Shared.removeRenamed = value ?? Shared.removeRenamed;
                   });
                 },
               ),
@@ -310,7 +309,7 @@ class FilesPageState extends State<FilesPage> {
               const SizedBox(width: 16),
               ElevatedButton(
                 onPressed: () {
-                  renameFiles(remove: _remove, onlySelected: _onlySelected);
+                  renameFiles(remove: Shared.removeRenamed, onlySelected: Shared.onlySelected);
                 },
                 child: const Text('Rename All'),
               ),

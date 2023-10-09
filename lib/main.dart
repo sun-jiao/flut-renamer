@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 
+import 'entity/sharedpref.dart';
 import 'pages/home_page.dart';
 
-void main() {
+Future<void> main() async {
+  while (!Shared.initialed) {
+    await Shared.init();
+  }
   runApp(const MyApp());
 }
 

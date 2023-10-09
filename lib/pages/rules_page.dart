@@ -5,6 +5,7 @@ import '../dialogs/rearrange_dialog.dart';
 import '../dialogs/remove_dialog.dart';
 import '../dialogs/replace_dialog.dart';
 import '../dialogs/insert_dialog.dart';
+import '../entity/sharedpref.dart';
 import '../rules/rule.dart';
 import '../widget/custom_drop.dart';
 
@@ -19,13 +20,10 @@ class RulesPage extends StatefulWidget {
 
 class RulesPageState extends State<RulesPage> {
   final List<Rule> _rules = [];
-  String _ruleName = 'Replace';
-  bool _clearRule = false;
-
   List<Rule> get rules => _rules;
 
   void clearRule() {
-    if (_clearRule) {
+    if (Shared.removeRules) {
       setState(() {
         rules.clear();
       });
@@ -40,7 +38,7 @@ class RulesPageState extends State<RulesPage> {
   }
 
   void showRuleDialog() {
-    switch (_ruleName) {
+    switch (Shared.ruleName) {
       case 'Replace':
         showReplaceDialog(context, addRule);
       case 'Remove':
@@ -62,10 +60,10 @@ class RulesPageState extends State<RulesPage> {
         children: [
           ListTile(
             leading: CustomDrop<String>(
-              value: _ruleName,
+              value: Shared.ruleName,
               onChanged: (String? newValue) {
                 setState(() {
-                  _ruleName = newValue!;
+                  Shared.ruleName = newValue!;
                 });
               },
               items: const <String>['Replace', 'Remove', 'Insert', 'Rearrange', 'Truncate'],
@@ -128,10 +126,10 @@ class RulesPageState extends State<RulesPage> {
           Row(
             children: [
               Checkbox(
-                value: _clearRule,
+                value: Shared.removeRules,
                 onChanged: (value) {
                   setState(() {
-                    _clearRule = value ?? _clearRule;
+                    Shared.removeRules = value ?? Shared.removeRules;
                   });
                 },
               ),
