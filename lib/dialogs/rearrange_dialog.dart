@@ -43,10 +43,11 @@ class _RearrangeDialogState extends State<RearrangeDialog> {
               controller: intArrayController,
               keyboardType: TextInputType.number,
               inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.allow(RegExp('[0-9,]')), // 只允许数字
+                // Only number and comma allowed
+                FilteringTextInputFormatter.allow(RegExp('[0-9,]')),
               ],
               decoration: const InputDecoration(
-                labelText: 'Rearrange order (numbers with comma)',
+                labelText: 'Rearrange order (numbers separated with comma)',
               ),
             ),
             CheckboxTile(
