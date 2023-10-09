@@ -59,6 +59,6 @@ extension ExFile on File {
       debugPrint('$e\r\n$s');
     }
 
-    return 'SunJiao'; // Meaningless String to not contained by `_type`
+    return 'Renamer'; // Meaningless String to not contained by `_type`
   }
 }
