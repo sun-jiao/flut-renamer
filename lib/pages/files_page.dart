@@ -56,8 +56,8 @@ class FilesPageState extends State<FilesPage> {
 
   void update() => setState(() {});
 
-  Future<String> getNewName(String name, FileMetadata metadata) async =>
-      await widget.getNewName(name, metadata);
+  Future<String> getNewName(File file, FileMetadata metadata) async =>
+      file.newName = await widget.getNewName(file.name, metadata);
 
   List<File> _filteredList() {
     return _files
@@ -75,13 +75,12 @@ class FilesPageState extends State<FilesPage> {
   TableCell _rowTextCell(File file, {bool isNew = false}) => TableCell(
         child: isNew
             ? FutureBuilder(
-                future: getNewName(file.name, FileMetadata(file)),
+                future: getNewName(file, FileMetadata(file)),
                 builder: (context, snap) {
                   if ((snap.connectionState == ConnectionState.active ||
                           snap.connectionState == ConnectionState.done) &&
-                      snap.hasData &&
                       (!snap.hasError)) {
-                    return getRowText(snap.data as String, file);
+                    return getRowText(file.newName, file);
                   }
                   return const LinearProgressIndicator();
                 },
@@ -346,7 +345,6 @@ class FilesPageState extends State<FilesPage> {
         futures.add(
           rename(
             file,
-            (name, parser) => getNewName(name, parser),
             context: context,
           ).then((value) {
             if (value == null) {

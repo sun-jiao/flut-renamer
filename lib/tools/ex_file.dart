@@ -38,6 +38,11 @@ extension ExFile on File {
   set error(bool? val) => _errorHandler.setValue(path, val);
   static void clearErrors() => _errorHandler.clearValues();
 
+  static final ExtFieldHandler<String> _newNameHandler = ExtFieldHandler();
+  String get newName => _newNameHandler.getValue(path) ?? name;
+  set newName(String? val) => _newNameHandler.setValue(path, val);
+  static void clearNewNames() => _newNameHandler.clearValues();
+
   static final ExtFieldHandler<FileMetadata> _metadataHandler = ExtFieldHandler();
   FileMetadata? get parser => _metadataHandler.getValue(path);
   set parser(FileMetadata? metadata) => _metadataHandler.setValue(path, parser);

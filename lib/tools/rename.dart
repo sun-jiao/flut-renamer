@@ -6,25 +6,16 @@ import 'package:flutter/services.dart';
 import 'package:path/path.dart' as path;
 
 import '../tools/ex_file.dart';
-import '../tools/file_metadata.dart';
 
 Future<File?> rename(
-  File file,
-  FutureOr<String> Function(String name, FileMetadata metadata) getNewName, {
+  File file, {
   BuildContext? context,
 }) async {
   try {
-    // get file name
-    String fileName = file.name;
-
     // get the directory
     final String directory = file.directory;
 
-    final parser = FileMetadata(file);
-
-    // new filename
-    String newFileName = await getNewName.call(fileName, parser);
-
+    String newFileName = file.newName;
     newFileName = replaceSpecialCharacters(newFileName);
 
     // join the new filename
