@@ -1,6 +1,7 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
+import 'package:cross_file/cross_file.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:path/path.dart' as p;
 
 import '../tools/file_metadata.dart';
@@ -26,7 +27,7 @@ class ExtFieldHandler<T> {
 }
 
 // an extension to control file list selection.
-extension ExFile on File {
+extension ExFile on FileSystemEntity {
   // get file name
   String get name => path.substring(path.lastIndexOf('/') + 1);
 
@@ -59,22 +60,43 @@ extension ExFile on File {
   static void clearParsers() => _metadataHandler.clearValues();
 
   String fileOrDir() {
-    try {
-      if (File(path).existsSync()) {
-        return 'File';
-      }
-    } catch (e, s) {
-      debugPrint('$e\r\n$s');
+    FileSystemEntity file = this;
+
+    while (file is Link) {
+      file = file.toFileSystemEntity();
     }
 
-    try {
-      if (Directory(path).existsSync()) {
-        return 'Dir';
-      }
-    } catch (e, s) {
-      debugPrint('$e\r\n$s');
+    if (file is File) {
+      return 'File';
+    } else if (file is Directory) {
+      return 'Dir';
     }
 
     return 'Renamer'; // Meaningless String to not contained by `_type`
   }
+}
+
+extension ExXFile on XFile {
+  FileSystemEntity toFileSystemEntity() =>
+      _toFileSystemEntity(this, (xFile) => xFile.path);
+}
+
+extension ExPlatformFile on PlatformFile {
+  FileSystemEntity toFileSystemEntity() =>
+      _toFileSystemEntity(this, (file) => file.path ?? '');
+}
+
+extension ExLink on Link {
+  FileSystemEntity toFileSystemEntity() =>
+      _toFileSystemEntity(this, (link) => link.targetSync());
+}
+
+FileSystemEntity _toFileSystemEntity<T>(T file, String Function(T file) func) {
+  FileSystemEntity entity;
+
+  entity = File(func.call(file));
+  if (!entity.existsSync()) entity = Directory(func.call(file));
+  if (!entity.existsSync()) entity = Link(func.call(file));
+
+  return entity;
 }

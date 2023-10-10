@@ -6,8 +6,8 @@ import 'package:flutter/services.dart';
 
 import '../tools/ex_file.dart';
 
-Future<File?> rename(
-  File file, {
+Future<FileSystemEntity?> rename(
+  FileSystemEntity file, {
   BuildContext? context,
 }) async {
   if (file.error) {

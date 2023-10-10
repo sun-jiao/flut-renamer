@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:exif/exif.dart';
 import 'package:intl/intl.dart';
+import 'package:renamer/tools/ex_file.dart';
 
 final metadataTagRegex = RegExp(r'\{([A-Za-z]+:[A-Za-z]+)\}');
 
@@ -13,18 +14,29 @@ class FileMetadata {
     if (!file.existsSync()) {
       throw PathNotFoundException(file.path, const OSError());
     }
+
+    while (file is Link) {
+      file = (file as Link).toFileSystemEntity();
+    }
   }
 
   Future<void> init() async {
     if (!inited) {
       _stat = await file.stat();
-      _bytes = await file.readAsBytes();
-      _exif = await readExifFromBytes(_bytes);
+
+      if (file is Directory) {
+        _bytes = Uint8List(0);
+        _exif = {};
+      } else {
+        _bytes = await (file as File).readAsBytes();
+        _exif = await readExifFromBytes(_bytes);
+      }
+
       inited = true;
     }
   }
 
-  final File file;
+  late final FileSystemEntity file;
   late FileStat _stat;
   late Uint8List _bytes;
   late Map<String, IfdTag> _exif;

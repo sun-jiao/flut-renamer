@@ -26,7 +26,7 @@ class FilesPage extends StatefulWidget {
   State<FilesPage> createState() => FilesPageState();
 }
 
-final List<File> _files = [];
+final List<FileSystemEntity> _files = [];
 
 class FilesPageState extends State<FilesPage> {
   bool _dragging = false;
@@ -47,7 +47,7 @@ class FilesPageState extends State<FilesPage> {
         _files.addAll(
           List.generate(
             resultFiles.length,
-            (index) => File(resultFiles[index].path!),
+            (index) => resultFiles[index].toFileSystemEntity(),
           ),
         );
       });
@@ -56,13 +56,13 @@ class FilesPageState extends State<FilesPage> {
 
   void update() => setState(() {});
 
-  Future<void> getNewName(File file, FileMetadata metadata) async {
+  Future<void> getNewName(FileSystemEntity file, FileMetadata metadata) async {
     file.newName = await widget.getNewName(file.name, metadata);
     file.error = file.newName != file.name &&
         ((await File(file.newPath).exists()) || file.newNameDuplicate);
   }
 
-  List<File> _filteredList() {
+  List<FileSystemEntity> _filteredList() {
     return _files
         .where(
           (element) =>
@@ -75,7 +75,8 @@ class FilesPageState extends State<FilesPage> {
         .toList();
   }
 
-  TableCell _rowTextCell(File file, {bool isNew = false}) => TableCell(
+  TableCell _rowTextCell(FileSystemEntity file, {bool isNew = false}) =>
+      TableCell(
         child: isNew
             ? FutureBuilder(
                 future: getNewName(file, FileMetadata(file)),
@@ -257,7 +258,7 @@ class FilesPageState extends State<FilesPage> {
                           (dragged) => _files
                               .every((exist) => dragged.path != exist.path),
                         )
-                        .map((xFile) => File(xFile.path)),
+                        .map((xFile) => xFile.toFileSystemEntity()),
                   );
                 });
               },
