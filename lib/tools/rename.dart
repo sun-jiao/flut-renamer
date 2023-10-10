@@ -11,17 +11,17 @@ Future<File?> rename(
   File file, {
   BuildContext? context,
 }) async {
+  if (file.error) {
+    return null;
+  }
+
+  if (file.name == file.newName) {
+    return null;
+  }
+
   try {
-    // get the directory
-    final String directory = file.directory;
-
-    String newFileName = file.newName;
-    newFileName = replaceSpecialCharacters(newFileName);
-
-    // join the new filename
-    final String newFilePath = path.join(directory, newFileName);
-
-    return await file.rename(newFilePath);
+    file.newName = replaceSpecialCharacters(file.newName);
+    return await file.rename(file.newPath);
   } catch (e, s) {
     debugPrint(e.toString());
     debugPrintStack(stackTrace: s);

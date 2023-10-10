@@ -56,8 +56,11 @@ class FilesPageState extends State<FilesPage> {
 
   void update() => setState(() {});
 
-  Future<String> getNewName(File file, FileMetadata metadata) async =>
-      file.newName = await widget.getNewName(file.name, metadata);
+  Future<void> getNewName(File file, FileMetadata metadata) async {
+    file.newName = await widget.getNewName(file.name, metadata);
+    file.error = file.newName != file.name &&
+        ((await File(file.newPath).exists()) || file.newNameDuplicate);
+  }
 
   List<File> _filteredList() {
     return _files
@@ -80,19 +83,19 @@ class FilesPageState extends State<FilesPage> {
                   if ((snap.connectionState == ConnectionState.active ||
                           snap.connectionState == ConnectionState.done) &&
                       (!snap.hasError)) {
-                    return getRowText(file.newName, file);
+                    return getRowText(file.newName, file.error);
                   }
                   return const LinearProgressIndicator();
                 },
               )
-            : getRowText(file.name, file),
+            : getRowText(file.name, false),
       );
 
-  Widget getRowText(String text, File file) => Text(
+  Widget getRowText(String text, bool error) => Text(
         text,
         style: TextStyle(
           fontSize: 16,
-          color: file.error ? Colors.red : Colors.black,
+          color: error ? Colors.red : Colors.black,
         ),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,

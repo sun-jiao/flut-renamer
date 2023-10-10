@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:path/path.dart' as p;
 
 import '../tools/file_metadata.dart';
 
@@ -18,6 +19,10 @@ class ExtFieldHandler<T> {
   }
 
   void clearValues() => _values.clear();
+
+  bool checkDuplicatedValue(String path, T value) => _values.entries
+      .where((e) => e.key != path && e.value == value)
+      .isNotEmpty;
 }
 
 // an extension to control file list selection.
@@ -43,7 +48,12 @@ extension ExFile on File {
   set newName(String? val) => _newNameHandler.setValue(path, val);
   static void clearNewNames() => _newNameHandler.clearValues();
 
-  static final ExtFieldHandler<FileMetadata> _metadataHandler = ExtFieldHandler();
+  bool get newNameDuplicate =>
+      _newNameHandler.checkDuplicatedValue(path, newName);
+  String get newPath => p.join(directory, newName);
+
+  static final ExtFieldHandler<FileMetadata> _metadataHandler =
+      ExtFieldHandler();
   FileMetadata? get parser => _metadataHandler.getValue(path);
   set parser(FileMetadata? metadata) => _metadataHandler.setValue(path, parser);
   static void clearParsers() => _metadataHandler.clearValues();
