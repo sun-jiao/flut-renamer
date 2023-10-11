@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../entity/constants.dart';
 import '../rules/rule.dart';
 import '../widget/checkbox_tile.dart';
 
@@ -49,6 +50,7 @@ class _TruncateDialogState extends State<TruncateDialog> {
               ],
               decoration: const InputDecoration(labelText: 'Start index'),
             ),
+            box,
             TextFormField(
               controller: lengthController,
               keyboardType: TextInputType.number,

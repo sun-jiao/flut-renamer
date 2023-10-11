@@ -4,7 +4,9 @@ import 'dart:io';
 import 'package:desktop_drop/desktop_drop.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:renamer/entity/theme_extension.dart';
 
+import '../entity/constants.dart';
 import '../tools/ex_file.dart';
 import '../tools/file_metadata.dart';
 import '../entity/sharedpref.dart';
@@ -96,7 +98,7 @@ class FilesPageState extends State<FilesPage> {
         text,
         style: TextStyle(
           fontSize: 16,
-          color: error ? Colors.red : Colors.black,
+          color: error ? Colors.red : null,
         ),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
@@ -104,11 +106,14 @@ class FilesPageState extends State<FilesPage> {
 
   List<TableRow> _tableRows() {
     final filteredList = _filteredList();
+    final fileListColors = Theme.of(context).extension<FileListColors>()!;
     return List.generate(
       filteredList.length,
       (index) => TableRow(
         decoration: BoxDecoration(
-          color: index % 2 == 0 ? Colors.white : Colors.blueGrey.shade50,
+          color: index % 2 == 0
+              ? fileListColors.primaryColor
+              : fileListColors.secondaryColor,
         ),
         children: [
           TableCell(
@@ -240,6 +245,7 @@ class FilesPageState extends State<FilesPage> {
                   },
                 ),
               ),
+              box,
               ElevatedButton(
                 onPressed: addFileFromPicker,
                 child: const Text('Add File'),
@@ -273,7 +279,7 @@ class FilesPageState extends State<FilesPage> {
                 });
               },
               child: Container(
-                color: Colors.white,
+                color: Theme.of(context).extension<FileListColors>()!.primaryColor,
                 child: Stack(
                   children: [
                     if (_files.isNotEmpty)

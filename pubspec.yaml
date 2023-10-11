@@ -43,6 +43,7 @@ dependencies:
   path: ^1.8.3
   shared_preferences: ^2.2.1
   toastification: ^0.0.3
+  yaru: ^1.1.0
 
 dev_dependencies:
   flutter_test:

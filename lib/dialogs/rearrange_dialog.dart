@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../entity/constants.dart';
 import '../rules/rule.dart';
 import '../widget/checkbox_tile.dart';
 
@@ -39,6 +40,7 @@ class _RearrangeDialogState extends State<RearrangeDialog> {
               decoration:
                   const InputDecoration(labelText: 'Rearrange delimiter'),
             ),
+            box,
             TextFormField(
               controller: intArrayController,
               keyboardType: TextInputType.number,

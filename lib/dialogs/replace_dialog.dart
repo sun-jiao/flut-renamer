@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../entity/constants.dart';
 import '../tools/ex_text_editing_controller.dart';
 import '../rules/rule.dart';
 import '../widget/checkbox_tile.dart';
@@ -58,11 +59,13 @@ class _ReplaceDialogState extends State<ReplaceDialog> {
               controller: targetController,
               decoration: InputDecoration(labelText: '$ruleName Target'),
             ),
+            box,
             if (!remove)
               TextFormField(
                 controller: replacementController,
                 decoration: const InputDecoration(labelText: 'Replacement'),
               ),
+            if (!remove) box,
             TextFormField(
               controller: limitController,
               keyboardType: TextInputType.number,

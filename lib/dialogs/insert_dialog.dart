@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../dialogs/metadata_dialog.dart';
+import '../entity/constants.dart';
 import '../tools/ex_text_editing_controller.dart';
 import '../rules/rule.dart';
 import '../widget/checkbox_tile.dart';
@@ -45,6 +46,7 @@ class _InsertDialogState extends State<InsertDialog> {
               controller: textController,
               decoration: const InputDecoration(labelText: 'Insert Text'),
             ),
+            box,
             TextFormField(
               controller: indexController,
               keyboardType: TextInputType.number,
