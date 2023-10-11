@@ -26,6 +26,9 @@ class RenamerApp extends StatelessWidget {
         return MaterialApp(
           title: 'Renamer',
           theme: yaru.theme?.copyWith(
+            checkboxTheme: yaru.theme?.checkboxTheme.copyWith(
+              fillColor: yaru.darkTheme?.checkboxTheme.fillColor,
+            ),
             extensions: <ThemeExtension<dynamic>>[
               FileListColors(
                 primaryColor: Colors.white,
@@ -34,6 +37,9 @@ class RenamerApp extends StatelessWidget {
             ],
           ),
           darkTheme: yaru.darkTheme?.copyWith(
+            checkboxTheme: yaru.darkTheme?.checkboxTheme.copyWith(
+              fillColor: yaru.theme?.checkboxTheme.fillColor,
+            ),
             extensions: <ThemeExtension<dynamic>>[
               FileListColors(
                 primaryColor: Colors.grey.shade900,
