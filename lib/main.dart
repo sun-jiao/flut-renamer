@@ -18,6 +18,14 @@ class RenamerApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme.apply(
+      fontSizeFactor: 0.9,
+      fontSizeDelta: 0.9,
+    );
+    final listTileTheme = Theme.of(context).listTileTheme.copyWith(
+      dense: true,
+    );
+
     return YaruTheme(
       data: const YaruThemeData(
         variant: YaruVariant.ubuntuButterflyPink,
@@ -26,6 +34,8 @@ class RenamerApp extends StatelessWidget {
         return MaterialApp(
           title: 'Renamer',
           theme: yaru.theme?.copyWith(
+            textTheme: textTheme,
+            listTileTheme: listTileTheme,
             checkboxTheme: yaru.theme?.checkboxTheme.copyWith(
               fillColor: yaru.darkTheme?.checkboxTheme.fillColor,
             ),
@@ -37,6 +47,8 @@ class RenamerApp extends StatelessWidget {
             ],
           ),
           darkTheme: yaru.darkTheme?.copyWith(
+            textTheme: textTheme,
+            listTileTheme: listTileTheme,
             checkboxTheme: yaru.darkTheme?.checkboxTheme.copyWith(
               fillColor: yaru.theme?.checkboxTheme.fillColor,
             ),
