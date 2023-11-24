@@ -14,8 +14,10 @@ abstract interface class Rule {
   if (ignoreExtension) {
     final lastIndex = oldName.lastIndexOf('.');
 
-    extension = oldName.substring(lastIndex);
-    newName = oldName.substring(0, lastIndex);
+    if (lastIndex > 0) {
+      extension = oldName.substring(lastIndex);
+      newName = oldName.substring(0, lastIndex);
+    }
   }
 
   return (newName, extension);
