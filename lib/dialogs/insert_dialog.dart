@@ -44,7 +44,7 @@ class _InsertDialogState extends State<InsertDialog> {
           children: [
             TextFormField(
               controller: textController,
-              decoration: const InputDecoration(labelText: 'Insert Text'),
+              decoration: const InputDecoration(labelText: 'Text to be inserted'),
             ),
             box,
             TextFormField(

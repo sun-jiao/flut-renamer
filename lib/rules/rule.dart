@@ -6,6 +6,7 @@ import '../tools/ex_string.dart';
 
 part 'base_rule.dart';
 
+part 'rule_increment.dart';
 part 'rule_insert.dart';
 part 'rule_rearrange.dart';
 part 'rule_remove.dart';

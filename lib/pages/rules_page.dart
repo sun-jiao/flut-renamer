@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:renamer/dialogs/increment_dialog.dart';
 
 import '../dialogs/truncate_dialog.dart';
 import '../dialogs/rearrange_dialog.dart';
@@ -45,6 +46,8 @@ class RulesPageState extends State<RulesPage> {
         showRemoveDialog(context, addRule);
       case 'Insert':
         showInsertDialog(context, addRule);
+      case 'Increment':
+        showIncrementDialog(context, addRule);
       case 'Rearrange':
         showRearrangeDialog(context, addRule);
       case 'Truncate':
@@ -70,6 +73,7 @@ class RulesPageState extends State<RulesPage> {
                 'Replace',
                 'Remove',
                 'Insert',
+                'Increment',
                 'Rearrange',
                 'Truncate',
               ],
