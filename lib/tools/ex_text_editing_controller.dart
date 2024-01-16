@@ -15,7 +15,7 @@ extension ExTextEditingController on TextEditingController {
           context: context,
           backgroundColor: Theme.of(context).primaryColor,
           foregroundColor: Colors.white,
-          title: 'Do not insert a tag inside another tag.',
+          title: const Text('Do not insert a tag inside another tag.'),
           autoCloseDuration: const Duration(seconds: 5),
         );
         return;
