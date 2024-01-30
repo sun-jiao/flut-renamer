@@ -66,6 +66,20 @@ add_executable(${BINARY_NAME}
   "${FLUTTER_MANAGED_DIR}/generated_plugin_registrant.cc"
 )
 
+# 添加头文件搜索路径
+target_include_directories(${BINARY_NAME} PRIVATE
+        "/usr/include/c++/13.2.1/"
+        # 添加其他路径，如果有的话
+        )
+
+# 手动查找stdlib.h文件所在的目录
+find_path(STD_LIB_HEADER_PATH stdlib.h PATHS "/usr/include/c++/13.2.1/" NO_DEFAULT_PATH)
+
+# 如果找到了，添加到头文件搜索路径
+if(STD_LIB_HEADER_PATH)
+    target_include_directories(${BINARY_NAME} PRIVATE ${STD_LIB_HEADER_PATH})
+endif()
+
 # Apply the standard set of build settings. This can be removed for applications
 # that need different build settings.
 apply_standard_settings(${BINARY_NAME})
