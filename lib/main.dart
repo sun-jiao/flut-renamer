@@ -6,6 +6,8 @@ import 'entity/sharedpref.dart';
 import 'pages/home_page.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   while (!Shared.initialed) {
     await Shared.init();
   }
