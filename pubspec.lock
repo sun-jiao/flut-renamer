@@ -208,14 +208,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  gtk:
-    dependency: transitive
-    description:
-      name: gtk
-      sha256: e8ce9ca4b1df106e4d72dad201d345ea1a036cc12c360f1a7d5a758f78ffa42c
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.1.0"
   iconsax_flutter:
     dependency: transitive
     description:
@@ -549,14 +541,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.1.2"
-  yaru:
-    dependency: "direct main"
-    description:
-      name: yaru
-      sha256: "572850652931d0c0a3baa6d1ad880f7fea6ffa45a2821e04272357a656485fa7"
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "1.2.1"
 sdks:
   dart: ">=3.2.0 <4.0.0"
   flutter: ">=3.16.0"
