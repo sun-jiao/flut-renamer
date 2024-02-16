@@ -6,6 +6,7 @@ import '../dialogs/rearrange_dialog.dart';
 import '../dialogs/remove_dialog.dart';
 import '../dialogs/replace_dialog.dart';
 import '../dialogs/insert_dialog.dart';
+import '../entity/constants.dart';
 import '../entity/sharedpref.dart';
 import '../rules/rule.dart';
 import '../widget/custom_drop.dart';
@@ -59,39 +60,49 @@ class RulesPageState extends State<RulesPage> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ListTile(
-          leading: CustomDrop<String>(
-            value: Shared.ruleName,
-            onChanged: (String? newValue) {
-              setState(() {
-                Shared.ruleName = newValue!;
-              });
-            },
-            items: const <String>[
-              'Replace',
-              'Remove',
-              'Insert',
-              'Increment',
-              'Rearrange',
-              'Truncate',
-            ],
-          ),
-          title: ElevatedButton(
-            onPressed: showRuleDialog,
-            child: const Text('Add Rule'),
-          ),
-          trailing: Tooltip(
-            message: 'Clear All',
-            child: ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  _rules.clear();
-                });
-                widget.onRuleChanged.call();
-              },
-              child: const Text('Remove all'),
+        Row(
+          children: [
+            Expanded(
+              child: CustomDrop<String>(
+                value: Shared.ruleName,
+                onChanged: (String? newValue) {
+                  setState(() {
+                    Shared.ruleName = newValue!;
+                  });
+                },
+                items: const <String>[
+                  'Replace',
+                  'Remove',
+                  'Insert',
+                  'Increment',
+                  'Rearrange',
+                  'Truncate',
+                ],
+              ),
             ),
-          ),
+            Expanded(
+              child: ElevatedButton(
+                onPressed: showRuleDialog,
+                child: const Text('Add Rule'),
+              ),
+            ),
+            box,
+            Expanded(
+              child: Tooltip(
+                message: 'Clear All',
+                child: ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      _rules.clear();
+                    });
+                    widget.onRuleChanged.call();
+                  },
+                  child: const Text('Remove all'),
+                ),
+              ),
+            ),
+            box,
+          ],
         ),
         const SizedBox(height: 16),
         Expanded(
