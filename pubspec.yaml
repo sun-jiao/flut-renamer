@@ -37,9 +37,11 @@ dependencies:
   crypto: ^3.0.3
   desktop_drop: ^0.4.4 # not compatible with iOS
   exif: ^3.3.0
+  file_manager: ^1.0.2
   file_picker: ^6.1.1
   intl: ^0.18.1
   path: ^1.8.3
+  permission_handler: ^11.3.0
   shared_preferences: ^2.2.2
   toastification: ^1.1.0
 

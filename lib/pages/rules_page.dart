@@ -8,6 +8,7 @@ import '../dialogs/replace_dialog.dart';
 import '../dialogs/insert_dialog.dart';
 import '../entity/sharedpref.dart';
 import '../rules/rule.dart';
+import '../tools/responsive.dart';
 import '../widget/custom_drop.dart';
 
 class RulesPage extends StatefulWidget {
@@ -143,7 +144,10 @@ class RulesPageState extends State<RulesPage> {
                   });
                 },
               ),
-              const Text('Also remove all rules'),
+              const Responsive(
+                mobile: Text('Remove all rules\nafter renaming'),
+                desktop: Text('Remove all rules after renaming'),
+              ),
             ],
           ),
         ],

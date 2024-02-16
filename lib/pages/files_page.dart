@@ -5,6 +5,7 @@ import 'package:desktop_drop/desktop_drop.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:renamer/entity/theme_extension.dart';
+import 'package:renamer/tools/responsive.dart';
 
 import '../entity/constants.dart';
 import '../tools/ex_file.dart';
@@ -20,8 +21,7 @@ class FilesPage extends StatefulWidget {
     required this.clearRules,
   });
 
-  final FutureOr<String> Function(String name, FileMetadata metadata)
-      getNewName;
+  final FutureOr<String> Function(String name, FileMetadata metadata) getNewName;
   final VoidCallback clearRules;
 
   @override
@@ -35,15 +35,13 @@ class FilesPageState extends State<FilesPage> {
   String _filter = '';
 
   Future<void> addFileFromPicker() async {
-    FilePickerResult? result =
-        await FilePicker.platform.pickFiles(allowMultiple: true);
+    FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true);
 
     if (result != null) {
       setState(() {
         final resultFiles = result.files
             .where(
-              (e1) =>
-                  e1.path != null && _files.every((e2) => e1.path != e2.path),
+              (e1) => e1.path != null && _files.every((e2) => e1.path != e2.path),
             )
             .toList();
         _files.addAll(
@@ -60,25 +58,21 @@ class FilesPageState extends State<FilesPage> {
 
   Future<void> getNewName(FileSystemEntity file, FileMetadata metadata) async {
     file.newName = await widget.getNewName(file.name, metadata);
-    file.error = file.newName != file.name &&
-        ((await File(file.newPath).exists()) || file.newNameDuplicate);
+    file.error =
+        file.newName != file.name && ((await File(file.newPath).exists()) || file.newNameDuplicate);
   }
 
   List<FileSystemEntity> _filteredList() {
     return _files
         .where(
           (element) =>
-              element.name
-                  .toString()
-                  .toLowerCase()
-                  .contains(_filter.toLowerCase()) &&
+              element.name.toString().toLowerCase().contains(_filter.toLowerCase()) &&
               Shared.fileOrDir.contains(element.fileOrDir()),
         )
         .toList();
   }
 
-  TableCell _rowTextCell(FileSystemEntity file, {bool isNew = false}) =>
-      TableCell(
+  TableCell _rowTextCell(FileSystemEntity file, {bool isNew = false}) => TableCell(
         child: isNew
             ? FutureBuilder(
                 future: getNewName(file, FileMetadata(file)),
@@ -111,9 +105,7 @@ class FilesPageState extends State<FilesPage> {
       filteredList.length,
       (index) => TableRow(
         decoration: BoxDecoration(
-          color: index % 2 == 0
-              ? fileListColors.primaryColor
-              : fileListColors.secondaryColor,
+          color: index % 2 == 0 ? fileListColors.primaryColor : fileListColors.secondaryColor,
         ),
         children: [
           TableCell(
@@ -155,13 +147,11 @@ class FilesPageState extends State<FilesPage> {
           children: [
             TableCell(
               child: Tooltip(
-                message: _files.isNotEmpty &&
-                        _files.every((element) => element.selected)
+                message: _files.isNotEmpty && _files.every((element) => element.selected)
                     ? 'Cancel All'
                     : 'Select All',
                 child: Checkbox(
-                  value: _files.isNotEmpty &&
-                      _files.every((element) => element.selected),
+                  value: _files.isNotEmpty && _files.every((element) => element.selected),
                   onChanged: (_) {
                     setState(() {
                       if (_files.every((element) => element.selected)) {
@@ -255,49 +245,60 @@ class FilesPageState extends State<FilesPage> {
           const SizedBox(height: 16),
           _table(_headerRow()),
           Expanded(
-            child: DropTarget(
-              onDragDone: (detail) {
-                setState(() {
-                  _files.addAll(
-                    detail.files
-                        .where(
-                          (dragged) => _files
-                              .every((exist) => dragged.path != exist.path),
-                        )
-                        .map((xFile) => xFile.toFileSystemEntity()),
-                  );
-                });
-              },
-              onDragEntered: (detail) {
-                setState(() {
-                  _dragging = true;
-                });
-              },
-              onDragExited: (detail) {
-                setState(() {
-                  _dragging = false;
-                });
-              },
-              child: Container(
+            child: Responsive(
+              mobile: Container(
                 color: Theme.of(context).extension<FileListColors>()!.primaryColor,
-                child: Stack(
-                  children: [
-                    if (_files.isNotEmpty)
-                      SingleChildScrollView(
+                child: _files.isNotEmpty
+                    ? SingleChildScrollView(
                         child: _table(_tableRows()),
                       )
-                    else if (!_dragging)
-                      const Center(
-                        child: Text('Drag and drop to add files.'),
+                    : const Center(
+                        child: Text('Add files.'),
                       ),
-                    if (_dragging)
-                      Container(
-                        color: Colors.blue.withOpacity(0.2),
-                        child: const Center(
-                          child: Text('Drop to add files.'),
+              ),
+              desktop: DropTarget(
+                onDragDone: (detail) {
+                  setState(() {
+                    _files.addAll(
+                      detail.files
+                          .where(
+                            (dragged) => _files.every((exist) => dragged.path != exist.path),
+                          )
+                          .map((xFile) => xFile.toFileSystemEntity()),
+                    );
+                  });
+                },
+                onDragEntered: (detail) {
+                  setState(() {
+                    _dragging = true;
+                  });
+                },
+                onDragExited: (detail) {
+                  setState(() {
+                    _dragging = false;
+                  });
+                },
+                child: Container(
+                  color: Theme.of(context).extension<FileListColors>()!.primaryColor,
+                  child: Stack(
+                    children: [
+                      if (_files.isNotEmpty)
+                        SingleChildScrollView(
+                          child: _table(_tableRows()),
+                        )
+                      else if (!_dragging)
+                        const Center(
+                          child: Text('Drag and drop to add files.'),
                         ),
-                      ),
-                  ],
+                      if (_dragging)
+                        Container(
+                          color: Colors.blue.withOpacity(0.2),
+                          child: const Center(
+                            child: Text('Drop to add files.'),
+                          ),
+                        ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -315,7 +316,10 @@ class FilesPageState extends State<FilesPage> {
                   });
                 },
               ),
-              const Text('only selected'),
+              const Responsive(
+                mobile: Text('only\nselected'),
+                desktop: Text('only selected'),
+              ),
               const SizedBox(width: 16),
               Checkbox(
                 value: Shared.removeRenamed,
@@ -325,7 +329,10 @@ class FilesPageState extends State<FilesPage> {
                   });
                 },
               ),
-              const Text('remove renamed'),
+              const Responsive(
+                mobile: Text('remove\nrenamed'),
+                desktop: Text('remove renamed'),
+              ),
               const SizedBox(width: 16),
               ElevatedButton(
                 onPressed: () {
