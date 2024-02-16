@@ -5,8 +5,7 @@ import '../entity/constants.dart';
 import '../rules/rule.dart';
 import '../widget/checkbox_tile.dart';
 
-void showRearrangeDialog(BuildContext context, Function(Rule) onSave) =>
-    showDialog(
+void showRearrangeDialog(BuildContext context, Function(Rule) onSave) => showDialog(
       context: context,
       builder: (context) => RearrangeDialog(
         onSave: onSave,
@@ -37,8 +36,7 @@ class _RearrangeDialogState extends State<RearrangeDialog> {
           children: [
             TextFormField(
               controller: delimiterController,
-              decoration:
-                  const InputDecoration(labelText: 'Rearrange delimiter'),
+              decoration: const InputDecoration(labelText: 'Rearrange delimiter'),
             ),
             box,
             TextFormField(
@@ -75,13 +73,9 @@ class _RearrangeDialogState extends State<RearrangeDialog> {
           onPressed: () {
             String delimiter = delimiterController.text;
             String order = intArrayController.text;
-            List<int> orderList = order
-                .split(',')
-                .map((s) => int.tryParse(s.trim()) ?? 0)
-                .toList();
+            List<int> orderList = order.split(',').map((s) => int.tryParse(s.trim()) ?? 0).toList();
 
-            final Rule rule =
-                RuleRearrange(delimiter, orderList, ignoreExtension);
+            final Rule rule = RuleRearrange(delimiter, orderList, ignoreExtension);
 
             widget.onSave.call(rule);
             Navigator.of(context).pop();

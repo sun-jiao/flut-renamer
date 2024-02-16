@@ -7,8 +7,7 @@ import '../tools/ex_text_editing_controller.dart';
 import '../rules/rule.dart';
 import '../widget/checkbox_tile.dart';
 
-void showInsertDialog(BuildContext context, Function(Rule) onSave) =>
-    showDialog(
+void showInsertDialog(BuildContext context, Function(Rule) onSave) => showDialog(
       context: context,
       builder: (context) => InsertDialog(
         onSave: onSave,

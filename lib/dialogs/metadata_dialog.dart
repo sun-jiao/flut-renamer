@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-void showMetadataDialog(BuildContext context, Function(String tag) onInsert) =>
-    showDialog(
+void showMetadataDialog(BuildContext context, Function(String tag) onInsert) => showDialog(
       context: context,
       builder: (context) => MetadataDialog(
         onInsert: onInsert,

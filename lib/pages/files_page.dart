@@ -207,12 +207,12 @@ class FilesPageState extends State<FilesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Row(
             children: <Widget>[
               CustomDrop<String>(
                 value: Shared.fileOrDir,
@@ -242,69 +242,69 @@ class FilesPageState extends State<FilesPage> {
               ),
             ],
           ),
-          const SizedBox(height: 16),
-          _table(_headerRow()),
-          Expanded(
-            child: Responsive(
-              mobile: Container(
+        ),
+        const SizedBox(height: 16),
+        _table(_headerRow()),
+        Expanded(
+          child: Responsive(
+            mobile: Container(
+              color: Theme.of(context).extension<FileListColors>()!.primaryColor,
+              child: _files.isNotEmpty
+                  ? SingleChildScrollView(
+                      child: _table(_tableRows()),
+                    )
+                  : const Center(
+                      child: Text('Add files.'),
+                    ),
+            ),
+            desktop: DropTarget(
+              onDragDone: (detail) {
+                setState(() {
+                  _files.addAll(
+                    detail.files
+                        .where(
+                          (dragged) => _files.every((exist) => dragged.path != exist.path),
+                        )
+                        .map((xFile) => xFile.toFileSystemEntity()),
+                  );
+                });
+              },
+              onDragEntered: (detail) {
+                setState(() {
+                  _dragging = true;
+                });
+              },
+              onDragExited: (detail) {
+                setState(() {
+                  _dragging = false;
+                });
+              },
+              child: Container(
                 color: Theme.of(context).extension<FileListColors>()!.primaryColor,
-                child: _files.isNotEmpty
-                    ? SingleChildScrollView(
+                child: Stack(
+                  children: [
+                    if (_files.isNotEmpty)
+                      SingleChildScrollView(
                         child: _table(_tableRows()),
                       )
-                    : const Center(
-                        child: Text('Add files.'),
+                    else if (!_dragging)
+                      const Center(
+                        child: Text('Drag and drop to add files.'),
                       ),
-              ),
-              desktop: DropTarget(
-                onDragDone: (detail) {
-                  setState(() {
-                    _files.addAll(
-                      detail.files
-                          .where(
-                            (dragged) => _files.every((exist) => dragged.path != exist.path),
-                          )
-                          .map((xFile) => xFile.toFileSystemEntity()),
-                    );
-                  });
-                },
-                onDragEntered: (detail) {
-                  setState(() {
-                    _dragging = true;
-                  });
-                },
-                onDragExited: (detail) {
-                  setState(() {
-                    _dragging = false;
-                  });
-                },
-                child: Container(
-                  color: Theme.of(context).extension<FileListColors>()!.primaryColor,
-                  child: Stack(
-                    children: [
-                      if (_files.isNotEmpty)
-                        SingleChildScrollView(
-                          child: _table(_tableRows()),
-                        )
-                      else if (!_dragging)
-                        const Center(
-                          child: Text('Drag and drop to add files.'),
+                    if (_dragging)
+                      Container(
+                        color: Colors.blue.withOpacity(0.2),
+                        child: const Center(
+                          child: Text('Drop to add files.'),
                         ),
-                      if (_dragging)
-                        Container(
-                          color: Colors.blue.withOpacity(0.2),
-                          child: const Center(
-                            child: Text('Drop to add files.'),
-                          ),
-                        ),
-                    ],
-                  ),
+                      ),
+                  ],
                 ),
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

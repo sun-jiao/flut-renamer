@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:renamer/tools/responsive.dart';
 
+import '../entity/constants.dart';
 import '../entity/sharedpref.dart';
 import '../rules/rule.dart';
 import '../tools/file_metadata.dart';
@@ -40,11 +41,11 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       bottomNavigationBar: HomeToolBar(
         onlySelectedCallback: (value) => Shared.onlySelected = value,
-        onlySelectedValue: Shared.onlySelected,
+        onlySelectedValue: () => Shared.onlySelected,
         removeRenamedCallback: (value) => Shared.removeRenamed = value,
-        removeRenamedValue: Shared.removeRenamed,
+        removeRenamedValue: () => Shared.removeRenamed,
         removeRulesCallback: (value) => Shared.removeRules = value,
-        removeRulesValue: Shared.removeRules,
+        removeRulesValue: () => Shared.removeRules,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -54,7 +55,7 @@ class HomePage extends StatelessWidget {
           );
         },
         tooltip: "Rename",
-        child: const Icon(Icons.play_arrow),
+        child: const Icon(Icons.play_arrow_rounded),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       body: SafeArea(
@@ -90,63 +91,100 @@ class HomePage extends StatelessWidget {
 }
 
 class HomeToolBar extends StatefulWidget {
-  const HomeToolBar(
-      {super.key,
-      required this.onlySelectedCallback,
-      required this.onlySelectedValue,
-      required this.removeRenamedCallback,
-      required this.removeRenamedValue,
-      required this.removeRulesCallback,
-      required this.removeRulesValue});
+  const HomeToolBar({
+    super.key,
+    required this.onlySelectedCallback,
+    required this.onlySelectedValue,
+    required this.removeRenamedCallback,
+    required this.removeRenamedValue,
+    required this.removeRulesCallback,
+    required this.removeRulesValue,
+  });
 
   final void Function(bool) onlySelectedCallback;
-  final bool onlySelectedValue;
+  final bool Function() onlySelectedValue;
 
   final void Function(bool) removeRenamedCallback;
-  final bool removeRenamedValue;
+  final bool Function() removeRenamedValue;
 
   final void Function(bool) removeRulesCallback;
-  final bool removeRulesValue;
+  final bool Function() removeRulesValue;
 
   @override
   State<HomeToolBar> createState() => _HomeToolBarState();
 }
 
-const _box = SizedBox(width: 16);
-
 class _HomeToolBarState extends State<HomeToolBar> {
+  bool expanded = !Platform.isAndroid;
+
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
+      height: Platform.isAndroid ? 64 : null,
       padding: const EdgeInsets.all(8),
       child: ListView(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.only(left: 16, right: 48),
         children: [
-          FilterChip(
-            label: const Text('Only Selected'),
-            onSelected: (value) => setState(() {
-              widget.onlySelectedCallback.call(value);
-            }),
-            selected: widget.onlySelectedValue,
+          IconButton(
+            tooltip: 'App info',
+            icon: const Icon(Icons.info_rounded),
+            onPressed: () =>
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Placeholder())),
           ),
-          _box,
-          FilterChip(
-            label: const Text('Remove renamed'),
-            onSelected: (value) => setState(() {
-              widget.removeRenamedCallback.call(value);
-            }),
-            selected: widget.removeRenamedValue,
+          IconButton(
+            tooltip: 'Rating in Play Store',
+            icon: const Icon(Icons.star_rate_rounded),
+            onPressed: () =>
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Placeholder())),
           ),
-          _box,
-          FilterChip(
-            label: const Text('Remove rules after renaming'),
-            onSelected: (value) => setState(() {
-              widget.removeRulesCallback.call(value);
-            }),
-            selected: widget.removeRulesValue,
+          IconButton(
+            tooltip: 'Source code',
+            icon: const Icon(Icons.code_rounded),
+            onPressed: () =>
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Placeholder())),
           ),
-          _box,
+          if (Platform.isAndroid)
+            IconButton(
+              tooltip: expanded ? 'Collapse options' : 'Expand options',
+              onPressed: () {
+                setState(() {
+                  expanded = !expanded;
+                });
+              },
+              icon: Icon(
+                expanded ? Icons.arrow_back_ios_new_rounded : Icons.arrow_forward_ios_rounded,
+                size: 20,
+              ),
+            ),
+          box,
+          if (expanded)
+            FilterChip(
+              label: const Text('Only Selected'),
+              onSelected: (value) => setState(() {
+                widget.onlySelectedCallback.call(value);
+              }),
+              selected: widget.onlySelectedValue.call(),
+            ),
+          if (expanded) box,
+          if (expanded)
+            FilterChip(
+              label: const Text('Remove renamed'),
+              onSelected: (value) => setState(() {
+                widget.removeRenamedCallback.call(value);
+              }),
+              selected: widget.removeRenamedValue.call(),
+            ),
+          if (expanded) box,
+          if (expanded)
+            FilterChip(
+              label: const Text('Remove rules after renaming'),
+              onSelected: (value) => setState(() {
+                widget.removeRulesCallback.call(value);
+              }),
+              selected: widget.removeRulesValue.call(),
+            ),
+          if (expanded) box,
         ],
       ),
     );

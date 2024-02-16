@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -65,11 +67,14 @@ class RenamerApp extends StatelessWidget {
   }
 }
 
-
 class AppPage extends StatelessWidget {
   const AppPage({super.key});
 
   void _permissionCheck(BuildContext context) async {
+    if (!Platform.isAndroid) {
+      return;
+    }
+
     final PermissionStatus value = await Permission.manageExternalStorage.status;
 
     switch (value) {
@@ -87,28 +92,28 @@ class AppPage extends StatelessWidget {
   }
 
   void _permissionRequest(BuildContext context) => showDialog(
-    context: context,
-    builder: (contextD) => AlertDialog(
-      title: const Text("Permission for external storage"),
-      content: const Text(
-        "To provide you with our file renaming service, we need your permission to manage external storage. This allows us to access and rename files stored on your device. Without this permission, the app won't be able to access the complete file paths and therefore can't rename files. We assure you that your privacy and security are our top priorities, and we only access files for the purpose of renaming.",
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => _cannotRun(contextD),
-          child: const Text("Exit"),
+        context: context,
+        builder: (contextD) => AlertDialog(
+          title: const Text("Permission for external storage"),
+          content: const Text(
+            "To provide you with our file renaming service, we need your permission to manage external storage. This allows us to access and rename files stored on your device. Without this permission, the app won't be able to access the complete file paths and therefore can't rename files. We assure you that your privacy and security are our top priorities, and we only access files for the purpose of renaming.",
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => _cannotRun(contextD),
+              child: const Text("Exit"),
+            ),
+            TextButton(
+              onPressed: () => Permission.manageExternalStorage.request().isGranted.then((value) {
+                if (value) {
+                  Navigator.pop(contextD);
+                }
+              }),
+              child: const Text("OK"),
+            ),
+          ],
         ),
-        TextButton(
-          onPressed: () => Permission.manageExternalStorage.request().isGranted.then((value) {
-            if (value) {
-              Navigator.pop(contextD);
-            }
-          }),
-          child: const Text("OK"),
-        ),
-      ],
-    ),
-  );
+      );
 
   void _cannotRun(BuildContext context) {
     showDialog(

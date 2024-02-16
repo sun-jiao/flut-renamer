@@ -7,8 +7,7 @@ import '../rules/rule.dart';
 import '../widget/checkbox_tile.dart';
 import 'metadata_dialog.dart';
 
-void showReplaceDialog(BuildContext context, Function(Rule) onSave) =>
-    showDialog(
+void showReplaceDialog(BuildContext context, Function(Rule) onSave) => showDialog(
       context: context,
       builder: (context) => ReplaceDialog(
         onSave: onSave,

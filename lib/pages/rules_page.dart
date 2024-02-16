@@ -57,83 +57,80 @@ class RulesPageState extends State<RulesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        children: [
-          ListTile(
-            leading: CustomDrop<String>(
-              value: Shared.ruleName,
-              onChanged: (String? newValue) {
-                setState(() {
-                  Shared.ruleName = newValue!;
-                });
-              },
-              items: const <String>[
-                'Replace',
-                'Remove',
-                'Insert',
-                'Increment',
-                'Rearrange',
-                'Truncate',
-              ],
-            ),
-            title: ElevatedButton(
-              onPressed: showRuleDialog,
-              child: const Text('Add Rule'),
-            ),
-            trailing: Tooltip(
-              message: 'Clear All',
-              child: IconButton(
-                onPressed: () {
-                  setState(() {
-                    _rules.clear();
-                  });
-                  widget.onRuleChanged.call();
-                },
-                icon: const Icon(Icons.clear),
-              ),
-            ),
+    return Column(
+      children: [
+        ListTile(
+          leading: CustomDrop<String>(
+            value: Shared.ruleName,
+            onChanged: (String? newValue) {
+              setState(() {
+                Shared.ruleName = newValue!;
+              });
+            },
+            items: const <String>[
+              'Replace',
+              'Remove',
+              'Insert',
+              'Increment',
+              'Rearrange',
+              'Truncate',
+            ],
           ),
-          const SizedBox(height: 16),
-          Expanded(
-            child: ReorderableListView.builder(
-              onReorder: (oldIndex, newIndex) {
+          title: ElevatedButton(
+            onPressed: showRuleDialog,
+            child: const Text('Add Rule'),
+          ),
+          trailing: Tooltip(
+            message: 'Clear All',
+            child: ElevatedButton(
+              onPressed: () {
                 setState(() {
-                  if (newIndex > oldIndex) {
-                    newIndex -= 1;
-                  }
-                  final item = _rules.removeAt(oldIndex);
-                  _rules.insert(newIndex, item);
+                  _rules.clear();
                 });
                 widget.onRuleChanged.call();
               },
-              buildDefaultDragHandles: false,
-              itemBuilder: (context, index) {
-                final item = _rules[index];
-                return ListTile(
-                  title: Text(item.toString()),
-                  key: ValueKey(item),
-                  leading: ReorderableDragStartListener(
-                    index: index,
-                    child: const Icon(Icons.drag_handle),
-                  ),
-                  trailing: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        _rules.removeAt(index);
-                      });
-                      widget.onRuleChanged.call();
-                    },
-                    icon: const Icon(Icons.clear),
-                  ),
-                );
-              },
-              itemCount: _rules.length,
+              child: const Text('Remove all'),
             ),
           ),
-        ],
-      ),
+        ),
+        const SizedBox(height: 16),
+        Expanded(
+          child: ReorderableListView.builder(
+            onReorder: (oldIndex, newIndex) {
+              setState(() {
+                if (newIndex > oldIndex) {
+                  newIndex -= 1;
+                }
+                final item = _rules.removeAt(oldIndex);
+                _rules.insert(newIndex, item);
+              });
+              widget.onRuleChanged.call();
+            },
+            buildDefaultDragHandles: false,
+            itemBuilder: (context, index) {
+              final item = _rules[index];
+              return ListTile(
+                title: Text(item.toString()),
+                key: ValueKey(item),
+                leading: ReorderableDragStartListener(
+                  index: index,
+                  child: const Icon(Icons.drag_handle),
+                ),
+                trailing: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      _rules.removeAt(index);
+                    });
+                    widget.onRuleChanged.call();
+                  },
+                  icon: const Icon(Icons.clear),
+                ),
+              );
+            },
+            itemCount: _rules.length,
+          ),
+        ),
+      ],
     );
   }
 }

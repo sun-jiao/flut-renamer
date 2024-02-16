@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../dialogs/metadata_dialog.dart';
 import '../entity/constants.dart';
-import '../tools/ex_text_editing_controller.dart';
 import '../rules/rule.dart';
 import '../widget/checkbox_tile.dart';
 
-void showIncrementDialog(BuildContext context, Function(Rule) onSave) =>
-    showDialog(
+void showIncrementDialog(BuildContext context, Function(Rule) onSave) => showDialog(
       context: context,
       builder: (context) => IncrementDialog(
         onSave: onSave,
