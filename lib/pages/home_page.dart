@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:renamer/tools/responsive.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../entity/constants.dart';
 import '../entity/sharedpref.dart';
@@ -129,20 +131,30 @@ class _HomeToolBarState extends State<HomeToolBar> {
           IconButton(
             tooltip: 'App info',
             icon: const Icon(Icons.info_rounded),
-            onPressed: () =>
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Placeholder())),
+            onPressed: () async {
+              PackageInfo packageInfo = await PackageInfo.fromPlatform();
+              if (!mounted) {
+                return;
+              }
+
+              showAboutDialog(
+                context: context,
+                applicationName: packageInfo.appName,
+                applicationVersion: packageInfo.version,
+                applicationIcon: Image.asset('assets/ic_launcher.png', width: 48,),
+                applicationLegalese: 'GPL-3.0'
+              );
+            },
           ),
           IconButton(
-            tooltip: 'Rating in Play Store',
+            tooltip: 'Rating the app',
             icon: const Icon(Icons.star_rate_rounded),
-            onPressed: () =>
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Placeholder())),
+            onPressed: ratingMyApp,
           ),
           IconButton(
             tooltip: 'Source code',
             icon: const Icon(Icons.code_rounded),
-            onPressed: () =>
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Placeholder())),
+            onPressed: gotoGithub,
           ),
           if (Platform.isAndroid)
             IconButton(
@@ -187,6 +199,42 @@ class _HomeToolBarState extends State<HomeToolBar> {
           if (expanded) box,
         ],
       ),
+    );
+  }
+
+  void ratingMyApp() => showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Rate Our App'),
+          content: const Text(
+            'Enjoying our app? Help us grow by giving it a quick rating on the store or GitHub. Your feedback means the world to us! Thank you for your support.',
+          ),
+          actions: [
+            if (Platform.isAndroid)
+              TextButton(
+                onPressed: () {
+                  const appId = 'net.sunjiao.renamer';
+                  final url = Uri.parse("market://details?id=$appId");
+                  launchUrl(
+                    url,
+                    mode: LaunchMode.externalApplication,
+                  );
+                },
+                child: const Text('Rate the app on store'),
+              ),
+            TextButton(
+              onPressed: gotoGithub,
+              child: const Text('Star it on Github'),
+            ),
+          ],
+        ),
+      );
+
+  void gotoGithub() {
+    final url = Uri.parse("https://github.com/sun-jiao/renamer");
+    launchUrl(
+      url,
+      mode: LaunchMode.externalApplication,
     );
   }
 }
