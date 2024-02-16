@@ -22,6 +22,10 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
+def keystorePropertiesFile = rootProject.file("key.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
     namespace "net.sunjiao.renamer"
     compileSdkVersion 34
@@ -51,11 +55,29 @@ android {
         versionName flutterVersionName
     }
 
-    buildTypes {
+    signingConfigs {
+        debug {
+            keyAlias keystoreProperties['keyAlias']  //别名
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])  //签名文件路径
+            storePassword keystoreProperties['storePassword']
+        }
+
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
+            keyAlias keystoreProperties['keyAlias']  //别名
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])  //签名文件路径
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+
+    buildTypes {
+        debug {
             signingConfig signingConfigs.debug
+        }
+
+        release {
+            signingConfig signingConfigs.release
         }
     }
 }
