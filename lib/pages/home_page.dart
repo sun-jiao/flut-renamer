@@ -142,7 +142,10 @@ class _HomeToolBarState extends State<HomeToolBar> {
                 applicationName: packageInfo.appName,
                 applicationVersion: packageInfo.version,
                 applicationIcon: Image.asset('assets/ic_launcher.png', width: 48,),
-                applicationLegalese: 'GPL-3.0'
+                applicationLegalese: 'GPL-3.0',
+                children: [
+                  const Text('This application is designed to help users rename their files. It is built with Flutter - a multi-platform application framework, and therefore it is also available on other operating systems. It is totally open source and could be reviewed or contributed to.'),
+                ]
               );
             },
           ),
