@@ -5,6 +5,7 @@ import 'package:desktop_drop/desktop_drop.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:renamer/entity/theme_extension.dart';
+import 'package:renamer/pages/android_file_picker_page.dart';
 import 'package:renamer/tools/responsive.dart';
 
 import '../entity/constants.dart';
@@ -35,23 +36,33 @@ class FilesPageState extends State<FilesPage> {
   String _filter = '';
 
   Future<void> addFileFromPicker() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true);
+    late List<FileSystemEntity> entities;
+    if (Platform.isAndroid) {
+      final result = await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const AndroidFilePicker()),
+      );
 
-    if (result != null) {
-      setState(() {
-        final resultFiles = result.files
-            .where(
-              (e1) => e1.path != null && _files.every((e2) => e1.path != e2.path),
-            )
+      print(result);
+      if (result != null && result is List<FileSystemEntity>) {
+        entities = result;
+      } else {
+        return;
+      }
+    } else {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true);
+      if (result != null) {
+        entities = result.files
+            .where((e1) => e1.path != null && _files.every((e2) => e1.path != e2.path))
+            .map((e) => e.toFileSystemEntity())
             .toList();
-        _files.addAll(
-          List.generate(
-            resultFiles.length,
-            (index) => resultFiles[index].toFileSystemEntity(),
-          ),
-        );
-      });
+      } else {
+        return;
+      }
     }
+    setState(() {
+      _files.addAll(entities);
+    });
   }
 
   void update() => setState(() {});
