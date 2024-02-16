@@ -124,7 +124,7 @@ class _HomeToolBarState extends State<HomeToolBar> {
       padding: const EdgeInsets.all(8),
       child: ListView(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.only(left: 16, right: 48),
+        padding: const EdgeInsets.only(left: 16, right: 64),
         children: [
           IconButton(
             tooltip: 'App info',

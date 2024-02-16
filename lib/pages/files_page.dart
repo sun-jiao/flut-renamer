@@ -91,10 +91,10 @@ class FilesPageState extends State<FilesPage> {
   Widget getRowText(String text, bool error) => Text(
         text,
         style: TextStyle(
-          fontSize: 16,
+          fontSize: Platform.isAndroid ? 12 : 16,
           color: error ? Colors.red : null,
         ),
-        maxLines: 1,
+        maxLines: 3,
         overflow: TextOverflow.ellipsis,
       );
 
@@ -196,7 +196,7 @@ class FilesPageState extends State<FilesPage> {
   Widget _table(List<TableRow> children) => Table(
         columnWidths: const <int, TableColumnWidth>{
           0: IntrinsicColumnWidth(),
-          1: FlexColumnWidth(1.0),
+          1: FlexColumnWidth(1.2),
           2: FlexColumnWidth(1.5),
           3: IntrinsicColumnWidth(),
         },
