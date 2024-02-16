@@ -5,8 +5,7 @@ import '../entity/constants.dart';
 import '../rules/rule.dart';
 import '../widget/checkbox_tile.dart';
 
-void showTruncateDialog(BuildContext context, Function(Rule) onSave) =>
-    showDialog(
+void showTruncateDialog(BuildContext context, Function(Rule) onSave) => showDialog(
       context: context,
       builder: (context) => TruncateDialog(
         onSave: onSave,

@@ -21,9 +21,8 @@ class ExtFieldHandler<T> {
 
   void clearValues() => _values.clear();
 
-  bool checkDuplicatedValue(String path, T value) => _values.entries
-      .where((e) => e.key != path && e.value == value)
-      .isNotEmpty;
+  bool checkDuplicatedValue(String path, T value) =>
+      _values.entries.where((e) => e.key != path && e.value == value).isNotEmpty;
 }
 
 // an extension to control file list selection.
@@ -49,12 +48,10 @@ extension ExFile on FileSystemEntity {
   set newName(String? val) => _newNameHandler.setValue(path, val);
   static void clearNewNames() => _newNameHandler.clearValues();
 
-  bool get newNameDuplicate =>
-      _newNameHandler.checkDuplicatedValue(path, newName);
+  bool get newNameDuplicate => _newNameHandler.checkDuplicatedValue(path, newName);
   String get newPath => p.join(directory, newName);
 
-  static final ExtFieldHandler<FileMetadata> _metadataHandler =
-      ExtFieldHandler();
+  static final ExtFieldHandler<FileMetadata> _metadataHandler = ExtFieldHandler();
   FileMetadata? get parser => _metadataHandler.getValue(path);
   set parser(FileMetadata? metadata) => _metadataHandler.setValue(path, parser);
   static void clearParsers() => _metadataHandler.clearValues();
@@ -77,18 +74,15 @@ extension ExFile on FileSystemEntity {
 }
 
 extension ExXFile on XFile {
-  FileSystemEntity toFileSystemEntity() =>
-      _toFileSystemEntity(this, (xFile) => xFile.path);
+  FileSystemEntity toFileSystemEntity() => _toFileSystemEntity(this, (xFile) => xFile.path);
 }
 
 extension ExPlatformFile on PlatformFile {
-  FileSystemEntity toFileSystemEntity() =>
-      _toFileSystemEntity(this, (file) => file.path ?? '');
+  FileSystemEntity toFileSystemEntity() => _toFileSystemEntity(this, (file) => file.path ?? '');
 }
 
 extension ExLink on Link {
-  FileSystemEntity toFileSystemEntity() =>
-      _toFileSystemEntity(this, (link) => link.targetSync());
+  FileSystemEntity toFileSystemEntity() => _toFileSystemEntity(this, (link) => link.targetSync());
 }
 
 FileSystemEntity _toFileSystemEntity<T>(T file, String Function(T file) func) {

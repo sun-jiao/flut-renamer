@@ -131,10 +131,8 @@ class FileMetadata {
       final List<Ratio> coordinate = (tag.values as IfdRatios).ratios;
       if (coordinate.isNotEmpty) {
         int degrees = _parseRatio(coordinate[0]).toInt();
-        int minutes =
-            coordinate.length > 1 ? _parseRatio(coordinate[1]).toInt() : 0;
-        double seconds =
-            coordinate.length > 2 ? _parseRatio(coordinate[2]) : 0.0;
+        int minutes = coordinate.length > 1 ? _parseRatio(coordinate[1]).toInt() : 0;
+        double seconds = coordinate.length > 2 ? _parseRatio(coordinate[2]) : 0.0;
         return '$degrees°$minutes′$seconds″';
       }
     }
