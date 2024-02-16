@@ -8,7 +8,6 @@ import '../dialogs/replace_dialog.dart';
 import '../dialogs/insert_dialog.dart';
 import '../entity/sharedpref.dart';
 import '../rules/rule.dart';
-import '../tools/responsive.dart';
 import '../widget/custom_drop.dart';
 
 class RulesPage extends StatefulWidget {
@@ -132,23 +131,6 @@ class RulesPageState extends State<RulesPage> {
               },
               itemCount: _rules.length,
             ),
-          ),
-          const SizedBox(height: 16),
-          Row(
-            children: [
-              Checkbox(
-                value: Shared.removeRules,
-                onChanged: (value) {
-                  setState(() {
-                    Shared.removeRules = value ?? Shared.removeRules;
-                  });
-                },
-              ),
-              const Responsive(
-                mobile: Text('Remove all rules\nafter renaming'),
-                desktop: Text('Remove all rules after renaming'),
-              ),
-            ],
           ),
         ],
       ),

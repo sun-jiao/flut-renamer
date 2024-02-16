@@ -9,6 +9,14 @@ import 'pages/home_page.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarBrightness: Brightness.light,
+    statusBarIconBrightness: Brightness.dark,
+    statusBarColor: Colors.transparent,
+    systemNavigationBarColor: Colors.transparent,
+  ));
+
   while (!Shared.initialed) {
     await Shared.init();
   }
@@ -126,8 +134,6 @@ class AppPage extends StatelessWidget {
   Widget build(BuildContext context) {
     _permissionCheck(context);
 
-    return SafeArea(
-      child: HomePage(),
-    );
+    return HomePage();
   }
 }

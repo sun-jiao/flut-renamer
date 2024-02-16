@@ -303,48 +303,6 @@ class FilesPageState extends State<FilesPage> {
               ),
             ),
           ),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              const SizedBox(width: 16),
-              Checkbox(
-                value: Shared.onlySelected,
-                onChanged: (value) {
-                  setState(() {
-                    Shared.onlySelected = value ?? Shared.onlySelected;
-                  });
-                },
-              ),
-              const Responsive(
-                mobile: Text('only\nselected'),
-                desktop: Text('only selected'),
-              ),
-              const SizedBox(width: 16),
-              Checkbox(
-                value: Shared.removeRenamed,
-                onChanged: (value) {
-                  setState(() {
-                    Shared.removeRenamed = value ?? Shared.removeRenamed;
-                  });
-                },
-              ),
-              const Responsive(
-                mobile: Text('remove\nrenamed'),
-                desktop: Text('remove renamed'),
-              ),
-              const SizedBox(width: 16),
-              ElevatedButton(
-                onPressed: () {
-                  renameFiles(
-                    remove: Shared.removeRenamed,
-                    onlySelected: Shared.onlySelected,
-                  );
-                },
-                child: const Text('Rename All'),
-              ),
-            ],
-          ),
         ],
       ),
     );
