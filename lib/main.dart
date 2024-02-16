@@ -34,6 +34,7 @@ class RenamerApp extends StatelessWidget {
     return MaterialApp(
       title: 'Renamer',
       themeMode: ThemeMode.system,
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           brightness: Brightness.light,

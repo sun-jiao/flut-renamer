@@ -27,7 +27,7 @@ class _IncrementDialogState extends State<IncrementDialog> {
     text: '0',
   );
   TextEditingController stepController = TextEditingController(
-    text: '0',
+    text: '1',
   );
   bool omitDash = false;
   bool ignoreExtension = true;

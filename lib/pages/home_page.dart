@@ -28,6 +28,13 @@ class HomePage extends StatelessWidget {
         }
         return name;
       },
+      resetRules: () {
+        for (final rule in rulesKey.currentState?.rules ?? []) {
+          if (rule is RuleIncrement) {
+            rule.indexReset();
+          }
+        }
+      },
       clearRules: () {
         rulesKey.currentState?.clearRule();
       },

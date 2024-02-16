@@ -20,10 +20,12 @@ class FilesPage extends StatefulWidget {
     super.key,
     required this.getNewName,
     required this.clearRules,
+    required this.resetRules,
   });
 
   final FutureOr<String> Function(String name, FileMetadata metadata) getNewName;
   final VoidCallback clearRules;
+  final VoidCallback resetRules;
 
   @override
   State<FilesPage> createState() => FilesPageState();
@@ -43,7 +45,6 @@ class FilesPageState extends State<FilesPage> {
         MaterialPageRoute(builder: (context) => const AndroidFilePicker()),
       );
 
-      print(result);
       if (result != null && result is List<FileSystemEntity>) {
         entities = result;
       } else {
@@ -68,6 +69,10 @@ class FilesPageState extends State<FilesPage> {
   void update() => setState(() {});
 
   Future<void> getNewName(FileSystemEntity file, FileMetadata metadata) async {
+    if (file == _files.first) {
+      widget.resetRules.call();
+    }
+
     file.newName = await widget.getNewName(file.name, metadata);
     file.error =
         file.newName != file.name && ((await File(file.newPath).exists()) || file.newNameDuplicate);
