@@ -73,11 +73,9 @@ class HomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Expanded(
-                flex: 3,
                 child: filesPage,
               ),
               Expanded(
-                flex: 2,
                 child: rulesPage,
               ),
             ],
@@ -124,12 +122,14 @@ class HomeToolBar extends StatefulWidget {
 }
 
 class _HomeToolBarState extends State<HomeToolBar> {
-  bool expanded = !Platform.isAndroid;
 
   @override
   Widget build(BuildContext context) {
+    bool isMobile = Responsive.isMobile(context);
+    bool expanded = !isMobile;
+
     return BottomAppBar(
-      height: Platform.isAndroid ? 64 : null,
+      height: isMobile ? 64 : null,
       padding: const EdgeInsets.all(8),
       child: ListView(
         scrollDirection: Axis.horizontal,
@@ -152,7 +152,7 @@ class _HomeToolBarState extends State<HomeToolBar> {
                 applicationLegalese: 'GPL-3.0',
                 children: [
                   const Text('This application is designed to help users rename their files. It is built with Flutter - a multi-platform application framework, and therefore it is also available on other operating systems. It is totally open source and could be reviewed or contributed to.'),
-                ]
+                ],
               );
             },
           ),
@@ -166,7 +166,7 @@ class _HomeToolBarState extends State<HomeToolBar> {
             icon: const Icon(Icons.code_rounded),
             onPressed: gotoGithub,
           ),
-          if (Platform.isAndroid)
+          if (isMobile)
             IconButton(
               tooltip: expanded ? 'Collapse options' : 'Expand options',
               onPressed: () {
