@@ -122,10 +122,17 @@ class HomeToolBar extends StatefulWidget {
 }
 
 class _HomeToolBarState extends State<HomeToolBar> {
+  bool needsInit = true;
+  late bool isMobile;
+  late bool expanded;
+
   @override
   Widget build(BuildContext context) {
-    bool isMobile = Responsive.isMobile(context);
-    bool expanded = !isMobile;
+    if (needsInit) {
+      isMobile = Responsive.isMobile(context);
+      expanded = !isMobile;
+      needsInit = false;
+    }
 
     return BottomAppBar(
       height: isMobile ? 64 : null,
@@ -154,7 +161,8 @@ class _HomeToolBarState extends State<HomeToolBar> {
                 applicationLegalese: 'GPL-3.0',
                 children: [
                   const Text(
-                      'This application is designed to help users rename their files. It is built with Flutter - a multi-platform application framework, and therefore it is also available on other operating systems. It is totally open source and could be reviewed or contributed to.'),
+                    'This application is designed to help users rename their files. It is built with Flutter - a multi-platform application framework, and therefore it is also available on other operating systems. It is totally open source and could be reviewed or contributed to.',
+                  ),
                 ],
               );
             },
