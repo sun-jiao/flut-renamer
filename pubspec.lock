@@ -105,6 +105,22 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.0.3"
+  cyrtranslit:
+    dependency: "direct main"
+    description:
+      name: cyrtranslit
+      sha256: "8580dd5c8e0f9f96f6a7b272ad68d01e8aee22e2352c437c4f38e3585ade538a"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.0.1"
+  deepcopy:
+    dependency: transitive
+    description:
+      name: deepcopy
+      sha256: a9ef127c1dda20c9ebf280551a9653afc71ba76a408f3ed5ca58062f367af5ac
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.1.2"
   desktop_drop:
     dependency: "direct main"
     description:
@@ -440,6 +456,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "6.0.2"
+  pinyin:
+    dependency: "direct main"
+    description:
+      name: pinyin
+      sha256: "509a51abec754d8b69cc94074b2bdb9f4a407bc4daf5723ec6d995b7682a048a"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.2.0"
   platform:
     dependency: transitive
     description:
