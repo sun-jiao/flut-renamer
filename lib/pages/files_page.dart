@@ -4,10 +4,10 @@ import 'dart:io';
 import 'package:desktop_drop/desktop_drop.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:renamer/entity/theme_extension.dart';
-import 'package:renamer/pages/android_file_picker_page.dart';
-import 'package:renamer/tools/responsive.dart';
 
+import '../entity/theme_extension.dart';
+import '../pages/android_file_picker_page.dart';
+import '../tools/responsive.dart';
 import '../entity/constants.dart';
 import '../tools/ex_file.dart';
 import '../tools/file_metadata.dart';

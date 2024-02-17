@@ -2,13 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:renamer/tools/responsive.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../entity/constants.dart';
 import '../entity/sharedpref.dart';
 import '../rules/rule.dart';
 import '../tools/file_metadata.dart';
+import '../tools/responsive.dart';
 import 'rules_page.dart';
 import 'files_page.dart';
 
@@ -122,7 +122,6 @@ class HomeToolBar extends StatefulWidget {
 }
 
 class _HomeToolBarState extends State<HomeToolBar> {
-
   @override
   Widget build(BuildContext context) {
     bool isMobile = Responsive.isMobile(context);
@@ -148,10 +147,14 @@ class _HomeToolBarState extends State<HomeToolBar> {
                 context: context,
                 applicationName: packageInfo.appName,
                 applicationVersion: packageInfo.version,
-                applicationIcon: Image.asset('assets/ic_launcher.png', width: 48,),
+                applicationIcon: Image.asset(
+                  'assets/ic_launcher.png',
+                  width: 48,
+                ),
                 applicationLegalese: 'GPL-3.0',
                 children: [
-                  const Text('This application is designed to help users rename their files. It is built with Flutter - a multi-platform application framework, and therefore it is also available on other operating systems. It is totally open source and could be reviewed or contributed to.'),
+                  const Text(
+                      'This application is designed to help users rename their files. It is built with Flutter - a multi-platform application framework, and therefore it is also available on other operating systems. It is totally open source and could be reviewed or contributed to.'),
                 ],
               );
             },

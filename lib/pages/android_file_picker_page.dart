@@ -6,7 +6,7 @@ import 'dart:io';
 
 import 'package:file_manager/file_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:renamer/tools/ex_file.dart';
+import '../tools/ex_file.dart';
 
 /// Only flutter supported:
 /// https://api.flutter.dev/flutter/widgets/Image-class.html
@@ -36,7 +36,7 @@ GlobalKey<State<StatefulBuilder>> _stfKey = GlobalKey<State<StatefulBuilder>>();
 class _AndroidFilePickerState extends State<AndroidFilePicker> {
   final FileManagerController controller = FileManagerController();
 
-  List<FileSystemEntity> _selected = [];
+  final List<FileSystemEntity> _selected = [];
   List<FileSystemEntity> entities = [];
 
   @override
@@ -59,9 +59,8 @@ class _AndroidFilePickerState extends State<AndroidFilePicker> {
                   return Card(
                     child: ListTile(
                       leading: getIcon(entity),
-                      trailing: _selected.contains(entity)
-                          ? const Icon(Icons.task_alt_outlined)
-                          : null,
+                      trailing:
+                          _selected.contains(entity) ? const Icon(Icons.task_alt_outlined) : null,
                       title: Text(
                         FileManager.basename(
                           entity,

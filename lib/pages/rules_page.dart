@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:renamer/dialogs/increment_dialog.dart';
-import 'package:renamer/dialogs/transliterate_dialog.dart';
 
+import '../dialogs/transliterate_dialog.dart';
+import '../dialogs/increment_dialog.dart';
 import '../dialogs/truncate_dialog.dart';
 import '../dialogs/rearrange_dialog.dart';
 import '../dialogs/remove_dialog.dart';
