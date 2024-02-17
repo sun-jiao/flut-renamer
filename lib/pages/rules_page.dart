@@ -62,6 +62,7 @@ class RulesPageState extends State<RulesPage> {
       children: [
         Row(
           children: [
+            box,
             Expanded(
               child: CustomDrop<String>(
                 value: Shared.ruleName,

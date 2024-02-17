@@ -1,5 +1,6 @@
 /// Modified based on the example of library `file_manager`:
 /// https://github.com/DevsOnFlutter/file_manager/blob/main/example/lib/main.dart
+/// Originally distributed under BSD-3-Clause license
 
 import 'dart:io';
 
@@ -73,7 +74,7 @@ class _AndroidFilePickerState extends State<AndroidFilePicker> {
                           // open the folder
                           controller.openDirectory(entity);
                         } else {
-                          // select a file
+                          // select or unselect a file
                           setStateS(() {
                             if (_selected.contains(entity)) {
                               _selected.remove(entity);
@@ -82,6 +83,16 @@ class _AndroidFilePickerState extends State<AndroidFilePicker> {
                             }
                           });
                         }
+                      },
+                      onLongPress: () async {
+                        // select or unselect a file or a dir
+                        setStateS(() {
+                          if (_selected.contains(entity)) {
+                            _selected.remove(entity);
+                          } else {
+                            _selected.add(entity);
+                          }
+                        });
                       },
                     ),
                   );

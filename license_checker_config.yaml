@@ -1,0 +1,17 @@
+permittedLicenses:
+  - MIT
+  - BSD-2-Clause
+  - BSD-3-Clause
+  - Apache-2.0
+  - MIT
+  - MPL
+  - LGPL
+  - GPLv2+
+  - GPLv3
+  - AGPL
+
+rejectedLicenses:
+  - GPLv2
+
+omitDisclaimer:
+  - angles
