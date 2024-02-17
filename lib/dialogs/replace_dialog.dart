@@ -84,7 +84,7 @@ class _ReplaceDialogState extends State<ReplaceDialog> {
             ),
             CheckboxTile(
               title: const Text(
-                'Metadata tags ',
+                'Metadata tags   ',
                 softWrap: false,
               ),
               value: withMetadata,

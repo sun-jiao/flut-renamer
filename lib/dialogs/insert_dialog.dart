@@ -74,7 +74,7 @@ class _InsertDialogState extends State<InsertDialog> {
             ),
             CheckboxTile(
               title: const Text(
-                'Metadata tags ',
+                'Metadata tags   ',
                 softWrap: false,
               ),
               value: withMetadata,
