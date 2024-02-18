@@ -27,6 +27,8 @@ const _imageExts = [
 
 const _androidDir = '/sdcard/Android';
 
+const _androidDirFull = '/storage/emulated/0/Android';
+
 const _reserveDirs = [
   '/sdcard/DCIM',
   '/sdcard/DCIM/Camera',
@@ -36,6 +38,14 @@ const _reserveDirs = [
   '/sdcard/Music',
   '/sdcard/Pictures',
   '/sdcard/Pictures/Screenshots',
+  '/storage/emulated/0/DCIM',
+  '/storage/emulated/0/DCIM/Camera',
+  '/storage/emulated/0/Documents',
+  '/storage/emulated/0/Download',
+  '/storage/emulated/0/Movies',
+  '/storage/emulated/0/Music',
+  '/storage/emulated/0/Pictures',
+  '/storage/emulated/0/Pictures/Screenshots',
 ];
 
 class AndroidFilePicker extends StatefulWidget {
@@ -99,8 +109,10 @@ class _AndroidFilePickerState extends State<AndroidFilePicker> {
                       },
                       onLongPress: () async {
                         if (_reserveDirs.contains(entity.path) ||
-                            entity.path.startsWith(_androidDir)) {
+                            entity.path.startsWith(_androidDir) ||
+                            entity.path.startsWith(_androidDirFull)) {
                           Fluttertoast.showToast(msg: 'Do not rename a system reserved directory.');
+                          return;
                         }
 
                         // select or unselect a file or a dir
