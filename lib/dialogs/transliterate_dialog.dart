@@ -32,6 +32,7 @@ class _TransliterateDialogState extends State<TransliterateDialog> {
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CustomDrop<Transliterate>(
               value: type,
@@ -43,15 +44,20 @@ class _TransliterateDialogState extends State<TransliterateDialog> {
               items: Transliterate.values,
             ),
             if ([Transliterate.cyrillic2Latin, Transliterate.latin2Cyrillic].contains(type))
-              CustomDrop<String>(
-                value: cyrtranslit.supported().first,
-                onChanged: (String? newValue) {
-                  setState(() {
-                    langCode = newValue;
-                  });
-                },
-                items: cyrtranslit.supported().map((e) => e.toString()).toList(),
-                tToStr: (e) => RuleTransliterate.langCodeMap[e]!,
+              Row(
+                children: [
+                  const Text('Language: '),
+                  CustomDrop<String>(
+                    value: cyrtranslit.supported().first,
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        langCode = newValue;
+                      });
+                    },
+                    items: cyrtranslit.supported().map((e) => e.toString()).toList(),
+                    tToStr: (e) => RuleTransliterate.langCodeMap[e]!,
+                  ),
+                ],
               ),
           ],
         ),

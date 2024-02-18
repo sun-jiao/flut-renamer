@@ -52,23 +52,10 @@ class RuleTransliterate implements Rule {
 
   @override
   String toString() {
-    switch (type) {
-      case Transliterate.upper:
-        return 'Transliterate: convert Latin characters to upper case.';
-      case Transliterate.lower:
-        return 'Transliterate: convert Latin characters to lower case.';
-      case Transliterate.traditional:
-        return 'Transliterate: convert Chinese characters to traditional Chinese.';
-      case Transliterate.simplified:
-        return 'Transliterate: convert Chinese characters to simplified Chinese.';
-      case Transliterate.pinyin:
-        return 'Transliterate: convert Chinese characters to pinyin.';
-      case Transliterate.cyrillic2Latin:
-        return 'Transliterate: convert ${langCodeMap[langCode]} from cyrillic characters to latin.';
-      case Transliterate.latin2Cyrillic:
-        return 'Transliterate: convert ${langCodeMap[langCode]} from latin characters to cyrillic.';
-      default:
-        return 'Transliterate: ?';
+    if ([Transliterate.cyrillic2Latin, Transliterate.latin2Cyrillic].contains(type)) {
+      return 'Transliterate: convert ${langCodeMap[langCode]} $type.';
+    } else {
+      return 'Transliterate: convert $type.';
     }
   }
 }
