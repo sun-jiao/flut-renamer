@@ -122,9 +122,8 @@ class HomeToolBar extends StatefulWidget {
 }
 
 class _HomeToolBarState extends State<HomeToolBar> {
-  bool expanded = true;
+  bool expanded = false;
   static const _dire = Axis.horizontal;
-  static const _pad = EdgeInsets.only(left: 16, right: 64, top: 4, bottom: 4);
 
   @override
   Widget build(BuildContext context) {
@@ -132,7 +131,6 @@ class _HomeToolBarState extends State<HomeToolBar> {
       child: Responsive(
         mobile: ListView(
           scrollDirection: _dire,
-          padding: _pad,
           children: [
             ..._iconButtons(),
             _expandIndicator(),
@@ -141,7 +139,6 @@ class _HomeToolBarState extends State<HomeToolBar> {
         ),
         desktop: ListView(
           scrollDirection: _dire,
-          padding: _pad,
           children: [
             ..._iconButtons(),
             ..._chips(),
@@ -204,6 +201,7 @@ class _HomeToolBarState extends State<HomeToolBar> {
       );
 
   List<Widget> _chips() => [
+        box,
         FilterChip(
           label: const Text('Only Selected'),
           onSelected: (value) => setState(() {
