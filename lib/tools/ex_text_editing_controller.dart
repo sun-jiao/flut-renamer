@@ -1,7 +1,9 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:toastification/toastification.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'file_metadata.dart';
 
@@ -11,13 +13,17 @@ extension ExTextEditingController on TextEditingController {
     final matches = metadataTagRegex.allMatches(text);
     for (final match in matches) {
       if (cursorPos > match.start && cursorPos < match.end) {
-        toastification.show(
-          context: context,
-          backgroundColor: Theme.of(context).primaryColor,
-          foregroundColor: Colors.white,
-          title: const Text('Do not insert a tag inside another tag.'),
-          autoCloseDuration: const Duration(seconds: 5),
-        );
+        if (Platform.isAndroid) {
+          Fluttertoast.showToast(msg: 'Do not insert a tag inside another tag.');
+        } else {
+          toastification.show(
+            context: context,
+            backgroundColor: Theme.of(context).primaryColor,
+            foregroundColor: Colors.white,
+            title: const Text('Do not insert a tag inside another tag.'),
+            autoCloseDuration: const Duration(seconds: 5),
+          );
+        }
         return;
       }
     }
