@@ -40,6 +40,7 @@ dependencies:
   exif: ^3.3.0
   file_manager: ^1.0.2
   file_picker: ^6.1.1
+  fluttertoast: ^8.2.4
   intl: ^0.18.1
   package_info_plus: ^5.0.1
   path: ^1.8.3

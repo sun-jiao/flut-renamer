@@ -232,6 +232,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  fluttertoast:
+    dependency: "direct main"
+    description:
+      name: fluttertoast
+      sha256: dfdde255317af381bfc1c486ed968d5a43a2ded9c931e87cbecd88767d6a71c1
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "8.2.4"
   http:
     dependency: transitive
     description:
@@ -609,10 +617,10 @@ packages:
     dependency: "direct main"
     description:
       name: toastification
-      sha256: "18293318ffcdc5b6fb10289eb18b9addfef56f053b824c320fbdddcf6a48bab1"
+      sha256: "1e01495fe00b8fddce8a7f1da5e4775cd003763698e8363d7122bea4168a395e"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.2.0"
+    version: "1.2.1"
   typed_data:
     dependency: transitive
     description:

@@ -6,6 +6,7 @@ import 'dart:io';
 
 import 'package:file_manager/file_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import '../tools/ex_file.dart';
 
 /// Only flutter supported:
@@ -22,6 +23,19 @@ const _imageExts = [
   'WEBP',
   'BMP',
   'WBMP',
+];
+
+const _androidDir = '/sdcard/Android';
+
+const _reserveDirs = [
+  '/sdcard/DCIM',
+  '/sdcard/DCIM/Camera',
+  '/sdcard/Documents',
+  '/sdcard/Download',
+  '/sdcard/Movies',
+  '/sdcard/Music',
+  '/sdcard/Pictures',
+  '/sdcard/Pictures/Screenshots',
 ];
 
 class AndroidFilePicker extends StatefulWidget {
@@ -84,6 +98,11 @@ class _AndroidFilePickerState extends State<AndroidFilePicker> {
                         }
                       },
                       onLongPress: () async {
+                        if (_reserveDirs.contains(entity.path) ||
+                            entity.path.startsWith(_androidDir)) {
+                          Fluttertoast.showToast(msg: 'Do not rename a system reserved directory.');
+                        }
+
                         // select or unselect a file or a dir
                         setStateS(() {
                           if (_selected.contains(entity)) {
