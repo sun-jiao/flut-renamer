@@ -111,3 +111,11 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+flutter_intl:
+  enabled: true
+  class_name: L10n
+  main_locale: en
+  arb_dir: lib/arb
+  output_dir: lib/l10n
+  use_deferred_loading: false

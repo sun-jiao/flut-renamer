@@ -1,3 +1,5 @@
+import '../l10n/l10n.dart';
+
 enum Transliterate {
   upper(0),
   lower(1),
@@ -15,19 +17,19 @@ enum Transliterate {
   String toString() {
     switch (this) {
       case Transliterate.upper:
-        return 'Latin characters to upper case';
+        return L10n.current.transliterateUpper;
       case Transliterate.lower:
-        return 'Latin characters to lower case';
+        return L10n.current.transliterateLower;
       case Transliterate.traditional:
-        return 'Chinese characters to traditional Chinese';
+        return L10n.current.transliterateTraditional;
       case Transliterate.simplified:
-        return 'Chinese characters to simplified Chinese';
+        return L10n.current.transliterateSimplified;
       case Transliterate.pinyin:
-        return 'Chinese characters to pinyin';
+        return L10n.current.transliteratePinyin;
       case Transliterate.cyrillic2Latin:
-        return 'Cyrillic characters to Latin';
+        return L10n.current.transliterateCyrillic2Latin;
       case Transliterate.latin2Cyrillic:
-        return 'Latin characters to Cyrillic';
+        return L10n.current.transliterateLatin2Cyrillic;
       default:
         return '?';
     }

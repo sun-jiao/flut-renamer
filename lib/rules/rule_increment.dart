@@ -36,7 +36,7 @@ class RuleIncrement implements Rule {
 
   @override
   String toString() {
-    return 'Incremental renaming: $prefix-index';
+    return L10n.current.incrementToString(prefix);
   }
 
   void indexReset() {

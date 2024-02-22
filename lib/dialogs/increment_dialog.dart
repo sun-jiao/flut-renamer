@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../entity/constants.dart';
+import '../l10n/l10n.dart';
 import '../rules/rule.dart';
 import '../widget/checkbox_tile.dart';
 
@@ -35,14 +36,14 @@ class _IncrementDialogState extends State<IncrementDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Add Rule: Increment'),
+      title: Text('${L10n.current.addRule}: ${L10n.current.increment}'),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextFormField(
               controller: prefixController,
-              decoration: const InputDecoration(labelText: 'Prefix'),
+              decoration: InputDecoration(labelText: L10n.current.prefix),
             ),
             box,
             TextFormField(
@@ -51,7 +52,7 @@ class _IncrementDialogState extends State<IncrementDialog> {
               inputFormatters: <TextInputFormatter>[
                 FilteringTextInputFormatter.allow(RegExp('[0-9]')), // 只允许数字
               ],
-              decoration: const InputDecoration(labelText: 'Start index'),
+              decoration: InputDecoration(labelText: L10n.current.startIndex),
             ),
             box,
             TextFormField(
@@ -60,10 +61,10 @@ class _IncrementDialogState extends State<IncrementDialog> {
               inputFormatters: <TextInputFormatter>[
                 FilteringTextInputFormatter.allow(RegExp('[0-9]')), // 只允许数字
               ],
-              decoration: const InputDecoration(labelText: 'Index incremental step'),
+              decoration: InputDecoration(labelText: L10n.current.indexIncrementalStep),
             ),
             CheckboxTile(
-              title: const Text('Omit dash'),
+              title: Text(L10n.current.omitDash),
               value: omitDash,
               onChanged: (value) {
                 setState(() {
@@ -72,7 +73,7 @@ class _IncrementDialogState extends State<IncrementDialog> {
               },
             ),
             CheckboxTile(
-              title: const Text('Ignore Extension'),
+              title: Text(L10n.current.ignoreExtension),
               value: ignoreExtension,
               onChanged: (value) {
                 setState(() {
@@ -88,7 +89,7 @@ class _IncrementDialogState extends State<IncrementDialog> {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: const Text('Cancel'),
+          child: Text(L10n.current.cancel),
         ),
         TextButton(
           onPressed: () {
@@ -107,7 +108,7 @@ class _IncrementDialogState extends State<IncrementDialog> {
             widget.onSave.call(rule);
             Navigator.of(context).pop();
           },
-          child: const Text('Add'),
+          child: Text(L10n.current.add),
         ),
       ],
     );

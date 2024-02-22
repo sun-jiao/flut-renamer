@@ -28,6 +28,6 @@ class RuleRemove implements Rule {
 
   @override
   String toString() {
-    return 'Remove "$targetString"';
+    return L10n.current.removeToString(targetString);
   }
 }

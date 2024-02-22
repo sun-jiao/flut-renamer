@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../dialogs/metadata_dialog.dart';
 import '../entity/constants.dart';
+import '../l10n/l10n.dart';
 import '../tools/ex_text_editing_controller.dart';
 import '../rules/rule.dart';
 import '../widget/checkbox_tile.dart';
@@ -36,14 +37,14 @@ class _InsertDialogState extends State<InsertDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Add Rule: Insert'),
+      title: Text('${L10n.current.addRule}: ${L10n.current.insert}'),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextFormField(
               controller: textController,
-              decoration: const InputDecoration(labelText: 'Text to be inserted'),
+              decoration: InputDecoration(labelText: L10n.current.insertedText),
             ),
             box,
             TextFormField(
@@ -52,10 +53,10 @@ class _InsertDialogState extends State<InsertDialog> {
               inputFormatters: <TextInputFormatter>[
                 FilteringTextInputFormatter.allow(RegExp('[0-9]')), // 只允许数字
               ],
-              decoration: const InputDecoration(labelText: 'Insert Index'),
+              decoration: InputDecoration(labelText: L10n.current.insertIndex),
             ),
             CheckboxTile(
-              title: const Text('From start'),
+              title: Text(L10n.current.fromStart),
               value: fromStart,
               onChanged: (value) {
                 setState(() {
@@ -64,7 +65,7 @@ class _InsertDialogState extends State<InsertDialog> {
               },
             ),
             CheckboxTile(
-              title: const Text('Insert before index'),
+              title: Text(L10n.current.insertBeforeIndex),
               value: beforeIndex,
               onChanged: (value) {
                 setState(() {
@@ -73,8 +74,8 @@ class _InsertDialogState extends State<InsertDialog> {
               },
             ),
             CheckboxTile(
-              title: const Text(
-                'Metadata tags   ',
+              title: Text(
+                L10n.current.metadataTags,
                 softWrap: false,
               ),
               value: withMetadata,
@@ -96,7 +97,7 @@ class _InsertDialogState extends State<InsertDialog> {
               ),
             ),
             CheckboxTile(
-              title: const Text('Ignore Extension'),
+              title: Text(L10n.current.ignoreExtension),
               value: ignoreExtension,
               onChanged: (value) {
                 setState(() {
@@ -112,7 +113,7 @@ class _InsertDialogState extends State<InsertDialog> {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: const Text('Cancel'),
+          child: Text(L10n.current.cancel),
         ),
         TextButton(
           onPressed: () {
@@ -130,7 +131,7 @@ class _InsertDialogState extends State<InsertDialog> {
             widget.onSave.call(rule);
             Navigator.of(context).pop();
           },
-          child: const Text('Add'),
+          child: Text(L10n.current.add),
         ),
       ],
     );

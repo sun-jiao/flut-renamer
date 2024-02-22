@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../entity/transliterate.dart';
+import '../l10n/l10n.dart';
 import '../widget/custom_drop.dart';
 import 'package:cyrtranslit/cyrtranslit.dart' as cyrtranslit;
 
@@ -28,7 +29,7 @@ class _TransliterateDialogState extends State<TransliterateDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Add Rule: Transliterate'),
+      title: Text('${L10n.current.addRule}: ${L10n.current.transliterate}'),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -46,7 +47,7 @@ class _TransliterateDialogState extends State<TransliterateDialog> {
             if ([Transliterate.cyrillic2Latin, Transliterate.latin2Cyrillic].contains(type))
               Row(
                 children: [
-                  const Text('Language: '),
+                  Text(L10n.current.language),
                   CustomDrop<String>(
                     value: cyrtranslit.supported().first,
                     onChanged: (String? newValue) {
@@ -67,7 +68,7 @@ class _TransliterateDialogState extends State<TransliterateDialog> {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: const Text('Cancel'),
+          child: Text(L10n.current.cancel),
         ),
         TextButton(
           onPressed: () {
@@ -76,7 +77,7 @@ class _TransliterateDialogState extends State<TransliterateDialog> {
             widget.onSave.call(rule);
             Navigator.of(context).pop();
           },
-          child: const Text('Add'),
+          child: Text(L10n.current.add),
         ),
       ],
     );

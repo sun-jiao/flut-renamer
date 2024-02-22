@@ -9,6 +9,7 @@ import '../dialogs/replace_dialog.dart';
 import '../dialogs/insert_dialog.dart';
 import '../entity/constants.dart';
 import '../entity/sharedpref.dart';
+import '../l10n/l10n.dart';
 import '../rules/rule.dart';
 import '../widget/custom_drop.dart';
 
@@ -88,22 +89,19 @@ class RulesPageState extends State<RulesPage> {
             Expanded(
               child: ElevatedButton(
                 onPressed: showRuleDialog,
-                child: const Text('Add Rule'),
+                child: Text(L10n.current.addRule),
               ),
             ),
             box,
             Expanded(
-              child: Tooltip(
-                message: 'Clear All',
-                child: ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      _rules.clear();
-                    });
-                    widget.onRuleChanged.call();
-                  },
-                  child: const Text('Remove all'),
-                ),
+              child: ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    _rules.clear();
+                  });
+                  widget.onRuleChanged.call();
+                },
+                child: Text(L10n.current.removeAll),
               ),
             ),
             box,

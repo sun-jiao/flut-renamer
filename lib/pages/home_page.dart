@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../entity/constants.dart';
 import '../entity/sharedpref.dart';
+import '../l10n/l10n.dart';
 import '../rules/rule.dart';
 import '../tools/file_metadata.dart';
 import '../tools/responsive.dart';
@@ -63,7 +64,7 @@ class HomePage extends StatelessWidget {
             onlySelected: Shared.onlySelected,
           );
         },
-        tooltip: "Rename",
+        tooltip: L10n.current.rename,
         child: const Icon(Icons.play_arrow_rounded),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
@@ -150,7 +151,7 @@ class _HomeToolBarState extends State<HomeToolBar> {
 
   List<IconButton> _iconButtons() => [
         IconButton(
-          tooltip: 'App info',
+          tooltip: L10n.current.appInfo,
           icon: const Icon(Icons.info_rounded),
           onPressed: () async {
             PackageInfo packageInfo = await PackageInfo.fromPlatform();
@@ -168,27 +169,25 @@ class _HomeToolBarState extends State<HomeToolBar> {
               ),
               applicationLegalese: 'GPL-3.0',
               children: [
-                const Text(
-                  'This application is designed to help users rename their files. It is built with Flutter - a multi-platform application framework, and therefore it is also available on other operating systems. It is totally open source and could be reviewed or contributed to.',
-                ),
+                Text(L10n.current.aboutContent),
               ],
             );
           },
         ),
         IconButton(
-          tooltip: 'Rating the app',
+          tooltip: L10n.current.rating,
           icon: const Icon(Icons.star_rate_rounded),
           onPressed: ratingMyApp,
         ),
         IconButton(
-          tooltip: 'Source code',
+          tooltip: L10n.current.sourceCode,
           icon: const Icon(Icons.code_rounded),
           onPressed: gotoGithub,
         ),
       ];
 
   IconButton _expandIndicator() => IconButton(
-        tooltip: expanded ? 'Collapse options' : 'Expand options',
+        tooltip: expanded ? L10n.current.collapseOptions : L10n.current.expandOptions,
         onPressed: () {
           setState(() {
             expanded = !expanded;
@@ -203,7 +202,7 @@ class _HomeToolBarState extends State<HomeToolBar> {
   List<Widget> _chips() => [
         box,
         FilterChip(
-          label: const Text('Only Selected'),
+          label: Text(L10n.current.onlySelected),
           onSelected: (value) => setState(() {
             widget.onlySelectedCallback.call(value);
           }),
@@ -211,7 +210,7 @@ class _HomeToolBarState extends State<HomeToolBar> {
         ),
         box,
         FilterChip(
-          label: const Text('Remove renamed'),
+          label: Text(L10n.current.removeRenamed),
           onSelected: (value) => setState(() {
             widget.removeRenamedCallback.call(value);
           }),
@@ -219,7 +218,7 @@ class _HomeToolBarState extends State<HomeToolBar> {
         ),
         box,
         FilterChip(
-          label: const Text('Remove rules after renaming'),
+          label: Text(L10n.current.removeRules),
           onSelected: (value) => setState(() {
             widget.removeRulesCallback.call(value);
           }),
@@ -230,10 +229,8 @@ class _HomeToolBarState extends State<HomeToolBar> {
   void ratingMyApp() => showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text('Rate Our App'),
-          content: const Text(
-            'Enjoying our app? Help us grow by giving it a quick rating on the store or GitHub. Your feedback means the world to us! Thank you for your support.',
-          ),
+          title: Text(L10n.current.ratingTitle),
+          content: Text(L10n.current.ratingContent),
           actions: [
             if (Platform.isAndroid)
               TextButton(
@@ -245,11 +242,11 @@ class _HomeToolBarState extends State<HomeToolBar> {
                     mode: LaunchMode.externalApplication,
                   );
                 },
-                child: const Text('Rate the app on store'),
+                child: Text(L10n.current.ratingStore),
               ),
             TextButton(
               onPressed: gotoGithub,
-              child: const Text('Star it on Github'),
+              child: Text(L10n.current.ratingGithub),
             ),
           ],
         ),

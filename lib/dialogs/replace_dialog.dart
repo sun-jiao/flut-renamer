@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../entity/constants.dart';
+import '../l10n/l10n.dart';
 import '../tools/ex_text_editing_controller.dart';
 import '../rules/rule.dart';
 import '../widget/checkbox_tile.dart';
@@ -42,27 +43,27 @@ class _ReplaceDialogState extends State<ReplaceDialog> {
   @override
   void initState() {
     remove = widget.remove;
-    ruleName = remove ? 'Remove' : 'Replace';
+    ruleName = remove ? L10n.current.remove : L10n.current.replace;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Add Rule: $ruleName'),
+      title: Text('${L10n.current.addRule}: $ruleName'),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextFormField(
               controller: targetController,
-              decoration: InputDecoration(labelText: '$ruleName Target'),
+              decoration: InputDecoration(labelText: '$ruleName ${L10n.current.target}'),
             ),
             box,
             if (!remove)
               TextFormField(
                 controller: replacementController,
-                decoration: const InputDecoration(labelText: 'Replacement'),
+                decoration: InputDecoration(labelText: L10n.current.replacement),
               ),
             if (!remove) box,
             TextFormField(
@@ -71,10 +72,10 @@ class _ReplaceDialogState extends State<ReplaceDialog> {
               inputFormatters: <TextInputFormatter>[
                 FilteringTextInputFormatter.allow(RegExp('[0-9]')), // 只允许数字
               ],
-              decoration: InputDecoration(labelText: '$ruleName Limit'),
+              decoration: InputDecoration(labelText: '$ruleName ${L10n.current.limit}'),
             ),
             CheckboxTile(
-              title: const Text('From start'),
+              title: Text(L10n.current.fromStart),
               value: fromStart,
               onChanged: (value) {
                 setState(() {
@@ -83,8 +84,8 @@ class _ReplaceDialogState extends State<ReplaceDialog> {
               },
             ),
             CheckboxTile(
-              title: const Text(
-                'Metadata tags   ',
+              title: Text(
+                L10n.current.metadataTags,
                 softWrap: false,
               ),
               value: withMetadata,
@@ -106,7 +107,7 @@ class _ReplaceDialogState extends State<ReplaceDialog> {
               ),
             ),
             CheckboxTile(
-              title: const Text('Case sensitive'),
+              title: Text(L10n.current.caseSensitive),
               value: caseSensitive,
               onChanged: (value) {
                 setState(() {
@@ -115,7 +116,7 @@ class _ReplaceDialogState extends State<ReplaceDialog> {
               },
             ),
             CheckboxTile(
-              title: const Text('Is regex'),
+              title: Text(L10n.current.isRegex),
               value: isRegex,
               onChanged: (value) {
                 setState(() {
@@ -124,7 +125,7 @@ class _ReplaceDialogState extends State<ReplaceDialog> {
               },
             ),
             CheckboxTile(
-              title: const Text('Ignore Extension'),
+              title: Text(L10n.current.ignoreExtension),
               value: ignoreExtension,
               onChanged: (value) {
                 setState(() {
@@ -140,7 +141,7 @@ class _ReplaceDialogState extends State<ReplaceDialog> {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: const Text('Cancel'),
+          child: Text(L10n.current.cancel),
         ),
         TextButton(
           onPressed: () {
@@ -171,7 +172,7 @@ class _ReplaceDialogState extends State<ReplaceDialog> {
             widget.onSave.call(rule);
             Navigator.of(context).pop();
           },
-          child: const Text('Add'),
+          child: Text(L10n.current.add),
         ),
       ],
     );

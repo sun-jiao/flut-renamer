@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../entity/constants.dart';
+import '../l10n/l10n.dart';
 import '../rules/rule.dart';
 import '../widget/checkbox_tile.dart';
 
@@ -36,7 +37,7 @@ class _TruncateDialogState extends State<TruncateDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Add Rule: Insert'),
+      title: Text('${L10n.current.addRule}: ${L10n.current.truncate}'),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -47,7 +48,7 @@ class _TruncateDialogState extends State<TruncateDialog> {
               inputFormatters: <TextInputFormatter>[
                 FilteringTextInputFormatter.allow(RegExp('[0-9]')), // 只允许数字
               ],
-              decoration: const InputDecoration(labelText: 'Start index'),
+              decoration: InputDecoration(labelText: L10n.current.startIndex),
             ),
             box,
             TextFormField(
@@ -56,10 +57,10 @@ class _TruncateDialogState extends State<TruncateDialog> {
               inputFormatters: <TextInputFormatter>[
                 FilteringTextInputFormatter.allow(RegExp('[0-9]')), // 只允许数字
               ],
-              decoration: const InputDecoration(labelText: 'Selection length'),
+              decoration: InputDecoration(labelText: L10n.current.selectionLength),
             ),
             CheckboxTile(
-              title: const Text('From start'),
+              title: Text(L10n.current.fromStart),
               value: fromStart,
               onChanged: (value) {
                 setState(() {
@@ -68,7 +69,7 @@ class _TruncateDialogState extends State<TruncateDialog> {
               },
             ),
             CheckboxTile(
-              title: const Text('Going forward'),
+              title: Text(L10n.current.goingForward),
               value: direction,
               onChanged: (value) {
                 setState(() {
@@ -77,7 +78,7 @@ class _TruncateDialogState extends State<TruncateDialog> {
               },
             ),
             CheckboxTile(
-              title: const Text('Keep characters'),
+              title: Text(L10n.current.keepCharacters),
               value: keep,
               onChanged: (value) {
                 setState(() {
@@ -86,7 +87,7 @@ class _TruncateDialogState extends State<TruncateDialog> {
               },
             ),
             CheckboxTile(
-              title: const Text('Ignore Extension'),
+              title: Text(L10n.current.ignoreExtension),
               value: ignoreExtension,
               onChanged: (value) {
                 setState(() {
@@ -102,7 +103,7 @@ class _TruncateDialogState extends State<TruncateDialog> {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: const Text('Cancel'),
+          child: Text(L10n.current.cancel),
         ),
         TextButton(
           onPressed: () {
@@ -121,7 +122,7 @@ class _TruncateDialogState extends State<TruncateDialog> {
             widget.onSave.call(rule);
             Navigator.of(context).pop();
           },
-          child: const Text('Add'),
+          child: Text(L10n.current.add),
         ),
       ],
     );

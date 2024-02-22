@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../entity/constants.dart';
+import '../l10n/l10n.dart';
 import '../rules/rule.dart';
 import '../widget/checkbox_tile.dart';
 
@@ -29,14 +30,14 @@ class _RearrangeDialogState extends State<RearrangeDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Add Rule: Rearrange'),
+      title: Text('${L10n.current.addRule}: ${L10n.current.rearrange}'),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextFormField(
               controller: delimiterController,
-              decoration: const InputDecoration(labelText: 'Rearrange delimiter'),
+              decoration: InputDecoration(labelText: L10n.current.rearrangeDelimiter),
             ),
             box,
             TextFormField(
@@ -46,12 +47,13 @@ class _RearrangeDialogState extends State<RearrangeDialog> {
                 // Only number and comma allowed
                 FilteringTextInputFormatter.allow(RegExp('[0-9,]')),
               ],
-              decoration: const InputDecoration(
-                labelText: 'Rearrange order (numbers separated with comma)',
+              decoration: InputDecoration(
+                labelText: L10n.current.rearrangeOrderLabel,
+                hintText: L10n.current.rearrangeOrderHint,
               ),
             ),
             CheckboxTile(
-              title: const Text('Ignore Extension'),
+              title: Text(L10n.current.ignoreExtension),
               value: ignoreExtension,
               onChanged: (value) {
                 setState(() {
@@ -67,7 +69,7 @@ class _RearrangeDialogState extends State<RearrangeDialog> {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: const Text('Cancel'),
+          child: Text(L10n.current.cancel),
         ),
         TextButton(
           onPressed: () {
@@ -80,7 +82,7 @@ class _RearrangeDialogState extends State<RearrangeDialog> {
             widget.onSave.call(rule);
             Navigator.of(context).pop();
           },
-          child: const Text('Add'),
+          child: Text(L10n.current.add),
         ),
       ],
     );

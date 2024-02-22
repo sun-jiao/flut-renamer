@@ -6,18 +6,29 @@ import 'package:permission_handler/permission_handler.dart';
 
 import 'entity/sharedpref.dart';
 import 'entity/theme_extension.dart';
+import 'l10n/l10n.dart';
 import 'pages/home_page.dart';
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+late Locale _appLocale;
 
+Locale _getLocale() {
+  final localeNames = Platform.localeName.split(RegExp('[_-]'));
+  return Locale(localeNames[0], localeNames.length > 1 ? localeNames[1] : null);
+}
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  _appLocale = _getLocale();
+  L10n.load(_appLocale);
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarBrightness: Brightness.light,
-    statusBarIconBrightness: Brightness.dark,
-    statusBarColor: Colors.transparent,
-    systemNavigationBarColor: Colors.transparent,
-  ));
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarBrightness: Brightness.light,
+      statusBarIconBrightness: Brightness.dark,
+      statusBarColor: Colors.transparent,
+      systemNavigationBarColor: Colors.transparent,
+    ),
+  );
 
   while (!Shared.initialed) {
     await Shared.init();
@@ -32,8 +43,9 @@ class RenamerApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Renamer',
+      title: L10n.current.appName,
       themeMode: ThemeMode.system,
+      locale: _appLocale,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
@@ -95,14 +107,12 @@ class AppPage extends StatelessWidget {
   void _permissionRequest(BuildContext context) => showDialog(
         context: context,
         builder: (contextD) => AlertDialog(
-          title: const Text("Permission for external storage"),
-          content: const Text(
-            "To provide you with our file renaming service, we need your permission to manage external storage. This allows us to access and rename files stored on your device. Without this permission, the app won't be able to access the complete file paths and therefore can't rename files. We assure you that your privacy and security are our top priorities, and we only access files for the purpose of renaming.",
-          ),
+          title: Text(L10n.current.permissionTitle),
+          content: Text(L10n.current.permissionContent),
           actions: [
             TextButton(
               onPressed: () => _cannotRun(contextD),
-              child: const Text("Exit"),
+              child: Text(L10n.current.exit),
             ),
             TextButton(
               onPressed: () => Permission.manageExternalStorage.request().isGranted.then((value) {
@@ -110,7 +120,7 @@ class AppPage extends StatelessWidget {
                   Navigator.pop(contextD);
                 }
               }),
-              child: const Text("OK"),
+              child: Text(L10n.current.ok),
             ),
           ],
         ),
@@ -120,16 +130,14 @@ class AppPage extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text("Can not access external storage"),
-        content: const Text(
-          "The manage external storage permission allows us to access and rename files stored on your device. Without this permission, the app won't be able to access the complete file paths and therefore can't rename files. Please go to Settings page and grant the permission manually, otherwise we cannot provide any service.",
-        ),
+        title: Text(L10n.current.exitTitle),
+        content: Text(L10n.current.exitContent),
         actions: [
           TextButton(
             onPressed: () {
               SystemChannels.platform.invokeMethod('SystemNavigator.pop');
             },
-            child: const Text("OK"),
+            child: Text(L10n.current.ok),
           ),
         ],
       ),

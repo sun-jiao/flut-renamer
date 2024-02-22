@@ -1,0 +1,205 @@
+{
+  "@@locale": "en",
+  "appName": "Renamer",
+  "lowercaseAppName": "renamer",
+  "ok": "OK",
+  "cancel": "Cancel",
+  "exit": "Exit",
+  "save": "Save",
+  "add": "Add",
+  "permissionTitle": "Permission for external storage",
+  "permissionContent": "To provide you with our file renaming service, we need your permission to manage external storage. This allows us to access and rename files stored on your device. Without this permission, the app won't be able to access the complete file paths and therefore can't rename files. We assure you that your privacy and security are our top priorities, and we only access files for the purpose of renaming.",
+  "exitTitle": "Can not access external storage",
+  "exitContent": "The manage external storage permission allows us to access and rename files stored on your device. Without this permission, the app won't be able to access the complete file paths and therefore can't rename files. Please go to Settings page and grant the permission manually, otherwise we cannot provide any service.",
+  "rename": "Rename",
+  "appInfo": "App info",
+  "aboutContent": "This application is designed to help users rename their files. It is built with Flutter - a multi-platform application framework, and therefore it is also available on other operating systems. It is totally open source and could be reviewed or contributed to.",
+  "rating": "Rating the app",
+  "ratingTitle": "Rate Our App",
+  "ratingContent": "Enjoying our app? Help us grow by giving it a quick rating on the store or GitHub. Your feedback means the world to us! Thanks for your support.",
+  "ratingStore": "Rate the app on store",
+  "ratingGithub": "Star it on Github",
+  "sourceCode": "Source code",
+  "collapseOptions": "Collapse options",
+  "expandOptions": "Expand options",
+  "onlySelected": "Only Selected",
+  "removeRenamed": "Remove renamed",
+  "removeRules": "Remove rules after renaming",
+  "addRule": "Add Rule",
+  "removeAll": "Remove all",
+  "replace": "Replace",
+  "remove": "Remove",
+  "insert": "Insert",
+  "increment": "Increment",
+  "rearrange": "Rearrange",
+  "transliterate": "Transliterate",
+  "truncate": "Truncate",
+  "cancelAll": "Cancel All",
+  "selectAll": "Select All",
+  "currentName": "Current name",
+  "newName": "New name",
+  "files": "Files",
+  "directories": "Directories",
+  "filesDirs": "Files & Dirs",
+  "filter": "Filter",
+  "addFile": "Add file",
+  "addFiles": "Add files",
+  "dragToAdd": "Drag and drop to add files.",
+  "dropToAdd": "Drop to add files.",
+  "noSysDir": "Do not rename a system reserved directory.",
+  "fileSortName": "Name",
+  "fileSortSize": "Size",
+  "fileSortDate": "Date",
+  "fileSortType": "Type",
+  "transliterateUpper": "Latin characters to upper case",
+  "transliterateLower": "Latin characters to lower case",
+  "transliterateTraditional": "Chinese characters to traditional Chinese",
+  "transliterateSimplified": "Chinese characters to simplified Chinese",
+  "transliteratePinyin": "Chinese characters to pinyin",
+  "transliterateCyrillic2Latin": "Cyrillic characters to Latin",
+  "transliterateLatin2Cyrillic": "Latin characters to Cyrillic",
+  "insertTagInsideAnother": "Do not insert a tag inside another tag.",
+  "appError": "Application error",
+  "errorDetails": "Error details",
+  "ifFileNotShown": "If files does not shown in file list, please clear all and continue.",
+  "metadataTags": "Metadata tags",
+  "osTodayDate": "Date of today",
+  "osNowTime": "Time of now",
+  "fileSize": "Size of file",
+  "fileCreateDate": "Create date of file",
+  "fileCreateTime": "Create time of file",
+  "fileModifyDate": "Modify date of file",
+  "fileModifyTime": "Modify time of file",
+  "photoDate": "Photographing date from exif",
+  "photoTime": "Photographing time from exif",
+  "photoCamName": "Camera name from exif",
+  "photoLensName": "Lens name from exif",
+  "photoFocalLength": "Focal length from exif",
+  "photoAperture": "Aperture value from exif",
+  "photoShutter": "Shutter speed from exif",
+  "photoISO": "ISO value from exif",
+  "photoLongitude": "Longitude of photo GPS from exif",
+  "photoLatitude": "Latitude of photo GPS from exif",
+  "photoAltitude": "Altitude of photo GPS from exif",
+  "photoPhotographer": "Photographer name from exif",
+  "photoCopyright": "Copyright holder name from exif",
+  "prefix": "Prefix",
+  "startIndex": "Start index",
+  "indexIncrementalStep": "Index incremental step",
+  "omitDash": "Omit dash",
+  "ignoreExtension": "Ignore Extension",
+  "insertedText": "Text to be inserted",
+  "insertIndex": "Insert index",
+  "fromStart": "From start",
+  "insertBeforeIndex": "Insert before index",
+  "rearrangeDelimiter": "Rearrange delimiter",
+  "rearrangeOrderLabel": "Rearrange order",
+  "rearrangeOrderHint": "numbers separated with comma",
+  "target": "target",
+  "replacement": "Replacement",
+  "limit": "limit",
+  "caseSensitive": "Case sensitive",
+  "isRegex": "Is regex",
+  "language": "Language: ",
+  "selectionLength": "Selection length",
+  "goingForward": "Going forward",
+  "keepCharacters": "Keep characters",
+  "metadataParserNotProvided": "Contains metadata tag while MetadataParser was not provided.",
+  "replaceToString": "Replace \"{targetString}\" with \"{replacementString}\".",
+  "@replaceToString": {
+    "placeholders": {
+      "targetString": {
+        "type": "String"
+      },
+      "replacementString": {
+        "type": "String"
+      }
+    }
+  },
+  "removeToString": "Remove \"{targetString}\"",
+  "@removeToString": {
+    "placeholders": {
+      "targetString": {
+        "type": "String"
+      }
+    }
+  },
+  "insertToString": "Insert {insert} at the char #{insertIndex} from {location}.",
+  "@insertToString": {
+    "placeholders": {
+      "insert": {
+        "type": "String"
+      },
+      "insertIndex": {
+        "type": "num"
+      },
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "incrementToString": "Incremental renaming: {prefix}-index",
+  "@incrementToString": {
+    "placeholders": {
+      "prefix": {
+        "type": "String"
+      }
+    }
+  },
+  "rearrangeToString": "Rearrange: delimiter: {delimiter}, order: {order}.",
+  "@rearrangeToString": {
+    "placeholders": {
+      "delimiter": {
+        "type": "String"
+      },
+      "order": {
+        "type": "String"
+      }
+    }
+  },
+  "transliterateToString": "Transliterate: convert {type}.",
+  "@transliterateToString": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "transliterateToStringCyrillic": "Transliterate: convert {langName} {type}.",
+  "@transliterateToStringCyrillic": {
+    "placeholders": {
+      "langName": {
+        "type": "String"
+      },
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "truncateToString": "Truncate: {keepType} {length} characters starting from the char #{startIndex} from {location} character going {direction}.",
+  "@truncateToString": {
+    "placeholders": {
+      "keepType": {
+        "type": "String"
+      },
+      "length": {
+        "type": "num"
+      },
+      "startIndex": {
+        "type": "num"
+      },
+      "location":{
+        "type": "String"
+      },
+      "direction":{
+        "type": "String"
+      }
+    }
+  },
+  "locationStart": "start",
+  "locationEnd": "end",
+  "directionForward": "forward",
+  "directionBackward": "backward",
+  "truncateKeep": "keep",
+  "truncateRemove": "remove"
+}

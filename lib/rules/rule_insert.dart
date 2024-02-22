@@ -19,7 +19,7 @@ class RuleInsert implements Rule {
   Future<String> newName(String oldName, {FileMetadata? metadata}) async {
     if (withMetadata && metadata == null) {
       throw ArgumentError(
-        'Contains metadata tag while MetadataParser was not provided.',
+        L10n.current.metadataParserNotProvided,
       );
     }
 
@@ -52,6 +52,7 @@ class RuleInsert implements Rule {
 
   @override
   String toString() {
-    return 'Insert "$insert" at char #$insertIndex from ${fromStart ? 'start' : 'end'}';
+    return L10n.current.insertToString(
+        insert, insertIndex, fromStart ? L10n.current.locationStart : L10n.current.locationEnd);
   }
 }

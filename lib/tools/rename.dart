@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../l10n/l10n.dart';
 import '../tools/ex_file.dart';
 
 Future<FileSystemEntity?> rename(
@@ -28,13 +29,13 @@ Future<FileSystemEntity?> rename(
       showDialog(
         context: context,
         builder: (dContext) => AlertDialog(
-          title: const Text('Renamer error'),
+          title: Text(L10n.current.appError),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
                 leading: const Icon(Icons.error_rounded),
-                title: const Text('Error details'),
+                title: Text(L10n.current.errorDetails),
                 subtitle: Text(s.toString()),
                 trailing: IconButton(
                   onPressed: () async {
@@ -52,9 +53,9 @@ Future<FileSystemEntity?> rename(
                 ),
                 titleAlignment: ListTileTitleAlignment.titleHeight,
               ),
-              const ListTile(
+              ListTile(
                 title: Text(
-                  'If files does not shown in file list, please clear all and continue.',
+                  L10n.current.ifFileNotShown,
                 ),
               ),
             ],

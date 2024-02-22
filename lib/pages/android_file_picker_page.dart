@@ -7,6 +7,7 @@ import 'dart:io';
 import 'package:file_manager/file_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import '../l10n/l10n.dart';
 import '../tools/ex_file.dart';
 
 /// Only flutter supported:
@@ -111,7 +112,7 @@ class _AndroidFilePickerState extends State<AndroidFilePicker> {
                         if (_reserveDirs.contains(entity.path) ||
                             entity.path.startsWith(_androidDir) ||
                             entity.path.startsWith(_androidDirFull)) {
-                          Fluttertoast.showToast(msg: 'Do not rename a system reserved directory.');
+                          Fluttertoast.showToast(msg: L10n.current.noSysDir);
                           return;
                         }
 
@@ -264,28 +265,28 @@ class _AndroidFilePickerState extends State<AndroidFilePicker> {
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                title: const Text("Name"),
+                title: Text(L10n.current.fileSortName),
                 onTap: () {
                   controller.sortBy(SortBy.name);
                   Navigator.pop(context);
                 },
               ),
               ListTile(
-                title: const Text("Size"),
+                title: Text(L10n.current.fileSortSize),
                 onTap: () {
                   controller.sortBy(SortBy.size);
                   Navigator.pop(context);
                 },
               ),
               ListTile(
-                title: const Text("Date"),
+                title: Text(L10n.current.fileSortDate),
                 onTap: () {
                   controller.sortBy(SortBy.date);
                   Navigator.pop(context);
                 },
               ),
               ListTile(
-                title: const Text("Type"),
+                title: Text(L10n.current.fileSortType),
                 onTap: () {
                   controller.sortBy(SortBy.type);
                   Navigator.pop(context);

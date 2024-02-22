@@ -33,6 +33,6 @@ class RuleRearrange implements Rule {
 
   @override
   String toString() {
-    return 'Rearrange: delimiter: "$delimiter", order: "$order".';
+    return L10n.current.rearrangeToString(delimiter, order.toString());
   }
 }

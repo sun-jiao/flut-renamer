@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:renamer/l10n/l10n.dart';
 
 void showMetadataDialog(BuildContext context, Function(String tag) onInsert) => showDialog(
       context: context,
@@ -12,33 +13,33 @@ class MetadataDialog extends StatelessWidget {
 
   final Function(String tag) onInsert;
 
-  static const List<MapEntry> _list = [
-    MapEntry('OS:TodayDate', 'Date of today'),
-    MapEntry('OS:NowTime', 'Time of now'),
-    MapEntry('File:Size', 'Size of file'),
-    MapEntry('File:CreateDate', 'Create date of file'),
-    MapEntry('File:CreateTime', 'Create time of file'),
-    MapEntry('File:ModifyDate', 'Modify date of file'),
-    MapEntry('File:ModifyTime', 'Modify time of file'),
-    MapEntry('Photo:Date', 'Photographing date from exif'),
-    MapEntry('Photo:Time', 'Photographing time from exif'),
-    MapEntry('Photo:CamName', 'Camera name from exif'),
-    MapEntry('Photo:LensName', 'Lens name from exif'),
-    MapEntry('Photo:FocalLength', 'Focal length from exif'),
-    MapEntry('Photo:Aperture', 'Aperture value from exif'),
-    MapEntry('Photo:Shutter', 'Shutter speed from exif'),
-    MapEntry('Photo:ISO', 'ISO value from exif'),
-    MapEntry('Photo:Longitude', 'Longitude of photo GPS from exif'),
-    MapEntry('Photo:Latitude', 'Latitude of photo GPS from exif'),
-    MapEntry('Photo:Altitude', 'Altitude of photo GPS from exif'),
-    MapEntry('Photo:Photographer', 'Photographer name from exif'),
-    MapEntry('Photo:Copyright', 'Copyright holder name from exif'),
+  static final List<MapEntry> _list = [
+    MapEntry('OS:TodayDate', L10n.current.osTodayDate),
+    MapEntry('OS:NowTime', L10n.current.osNowTime),
+    MapEntry('File:Size', L10n.current.fileSize),
+    MapEntry('File:CreateDate', L10n.current.fileCreateDate),
+    MapEntry('File:CreateTime', L10n.current.fileCreateTime),
+    MapEntry('File:ModifyDate', L10n.current.fileModifyDate),
+    MapEntry('File:ModifyTime', L10n.current.fileModifyTime),
+    MapEntry('Photo:Date', L10n.current.photoDate),
+    MapEntry('Photo:Time', L10n.current.photoTime),
+    MapEntry('Photo:CamName', L10n.current.photoCamName),
+    MapEntry('Photo:LensName', L10n.current.photoLensName),
+    MapEntry('Photo:FocalLength', L10n.current.photoFocalLength),
+    MapEntry('Photo:Aperture', L10n.current.photoAperture),
+    MapEntry('Photo:Shutter', L10n.current.photoShutter),
+    MapEntry('Photo:ISO', L10n.current.photoISO),
+    MapEntry('Photo:Longitude', L10n.current.photoLongitude),
+    MapEntry('Photo:Latitude', L10n.current.photoLatitude),
+    MapEntry('Photo:Altitude', L10n.current.photoAltitude),
+    MapEntry('Photo:Photographer', L10n.current.photoPhotographer),
+    MapEntry('Photo:Copyright', L10n.current.photoCopyright),
   ];
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Metadata tags'),
+      title: Text(L10n.current.metadataTags),
       content: SingleChildScrollView(
         child: Column(
           children: _list

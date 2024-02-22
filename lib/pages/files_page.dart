@@ -6,6 +6,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
 import '../entity/theme_extension.dart';
+import '../l10n/l10n.dart';
 import '../pages/android_file_picker_page.dart';
 import '../tools/responsive.dart';
 import '../entity/constants.dart';
@@ -164,8 +165,8 @@ class FilesPageState extends State<FilesPage> {
             TableCell(
               child: Tooltip(
                 message: _files.isNotEmpty && _files.every((element) => element.selected)
-                    ? 'Cancel All'
-                    : 'Select All',
+                    ? L10n.current.cancelAll
+                    : L10n.current.selectAll,
                 child: Checkbox(
                   value: _files.isNotEmpty && _files.every((element) => element.selected),
                   onChanged: (_) {
@@ -182,19 +183,19 @@ class FilesPageState extends State<FilesPage> {
                 ),
               ),
             ),
-            const TableCell(
+            TableCell(
               child: Center(
-                child: Text('Current Name'),
+                child: Text(L10n.current.currentName),
               ),
             ),
-            const TableCell(
+            TableCell(
               child: Center(
-                child: Text('New Name'),
+                child: Text(L10n.current.newName),
               ),
             ),
             TableCell(
               child: Tooltip(
-                message: 'Clear All',
+                message: L10n.current.removeAll,
                 child: IconButton(
                   onPressed: () {
                     setState(() {
@@ -241,8 +242,8 @@ class FilesPageState extends State<FilesPage> {
               ),
               Expanded(
                 child: TextField(
-                  decoration: const InputDecoration(
-                    hintText: 'Filter',
+                  decoration: InputDecoration(
+                    hintText: L10n.current.filter,
                   ),
                   onChanged: (val) {
                     setState(() {
@@ -254,7 +255,7 @@ class FilesPageState extends State<FilesPage> {
               box,
               ElevatedButton(
                 onPressed: addFileFromPicker,
-                child: const Text('Add File'),
+                child: Text(L10n.current.addFile),
               ),
             ],
           ),
@@ -269,8 +270,8 @@ class FilesPageState extends State<FilesPage> {
                   ? SingleChildScrollView(
                       child: _table(_tableRows()),
                     )
-                  : const Center(
-                      child: Text('Add files.'),
+                  : Center(
+                      child: Text(L10n.current.addFiles),
                     ),
             ),
             desktop: DropTarget(
@@ -304,14 +305,14 @@ class FilesPageState extends State<FilesPage> {
                         child: _table(_tableRows()),
                       )
                     else if (!_dragging)
-                      const Center(
-                        child: Text('Drag and drop to add files.'),
+                      Center(
+                        child: Text(L10n.current.dragToAdd),
                       ),
                     if (_dragging)
                       Container(
                         color: Colors.blue.withOpacity(0.2),
-                        child: const Center(
-                          child: Text('Drop to add files.'),
+                        child: Center(
+                          child: Text(L10n.current.dropToAdd),
                         ),
                       ),
                   ],

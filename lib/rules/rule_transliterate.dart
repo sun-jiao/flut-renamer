@@ -53,9 +53,9 @@ class RuleTransliterate implements Rule {
   @override
   String toString() {
     if ([Transliterate.cyrillic2Latin, Transliterate.latin2Cyrillic].contains(type)) {
-      return 'Transliterate: convert ${langCodeMap[langCode]} $type.';
+      return L10n.current.transliterateToStringCyrillic(langCodeMap[langCode]!, type.toString());
     } else {
-      return 'Transliterate: convert $type.';
+      return L10n.current.transliterateToString(type.toString());
     }
   }
 }

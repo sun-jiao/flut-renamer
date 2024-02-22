@@ -62,6 +62,12 @@ class RuleTruncate implements Rule {
 
   @override
   String toString() {
-    return 'Truncate: ${keep ? 'Keep' : 'Remove'} $length characters starting from the ${startIndex.toOrdinal()}${fromStart ? '' : '-to-last'} character going ${direction ? 'forward' : 'backward'}.';
+    return L10n.current.truncateToString(
+      keep ? L10n.current.truncateKeep : L10n.current.truncateRemove,
+      length,
+      startIndex,
+      fromStart ? L10n.current.locationStart : L10n.current.locationEnd,
+      direction ? L10n.current.directionForward : L10n.current.directionBackward,
+    );
   }
 }

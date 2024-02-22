@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:pinyin/pinyin.dart';
 import 'package:cyrtranslit/cyrtranslit.dart' as cyrtranslit;
+import 'package:renamer/l10n/l10n.dart';
 
 import '../entity/transliterate.dart';
-import '../tools/ex_int.dart';
 import '../tools/file_metadata.dart';
 import '../tools/ex_string.dart';
 
