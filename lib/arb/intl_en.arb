@@ -201,5 +201,13 @@
   "directionForward": "forward",
   "directionBackward": "backward",
   "truncateKeep": "keep",
-  "truncateRemove": "remove"
+  "truncateRemove": "remove",
+  "bg": "Bulgarian",
+  "me": "Montenegrin",
+  "mk": "Macedonian",
+  "mn": "Mongolian",
+  "ru": "Russian",
+  "sr": "Serbian",
+  "tj": "Tajik",
+  "ua": "Ukrainian"
 }

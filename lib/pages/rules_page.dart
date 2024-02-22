@@ -84,6 +84,15 @@ class RulesPageState extends State<RulesPage> {
                   'Transliterate',
                   'Truncate',
                 ],
+                tToStr: (obj) => {
+                  'Replace': L10n.current.replace,
+                  'Remove': L10n.current.remove,
+                  'Insert': L10n.current.insert,
+                  'Increment': L10n.current.increment,
+                  'Rearrange': L10n.current.rearrange,
+                  'Transliterate': L10n.current.transliterate,
+                  'Truncate': L10n.current.truncate,
+                }[obj]!,
               ),
             ),
             Expanded(

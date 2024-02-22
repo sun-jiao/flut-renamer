@@ -1,0 +1,213 @@
+{
+  "@@locale": "zh",
+  "appName": "批量重命名",
+  "lowercaseAppName": "批量重命名",
+  "ok": "确定",
+  "cancel": "取消",
+  "exit": "退出",
+  "save": "保存",
+  "add": "添加",
+  "permissionTitle": "外部存储权限",
+  "permissionContent": "为了提供文件重命名服务，我们需要您授权我们管理外部存储。这样我们才能访问并重命名您设备上存储的文件。如果没有此权限，应用将无法访问文件的完整路径，从而无法进行重命名操作。我们向您保证，我们非常重视您的隐私和安全，我们只会在重命名目的下访问文件。",
+  "exitTitle": "无法访问外部存储",
+  "exitContent": "管理外部存储的权限允许我们访问和重命名您设备上存储的文件。如果没有此权限，应用将无法访问文件的完整路径，从而无法进行重命名操作。请前往设置页面手动授予权限，否则我们将无法提供任何服务。",
+  "rename": "重命名",
+  "appInfo": "应用信息",
+  "aboutContent": "此应用旨在帮助用户重命名文件。它使用Flutter框架开发，因此也适用于其他操作系统。它是完全开源的，可以进行审查和贡献。",
+  "rating": "应用评分",
+  "ratingTitle": "评价我们的应用",
+  "ratingContent": "喜欢我们的应用吗？在应用商店给个好评或在GitHub上点赞来帮助我们成长。您的反馈对我们非常重要！感谢您的支持。",
+  "ratingStore": "去商店评分",
+  "ratingGithub": "给GitHub仓库点赞",
+  "sourceCode": "源代码",
+  "collapseOptions": "收起选项",
+  "expandOptions": "展开选项",
+  "onlySelected": "仅重命名选中的文件",
+  "removeRenamed": "删除已重命名文件",
+  "removeRules": "重命名后删除所有规则",
+  "addRule": "添加规则",
+  "removeAll": "全部删除",
+  "replace": "替换",
+  "remove": "删除",
+  "insert": "插入",
+  "increment": "递增",
+  "rearrange": "重排",
+  "transliterate": "转写",
+  "truncate": "截断",
+  "cancelAll": "全部取消",
+  "selectAll": "全选",
+  "currentName": "当前文件名",
+  "newName": "新文件名",
+  "files": "文件",
+  "directories": "目录",
+  "filesDirs": "文件和目录",
+  "filter": "筛选",
+  "addFile": "添加文件",
+  "addFiles": "请添加文件。",
+  "dragToAdd": "拖放文件进行添加。",
+  "dropToAdd": "在此处释放文件。",
+  "noSysDir": "请勿重命名系统保留目录。",
+  "fileSortName": "名称",
+  "fileSortSize": "大小",
+  "fileSortDate": "日期",
+  "fileSortType": "类型",
+  "transliterateUpper": "转换为大写拉丁字符",
+  "transliterateLower": "转换为小写拉丁字符",
+  "transliterateTraditional": "转换为繁体中文",
+  "transliterateSimplified": "转换为简体中文",
+  "transliteratePinyin": "转换中文为拼音",
+  "transliterateCyrillic2Latin": "从西里尔字符转为拉丁字符",
+  "transliterateLatin2Cyrillic": "从拉丁字符转为西里尔字符",
+  "insertTagInsideAnother": "请勿在一个标签内插入另一个标签。",
+  "appError": "应用程序错误",
+  "errorDetails": "错误详情",
+  "ifFileNotShown": "如果文件列表中未显示文件，请清除所有内容并继续。",
+  "metadataTags": "元数据标签",
+  "osTodayDate": "当前日期",
+  "osNowTime": "当前时间",
+  "fileSize": "文件大小",
+  "fileCreateDate": "文件创建日期",
+  "fileCreateTime": "文件创建时间",
+  "fileModifyDate": "文件修改日期",
+  "fileModifyTime": "文件修改时间",
+  "photoDate": "照片拍摄日期（来自exif）",
+  "photoTime": "照片拍摄时间（来自exif）",
+  "photoCamName": "相机名称（来自exif）",
+  "photoLensName": "镜头名称（来自exif）",
+  "photoFocalLength": "焦距（来自exif）",
+  "photoAperture": "光圈数值（来自exif）",
+  "photoShutter": "快门速度（来自exif）",
+  "photoISO": "ISO数值（来自exif）",
+  "photoLongitude": "照片GPS经度（来自exif）",
+  "photoLatitude": "照片GPS纬度（来自exif）",
+  "photoAltitude": "照片GPS海拔（来自exif）",
+  "photoPhotographer": "摄影师姓名（来自exif）",
+  "photoCopyright": "版权所有者姓名（来自exif）",
+  "prefix": "前缀",
+  "startIndex": "起始索引",
+  "indexIncrementalStep": "索引递增量",
+  "omitDash": "省略短横线",
+  "ignoreExtension": "忽略扩展名",
+  "insertedText": "要插入的文本",
+  "insertIndex": "插入位置",
+  "fromStart": "从开头计数",
+  "insertBeforeIndex": "在插入位置前侧插入",
+  "rearrangeDelimiter": "分隔符",
+  "rearrangeOrderLabel": "重排的顺序",
+  "rearrangeOrderHint": "请输入相应数字，以英文逗号隔开",
+  "target": "目标",
+  "replacement": "替换为",
+  "limit": "次数",
+  "caseSensitive": "区分大小写",
+  "isRegex": "使用正则表达式",
+  "language": "语言：",
+  "selectionLength": "所选内容长度",
+  "goingForward": "向前",
+  "keepCharacters": "保留字符",
+  "metadataParserNotProvided": "包含元数据标签，但未提供元数据解析器。",
+  "replaceToString": "替换：将“{targetString}”替换为“{replacementString}”。",
+  "@replaceToString": {
+    "placeholders": {
+      "targetString": {
+        "type": "String"
+      },
+      "replacementString": {
+        "type": "String"
+      }
+    }
+  },
+  "removeToString": "删除：“{targetString}”",
+  "@removeToString": {
+    "placeholders": {
+      "targetString": {
+        "type": "String"
+      }
+    }
+  },
+  "insertToString": "插入：在{location}的第{insertIndex}个字符处插入“{insert}”。",
+  "@insertToString": {
+    "placeholders": {
+      "insert": {
+        "type": "String"
+      },
+      "insertIndex": {
+        "type": "num"
+      },
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "incrementToString": "递增：{prefix}-索引",
+  "@incrementToString": {
+    "placeholders": {
+      "prefix": {
+        "type": "String"
+      }
+    }
+  },
+  "rearrangeToString": "重排：分隔符：{delimiter}，顺序：{order}。",
+  "@rearrangeToString": {
+    "placeholders": {
+      "delimiter": {
+        "type": "String"
+      },
+      "order": {
+        "type": "String"
+      }
+    }
+  },
+  "transliterateToString": "转写：{type}。",
+  "@transliterateToString": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "transliterateToStringCyrillic": "转写：将{langName}{type}。",
+  "@transliterateToStringCyrillic": {
+    "placeholders": {
+      "langName": {
+        "type": "String"
+      },
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "truncateToString": "截断：从{location}第{startIndex}个字符开始，向{direction}{keepType}{length}个字符。",
+  "@truncateToString": {
+    "placeholders": {
+      "keepType": {
+        "type": "String"
+      },
+      "length": {
+        "type": "num"
+      },
+      "startIndex": {
+        "type": "num"
+      },
+      "location": {
+        "type": "String"
+      },
+      "direction": {
+        "type": "String"
+      }
+    }
+  },
+  "locationStart": "正数",
+  "locationEnd": "倒数",
+  "directionForward": "前",
+  "directionBackward": "后",
+  "truncateKeep": "保留",
+  "truncateRemove": "删除",
+  "bg": "保加利亚语",
+  "me": "黑山语",
+  "mk": "马其顿语",
+  "mn": "蒙古语",
+  "ru": "俄语",
+  "sr": "塞尔维亚语",
+  "tj": "塔吉克语",
+  "ua": "乌克兰语"
+}

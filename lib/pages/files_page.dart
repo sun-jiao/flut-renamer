@@ -239,6 +239,11 @@ class FilesPageState extends State<FilesPage> {
                   });
                 },
                 items: const <String>['Files', 'Directories', 'Files & Dirs'],
+                tToStr: (obj) => {
+                  'Files': L10n.current.files,
+                  'Directories': L10n.current.directories,
+                  'Files & Dirs': L10n.current.filesDirs,
+                }[obj]!,
               ),
               Expanded(
                 child: TextField(

@@ -39,15 +39,15 @@ class RuleTransliterate implements Rule {
     }
   }
 
-  static const langCodeMap = {
-    'bg': 'Bulgarian',
-    'me': 'Montenegrin',
-    'mk': 'Macedonian',
-    'mn': 'Mongolian',
-    'ru': 'Russian',
-    'sr': 'Serbian',
-    'tj': 'Tajik',
-    'ua': 'Ukrainian',
+  static final Map<String, String> langCodeMap = {
+    'bg': L10n.current.bg,
+    'me': L10n.current.me,
+    'mk': L10n.current.mk,
+    'mn': L10n.current.mn,
+    'ru': L10n.current.ru,
+    'sr': L10n.current.sr,
+    'tj': L10n.current.tj,
+    'ua': L10n.current.ua,
   };
 
   @override

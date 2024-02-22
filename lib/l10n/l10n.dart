@@ -18,17 +18,17 @@ class L10n {
   static L10n? _current;
 
   static L10n get current {
-    assert(
-      _current != null,
-      'No instance of L10n was loaded. Try to initialize the L10n delegate before accessing L10n.current.',
-    );
+    assert(_current != null,
+        'No instance of L10n was loaded. Try to initialize the L10n delegate before accessing L10n.current.');
     return _current!;
   }
 
   static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
 
   static Future<L10n> load(Locale locale) {
-    final name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
+    final name = (locale.countryCode?.isEmpty ?? false)
+        ? locale.languageCode
+        : locale.toString();
     final localeName = Intl.canonicalizedLocale(name);
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
@@ -41,10 +41,8 @@ class L10n {
 
   static L10n of(BuildContext context) {
     final instance = L10n.maybeOf(context);
-    assert(
-      instance != null,
-      'No instance of L10n present in the widget tree. Did you add L10n.delegate in localizationsDelegates?',
-    );
+    assert(instance != null,
+        'No instance of L10n present in the widget tree. Did you add L10n.delegate in localizationsDelegates?');
     return instance!;
   }
 
@@ -1173,13 +1171,8 @@ class L10n {
   }
 
   /// `Truncate: {keepType} {length} characters starting from the char #{startIndex} from {location} character going {direction}.`
-  String truncateToString(
-    String keepType,
-    num length,
-    num startIndex,
-    String location,
-    String direction,
-  ) {
+  String truncateToString(String keepType, num length, num startIndex,
+      String location, String direction) {
     return Intl.message(
       'Truncate: $keepType $length characters starting from the char #$startIndex from $location character going $direction.',
       name: 'truncateToString',
@@ -1247,6 +1240,86 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Bulgarian`
+  String get bg {
+    return Intl.message(
+      'Bulgarian',
+      name: 'bg',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Montenegrin`
+  String get me {
+    return Intl.message(
+      'Montenegrin',
+      name: 'me',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Macedonian`
+  String get mk {
+    return Intl.message(
+      'Macedonian',
+      name: 'mk',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mongolian`
+  String get mn {
+    return Intl.message(
+      'Mongolian',
+      name: 'mn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Russian`
+  String get ru {
+    return Intl.message(
+      'Russian',
+      name: 'ru',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Serbian`
+  String get sr {
+    return Intl.message(
+      'Serbian',
+      name: 'sr',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tajik`
+  String get tj {
+    return Intl.message(
+      'Tajik',
+      name: 'tj',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ukrainian`
+  String get ua {
+    return Intl.message(
+      'Ukrainian',
+      name: 'ua',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {
@@ -1255,6 +1328,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {
   List<Locale> get supportedLocales {
     return const <Locale>[
       Locale.fromSubtags(languageCode: 'en'),
+      Locale.fromSubtags(languageCode: 'zh'),
     ];
   }
 
