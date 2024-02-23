@@ -35,7 +35,7 @@ Future<FileSystemEntity?> rename(
             children: [
               ListTile(
                 leading: const Icon(Icons.error_rounded),
-                title: Text(L10n.current.errorDetails),
+                title: Text(L10n.current.errorDetails + e.toString()),
                 subtitle: Text(s.toString()),
                 trailing: IconButton(
                   onPressed: () async {
