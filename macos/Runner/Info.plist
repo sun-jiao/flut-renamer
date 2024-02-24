@@ -29,34 +29,6 @@
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 
-
-	<key>UIBackgroundModes</key>
-    <array>
-       <string>fetch</string>
-       <string>remote-notification</string>
-    </array>
-
-    <key>NSAppleMusicUsageDescription</key>
-    <string>Explain why your app uses music</string>
-
-    <key>UISupportsDocumentBrowser</key>
-    <true/>
-
-    <key>LSSupportsOpeningDocumentsInPlace</key>
-    <true/>
-
-    <key>NSPhotoLibraryUsageDescription</key>
-    <string>Explain why your app uses photo library</string>
-
-    <key>NSDesktopFolderUsageDescription</key>
-    <string>Explain why your app uses this permission</string>
-
-    <key>NSDocumentsFolderUsageDescription</key>
-    <string>Explain why your app uses this permission</string>
-
-    <key>NSPicturesFolderUsageDescription</key>
-    <string>Explain why your app uses this permission</string>
-
     <key>NSFullDiskAccessUsageDescription</key>
     <string>Explain why your app uses this permission</string>
 
