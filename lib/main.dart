@@ -50,7 +50,7 @@ class RenamerApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           brightness: Brightness.light,
-          seedColor: Colors.pinkAccent,
+          seedColor: const Color(0xff9cdce8),
         ),
         brightness: Brightness.light,
         useMaterial3: true,
@@ -64,7 +64,7 @@ class RenamerApp extends StatelessWidget {
       darkTheme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           brightness: Brightness.dark,
-          seedColor: Colors.pinkAccent,
+          seedColor: const Color(0xff26546e),
         ),
         brightness: Brightness.dark,
         useMaterial3: true,
