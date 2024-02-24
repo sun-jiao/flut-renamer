@@ -93,7 +93,7 @@ BEGIN
             VALUE "FileDescription", "renamer" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "renamer" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2023 Sun Jiao. All rights reserved." "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2023 Sun Jiao (孙娇). GNU GENERAL PUBLIC LICENSE Version 3." "\0"
             VALUE "OriginalFilename", "renamer.exe" "\0"
             VALUE "ProductName", "renamer" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
