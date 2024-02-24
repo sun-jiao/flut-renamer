@@ -164,7 +164,7 @@ class _HomeToolBarState extends State<HomeToolBar> {
               applicationName: packageInfo.appName,
               applicationVersion: packageInfo.version,
               applicationIcon: Image.asset(
-                'assets/ic_launcher.png',
+                'assets/desktop.png',
                 width: 48,
               ),
               applicationLegalese: 'GPL-3.0',
