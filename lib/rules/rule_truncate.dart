@@ -63,11 +63,11 @@ class RuleTruncate implements Rule {
   @override
   String toString() {
     return L10n.current.truncateToString(
-      keep ? L10n.current.truncateKeep : L10n.current.truncateRemove,
+      keep ? 1 : 0,
+      fromStart ? 1 : 0,
+      direction ? 1 : 0,
       length,
       startIndex,
-      fromStart ? L10n.current.locationStart : L10n.current.locationEnd,
-      direction ? L10n.current.directionForward : L10n.current.directionBackward,
     );
   }
 }

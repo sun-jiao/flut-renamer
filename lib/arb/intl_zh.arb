@@ -124,17 +124,17 @@
       }
     }
   },
-  "insertToString": "插入：在{location}的第{insertIndex}个字符处插入“{insert}”。",
+  "insertToString": "插入：在{location, plural, =0{倒数的} =1{} other{other}}第{insertIndex}个字符处插入“{insert}”。",
   "@insertToString": {
     "placeholders": {
+      "location": {
+        "type": "num"
+      },
       "insert": {
         "type": "String"
       },
       "insertIndex": {
         "type": "num"
-      },
-      "location": {
-        "type": "String"
       }
     }
   },
@@ -176,32 +176,26 @@
       }
     }
   },
-  "truncateToString": "截断：从{location}第{startIndex}个字符开始，向{direction}{keepType}{length}个字符。",
+  "truncateToString": "截断：从{location, plural, =0{倒数的} =1{} other{other}}第{startIndex}个字符开始，向{direction, plural, =0{后} =1{前} other{other}}{keepType, plural, =0{移除} =1{保留} other{other}}{length}个字符。",
   "@truncateToString": {
     "placeholders": {
       "keepType": {
-        "type": "String"
+        "type": "num"
+      },
+      "location":{
+        "type": "num"
+      },
+      "direction":{
+        "type": "num"
       },
       "length": {
         "type": "num"
       },
       "startIndex": {
         "type": "num"
-      },
-      "location": {
-        "type": "String"
-      },
-      "direction": {
-        "type": "String"
       }
     }
   },
-  "locationStart": "正数",
-  "locationEnd": "倒数",
-  "directionForward": "前",
-  "directionBackward": "后",
-  "truncateKeep": "保留",
-  "truncateRemove": "删除",
   "bg": "保加利亚语",
   "me": "黑山语",
   "mk": "马其顿语",

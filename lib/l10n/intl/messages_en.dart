@@ -22,8 +22,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m0(prefix) => "Incremental renaming: ${prefix}-index";
 
-  static String m1(insert, insertIndex, location) =>
-      "Insert ${insert} at the char #${insertIndex} from ${location}.";
+  static String m1(location, insert, insertIndex) =>
+      "Insert ${insert} at the char #${insertIndex} from ${Intl.plural(location, zero: 'end', one: 'start', other: 'other')}.";
 
   static String m2(delimiter, order) =>
       "Rearrange: delimiter: ${delimiter}, order: ${order}.";
@@ -38,8 +38,8 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m6(langName, type) =>
       "Transliterate: convert ${langName} ${type}.";
 
-  static String m7(keepType, length, startIndex, location, direction) =>
-      "Truncate: ${keepType} ${length} characters starting from the char #${startIndex} from ${location} character going ${direction}.";
+  static String m7(keepType, location, direction, length, startIndex) =>
+      "Truncate: ${Intl.plural(keepType, zero: 'remove', one: 'keep', other: 'other')} ${length} characters starting from the char #${startIndex} from ${Intl.plural(location, zero: 'end', one: 'start', other: 'other')} going ${Intl.plural(direction, zero: 'backward', one: 'forward', other: 'other')}.";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -59,8 +59,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "collapseOptions":
             MessageLookupByLibrary.simpleMessage("Collapse options"),
         "currentName": MessageLookupByLibrary.simpleMessage("Current name"),
-        "directionBackward": MessageLookupByLibrary.simpleMessage("backward"),
-        "directionForward": MessageLookupByLibrary.simpleMessage("forward"),
         "directories": MessageLookupByLibrary.simpleMessage("Directories"),
         "dragToAdd":
             MessageLookupByLibrary.simpleMessage("Drag and drop to add files."),
@@ -112,8 +110,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Keep characters"),
         "language": MessageLookupByLibrary.simpleMessage("Language: "),
         "limit": MessageLookupByLibrary.simpleMessage("limit"),
-        "locationEnd": MessageLookupByLibrary.simpleMessage("end"),
-        "locationStart": MessageLookupByLibrary.simpleMessage("start"),
         "lowercaseAppName": MessageLookupByLibrary.simpleMessage("renamer"),
         "me": MessageLookupByLibrary.simpleMessage("Montenegrin"),
         "metadataParserNotProvided": MessageLookupByLibrary.simpleMessage(
@@ -213,8 +209,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "transliterateUpper": MessageLookupByLibrary.simpleMessage(
             "Latin characters to upper case"),
         "truncate": MessageLookupByLibrary.simpleMessage("Truncate"),
-        "truncateKeep": MessageLookupByLibrary.simpleMessage("keep"),
-        "truncateRemove": MessageLookupByLibrary.simpleMessage("remove"),
         "truncateToString": m7,
         "ua": MessageLookupByLibrary.simpleMessage("Ukrainian")
       };
