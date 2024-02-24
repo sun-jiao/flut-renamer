@@ -18,17 +18,20 @@ class CustomDrop<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButton<T>(
-      value: value,
-      focusColor: Colors.transparent,
-      underline: const SizedBox(),
-      onChanged: onChanged,
-      items: items.map<DropdownMenuItem<T>>((T value) {
-        return DropdownMenuItem<T>(
-          value: value,
-          child: Text(tToStr.call(value)),
-        );
-      }).toList(),
+    return ButtonTheme(
+      alignedDropdown: true,
+      child: DropdownButton<T>(
+        value: value,
+        focusColor: Colors.transparent,
+        underline: const SizedBox(),
+        onChanged: onChanged,
+        items: items.map<DropdownMenuItem<T>>((T value) {
+          return DropdownMenuItem<T>(
+            value: value,
+            child: Text(tToStr.call(value)),
+          );
+        }).toList(),
+      ),
     );
   }
 }

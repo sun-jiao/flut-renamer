@@ -64,57 +64,52 @@ class RulesPageState extends State<RulesPage> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          children: [
-            box,
-            Expanded(
-              child: CustomDrop<String>(
-                value: Shared.ruleName,
-                onChanged: (String? newValue) {
-                  setState(() {
-                    Shared.ruleName = newValue!;
-                  });
-                },
-                items: const <String>[
-                  'Replace',
-                  'Remove',
-                  'Insert',
-                  'Increment',
-                  'Rearrange',
-                  'Transliterate',
-                  'Truncate',
-                ],
-                tToStr: (obj) => {
-                  'Replace': L10n.current.replace,
-                  'Remove': L10n.current.remove,
-                  'Insert': L10n.current.insert,
-                  'Increment': L10n.current.increment,
-                  'Rearrange': L10n.current.rearrange,
-                  'Transliterate': L10n.current.transliterate,
-                  'Truncate': L10n.current.truncate,
-                }[obj]!,
-              ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CustomDrop<String>(
+                  value: Shared.ruleName,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      Shared.ruleName = newValue!;
+                    });
+                  },
+                  items: const <String>[
+                    'Replace',
+                    'Remove',
+                    'Insert',
+                    'Increment',
+                    'Rearrange',
+                    'Transliterate',
+                    'Truncate',
+                  ],
+                  tToStr: (obj) => {
+                    'Replace': L10n.current.replace,
+                    'Remove': L10n.current.remove,
+                    'Insert': L10n.current.insert,
+                    'Increment': L10n.current.increment,
+                    'Rearrange': L10n.current.rearrange,
+                    'Transliterate': L10n.current.transliterate,
+                    'Truncate': L10n.current.truncate,
+                  }[obj]!,
+                ),
+                ElevatedButton(
+                  onPressed: showRuleDialog,
+                  child: Text(L10n.current.addRule),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      _rules.clear();
+                    });
+                    widget.onRuleChanged.call();
+                  },
+                  child: Text(L10n.current.removeAll),
+                ),
+              ],
             ),
-            Expanded(
-              child: ElevatedButton(
-                onPressed: showRuleDialog,
-                child: Text(L10n.current.addRule),
-              ),
-            ),
-            box,
-            Expanded(
-              child: ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    _rules.clear();
-                  });
-                  widget.onRuleChanged.call();
-                },
-                child: Text(L10n.current.removeAll),
-              ),
-            ),
-            box,
-          ],
         ),
         const SizedBox(height: 16),
         Expanded(
