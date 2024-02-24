@@ -23,6 +23,8 @@ jobs:
         run: flutter config --enable-linux-desktop
       - name: Build artifacts
         run: flutter build linux --release
+      - name: Build Appimage
+        run: bash ./github_appimage_build.sh
       - name: Linux Release
         uses: actions/upload-artifact@v4
         with:
