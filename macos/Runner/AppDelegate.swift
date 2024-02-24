@@ -36,11 +36,11 @@ class AppDelegate: FlutterAppDelegate {
 
   func promptForFullDiskAccess() {
       let alert = NSAlert()
-      alert.messageText = "Needs full disk access permission."
-      alert.informativeText = "Please grant full disk access in system preferences"
+      alert.messageText = NSLocalizedString("permissionTitle", comment: "Prompt for full disk access permission")
+      alert.informativeText = NSLocalizedString("permissionContent", comment: "")
       alert.alertStyle = .warning
-      alert.addButton(withTitle: "Open settings")
-      alert.addButton(withTitle: "Cancel")
+      alert.addButton(withTitle: NSLocalizedString("openSettings", comment: ""))
+      alert.addButton(withTitle: NSLocalizedString("cancel", comment: ""))
       let response = alert.runModal()
       if response == .alertFirstButtonReturn {
           if let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_AllFiles") {
