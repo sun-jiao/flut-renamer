@@ -23,7 +23,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m0(prefix) => "Incremental renaming: ${prefix}-index";
 
   static String m1(location, insert, insertIndex) =>
-      "Insert ${insert} at the char #${insertIndex} from ${Intl.plural(location, zero: 'end', one: 'start', other: 'other')}.";
+      "Insert \"${insert}\" at the char #${insertIndex}${Intl.plural(location, zero: '-to-end', one: '', other: '')}.";
 
   static String m2(delimiter, order) =>
       "Rearrange: delimiter: ${delimiter}, order: ${order}.";
@@ -39,7 +39,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Transliterate: convert ${langName} ${type}.";
 
   static String m7(keepType, location, direction, length, startIndex) =>
-      "Truncate: ${Intl.plural(keepType, zero: 'remove', one: 'keep', other: 'other')} ${length} characters starting from the char #${startIndex} from ${Intl.plural(location, zero: 'end', one: 'start', other: 'other')} going ${Intl.plural(direction, zero: 'backward', one: 'forward', other: 'other')}.";
+      "Truncate: ${Intl.plural(keepType, zero: 'remove', one: 'keep', other: '')} ${length} characters starting from the char #${startIndex}${Intl.plural(location, zero: '-to-end', one: '', other: '')} going ${Intl.plural(direction, zero: 'backward', one: 'forward', other: '')}.";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{

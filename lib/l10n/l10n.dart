@@ -1120,10 +1120,10 @@ class L10n {
     );
   }
 
-  /// `Insert {insert} at the char #{insertIndex} from {location, plural, =0{end} =1{start} other{other}}.`
+  /// `Insert "{insert}" at the char #{insertIndex}{location, plural, =0{-to-end} =1{} other{}}.`
   String insertToString(num location, String insert, num insertIndex) {
     return Intl.message(
-      'Insert $insert at the char #$insertIndex from ${Intl.plural(location, zero: 'end', one: 'start', other: 'other')}.',
+      'Insert "$insert" at the char #$insertIndex${Intl.plural(location, zero: '-to-end', one: '', other: '')}.',
       name: 'insertToString',
       desc: '',
       args: [location, insert, insertIndex],
@@ -1170,11 +1170,11 @@ class L10n {
     );
   }
 
-  /// `Truncate: {keepType, plural, =0{remove} =1{keep} other{other}} {length} characters starting from the char #{startIndex} from {location, plural, =0{end} =1{start} other{other}} going {direction, plural, =0{backward} =1{forward} other{other}}.`
+  /// `Truncate: {keepType, plural, =0{remove} =1{keep} other{}} {length} characters starting from the char #{startIndex}{location, plural, =0{-to-end} =1{} other{}} going {direction, plural, =0{backward} =1{forward} other{}}.`
   String truncateToString(
       num keepType, num location, num direction, num length, num startIndex) {
     return Intl.message(
-      'Truncate: ${Intl.plural(keepType, zero: 'remove', one: 'keep', other: 'other')} $length characters starting from the char #$startIndex from ${Intl.plural(location, zero: 'end', one: 'start', other: 'other')} going ${Intl.plural(direction, zero: 'backward', one: 'forward', other: 'other')}.',
+      'Truncate: ${Intl.plural(keepType, zero: 'remove', one: 'keep', other: '')} $length characters starting from the char #$startIndex${Intl.plural(location, zero: '-to-end', one: '', other: '')} going ${Intl.plural(direction, zero: 'backward', one: 'forward', other: '')}.',
       name: 'truncateToString',
       desc: '',
       args: [keepType, location, direction, length, startIndex],

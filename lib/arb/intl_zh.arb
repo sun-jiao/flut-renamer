@@ -124,7 +124,7 @@
       }
     }
   },
-  "insertToString": "插入：在{location, plural, =0{倒数的} =1{} other{other}}第{insertIndex}个字符处插入“{insert}”。",
+  "insertToString": "插入：在{location, plural, =0{倒数的} =1{} other{}}第{insertIndex}个字符处插入“{insert}”。",
   "@insertToString": {
     "placeholders": {
       "location": {
@@ -176,7 +176,7 @@
       }
     }
   },
-  "truncateToString": "截断：从{location, plural, =0{倒数的} =1{} other{other}}第{startIndex}个字符开始，向{direction, plural, =0{后} =1{前} other{other}}{keepType, plural, =0{移除} =1{保留} other{other}}{length}个字符。",
+  "truncateToString": "截断：从{location, plural, =0{倒数的} =1{} other{}}第{startIndex}个字符开始，向{direction, plural, =0{后} =1{前} other{other}}{keepType, plural, =0{移除} =1{保留} other{other}}{length}个字符。",
   "@truncateToString": {
     "placeholders": {
       "keepType": {

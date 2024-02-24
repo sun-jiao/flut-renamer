@@ -23,7 +23,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m0(prefix) => "递增：${prefix}-索引";
 
   static String m1(location, insert, insertIndex) =>
-      "插入：在${Intl.plural(location, zero: '倒数的', one: '', other: 'other')}第${insertIndex}个字符处插入“${insert}”。";
+      "插入：在${Intl.plural(location, zero: '倒数的', one: '', other: '')}第${insertIndex}个字符处插入“${insert}”。";
 
   static String m2(delimiter, order) => "重排：分隔符：${delimiter}，顺序：${order}。";
 
@@ -37,7 +37,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m6(langName, type) => "转写：将${langName}${type}。";
 
   static String m7(keepType, location, direction, length, startIndex) =>
-      "截断：从${Intl.plural(location, zero: '倒数的', one: '', other: 'other')}第${startIndex}个字符开始，向${Intl.plural(direction, zero: '后', one: '前', other: 'other')}${Intl.plural(keepType, zero: '移除', one: '保留', other: 'other')}${length}个字符。";
+      "截断：从${Intl.plural(location, zero: '倒数的', one: '', other: '')}第${startIndex}个字符开始，向${Intl.plural(direction, zero: '后', one: '前', other: 'other')}${Intl.plural(keepType, zero: '移除', one: '保留', other: 'other')}${length}个字符。";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
