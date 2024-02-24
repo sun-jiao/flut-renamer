@@ -52,7 +52,6 @@ class RuleInsert implements Rule {
 
   @override
   String toString() {
-    return L10n.current.insertToString(
-        insert, insertIndex, fromStart ? L10n.current.locationStart : L10n.current.locationEnd);
+    return L10n.current.insertToString(fromStart ? 1 : 0, insert, insertIndex);
   }
 }

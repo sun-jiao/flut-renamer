@@ -22,8 +22,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m0(prefix) => "递增：${prefix}-索引";
 
-  static String m1(insert, insertIndex, location) =>
-      "插入：在${location}的第${insertIndex}个字符处插入“${insert}”。";
+  static String m1(location, insert, insertIndex) =>
+      "插入：在${Intl.plural(location, zero: '倒数的', one: '', other: 'other')}第${insertIndex}个字符处插入“${insert}”。";
 
   static String m2(delimiter, order) => "重排：分隔符：${delimiter}，顺序：${order}。";
 
@@ -36,8 +36,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m6(langName, type) => "转写：将${langName}${type}。";
 
-  static String m7(keepType, length, startIndex, location, direction) =>
-      "截断：从${location}第${startIndex}个字符开始，向${direction}${keepType}${length}个字符。";
+  static String m7(keepType, location, direction, length, startIndex) =>
+      "截断：从${Intl.plural(location, zero: '倒数的', one: '', other: 'other')}第${startIndex}个字符开始，向${Intl.plural(direction, zero: '后', one: '前', other: 'other')}${Intl.plural(keepType, zero: '移除', one: '保留', other: 'other')}${length}个字符。";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -56,8 +56,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "caseSensitive": MessageLookupByLibrary.simpleMessage("区分大小写"),
         "collapseOptions": MessageLookupByLibrary.simpleMessage("收起选项"),
         "currentName": MessageLookupByLibrary.simpleMessage("当前文件名"),
-        "directionBackward": MessageLookupByLibrary.simpleMessage("后"),
-        "directionForward": MessageLookupByLibrary.simpleMessage("前"),
         "directories": MessageLookupByLibrary.simpleMessage("目录"),
         "dragToAdd": MessageLookupByLibrary.simpleMessage("拖放文件进行添加。"),
         "dropToAdd": MessageLookupByLibrary.simpleMessage("在此处释放文件。"),
@@ -98,8 +96,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "keepCharacters": MessageLookupByLibrary.simpleMessage("保留字符"),
         "language": MessageLookupByLibrary.simpleMessage("语言："),
         "limit": MessageLookupByLibrary.simpleMessage("次数"),
-        "locationEnd": MessageLookupByLibrary.simpleMessage("倒数"),
-        "locationStart": MessageLookupByLibrary.simpleMessage("正数"),
         "lowercaseAppName": MessageLookupByLibrary.simpleMessage("批量重命名"),
         "me": MessageLookupByLibrary.simpleMessage("黑山语"),
         "metadataParserNotProvided":
@@ -181,8 +177,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("转换为繁体中文"),
         "transliterateUpper": MessageLookupByLibrary.simpleMessage("转换为大写拉丁字符"),
         "truncate": MessageLookupByLibrary.simpleMessage("截断"),
-        "truncateKeep": MessageLookupByLibrary.simpleMessage("保留"),
-        "truncateRemove": MessageLookupByLibrary.simpleMessage("删除"),
         "truncateToString": m7,
         "ua": MessageLookupByLibrary.simpleMessage("乌克兰语")
       };

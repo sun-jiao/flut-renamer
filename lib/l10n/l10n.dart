@@ -1120,13 +1120,13 @@ class L10n {
     );
   }
 
-  /// `Insert {insert} at the char #{insertIndex} from {location}.`
-  String insertToString(String insert, num insertIndex, String location) {
+  /// `Insert {insert} at the char #{insertIndex} from {location, plural, =0{end} =1{start} other{other}}.`
+  String insertToString(num location, String insert, num insertIndex) {
     return Intl.message(
-      'Insert $insert at the char #$insertIndex from $location.',
+      'Insert $insert at the char #$insertIndex from ${Intl.plural(location, zero: 'end', one: 'start', other: 'other')}.',
       name: 'insertToString',
       desc: '',
-      args: [insert, insertIndex, location],
+      args: [location, insert, insertIndex],
     );
   }
 
@@ -1170,74 +1170,14 @@ class L10n {
     );
   }
 
-  /// `Truncate: {keepType} {length} characters starting from the char #{startIndex} from {location} character going {direction}.`
-  String truncateToString(String keepType, num length, num startIndex,
-      String location, String direction) {
+  /// `Truncate: {keepType, plural, =0{remove} =1{keep} other{other}} {length} characters starting from the char #{startIndex} from {location, plural, =0{end} =1{start} other{other}} going {direction, plural, =0{backward} =1{forward} other{other}}.`
+  String truncateToString(
+      num keepType, num location, num direction, num length, num startIndex) {
     return Intl.message(
-      'Truncate: $keepType $length characters starting from the char #$startIndex from $location character going $direction.',
+      'Truncate: ${Intl.plural(keepType, zero: 'remove', one: 'keep', other: 'other')} $length characters starting from the char #$startIndex from ${Intl.plural(location, zero: 'end', one: 'start', other: 'other')} going ${Intl.plural(direction, zero: 'backward', one: 'forward', other: 'other')}.',
       name: 'truncateToString',
       desc: '',
-      args: [keepType, length, startIndex, location, direction],
-    );
-  }
-
-  /// `start`
-  String get locationStart {
-    return Intl.message(
-      'start',
-      name: 'locationStart',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `end`
-  String get locationEnd {
-    return Intl.message(
-      'end',
-      name: 'locationEnd',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `forward`
-  String get directionForward {
-    return Intl.message(
-      'forward',
-      name: 'directionForward',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `backward`
-  String get directionBackward {
-    return Intl.message(
-      'backward',
-      name: 'directionBackward',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `keep`
-  String get truncateKeep {
-    return Intl.message(
-      'keep',
-      name: 'truncateKeep',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `remove`
-  String get truncateRemove {
-    return Intl.message(
-      'remove',
-      name: 'truncateRemove',
-      desc: '',
-      args: [],
+      args: [keepType, location, direction, length, startIndex],
     );
   }
 
