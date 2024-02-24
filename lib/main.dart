@@ -84,24 +84,24 @@ class AppPage extends StatelessWidget {
   const AppPage({super.key});
 
   void _permissionCheck(BuildContext context) async {
-    if (!Platform.isAndroid) {
-      return;
+    if (Platform.isAndroid) {
+      final PermissionStatus value = await Permission.manageExternalStorage.status;
+
+      switch (value) {
+        case PermissionStatus.permanentlyDenied:
+          if (context.mounted) {
+            _cannotRun(context);
+          }
+        case PermissionStatus.denied:
+          if (context.mounted) {
+            _permissionRequest(context);
+          }
+        default:
+          return;
+      }
     }
 
-    final PermissionStatus value = await Permission.manageExternalStorage.status;
 
-    switch (value) {
-      case PermissionStatus.permanentlyDenied:
-        if (context.mounted) {
-          _cannotRun(context);
-        }
-      case PermissionStatus.denied:
-        if (context.mounted) {
-          _permissionRequest(context);
-        }
-      default:
-        return;
-    }
   }
 
   void _permissionRequest(BuildContext context) => showDialog(

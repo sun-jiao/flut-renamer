@@ -28,5 +28,9 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+
+    <key>NSFullDiskAccessUsageDescription</key>
+    <string>Explain why your app uses this permission</string>
+
 </dict>
 </plist>
