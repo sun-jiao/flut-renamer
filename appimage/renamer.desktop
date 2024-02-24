@@ -4,5 +4,5 @@ Type=Application
 Terminal=false
 Name=Renamer
 Exec=renamer %u
-Icon=ic_launcher
+Icon=desktop
 Categories=Utility;
