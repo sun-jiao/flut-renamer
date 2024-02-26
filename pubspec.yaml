@@ -41,7 +41,7 @@ dependencies:
   file_manager: ^1.0.2
   file_picker: ^6.1.1
   fluttertoast: ^8.2.4
-  intl: ^0.18.1
+  intl: ^0.19.0
   package_info_plus: ^5.0.1
   path: ^1.8.3
   permission_handler: ^11.3.0
@@ -59,7 +59,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.3
+  flutter_lints: ^3.0.1
   change_app_package_name: ^1.1.0
   flutter_launcher_icons: ^0.13.1
 
