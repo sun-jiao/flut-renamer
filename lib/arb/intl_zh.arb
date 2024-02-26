@@ -101,9 +101,13 @@
   "caseSensitive": "区分大小写",
   "isRegex": "使用正则表达式",
   "language": "语言：",
+  "indexOne": "第一处位置",
+  "indexTwo": "第二处位置",
+  "toLast": "倒数",
   "selectionLength": "所选内容长度",
   "goingForward": "向前",
-  "keepCharacters": "保留字符",
+  "keepCharacters": "保留二者之间的字符",
+  "removeCharacters": "移除二者之间的字符",
   "metadataParserNotProvided": "包含元数据标签，但未提供元数据解析器。",
   "replaceToString": "替换：将“{targetString}”替换为“{replacementString}”。",
   "@replaceToString": {
@@ -176,22 +180,22 @@
       }
     }
   },
-  "truncateToString": "截取：从{location, plural, =0{倒数的} =1{} other{}}第{startIndex}个字符开始，向{direction, plural, =0{后} =1{前} other{other}}{keepType, plural, =0{移除} =1{保留} other{other}}{length}个字符。",
+  "truncateToString": "截取：{keepType, plural, =0{仅保留} =1{移除} other{}}从{i1toEnd, plural, =0{倒数的} =1{} other{}}第{i1}个字符至{i2toEnd, plural, =0{倒数的} =1{} other{}}第{i2}个字符之间的内容。",
   "@truncateToString": {
     "placeholders": {
       "keepType": {
         "type": "num"
       },
-      "location":{
+      "i1toEnd":{
         "type": "num"
       },
-      "direction":{
+      "i2toEnd":{
         "type": "num"
       },
-      "length": {
+      "i1": {
         "type": "num"
       },
-      "startIndex": {
+      "i2": {
         "type": "num"
       }
     }

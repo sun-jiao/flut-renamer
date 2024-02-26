@@ -38,8 +38,8 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m6(langName, type) =>
       "Transliterate: convert ${langName} ${type}.";
 
-  static String m7(keepType, location, direction, length, startIndex) =>
-      "Truncate: ${Intl.plural(keepType, zero: 'remove', one: 'keep', other: '')} ${length} characters starting from the char #${startIndex}${Intl.plural(location, zero: '-to-end', one: '', other: '')} going ${Intl.plural(direction, zero: 'backward', one: 'forward', other: '')}.";
+  static String m7(keepType, i1toEnd, i2toEnd, i1, i2) =>
+      "Truncate: ${Intl.plural(keepType, zero: 'keep only', one: 'remove', other: '')} characters between the ${i1}th${Intl.plural(i1toEnd, zero: '-to-end', one: '', other: '')} character and the ${i2}th${Intl.plural(i2toEnd, zero: '-to-end', one: '', other: '')}.";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -96,6 +96,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "incrementToString": m0,
         "indexIncrementalStep":
             MessageLookupByLibrary.simpleMessage("Index incremental step"),
+        "indexOne":
+            MessageLookupByLibrary.simpleMessage("First character index"),
+        "indexTwo":
+            MessageLookupByLibrary.simpleMessage("Second character index"),
         "insert": MessageLookupByLibrary.simpleMessage("Insert"),
         "insertBeforeIndex":
             MessageLookupByLibrary.simpleMessage("Insert before index"),
@@ -106,8 +110,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "insertedText":
             MessageLookupByLibrary.simpleMessage("Text to be inserted"),
         "isRegex": MessageLookupByLibrary.simpleMessage("Is regex"),
-        "keepCharacters":
-            MessageLookupByLibrary.simpleMessage("Keep characters"),
+        "keepCharacters": MessageLookupByLibrary.simpleMessage(
+            "Keep characters between them"),
         "language": MessageLookupByLibrary.simpleMessage("Language: "),
         "limit": MessageLookupByLibrary.simpleMessage("limit"),
         "lowercaseAppName": MessageLookupByLibrary.simpleMessage("renamer"),
@@ -173,6 +177,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "rearrangeToString": m2,
         "remove": MessageLookupByLibrary.simpleMessage("Remove"),
         "removeAll": MessageLookupByLibrary.simpleMessage("Remove all"),
+        "removeCharacters": MessageLookupByLibrary.simpleMessage(
+            "Remove characters between them"),
         "removeRenamed": MessageLookupByLibrary.simpleMessage("Remove renamed"),
         "removeRules":
             MessageLookupByLibrary.simpleMessage("Remove rules after renaming"),
@@ -184,13 +190,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "ru": MessageLookupByLibrary.simpleMessage("Russian"),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
         "selectAll": MessageLookupByLibrary.simpleMessage("Select All"),
-        "selectionLength":
-            MessageLookupByLibrary.simpleMessage("Selection length"),
         "sourceCode": MessageLookupByLibrary.simpleMessage("Source code"),
         "sr": MessageLookupByLibrary.simpleMessage("Serbian"),
         "startIndex": MessageLookupByLibrary.simpleMessage("Start index"),
         "target": MessageLookupByLibrary.simpleMessage("target"),
         "tj": MessageLookupByLibrary.simpleMessage("Tajik"),
+        "toLast": MessageLookupByLibrary.simpleMessage("-to-last"),
         "transliterate": MessageLookupByLibrary.simpleMessage("Transliterate"),
         "transliterateCyrillic2Latin": MessageLookupByLibrary.simpleMessage(
             "Cyrillic characters to Latin"),

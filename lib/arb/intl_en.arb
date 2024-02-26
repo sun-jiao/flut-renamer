@@ -101,9 +101,12 @@
   "caseSensitive": "Case sensitive",
   "isRegex": "Is regex",
   "language": "Language: ",
-  "selectionLength": "Selection length",
+  "indexOne": "First character index",
+  "indexTwo": "Second character index",
+  "toLast": "-to-last",
   "goingForward": "Going forward",
-  "keepCharacters": "Keep characters",
+  "keepCharacters": "Keep characters between them",
+  "removeCharacters": "Remove characters between them",
   "metadataParserNotProvided": "Contains metadata tag while MetadataParser was not provided.",
   "replaceToString": "Replace \"{targetString}\" with \"{replacementString}\".",
   "@replaceToString": {
@@ -176,22 +179,22 @@
       }
     }
   },
-  "truncateToString": "Truncate: {keepType, plural, =0{remove} =1{keep} other{}} {length} characters starting from the char #{startIndex}{location, plural, =0{-to-end} =1{} other{}} going {direction, plural, =0{backward} =1{forward} other{}}.",
+  "truncateToString": "Truncate: {keepType, plural, =0{keep only} =1{remove} other{}} characters between the {i1}th{i1toEnd, plural, =0{-to-end} =1{} other{}} character and the {i2}th{i2toEnd, plural, =0{-to-end} =1{} other{}}.",
   "@truncateToString": {
     "placeholders": {
       "keepType": {
         "type": "num"
       },
-      "location":{
+      "i1toEnd":{
         "type": "num"
       },
-      "direction":{
+      "i2toEnd":{
         "type": "num"
       },
-      "length": {
+      "i1": {
         "type": "num"
       },
-      "startIndex": {
+      "i2": {
         "type": "num"
       }
     }

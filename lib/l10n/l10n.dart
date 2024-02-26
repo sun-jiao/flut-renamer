@@ -1060,11 +1060,31 @@ class L10n {
     );
   }
 
-  /// `Selection length`
-  String get selectionLength {
+  /// `First character index`
+  String get indexOne {
     return Intl.message(
-      'Selection length',
-      name: 'selectionLength',
+      'First character index',
+      name: 'indexOne',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Second character index`
+  String get indexTwo {
+    return Intl.message(
+      'Second character index',
+      name: 'indexTwo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `-to-last`
+  String get toLast {
+    return Intl.message(
+      '-to-last',
+      name: 'toLast',
       desc: '',
       args: [],
     );
@@ -1080,11 +1100,21 @@ class L10n {
     );
   }
 
-  /// `Keep characters`
+  /// `Keep characters between them`
   String get keepCharacters {
     return Intl.message(
-      'Keep characters',
+      'Keep characters between them',
       name: 'keepCharacters',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Remove characters between them`
+  String get removeCharacters {
+    return Intl.message(
+      'Remove characters between them',
+      name: 'removeCharacters',
       desc: '',
       args: [],
     );
@@ -1170,14 +1200,14 @@ class L10n {
     );
   }
 
-  /// `Truncate: {keepType, plural, =0{remove} =1{keep} other{}} {length} characters starting from the char #{startIndex}{location, plural, =0{-to-end} =1{} other{}} going {direction, plural, =0{backward} =1{forward} other{}}.`
+  /// `Truncate: {keepType, plural, =0{keep only} =1{remove} other{}} characters between the {i1}th{i1toEnd, plural, =0{-to-end} =1{} other{}} character and the {i2}th{i2toEnd, plural, =0{-to-end} =1{} other{}}.`
   String truncateToString(
-      num keepType, num location, num direction, num length, num startIndex) {
+      num keepType, num i1toEnd, num i2toEnd, num i1, num i2) {
     return Intl.message(
-      'Truncate: ${Intl.plural(keepType, zero: 'remove', one: 'keep', other: '')} $length characters starting from the char #$startIndex${Intl.plural(location, zero: '-to-end', one: '', other: '')} going ${Intl.plural(direction, zero: 'backward', one: 'forward', other: '')}.',
+      'Truncate: ${Intl.plural(keepType, zero: 'keep only', one: 'remove', other: '')} characters between the ${i1}th${Intl.plural(i1toEnd, zero: '-to-end', one: '', other: '')} character and the ${i2}th${Intl.plural(i2toEnd, zero: '-to-end', one: '', other: '')}.',
       name: 'truncateToString',
       desc: '',
-      args: [keepType, location, direction, length, startIndex],
+      args: [keepType, i1toEnd, i2toEnd, i1, i2],
     );
   }
 

@@ -23,16 +23,12 @@ class TruncateDialog extends StatefulWidget {
 }
 
 class _TruncateDialogState extends State<TruncateDialog> {
-  TextEditingController startController = TextEditingController(
-    text: '0',
-  );
-  TextEditingController lengthController = TextEditingController(
-    text: '0',
-  );
-  bool fromStart = true; // true: count from start, false: count from end.
-  bool direction = true; // truncate direction
+  TextEditingController i1Controller = TextEditingController(text: '0');
+  TextEditingController i2Controller = TextEditingController(text: '0');
+  bool i1toEnd = false; // true: negative (Xth-to-last), false: positive (Xth)
+  bool i2toEnd = false; // true: negative (Xth-to-last), false: positive (Xth)
   bool ignoreExtension = true;
-  bool keep = true; // true: keep chars in ranges, false: remove in range
+  bool keepBetween = true; // true: keep chars in ranges, false: remove in range
 
   @override
   Widget build(BuildContext context) {
@@ -41,50 +37,62 @@ class _TruncateDialogState extends State<TruncateDialog> {
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TextFormField(
-              controller: startController,
-              keyboardType: TextInputType.number,
-              inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.allow(RegExp('[0-9]')), // 只允许数字
+            Row(
+              children: [
+                Expanded(child: TextFormField(
+                  controller: i1Controller,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.allow(RegExp('[0-9]')), // 只允许数字
+                  ],
+                  decoration: InputDecoration(labelText: L10n.current.indexOne),
+                ),),
+                TextButton(
+                  child: Text(L10n.current.toLast, style: TextStyle(
+                    color: i1toEnd ? null : Colors.grey,
+                  ),),
+                  onPressed: () {
+                    setState(() {
+                      i1toEnd = !i1toEnd;
+                    });
+                  },
+                ),
               ],
-              decoration: InputDecoration(labelText: L10n.current.startIndex),
             ),
             box,
-            TextFormField(
-              controller: lengthController,
-              keyboardType: TextInputType.number,
-              inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.allow(RegExp('[0-9]')), // 只允许数字
+            Row(
+              children: [
+                Expanded(child: TextFormField(
+                  controller: i2Controller,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.allow(RegExp('[0-9]')), // 只允许数字
+                  ],
+                  decoration: InputDecoration(labelText: L10n.current.indexTwo),
+                ),),
+                TextButton(
+                  child: Text(L10n.current.toLast, style: TextStyle(
+                    color: i2toEnd ? null : Colors.grey,
+                  ),),
+                  onPressed: () {
+                    setState(() {
+                      i2toEnd = !i2toEnd;
+                    });
+                  },
+                ),
               ],
-              decoration: InputDecoration(labelText: L10n.current.selectionLength),
             ),
-            CheckboxTile(
-              title: Text(L10n.current.fromStart),
-              value: fromStart,
-              onChanged: (value) {
-                setState(() {
-                  fromStart = value ?? fromStart;
-                });
-              },
-            ),
-            CheckboxTile(
-              title: Text(L10n.current.goingForward),
-              value: direction,
-              onChanged: (value) {
-                setState(() {
-                  direction = value ?? direction;
-                });
-              },
-            ),
-            CheckboxTile(
-              title: Text(L10n.current.keepCharacters),
-              value: keep,
-              onChanged: (value) {
-                setState(() {
-                  keep = value ?? keep;
-                });
-              },
+            ListTile(
+              title: TextButton(
+                child: Text(keepBetween ? L10n.current.keepCharacters : L10n.current.removeCharacters),
+                onPressed: () {
+                  setState(() {
+                    keepBetween = !keepBetween;
+                  });
+                },
+              ),
             ),
             CheckboxTile(
               title: Text(L10n.current.ignoreExtension),
@@ -107,16 +115,16 @@ class _TruncateDialogState extends State<TruncateDialog> {
         ),
         TextButton(
           onPressed: () {
-            int startIndex = int.tryParse(startController.text) ?? 0;
-            int length = int.tryParse(lengthController.text) ?? 0;
+            int index1 = int.tryParse(i1Controller.text) ?? 0;
+            int index2 = int.tryParse(i2Controller.text) ?? 0;
 
             final Rule rule = RuleTruncate(
-              startIndex,
-              fromStart,
-              direction,
-              length,
+              index1,
+              index2,
+              i1toEnd,
+              i2toEnd,
               ignoreExtension,
-              keep,
+              keepBetween,
             );
 
             widget.onSave.call(rule);

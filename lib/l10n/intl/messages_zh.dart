@@ -36,8 +36,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m6(langName, type) => "转写：将${langName}${type}。";
 
-  static String m7(keepType, location, direction, length, startIndex) =>
-      "截取：从${Intl.plural(location, zero: '倒数的', one: '', other: '')}第${startIndex}个字符开始，向${Intl.plural(direction, zero: '后', one: '前', other: 'other')}${Intl.plural(keepType, zero: '移除', one: '保留', other: 'other')}${length}个字符。";
+  static String m7(keepType, i1toEnd, i2toEnd, i1, i2) =>
+      "截取：${Intl.plural(keepType, zero: '仅保留', one: '移除', other: '')}从${Intl.plural(i1toEnd, zero: '倒数的', one: '', other: '')}第${i1}个字符至${Intl.plural(i2toEnd, zero: '倒数的', one: '', other: '')}第${i2}个字符之间的内容。";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -85,6 +85,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "increment": MessageLookupByLibrary.simpleMessage("递增"),
         "incrementToString": m0,
         "indexIncrementalStep": MessageLookupByLibrary.simpleMessage("索引递增量"),
+        "indexOne": MessageLookupByLibrary.simpleMessage("第一处位置"),
+        "indexTwo": MessageLookupByLibrary.simpleMessage("第二处位置"),
         "insert": MessageLookupByLibrary.simpleMessage("插入"),
         "insertBeforeIndex": MessageLookupByLibrary.simpleMessage("在插入位置前侧插入"),
         "insertIndex": MessageLookupByLibrary.simpleMessage("插入位置"),
@@ -93,7 +95,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "insertToString": m1,
         "insertedText": MessageLookupByLibrary.simpleMessage("要插入的文本"),
         "isRegex": MessageLookupByLibrary.simpleMessage("使用正则表达式"),
-        "keepCharacters": MessageLookupByLibrary.simpleMessage("保留字符"),
+        "keepCharacters": MessageLookupByLibrary.simpleMessage("保留二者之间的字符"),
         "language": MessageLookupByLibrary.simpleMessage("语言："),
         "limit": MessageLookupByLibrary.simpleMessage("次数"),
         "lowercaseAppName": MessageLookupByLibrary.simpleMessage("批量重命名"),
@@ -146,6 +148,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "rearrangeToString": m2,
         "remove": MessageLookupByLibrary.simpleMessage("删除"),
         "removeAll": MessageLookupByLibrary.simpleMessage("移除全部"),
+        "removeCharacters": MessageLookupByLibrary.simpleMessage("移除二者之间的字符"),
         "removeRenamed": MessageLookupByLibrary.simpleMessage("移除已重命名文件"),
         "removeRules": MessageLookupByLibrary.simpleMessage("重命名后移除所有规则"),
         "removeToString": m3,
@@ -156,12 +159,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "ru": MessageLookupByLibrary.simpleMessage("俄语"),
         "save": MessageLookupByLibrary.simpleMessage("保存"),
         "selectAll": MessageLookupByLibrary.simpleMessage("全选"),
-        "selectionLength": MessageLookupByLibrary.simpleMessage("所选内容长度"),
         "sourceCode": MessageLookupByLibrary.simpleMessage("源代码"),
         "sr": MessageLookupByLibrary.simpleMessage("塞尔维亚语"),
         "startIndex": MessageLookupByLibrary.simpleMessage("起始索引"),
         "target": MessageLookupByLibrary.simpleMessage("目标"),
         "tj": MessageLookupByLibrary.simpleMessage("塔吉克语"),
+        "toLast": MessageLookupByLibrary.simpleMessage("倒数"),
         "transliterate": MessageLookupByLibrary.simpleMessage("转写"),
         "transliterateCyrillic2Latin":
             MessageLookupByLibrary.simpleMessage("从西里尔字符转为拉丁字符"),
