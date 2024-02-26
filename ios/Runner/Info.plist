@@ -64,5 +64,8 @@
     <key>NSPhotoLibraryUsageDescription</key>
     <string>Explain why your app uses photo library</string>
 
+    <key>NSDocumentsFolderUsageDescription</key>
+    <string>Explain why your app uses</string>
+
 </dict>
 </plist>

@@ -51,6 +51,8 @@ class FilesPageState extends State<FilesPage> {
       } else {
         return;
       }
+    } else if (Platform.isIOS) {
+
     } else {
       FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true);
       if (result != null) {

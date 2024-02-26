@@ -7,6 +7,7 @@ todo:
 - ~~Convert, including case convert, Chinese simp/trad/pinyin convert, Latin/Cyrillic script transliteration~~.(Done.)
 - ~~Incremental renaming: for example, RenamerFile-1, RenamerFile-2, RenamerFile-3, RenamerFile-4, ...~~.(Done.)
 - Rules re-editing.
+- Implement iOS renamer with specific code and Platform channel, references: [Writing custom platform-specific code](https://docs.flutter.dev/platform-integration/platform-channels?tab=type-mappings-swift-tab#type-mappings-swift-tab), [Providing access to directories](https://developer.apple.com/documentation/uikit/view_controllers/providing_access_to_directories), [juanmartin/renamerApp-ios](https://github.com/juanmartin/renamerApp-ios)
 
 # Screenshots
 ## Desktop

@@ -100,8 +100,6 @@ class AppPage extends StatelessWidget {
           return;
       }
     }
-
-
   }
 
   void _permissionRequest(BuildContext context) => showDialog(
