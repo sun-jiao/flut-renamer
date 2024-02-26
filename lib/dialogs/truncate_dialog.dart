@@ -30,6 +30,29 @@ class _TruncateDialogState extends State<TruncateDialog> {
   bool ignoreExtension = true;
   bool keepBetween = true; // true: keep chars in ranges, false: remove in range
 
+  Widget _getRow(TextEditingController con, bool toEnd, VoidCallback callback) => Row(
+    children: [
+      Expanded(child: TextFormField(
+        controller: con,
+        keyboardType: TextInputType.number,
+        inputFormatters: <TextInputFormatter>[
+          FilteringTextInputFormatter.allow(RegExp('[0-9]')), // 只允许数字
+        ],
+        decoration: InputDecoration(labelText: L10n.current.indexOne),
+      ),),
+      TextButton(
+        child: Text(L10n.current.toLast, style: TextStyle(
+          color: toEnd ? null : Colors.grey,
+        ),),
+        onPressed: () {
+          setState(() {
+            callback.call();
+          });
+        },
+      ),
+    ],
+  );
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -39,51 +62,9 @@ class _TruncateDialogState extends State<TruncateDialog> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Expanded(child: TextFormField(
-                  controller: i1Controller,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.allow(RegExp('[0-9]')), // 只允许数字
-                  ],
-                  decoration: InputDecoration(labelText: L10n.current.indexOne),
-                ),),
-                TextButton(
-                  child: Text(L10n.current.toLast, style: TextStyle(
-                    color: i1toEnd ? null : Colors.grey,
-                  ),),
-                  onPressed: () {
-                    setState(() {
-                      i1toEnd = !i1toEnd;
-                    });
-                  },
-                ),
-              ],
-            ),
+            _getRow(i1Controller, i1toEnd, () => i1toEnd = !i1toEnd),
             box,
-            Row(
-              children: [
-                Expanded(child: TextFormField(
-                  controller: i2Controller,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.allow(RegExp('[0-9]')), // 只允许数字
-                  ],
-                  decoration: InputDecoration(labelText: L10n.current.indexTwo),
-                ),),
-                TextButton(
-                  child: Text(L10n.current.toLast, style: TextStyle(
-                    color: i2toEnd ? null : Colors.grey,
-                  ),),
-                  onPressed: () {
-                    setState(() {
-                      i2toEnd = !i2toEnd;
-                    });
-                  },
-                ),
-              ],
-            ),
+            _getRow(i2Controller, i2toEnd, () => i2toEnd = !i2toEnd),
             ListTile(
               title: TextButton(
                 child: Text(keepBetween ? L10n.current.keepCharacters : L10n.current.removeCharacters),
