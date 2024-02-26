@@ -10,6 +10,7 @@ import '../l10n/l10n.dart';
 import '../rules/rule.dart';
 import '../tools/file_metadata.dart';
 import '../tools/responsive.dart';
+import '../widget/custom_dialog.dart';
 import 'rules_page.dart';
 import 'files_page.dart';
 
@@ -228,7 +229,7 @@ class _HomeToolBarState extends State<HomeToolBar> {
 
   void ratingMyApp() => showDialog(
         context: context,
-        builder: (context) => AlertDialog(
+        builder: (context) => CustomDialog(
           title: Text(L10n.current.ratingTitle),
           content: Text(L10n.current.ratingContent),
           actions: [

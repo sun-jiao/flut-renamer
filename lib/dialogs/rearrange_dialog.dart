@@ -5,6 +5,7 @@ import '../entity/constants.dart';
 import '../l10n/l10n.dart';
 import '../rules/rule.dart';
 import '../widget/checkbox_tile.dart';
+import '../widget/custom_dialog.dart';
 
 void showRearrangeDialog(BuildContext context, Function(Rule) onSave) => showDialog(
       context: context,
@@ -29,7 +30,7 @@ class _RearrangeDialogState extends State<RearrangeDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
+    return CustomDialog(
       title: Text('${L10n.current.addRule}: ${L10n.current.rearrange}'),
       content: SingleChildScrollView(
         child: Column(

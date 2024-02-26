@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../entity/transliterate.dart';
 import '../l10n/l10n.dart';
+import '../widget/custom_dialog.dart';
 import '../widget/custom_drop.dart';
 import 'package:cyrtranslit/cyrtranslit.dart' as cyrtranslit;
 
@@ -28,7 +29,7 @@ class _TransliterateDialogState extends State<TransliterateDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
+    return CustomDialog(
       title: Text('${L10n.current.addRule}: ${L10n.current.transliterate}'),
       content: SingleChildScrollView(
         child: Column(

@@ -7,6 +7,7 @@ import '../l10n/l10n.dart';
 import '../tools/ex_text_editing_controller.dart';
 import '../rules/rule.dart';
 import '../widget/checkbox_tile.dart';
+import '../widget/custom_dialog.dart';
 
 void showInsertDialog(BuildContext context, Function(Rule) onSave) => showDialog(
       context: context,
@@ -36,7 +37,7 @@ class _InsertDialogState extends State<InsertDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
+    return CustomDialog(
       title: Text('${L10n.current.addRule}: ${L10n.current.insert}'),
       content: SingleChildScrollView(
         child: Column(

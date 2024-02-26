@@ -8,6 +8,7 @@ import 'entity/sharedpref.dart';
 import 'entity/theme_extension.dart';
 import 'l10n/l10n.dart';
 import 'pages/home_page.dart';
+import 'widget/custom_dialog.dart';
 
 late Locale _appLocale;
 
@@ -106,7 +107,7 @@ class AppPage extends StatelessWidget {
 
   void _permissionRequest(BuildContext context) => showDialog(
         context: context,
-        builder: (contextD) => AlertDialog(
+        builder: (contextD) => CustomDialog(
           title: Text(L10n.current.permissionTitle),
           content: Text(L10n.current.permissionContent),
           actions: [
@@ -129,7 +130,7 @@ class AppPage extends StatelessWidget {
   void _cannotRun(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (context) => CustomDialog(
         title: Text(L10n.current.exitTitle),
         content: Text(L10n.current.exitContent),
         actions: [

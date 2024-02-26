@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 
 import '../l10n/l10n.dart';
 import '../tools/ex_file.dart';
+import '../widget/custom_dialog.dart';
 
 Future<FileSystemEntity?> rename(
   FileSystemEntity file, {
@@ -28,7 +29,7 @@ Future<FileSystemEntity?> rename(
     if (context != null && context.mounted) {
       showDialog(
         context: context,
-        builder: (dContext) => AlertDialog(
+        builder: (dContext) => CustomDialog(
           title: Text(L10n.current.appError),
           content: Column(
             mainAxisSize: MainAxisSize.min,

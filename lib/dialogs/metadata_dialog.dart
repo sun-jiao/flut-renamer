@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:renamer/l10n/l10n.dart';
 
+import '../widget/custom_dialog.dart';
+
 void showMetadataDialog(BuildContext context, Function(String tag) onInsert) => showDialog(
       context: context,
       builder: (context) => MetadataDialog(
@@ -38,7 +40,7 @@ class MetadataDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
+    return CustomDialog(
       title: Text(L10n.current.metadataTags),
       content: SingleChildScrollView(
         child: Column(
