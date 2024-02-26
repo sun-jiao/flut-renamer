@@ -28,10 +28,10 @@ class ExtFieldHandler<T> {
 // an extension to control file list selection.
 extension ExFile on FileSystemEntity {
   // get file name
-  String get name => path.substring(path.lastIndexOf('/') + 1);
+  String get name => path.substring(path.lastIndexOf(Platform.pathSeparator) + 1);
 
   // get the directory
-  String get directory => path.substring(0, path.lastIndexOf('/'));
+  String get directory => path.substring(0, path.lastIndexOf(Platform.pathSeparator));
 
   static final ExtFieldHandler<bool> _selectionHandler = ExtFieldHandler();
   bool get selected => _selectionHandler.getValue(path) ?? false;
