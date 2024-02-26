@@ -1,3 +1,3 @@
 # Privacy policy
 
-This application does not collect any information from users, because it has no internet access.
+This application does not collect any information from users, it has no internet access.
