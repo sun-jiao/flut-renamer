@@ -1,7 +1,3 @@
-/// Modified based on the example of library `file_manager`:
-/// https://github.com/DevsOnFlutter/file_manager/blob/main/example/lib/main.dart
-/// Originally distributed under BSD-3-Clause license
-
 import 'dart:io';
 
 import 'package:file_manager/file_manager.dart';
@@ -49,6 +45,9 @@ const _reserveDirs = [
   '/storage/emulated/0/Pictures/Screenshots',
 ];
 
+/// Modified based on the example of library `file_manager`:
+/// https://github.com/DevsOnFlutter/file_manager/blob/main/example/lib/main.dart
+/// Originally distributed under BSD-3-Clause license
 class AndroidFilePicker extends StatefulWidget {
   const AndroidFilePicker({super.key});
 

@@ -37,7 +37,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m6(langName, type) => "转写：将${langName}${type}。";
 
   static String m7(keepType, location, direction, length, startIndex) =>
-      "截断：从${Intl.plural(location, zero: '倒数的', one: '', other: '')}第${startIndex}个字符开始，向${Intl.plural(direction, zero: '后', one: '前', other: 'other')}${Intl.plural(keepType, zero: '移除', one: '保留', other: 'other')}${length}个字符。";
+      "截取：从${Intl.plural(location, zero: '倒数的', one: '', other: '')}第${startIndex}个字符开始，向${Intl.plural(direction, zero: '后', one: '前', other: 'other')}${Intl.plural(keepType, zero: '移除', one: '保留', other: 'other')}${length}个字符。";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -176,7 +176,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "transliterateTraditional":
             MessageLookupByLibrary.simpleMessage("转换为繁体中文"),
         "transliterateUpper": MessageLookupByLibrary.simpleMessage("转换为大写拉丁字符"),
-        "truncate": MessageLookupByLibrary.simpleMessage("截断"),
+        "truncate": MessageLookupByLibrary.simpleMessage("截取"),
         "truncateToString": m7,
         "ua": MessageLookupByLibrary.simpleMessage("乌克兰语")
       };

@@ -33,7 +33,7 @@
   "increment": "递增",
   "rearrange": "重排",
   "transliterate": "转写",
-  "truncate": "截断",
+  "truncate": "截取",
   "cancelAll": "全部取消",
   "selectAll": "全选",
   "currentName": "当前文件名",
@@ -176,7 +176,7 @@
       }
     }
   },
-  "truncateToString": "截断：从{location, plural, =0{倒数的} =1{} other{}}第{startIndex}个字符开始，向{direction, plural, =0{后} =1{前} other{other}}{keepType, plural, =0{移除} =1{保留} other{other}}{length}个字符。",
+  "truncateToString": "截取：从{location, plural, =0{倒数的} =1{} other{}}第{startIndex}个字符开始，向{direction, plural, =0{后} =1{前} other{other}}{keepType, plural, =0{移除} =1{保留} other{other}}{length}个字符。",
   "@truncateToString": {
     "placeholders": {
       "keepType": {
