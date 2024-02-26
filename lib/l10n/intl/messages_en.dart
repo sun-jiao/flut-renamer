@@ -59,6 +59,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "collapseOptions":
             MessageLookupByLibrary.simpleMessage("Collapse options"),
         "currentName": MessageLookupByLibrary.simpleMessage("Current name"),
+        "descriptionIncrement": MessageLookupByLibrary.simpleMessage(
+            "Increment the filename, e.g., Photo-1, Photo-2, Photo-3."),
+        "descriptionInsert": MessageLookupByLibrary.simpleMessage(
+            "Insert the specified text at the designated position."),
+        "descriptionRearrange": MessageLookupByLibrary.simpleMessage(
+            "Splitting the filename by the user-specified delimiter and rearrange segments according to the provided order."),
+        "descriptionRemove": MessageLookupByLibrary.simpleMessage(
+            "Remove the specified text (or text matching the provided regular expression) from the filename."),
+        "descriptionReplace": MessageLookupByLibrary.simpleMessage(
+            "Replace the specified text (or text matching the provided regular expression) with the given replacement text (or file metadata and EXIF data)."),
+        "descriptionTransliterate": MessageLookupByLibrary.simpleMessage(
+            "Transliterate characters according to predefined specifications, including converting characters to upper or lower case, converting between character sets, or converting characters to phonetic equivalents."),
+        "descriptionTruncate": MessageLookupByLibrary.simpleMessage(
+            "Remove or keep the specified part of the filename, starting from one designated position to another."),
         "directories": MessageLookupByLibrary.simpleMessage("Directories"),
         "dragToAdd":
             MessageLookupByLibrary.simpleMessage("Drag and drop to add files."),

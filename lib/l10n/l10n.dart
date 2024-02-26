@@ -1211,6 +1211,76 @@ class L10n {
     );
   }
 
+  /// `Replace the specified text (or text matching the provided regular expression) with the given replacement text (or file metadata and EXIF data).`
+  String get descriptionReplace {
+    return Intl.message(
+      'Replace the specified text (or text matching the provided regular expression) with the given replacement text (or file metadata and EXIF data).',
+      name: 'descriptionReplace',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Remove the specified text (or text matching the provided regular expression) from the filename.`
+  String get descriptionRemove {
+    return Intl.message(
+      'Remove the specified text (or text matching the provided regular expression) from the filename.',
+      name: 'descriptionRemove',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Insert the specified text at the designated position.`
+  String get descriptionInsert {
+    return Intl.message(
+      'Insert the specified text at the designated position.',
+      name: 'descriptionInsert',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Increment the filename, e.g., Photo-1, Photo-2, Photo-3.`
+  String get descriptionIncrement {
+    return Intl.message(
+      'Increment the filename, e.g., Photo-1, Photo-2, Photo-3.',
+      name: 'descriptionIncrement',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Splitting the filename by the user-specified delimiter and rearrange segments according to the provided order.`
+  String get descriptionRearrange {
+    return Intl.message(
+      'Splitting the filename by the user-specified delimiter and rearrange segments according to the provided order.',
+      name: 'descriptionRearrange',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Transliterate characters according to predefined specifications, including converting characters to upper or lower case, converting between character sets, or converting characters to phonetic equivalents.`
+  String get descriptionTransliterate {
+    return Intl.message(
+      'Transliterate characters according to predefined specifications, including converting characters to upper or lower case, converting between character sets, or converting characters to phonetic equivalents.',
+      name: 'descriptionTransliterate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Remove or keep the specified part of the filename, starting from one designated position to another.`
+  String get descriptionTruncate {
+    return Intl.message(
+      'Remove or keep the specified part of the filename, starting from one designated position to another.',
+      name: 'descriptionTruncate',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Bulgarian`
   String get bg {
     return Intl.message(

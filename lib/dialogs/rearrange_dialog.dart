@@ -35,6 +35,7 @@ class _RearrangeDialogState extends State<RearrangeDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            Text(L10n.current.descriptionRearrange),
             TextFormField(
               controller: delimiterController,
               decoration: InputDecoration(labelText: L10n.current.rearrangeDelimiter),

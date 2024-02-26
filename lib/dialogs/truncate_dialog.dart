@@ -62,6 +62,7 @@ class _TruncateDialogState extends State<TruncateDialog> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Text(L10n.current.descriptionTruncate),
             _getRow(i1Controller, i1toEnd, () => i1toEnd = !i1toEnd),
             box,
             _getRow(i2Controller, i2toEnd, () => i2toEnd = !i2toEnd),

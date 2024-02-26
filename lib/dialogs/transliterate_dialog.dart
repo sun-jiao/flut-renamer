@@ -35,6 +35,7 @@ class _TransliterateDialogState extends State<TransliterateDialog> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Text(L10n.current.descriptionTransliterate),
             CustomDrop<Transliterate>(
               value: type,
               onChanged: (Transliterate? newValue) {

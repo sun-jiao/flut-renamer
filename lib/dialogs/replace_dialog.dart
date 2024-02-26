@@ -55,6 +55,7 @@ class _ReplaceDialogState extends State<ReplaceDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            Text(remove ? L10n.current.descriptionRemove : L10n.current.descriptionReplace),
             TextFormField(
               controller: targetController,
               decoration: InputDecoration(labelText: '$ruleName ${L10n.current.target}'),

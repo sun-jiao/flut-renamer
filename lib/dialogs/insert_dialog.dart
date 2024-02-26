@@ -42,6 +42,7 @@ class _InsertDialogState extends State<InsertDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            Text(L10n.current.descriptionInsert),
             TextFormField(
               controller: textController,
               decoration: InputDecoration(labelText: L10n.current.insertedText),

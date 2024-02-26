@@ -56,6 +56,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "caseSensitive": MessageLookupByLibrary.simpleMessage("区分大小写"),
         "collapseOptions": MessageLookupByLibrary.simpleMessage("收起选项"),
         "currentName": MessageLookupByLibrary.simpleMessage("当前文件名"),
+        "descriptionIncrement": MessageLookupByLibrary.simpleMessage(
+            "递增文件名，例如 Photo-1、Photo-2、Photo-3。"),
+        "descriptionInsert":
+            MessageLookupByLibrary.simpleMessage("在指定位置插入指定文本。"),
+        "descriptionRearrange": MessageLookupByLibrary.simpleMessage(
+            "以用户指定的分隔符将文件名分割成若干片段，并根据提供的顺序重新排列。"),
+        "descriptionRemove": MessageLookupByLibrary.simpleMessage(
+            "从文件名中删除指定的文本（或与提供的正则表达式匹配的文本）。"),
+        "descriptionReplace": MessageLookupByLibrary.simpleMessage(
+            "用给定的替换文本（或文件元数据和 EXIF 数据）替换指定的文本（或与提供的正则表达式匹配的文本）。"),
+        "descriptionTransliterate": MessageLookupByLibrary.simpleMessage(
+            "根据预先定义的规范转换字符，包括将字母转换为大写或小写、转换为不同的文字变体或转换为不同的书写系统。"),
+        "descriptionTruncate": MessageLookupByLibrary.simpleMessage(
+            "删除或保留文件名的指定部分，从一个指定位置开始到另一个指定位置。"),
         "directories": MessageLookupByLibrary.simpleMessage("目录"),
         "dragToAdd": MessageLookupByLibrary.simpleMessage("拖放文件进行添加。"),
         "dropToAdd": MessageLookupByLibrary.simpleMessage("在此处释放文件。"),

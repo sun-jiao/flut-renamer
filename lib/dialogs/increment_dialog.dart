@@ -41,6 +41,7 @@ class _IncrementDialogState extends State<IncrementDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            Text(L10n.current.descriptionIncrement),
             TextFormField(
               controller: prefixController,
               decoration: InputDecoration(labelText: L10n.current.prefix),
