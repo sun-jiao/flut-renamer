@@ -31,3 +31,31 @@ jobs:
           name: Renamer-${{github.ref_name}}-windows.zip
           path: build/windows/x64/runner/Release
 
+  build-and-release-macos:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          architecture: x64
+          flutter-version: '3.19.1'
+      - name: Install project dependencies
+        run: flutter pub get
+      - name: Enable macOS build
+        run: flutter config --enable-macos-desktop
+      - name: Build artifacts
+        run: flutter build macos --release
+      - name: install npm
+        run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+      - name: install appdmg
+        run: npm install -g appdmg
+      - name: build dmg
+        run: appdmg ./dmg/config.json ./build/macos/Build/Products/Release/
+      - name: macOS Release
+        uses: actions/upload-artifact@v4
+        with:
+          name: Renamer-${{github.ref_name}}-macos.zip
+          path: build/macos/Build/Products/Release
+
