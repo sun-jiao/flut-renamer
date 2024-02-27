@@ -32,7 +32,7 @@ jobs:
       - name: Windows Release
         uses: actions/upload-artifact@v4
         with:
-          name: Renamer-${{github.ref_name}}-windows.zip
+          name: Renamer-${{github.ref_name}}-${{ github.sha }}-windows
           path: build/windows/x64/runner/Release
 
   build-and-release-macos:
@@ -60,6 +60,6 @@ jobs:
       - name: macOS Release
         uses: actions/upload-artifact@v4
         with:
-          name: Renamer-${{github.ref_name}}-macos.zip
-          path: build/macos/Build/Products/Release
+          name: renamer-${{github.ref_name}}-${{ github.sha }}-macos
+          path: build/macos/Build/Products/Release/renamer.dmg
 
