@@ -28,7 +28,7 @@ jobs:
       - name: install evb
         run: npm install enigmavirtualbox -g
       - name: create evb config file
-        run: enigmavirtualbox gen renamer.evb ".\renamer-bundled.exe" ".\build\windows\x64\runner\Release\renamer.exe" ".\build\windows\x64\runner\Release"
+        run: enigmavirtualbox gen renamer.evb renamer-bundled.exe ".\build\windows\x64\runner\Release\renamer.exe" ".\build\windows\x64\runner\Release"
       - name: build single exe file
         run: enigmavirtualbox cli .\renamer.evb
       - name: Windows Release
