@@ -32,14 +32,19 @@ jobs:
       - name: create dat
         run: tar.exe -a -c -f renamer.dat "build\windows\x64\runner\Release\*"
       - name: create evb config file
-        run: enigmavirtualbox gen renamer.evb renamer-bundled.exe renamer.exe renamer.dat
+        run: enigmavirtualbox gen renamer.evb ".\renamer-bundled.exe" renamer.exe renamer.dat
       - name: build single exe file
         run: enigmavirtualbox cli .\renamer.evb
       - name: Windows Release
         uses: actions/upload-artifact@v4
         with:
           name: renamer-${{github.ref_name}}-${{ github.sha }}-windows
-          path: build/windows/x64/runner/Release
+          path: renamer.exe
+#      - name: Windows Release
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: renamer-${{github.ref_name}}-${{ github.sha }}-windows
+#          path: build/windows/x64/runner/Release
 
 #  build-and-release-macos:
 #    runs-on: macos-14
