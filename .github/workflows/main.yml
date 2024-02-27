@@ -25,8 +25,10 @@ jobs:
         run: msiexec.exe /a https://nodejs.org/dist/v20.11.1/node-v20.11.1-x64.msi /quiet
       - name: install evb
         run: npm install enigmavirtualbox
+      - name: create evb config file
+        run: enigmavirtualbox gen renamer.evb ".\renamer-bundled.exe" ".\build\windows\x64\runner\Release\renamer.exe" ".\build\windows\x64\runner\Release"
       - name: build single exe file
-        run: PATH=$(npm bin):$PATH enigmavirtualbox cli .\evb\renamer_evb.evb
+        run: PATH=$(npm bin):$PATH enigmavirtualbox cli .\evb\renamer.evp
       - name: Windows Release
         uses: actions/upload-artifact@v4
         with:
