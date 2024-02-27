@@ -1,5 +1,7 @@
 # renamer
 
+<img alt="Get it on Google Play" src="https://raw.githubusercontent.com/sun-jiao/renamer/main/assets/desktop.png" height=100px /> 
+
 A bulk file renamer written in flutter (dart).
 
 <a href="https://play.google.com/store/apps/details?id=net.sunjiao.renamer"><img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" height=60px /></a>
