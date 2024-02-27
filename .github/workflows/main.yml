@@ -30,7 +30,7 @@ jobs:
       - name: create evb config file
         run: enigmavirtualbox gen renamer.evb ".\renamer-bundled.exe" ".\build\windows\x64\runner\Release\renamer.exe" ".\build\windows\x64\runner\Release"
       - name: build single exe file
-        run: enigmavirtualbox cli .\evb\renamer.evp
+        run: enigmavirtualbox cli .\renamer.evb
       - name: Windows Release
         uses: actions/upload-artifact@v4
         with:
