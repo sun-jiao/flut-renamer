@@ -34,15 +34,11 @@ jobs:
       - name: Windows Release
         uses: actions/upload-artifact@v4
         with:
-          name: Renamer-${{github.ref_name}}-${{ github.sha }}-${{ hostname }}
+          name: Renamer-${{github.ref_name}}-${{ github.sha }}-windows
           path: build/windows/x64/runner/Release
 
   build-and-release-macos:
-    strategy:
-      matrix:
-        runner: [ macos-12, macos-14 ]
-
-    runs-on: ${{ matrix.runner }}
+    runs-on: macos-14
 
     steps:
       - uses: actions/checkout@v4
@@ -66,6 +62,6 @@ jobs:
       - name: macOS Release
         uses: actions/upload-artifact@v4
         with:
-          name: renamer-${{github.ref_name}}-${{ github.sha }}-${{ hostname }}
+          name: renamer-${{github.ref_name}}-${{ github.sha }}-macos
           path: build/macos/Build/Products/Release/renamer.dmg
 
