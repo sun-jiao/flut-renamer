@@ -28,40 +28,40 @@ jobs:
       - name: install evb
         run: npm install enigmavirtualbox -g
       - name: create evb config file
-        run: npm run enigmavirtualbox gen renamer.evb ".\renamer-bundled.exe" ".\build\windows\x64\runner\Release\renamer.exe" ".\build\windows\x64\runner\Release"
+        run: enigmavirtualbox gen renamer.evb ".\renamer-bundled.exe" ".\build\windows\x64\runner\Release\renamer.exe" ".\build\windows\x64\runner\Release"
       - name: build single exe file
-        run: npm run enigmavirtualbox cli .\evb\renamer.evp
+        run: enigmavirtualbox cli .\evb\renamer.evp
       - name: Windows Release
         uses: actions/upload-artifact@v4
         with:
           name: renamer-${{github.ref_name}}-${{ github.sha }}-windows
           path: build/windows/x64/runner/Release
 
-  build-and-release-macos:
-    runs-on: macos-14
-
-    steps:
-      - uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2
-        with:
-          channel: 'stable'
-          architecture: x64
-          flutter-version: '3.19.1'
-      - name: Install project dependencies
-        run: flutter pub get
-      - name: Enable macOS build
-        run: flutter config --enable-macos-desktop
-      - name: Build artifacts
-        run: flutter build macos --release
-      - name: install npm
-        run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-      - name: install appdmg
-        run: npm install -g appdmg
-      - name: build dmg
-        run: appdmg ./dmg/config.json ./build/macos/Build/Products/Release/renamer.dmg
-      - name: macOS Release
-        uses: actions/upload-artifact@v4
-        with:
-          name: renamer-${{github.ref_name}}-${{ github.sha }}-macos
-          path: build/macos/Build/Products/Release/renamer.dmg
+#  build-and-release-macos:
+#    runs-on: macos-14
+#
+#    steps:
+#      - uses: actions/checkout@v4
+#      - uses: subosito/flutter-action@v2
+#        with:
+#          channel: 'stable'
+#          architecture: x64
+#          flutter-version: '3.19.1'
+#      - name: Install project dependencies
+#        run: flutter pub get
+#      - name: Enable macOS build
+#        run: flutter config --enable-macos-desktop
+#      - name: Build artifacts
+#        run: flutter build macos --release
+#      - name: install npm
+#        run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+#      - name: install appdmg
+#        run: npm install -g appdmg
+#      - name: build dmg
+#        run: appdmg ./dmg/config.json ./build/macos/Build/Products/Release/renamer.dmg
+#      - name: macOS Release
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: renamer-${{github.ref_name}}-${{ github.sha }}-macos
+#          path: build/macos/Build/Products/Release/renamer.dmg
 
