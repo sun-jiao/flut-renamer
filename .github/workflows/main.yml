@@ -21,22 +21,28 @@ jobs:
         run: flutter config --enable-windows-desktop
       - name: Build artifacts
         run: flutter build windows --release
-      - name: install npm
-        run: msiexec.exe /a https://nodejs.org/dist/v20.11.1/node-v20.11.1-x64.msi /quiet
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+            node-version: 20
       - name: install evb
         run: npm install enigmavirtualbox
       - name: create evb config file
-        run: enigmavirtualbox gen renamer.evb ".\renamer-bundled.exe" ".\build\windows\x64\runner\Release\renamer.exe" ".\build\windows\x64\runner\Release"
+        run: npm run enigmavirtualbox gen renamer.evb ".\renamer-bundled.exe" ".\build\windows\x64\runner\Release\renamer.exe" ".\build\windows\x64\runner\Release"
       - name: build single exe file
-        run: PATH=$(npm bin):$PATH enigmavirtualbox cli .\evb\renamer.evp
+        run: npm run enigmavirtualbox cli .\evb\renamer.evp
       - name: Windows Release
         uses: actions/upload-artifact@v4
         with:
-          name: Renamer-${{github.ref_name}}-${{ github.sha }}-windows
+          name: Renamer-${{github.ref_name}}-${{ github.sha }}-${{ hostname }}
           path: build/windows/x64/runner/Release
 
   build-and-release-macos:
-    runs-on: macos-latest
+    strategy:
+      matrix:
+        runner: [ macos-12, macos-14 ]
+
+    runs-on: ${{ matrix.runner }}
 
     steps:
       - uses: actions/checkout@v4
@@ -60,6 +66,6 @@ jobs:
       - name: macOS Release
         uses: actions/upload-artifact@v4
         with:
-          name: renamer-${{github.ref_name}}-${{ github.sha }}-macos
+          name: renamer-${{github.ref_name}}-${{ github.sha }}-${{ hostname }}
           path: build/macos/Build/Products/Release/renamer.dmg
 
