@@ -21,10 +21,12 @@ jobs:
         run: flutter config --enable-windows-desktop
       - name: Build artifacts
         run: flutter build windows --release
+      - name: install npm
+        run: msiexec.exe /a https://nodejs.org/dist/v20.11.1/node-v20.11.1-x64.msi /quiet
       - name: install evb
-        run: curl.exe -o .\enigmavbconsole.exe "https://drive.usercontent.google.com/download?id=1j6ETwhO0NTn_QF8yrSBbczGpgh5AoMt4&export=download&authuser=0&confirm=t&uuid=ca7c2bc1-0ab1-4456-9cd6-fa79fa9aeedc&at=APZUnTU856nDSXEw3OhFsSMN3Lha%3A1709011511832"
+        run: npm install enigmavirtualbox
       - name: build single exe file
-        run: .\enigmavbconsole.exe .\evb\renamer_evb.evb
+        run: enigmavirtualbox cli .\evb\renamer_evb.evb
       - name: Windows Release
         uses: actions/upload-artifact@v4
         with:
