@@ -52,7 +52,7 @@ jobs:
       - name: install appdmg
         run: npm install -g appdmg
       - name: build dmg
-        run: appdmg ./dmg/config.json ./build/macos/Build/Products/Release/Renamer.dmg
+        run: appdmg ./dmg/config.json ./build/macos/Build/Products/Release/renamer.dmg
       - name: macOS Release
         uses: actions/upload-artifact@v4
         with:
