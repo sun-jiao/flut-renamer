@@ -1,0 +1,8 @@
+{
+  "name": "renamer",
+  "description": "bulk file renamer",
+  "author": "Sun Jiao <P.ozzy@outlook.com>",
+  "dependencies": {
+    "enigmavirtualbox": "0.9.10"
+  }
+}
