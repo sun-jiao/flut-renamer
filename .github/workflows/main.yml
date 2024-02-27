@@ -29,13 +29,13 @@ jobs:
         run: npm install enigmavirtualbox -g
       - name: create evb config file
         run: enigmavirtualbox gen renamer.evb renamer-bundled.exe ".\build\windows\x64\runner\Release\renamer.exe" ".\build\windows\x64\runner\Release"
-      - name: build single exe file
-        run: enigmavirtualbox cli .\renamer.evb
+#      - name: build single exe file
+#        run: enigmavirtualbox cli .\renamer.evb
       - name: Windows Release
         uses: actions/upload-artifact@v4
         with:
           name: renamer-${{github.ref_name}}-${{ github.sha }}-windows
-          path: build/windows/x64/runner/Release
+          path: renamer.evb
 
 #  build-and-release-macos:
 #    runs-on: macos-14
