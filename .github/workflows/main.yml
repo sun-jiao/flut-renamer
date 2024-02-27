@@ -35,6 +35,8 @@ jobs:
     runs-on: windows-latest
 
     steps:
+      - name: check current path
+        run: ECHO %cd%
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
