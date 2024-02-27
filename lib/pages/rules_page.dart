@@ -7,7 +7,6 @@ import '../dialogs/rearrange_dialog.dart';
 import '../dialogs/remove_dialog.dart';
 import '../dialogs/replace_dialog.dart';
 import '../dialogs/insert_dialog.dart';
-import '../entity/constants.dart';
 import '../entity/sharedpref.dart';
 import '../l10n/l10n.dart';
 import '../rules/rule.dart';
