@@ -22,7 +22,7 @@ jobs:
       - name: Build artifacts
         run: flutter build windows --release
       - name: install evb
-        run: curl.exe -o .\enigmavbconsole.exe https://drive.usercontent.google.com/download?id=1j6ETwhO0NTn_QF8yrSBbczGpgh5AoMt4&export=download&authuser=0&confirm=t&uuid=ca7c2bc1-0ab1-4456-9cd6-fa79fa9aeedc&at=APZUnTU856nDSXEw3OhFsSMN3Lha%3A1709011511832
+        run: curl.exe -o .\enigmavbconsole.exe "https://drive.usercontent.google.com/download?id=1j6ETwhO0NTn_QF8yrSBbczGpgh5AoMt4&export=download&authuser=0&confirm=t&uuid=ca7c2bc1-0ab1-4456-9cd6-fa79fa9aeedc&at=APZUnTU856nDSXEw3OhFsSMN3Lha%3A1709011511832"
       - name: build single exe file
         run: .\enigmavbconsole.exe .\evb\renamer_evb.evb
       - name: Windows Release
