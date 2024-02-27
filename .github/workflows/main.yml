@@ -21,16 +21,20 @@ jobs:
         run: flutter config --enable-windows-desktop
       - name: Build artifacts
         run: flutter build windows --release
-#      - name: Setup Node
-#        uses: actions/setup-node@v3
-#        with:
-#            node-version: 20
-#      - name: install evb
-#        run: npm install enigmavirtualbox -g
-#      - name: create evb config file
-#        run: enigmavirtualbox gen renamer.evb renamer-bundled.exe ".\build\windows\x64\runner\Release\renamer.exe" ".\build\windows\x64\runner\Release"
-#      - name: build single exe file
-#        run: enigmavirtualbox cli .\renamer.evb
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+            node-version: 20
+      - name: install evb
+        run: npm install enigmavirtualbox -g
+      - name: move build result
+        run: move "build\windows\x64\runner\Release\renamer.exe" "renamer.exe"
+      - name: create dat
+        run: tar.exe -a -c -f renamer.dat "build\windows\x64\runner\Release\*"
+      - name: create evb config file
+        run: enigmavirtualbox gen renamer.evb renamer-bundled.exe renamer.exe renamer.dat
+      - name: build single exe file
+        run: enigmavirtualbox cli .\renamer.evb
       - name: Windows Release
         uses: actions/upload-artifact@v4
         with:
