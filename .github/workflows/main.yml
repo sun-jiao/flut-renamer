@@ -38,6 +38,25 @@ jobs:
         with:
           name: Renamer-${{github.ref_name}}-${{ steps.vars.outputs.sha_short }}-appimage
           path: Renamer-x86_64.AppImage
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '12.x'
+      - name: decode key base64
+        run: echo $KEYSTORE_BASE64 | base64 -di > ./android/app/renamer.jks
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+      - run: flutter build apk --release
+        env:
+          KEYSTORE: renamer.jks
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD}}
+      - name: Android Release
+        uses: actions/upload-artifact@v1
+        with:
+          name: renamer-${{github.ref_name}}-${{ steps.vars.outputs.sha_short }}-release-apk
+          path: build/app/outputs/apk/release/app-release.apk
+
 
   build-and-release-windows:
     runs-on: windows-latest
@@ -104,4 +123,14 @@ jobs:
         with:
           name: renamer-${{github.ref_name}}-${{ steps.vars.outputs.sha_short }}-macos
           path: build/macos/Build/Products/Release/renamer.dmg
+      - name: Build ios
+        run: |
+          flutter build ios --release --no-codesign 
+          ln -sf ./build/ios/iphoneos Payload
+          zip -r9 renamer-${{github.ref_name}}-${{ steps.vars.outputs.sha_short }}-release.ipa Payload/runner.app
+      - name: ios Release
+        uses: actions/upload-artifact@v4
+        with:
+          name: renamer-${{github.ref_name}}-${{ steps.vars.outputs.sha_short }}-ios
+          path: renamer-${{github.ref_name}}-${{ steps.vars.outputs.sha_short }}-release.ipa
 

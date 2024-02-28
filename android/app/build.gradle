@@ -24,7 +24,15 @@ if (flutterVersionName == null) {
 
 def keystorePropertiesFile = rootProject.file("key.properties")
 def keystoreProperties = new Properties()
-keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
+def _storeFile = file(System.getenv("KEYSTORE") ?: keystoreProperties["storeFile"])
+def _storePassword = System.getenv("KEYSTORE_PASSWORD") ?: keystoreProperties["storePassword"]
+def _keyAlias = System.getenv("KEY_ALIAS") ?: keystoreProperties["keyAlias"]
+def _keyPassword = System.getenv("KEY_PASSWORD") ?: keystoreProperties["keyPassword"]
+
 
 android {
     namespace "net.sunjiao.renamer"
@@ -45,7 +53,6 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "net.sunjiao.renamer"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
@@ -57,17 +64,17 @@ android {
 
     signingConfigs {
         debug {
-            keyAlias keystoreProperties['keyAlias']  //别名
-            keyPassword keystoreProperties['keyPassword']
-            storeFile file(keystoreProperties['storeFile'])  //签名文件路径
-            storePassword keystoreProperties['storePassword']
+            keyAlias _keyAlias
+            keyPassword _keyPassword
+            storeFile _storeFile
+            storePassword _storePassword
         }
 
         release {
-            keyAlias keystoreProperties['keyAlias']  //别名
-            keyPassword keystoreProperties['keyPassword']
-            storeFile file(keystoreProperties['storeFile'])  //签名文件路径
-            storePassword keystoreProperties['storePassword']
+            keyAlias _keyAlias
+            keyPassword _keyPassword
+            storeFile _storeFile
+            storePassword _storePassword
         }
     }
 
