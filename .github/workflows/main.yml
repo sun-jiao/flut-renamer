@@ -25,15 +25,18 @@ jobs:
         run: flutter build linux --release
       - name: Build Appimage
         run: bash ./github_appimage_build.sh
+      - name: Set outputs
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
       - name: Linux Release
         uses: actions/upload-artifact@v4
         with:
-          name: Renamer-${{github.ref_name}}-$(git rev-parse --short HEAD)-linux
+          name: Renamer-${{github.ref_name}}-${{ steps.vars.outputs.sha_short }}-linux
           path: build/linux/x64/release/bundle
       - name: Linux Appimage Release
         uses: actions/upload-artifact@v4
         with:
-          name: Renamer-${{github.ref_name}}-$(git rev-parse --short HEAD)-linux
+          name: Renamer-${{github.ref_name}}-${{ steps.vars.outputs.sha_short }}-appimage
           path: Renamer-x86_64.AppImage
 
   build-and-release-windows:
@@ -68,15 +71,18 @@ jobs:
 #        run: enigmavirtualbox gen ".\renamer.evb" ".\renamer-bundled.exe" ".\renamer.exe" ".\renamer.dat"
 #      - name: build single exe file
 #        run: enigmavirtualbox cli ".\renamer.evb"
+      - name: Set outputs
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 #      - name: Windows Release
 #        uses: actions/upload-artifact@v4
 #        with:
-#          name: renamer-${{github.ref_name}}-$(git rev-parse --short HEAD)-windows
+#          name: renamer-${{github.ref_name}}-${{ steps.vars.outputs.sha_short }}-windows
 #          path: renamer.exe
       - name: Windows Release
         uses: actions/upload-artifact@v4
         with:
-          name: renamer-${{github.ref_name}}-$(git rev-parse --short HEAD)-windows
+          name: renamer-${{github.ref_name}}-${{ steps.vars.outputs.sha_short }}-windows
           path: build/windows/x64/runner/Release
 
   build-and-release-macos:
@@ -101,9 +107,12 @@ jobs:
         run: npm install -g appdmg
       - name: build dmg
         run: appdmg ./dmg/config.json ./build/macos/Build/Products/Release/renamer.dmg
+      - name: Set outputs
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
       - name: macOS Release
         uses: actions/upload-artifact@v4
         with:
-          name: renamer-${{github.ref_name}}-$(git rev-parse --short HEAD)-macos
+          name: renamer-${{github.ref_name}}-${{ steps.vars.outputs.sha_short }}-macos
           path: build/macos/Build/Products/Release/renamer.dmg
 
