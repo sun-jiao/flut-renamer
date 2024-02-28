@@ -28,12 +28,12 @@ jobs:
       - name: Linux Release
         uses: actions/upload-artifact@v4
         with:
-          name: Renamer-${{github.ref_name}}-${ GITHUB_SHA::7 }-linux
+          name: Renamer-${{github.ref_name}}-$(git rev-parse --short HEAD)-linux
           path: build/linux/x64/release/bundle
       - name: Linux Appimage Release
         uses: actions/upload-artifact@v4
         with:
-          name: Renamer-${{github.ref_name}}-${ GITHUB_SHA::7 }-linux
+          name: Renamer-${{github.ref_name}}-$(git rev-parse --short HEAD)-linux
           path: Renamer-x86_64.AppImage
 
   build-and-release-windows:
@@ -71,12 +71,12 @@ jobs:
 #      - name: Windows Release
 #        uses: actions/upload-artifact@v4
 #        with:
-#          name: renamer-${{github.ref_name}}-${ GITHUB_SHA::7 }-windows
+#          name: renamer-${{github.ref_name}}-$(git rev-parse --short HEAD)-windows
 #          path: renamer.exe
       - name: Windows Release
         uses: actions/upload-artifact@v4
         with:
-          name: renamer-${{github.ref_name}}-${ GITHUB_SHA::7 }-windows
+          name: renamer-${{github.ref_name}}-$(git rev-parse --short HEAD)-windows
           path: build/windows/x64/runner/Release
 
   build-and-release-macos:
@@ -104,6 +104,6 @@ jobs:
       - name: macOS Release
         uses: actions/upload-artifact@v4
         with:
-          name: renamer-${{github.ref_name}}-${ GITHUB_SHA::7 }-macos
+          name: renamer-${{github.ref_name}}-$(git rev-parse --short HEAD)-macos
           path: build/macos/Build/Products/Release/renamer.dmg
 
