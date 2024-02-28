@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="windows-1252"?>
 <>
-  <InputFile>./build/windows/x64/runner/Release/renamer.exe</InputFile>
-  <OutputFile>./renamer.exe</OutputFile>
+  <InputFile>D:\a\renamer\renamer\build\windows\x64\runner\Release\renamer.exe</InputFile>
+  <OutputFile>D:\a\renamer\renamer\renamer.exe</OutputFile>
   <Files>
     <Enabled>True</Enabled>
     <DeleteExtractedOnExit>False</DeleteExtractedOnExit>
@@ -26,7 +26,7 @@
               <File>
                 <Type>2</Type>
                 <Name>app.so</Name>
-                <File>./build/windows/x64/runner/Release/data/app.so</File>
+                <File>D:\a\renamer\renamer\build\windows\x64\runner\Release\data\app.so</File>
                 <ActiveX>False</ActiveX>
                 <ActiveXInstall>False</ActiveXInstall>
                 <Action>0</Action>
@@ -46,7 +46,7 @@
                   <File>
                     <Type>2</Type>
                     <Name>AssetManifest.bin</Name>
-                    <File>./build/windows/x64/runner/Release/data/flutter_assets/AssetManifest.bin</File>
+                    <File>D:\a\renamer\renamer\build\windows\x64\runner\Release\data\flutter_assets\AssetManifest.bin</File>
                     <ActiveX>False</ActiveX>
                     <ActiveXInstall>False</ActiveXInstall>
                     <Action>0</Action>
@@ -58,7 +58,7 @@
                   <File>
                     <Type>2</Type>
                     <Name>AssetManifest.json</Name>
-                    <File>./build/windows/x64/runner/Release/data/flutter_assets/AssetManifest.json</File>
+                    <File>D:\a\renamer\renamer\build\windows\x64\runner\Release\data\flutter_assets\AssetManifest.json</File>
                     <ActiveX>False</ActiveX>
                     <ActiveXInstall>False</ActiveXInstall>
                     <Action>0</Action>
@@ -78,7 +78,7 @@
                       <File>
                         <Type>2</Type>
                         <Name>desktop.png</Name>
-                        <File>./build/windows/x64/runner/Release/data/flutter_assets/assets/desktop.png</File>
+                        <File>D:\a\renamer\renamer\build\windows\x64\runner\Release\data\flutter_assets\assets\desktop.png</File>
                         <ActiveX>False</ActiveX>
                         <ActiveXInstall>False</ActiveXInstall>
                         <Action>0</Action>
@@ -92,7 +92,7 @@
                   <File>
                     <Type>2</Type>
                     <Name>FontManifest.json</Name>
-                    <File>./build/windows/x64/runner/Release/data/flutter_assets/FontManifest.json</File>
+                    <File>D:\a\renamer\renamer\build\windows\x64\runner\Release\data\flutter_assets\FontManifest.json</File>
                     <ActiveX>False</ActiveX>
                     <ActiveXInstall>False</ActiveXInstall>
                     <Action>0</Action>
@@ -112,7 +112,7 @@
                       <File>
                         <Type>2</Type>
                         <Name>MaterialIcons-Regular.otf</Name>
-                        <File>./build/windows/x64/runner/Release/data/flutter_assets/fonts/MaterialIcons-Regular.otf</File>
+                        <File>D:\a\renamer\renamer\build\windows\x64\runner\Release\data\flutter_assets\fonts\MaterialIcons-Regular.otf</File>
                         <ActiveX>False</ActiveX>
                         <ActiveXInstall>False</ActiveXInstall>
                         <Action>0</Action>
@@ -126,7 +126,7 @@
                   <File>
                     <Type>2</Type>
                     <Name>NOTICES.Z</Name>
-                    <File>./build/windows/x64/runner/Release/data/flutter_assets/NOTICES.Z</File>
+                    <File>D:\a\renamer\renamer\build\windows\x64\runner\Release\data\flutter_assets\NOTICES.Z</File>
                     <ActiveX>False</ActiveX>
                     <ActiveXInstall>False</ActiveXInstall>
                     <Action>0</Action>
@@ -162,7 +162,7 @@
                               <File>
                                 <Type>2</Type>
                                 <Name>toastify.css</Name>
-                                <File>./build/windows/x64/runner/Release/data/flutter_assets/packages/fluttertoast/assets/toastify.css</File>
+                                <File>D:\a\renamer\renamer\build\windows\x64\runner\Release\data\flutter_assets\packages\fluttertoast\assets\toastify.css</File>
                                 <ActiveX>False</ActiveX>
                                 <ActiveXInstall>False</ActiveXInstall>
                                 <Action>0</Action>
@@ -174,7 +174,7 @@
                               <File>
                                 <Type>2</Type>
                                 <Name>toastify.js</Name>
-                                <File>./build/windows/x64/runner/Release/data/flutter_assets/packages/fluttertoast/assets/toastify.js</File>
+                                <File>D:\a\renamer\renamer\build\windows\x64\runner\Release\data\flutter_assets\packages\fluttertoast\assets\toastify.js</File>
                                 <ActiveX>False</ActiveX>
                                 <ActiveXInstall>False</ActiveXInstall>
                                 <Action>0</Action>
@@ -206,7 +206,7 @@
                               <File>
                                 <Type>2</Type>
                                 <Name>FlutterIconsax.ttf</Name>
-                                <File>./build/windows/x64/runner/Release/data/flutter_assets/packages/iconsax_flutter/fonts/FlutterIconsax.ttf</File>
+                                <File>D:\a\renamer\renamer\build\windows\x64\runner\Release\data\flutter_assets\packages\iconsax_flutter\fonts\FlutterIconsax.ttf</File>
                                 <ActiveX>False</ActiveX>
                                 <ActiveXInstall>False</ActiveXInstall>
                                 <Action>0</Action>
@@ -232,7 +232,7 @@
                       <File>
                         <Type>2</Type>
                         <Name>ink_sparkle.frag</Name>
-                        <File>./build/windows/x64/runner/Release/data/flutter_assets/shaders/ink_sparkle.frag</File>
+                        <File>D:\a\renamer\renamer\build\windows\x64\runner\Release\data\flutter_assets\shaders\ink_sparkle.frag</File>
                         <ActiveX>False</ActiveX>
                         <ActiveXInstall>False</ActiveXInstall>
                         <Action>0</Action>
@@ -248,7 +248,7 @@
               <File>
                 <Type>2</Type>
                 <Name>icudtl.dat</Name>
-                <File>./build/windows/x64/runner/Release/data/icudtl.dat</File>
+                <File>D:\a\renamer\renamer\build\windows\x64\runner\Release\data\icudtl.dat</File>
                 <ActiveX>False</ActiveX>
                 <ActiveXInstall>False</ActiveXInstall>
                 <Action>0</Action>
@@ -262,7 +262,7 @@
           <File>
             <Type>2</Type>
             <Name>desktop_drop_plugin.dll</Name>
-            <File>./build/windows/x64/runner/Release/desktop_drop_plugin.dll</File>
+            <File>D:\a\renamer\renamer\build\windows\x64\runner\Release\desktop_drop_plugin.dll</File>
             <ActiveX>False</ActiveX>
             <ActiveXInstall>False</ActiveXInstall>
             <Action>0</Action>
@@ -274,7 +274,7 @@
           <File>
             <Type>2</Type>
             <Name>flutter_windows.dll</Name>
-            <File>./build/windows/x64/runner/Release/flutter_windows.dll</File>
+            <File>D:\a\renamer\renamer\build\windows\x64\runner\Release\flutter_windows.dll</File>
             <ActiveX>False</ActiveX>
             <ActiveXInstall>False</ActiveXInstall>
             <Action>0</Action>
@@ -286,7 +286,7 @@
           <File>
             <Type>2</Type>
             <Name>permission_handler_windows_plugin.dll</Name>
-            <File>./build/windows/x64/runner/Release/permission_handler_windows_plugin.dll</File>
+            <File>D:\a\renamer\renamer\build\windows\x64\runner\Release\permission_handler_windows_plugin.dll</File>
             <ActiveX>False</ActiveX>
             <ActiveXInstall>False</ActiveXInstall>
             <Action>0</Action>
@@ -298,7 +298,7 @@
           <File>
             <Type>2</Type>
             <Name>url_launcher_windows_plugin.dll</Name>
-            <File>./build/windows/x64/runner/Release/url_launcher_windows_plugin.dll</File>
+            <File>D:\a\renamer\renamer\build\windows\x64\runner\Release\url_launcher_windows_plugin.dll</File>
             <ActiveX>False</ActiveX>
             <ActiveXInstall>False</ActiveXInstall>
             <Action>0</Action>
