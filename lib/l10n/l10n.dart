@@ -160,6 +160,36 @@ class L10n {
     );
   }
 
+  /// `About picking files on iOS`
+  String get iosRemindTitle {
+    return Intl.message(
+      'About picking files on iOS',
+      name: 'iosRemindTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `To pick files on iOS, first choose the directory where your files located. Then, within the selected folder, pick the files you want to rename. Because the restriction of iOS, we have to take the two-step process, which ensures safe file management. Let's get started!`
+  String get iosRemindContent {
+    return Intl.message(
+      'To pick files on iOS, first choose the directory where your files located. Then, within the selected folder, pick the files you want to rename. Because the restriction of iOS, we have to take the two-step process, which ensures safe file management. Let\'s get started!',
+      name: 'iosRemindContent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `OK. Do not remind me again.`
+  String get iosDoNotRemindAgain {
+    return Intl.message(
+      'OK. Do not remind me again.',
+      name: 'iosDoNotRemindAgain',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Rename`
   String get rename {
     return Intl.message(

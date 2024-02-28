@@ -123,6 +123,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "insertToString": m1,
         "insertedText":
             MessageLookupByLibrary.simpleMessage("Text to be inserted"),
+        "iosDoNotRemindAgain":
+            MessageLookupByLibrary.simpleMessage("OK. Do not remind me again."),
+        "iosRemindContent": MessageLookupByLibrary.simpleMessage(
+            "To pick files on iOS, first choose the directory where your files located. Then, within the selected folder, pick the files you want to rename. Because the restriction of iOS, we have to take the two-step process, which ensures safe file management. Let\'s get started!"),
+        "iosRemindTitle":
+            MessageLookupByLibrary.simpleMessage("About picking files on iOS"),
         "isRegex": MessageLookupByLibrary.simpleMessage("Is regex"),
         "keepCharacters": MessageLookupByLibrary.simpleMessage(
             "Keep characters between them"),

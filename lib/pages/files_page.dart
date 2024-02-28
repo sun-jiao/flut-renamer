@@ -15,6 +15,7 @@ import '../tools/ex_file.dart';
 import '../tools/file_metadata.dart';
 import '../entity/sharedpref.dart';
 import '../tools/rename.dart';
+import '../widget/custom_dialog.dart';
 import '../widget/custom_drop.dart';
 
 class FilesPage extends StatefulWidget {
@@ -53,6 +54,13 @@ class FilesPageState extends State<FilesPage> {
         return;
       }
     } else if (Platform.isIOS) {
+      if (!Shared.iosDoNotRemindAgain) {
+        final iosOK = await _iosRemind(context);
+        if (iosOK != null && !iosOK) {
+          return;
+        }
+      }
+
       final dirs = await PlatformFilePicker.dirAccess();
       if (dirs == null || dirs.first == null) {
         return;
@@ -78,6 +86,32 @@ class FilesPageState extends State<FilesPage> {
       _files.addAll(entities.skipWhile((eNew) => _files.any((eOld) => eNew.path == eOld.path)));
     });
   }
+
+  Future<bool?> _iosRemind(BuildContext contextD) => showDialog<bool>(
+    context: contextD,
+    builder: (contextD) => CustomDialog(
+      title: Text(L10n.current.iosRemindTitle),
+      content: Text(L10n.current.iosRemindContent),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(contextD, false),
+          child: Text(L10n.current.cancel),
+        ),
+        TextButton(
+          onPressed: () => Navigator.pop(contextD, true),
+          child: Text(L10n.current.ok),
+        ),
+        TextButton(
+          onPressed: () {
+            Shared.iosDoNotRemindAgain = true;
+            Navigator.pop(contextD, true);
+          },
+          child: Text(L10n.current.iosDoNotRemindAgain),
+        ),
+      ],
+    ),
+  );
+
 
   void update() => setState(() {});
 

@@ -108,6 +108,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("请勿在一个标签内插入另一个标签。"),
         "insertToString": m1,
         "insertedText": MessageLookupByLibrary.simpleMessage("要插入的文本"),
+        "iosDoNotRemindAgain": MessageLookupByLibrary.simpleMessage("确定，不再提醒"),
+        "iosRemindContent": MessageLookupByLibrary.simpleMessage(
+            "要在iOS上选取文件，首先选择一个包含您的文件的文件夹。然后，在选定的文件夹中，选择您要重命名的文件。由于iOS的限制，我们必须采取这两个步骤，这可以确保安全的文件访问。让我们开始吧！"),
+        "iosRemindTitle": MessageLookupByLibrary.simpleMessage("关于在iOS上选取文件"),
         "isRegex": MessageLookupByLibrary.simpleMessage("使用正则表达式"),
         "keepCharacters": MessageLookupByLibrary.simpleMessage("保留二者之间的字符"),
         "language": MessageLookupByLibrary.simpleMessage("语言："),

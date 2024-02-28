@@ -7,8 +7,8 @@ class PlatformFilePicker {
   static Future<List<Object?>?> dirAccess() async {
     try {
       return await _channel.invokeMethod('dirAccess');
-    } on PlatformException catch (e) {
-      // show error message
+    } on PlatformException {
+      // TODO: show error message dialog
       rethrow;
     }
   }
@@ -21,8 +21,8 @@ class PlatformFilePicker {
           'startPath': startPath,
         },
       );
-    } on PlatformException catch (e) {
-      // show error message
+    } on PlatformException {
+      // TODO: show error message dialog
       rethrow;
     }
   }
@@ -36,8 +36,8 @@ class PlatformFilePicker {
           'newPath': newPath,
         },
       );
-    } on PlatformException catch (e) {
-      // show error message
+    } on PlatformException {
+      // TODO: show error message dialog
       rethrow;
     }
   }

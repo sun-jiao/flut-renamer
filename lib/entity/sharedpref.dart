@@ -10,6 +10,7 @@ class Shared {
     _removeRenamed = pref.getBool(_removeRenamedKey) ?? _removeRenamed;
     _removeRules = pref.getBool(_removeRulesKey) ?? _removeRules;
     _ruleName = pref.getString(_ruleNameKey) ?? _ruleName;
+    _iosDoNotRemindAgain = pref.getBool(_iosDoNotRemindAgainKey) ?? _iosDoNotRemindAgain;
   }
 
   static SharedPreferences get pref => _pref!;
@@ -21,6 +22,7 @@ class Shared {
   static const _removeRenamedKey = 'remove_renamed';
   static const _removeRulesKey = 'remove_rules';
   static const _ruleNameKey = 'rule_name';
+  static const _iosDoNotRemindAgainKey = 'ios_do_not_remind_again';
 
   static String _fileOrDir = 'Files';
   static String get fileOrDir => _fileOrDir;
@@ -55,5 +57,12 @@ class Shared {
   static set ruleName(String value) {
     _ruleName = value;
     pref.setString(_ruleNameKey, value);
+  }
+
+  static bool _iosDoNotRemindAgain = false;
+  static bool get iosDoNotRemindAgain => _iosDoNotRemindAgain;
+  static set iosDoNotRemindAgain(bool value) {
+    _iosDoNotRemindAgain = value;
+    pref.setBool(_iosDoNotRemindAgainKey, value);
   }
 }
