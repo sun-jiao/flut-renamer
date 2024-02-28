@@ -3,41 +3,41 @@ name: Flutter CI
 on: push
 
 jobs:
-#  build-and-release-linux:
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#      - uses: actions/checkout@v4
-#      - uses: subosito/flutter-action@v2
-#        with:
-#          channel: 'stable'
-#          architecture: x64
-#          flutter-version: '3.19.1'
-#      - name: Update dependencies
-#        run: sudo apt-get update
-#      - name: Install dependencies
-#        run: sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-0 libgtk-3-dev libblkid1 liblzma5
-#      - name: Install project dependencies
-#        run: flutter pub get
-#      - name: Enable linux build
-#        run: flutter config --enable-linux-desktop
-#      - name: Build artifacts
-#        run: flutter build linux --release
-#      - name: Build Appimage
-#        run: bash ./github_appimage_build.sh
-#      - name: Set outputs
-#        id: vars
-#        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-#      - name: Linux Release
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: Renamer-${{github.ref_name}}-${{ steps.vars.outputs.sha_short }}-linux
-#          path: build/linux/x64/release/bundle
-#      - name: Linux Appimage Release
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: Renamer-${{github.ref_name}}-${{ steps.vars.outputs.sha_short }}-appimage
-#          path: Renamer-x86_64.AppImage
+  build-and-release-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          architecture: x64
+          flutter-version: '3.19.1'
+      - name: Update dependencies
+        run: sudo apt-get update
+      - name: Install dependencies
+        run: sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-0 libgtk-3-dev libblkid1 liblzma5
+      - name: Install project dependencies
+        run: flutter pub get
+      - name: Enable linux build
+        run: flutter config --enable-linux-desktop
+      - name: Build artifacts
+        run: flutter build linux --release
+      - name: Build Appimage
+        run: bash ./github_appimage_build.sh
+      - name: Set outputs
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+      - name: Linux Release
+        uses: actions/upload-artifact@v4
+        with:
+          name: Renamer-${{github.ref_name}}-${{ steps.vars.outputs.sha_short }}-linux
+          path: build/linux/x64/release/bundle
+      - name: Linux Appimage Release
+        uses: actions/upload-artifact@v4
+        with:
+          name: Renamer-${{github.ref_name}}-${{ steps.vars.outputs.sha_short }}-appimage
+          path: Renamer-x86_64.AppImage
 
   build-and-release-windows:
     runs-on: windows-latest
@@ -63,56 +63,45 @@ jobs:
             node-version: 20
       - name: install evb
         run: npm install enigmavirtualbox -g
-#      - name: move build result
-#        run: move ".\build\windows\x64\runner\Release\renamer.exe" ".\renamer.exe"
-#      - name: create dat
-#        run: tar.exe -a -c -f ".\renamer.dat" ".\build\windows\x64\runner\Release\*"
-#      - name: create evb config file
-#        run: enigmavirtualbox gen ".\renamer.evb" ".\renamer-bundled.exe" ".\renamer.exe" ".\renamer.dat"
       - name: build single exe file
         run: enigmavirtualbox cli ".\evb\renamer.evb"
       - name: Set outputs
         id: vars
-        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
       - name: Windows Release
         uses: actions/upload-artifact@v4
         with:
           name: renamer-${{github.ref_name}}-${{ steps.vars.outputs.sha_short }}-windows
           path: renamer.exe
-      - name: Windows Release
+
+  build-and-release-macos:
+    runs-on: macos-14
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          architecture: x64
+          flutter-version: '3.19.1'
+      - name: Install project dependencies
+        run: flutter pub get
+      - name: Enable macOS build
+        run: flutter config --enable-macos-desktop
+      - name: Build artifacts
+        run: flutter build macos --release
+      - name: install npm
+        run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+      - name: install appdmg
+        run: npm install -g appdmg
+      - name: build dmg
+        run: appdmg ./dmg/config.json ./build/macos/Build/Products/Release/renamer.dmg
+      - name: Set outputs
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+      - name: macOS Release
         uses: actions/upload-artifact@v4
         with:
-          name: renamer-${{github.ref_name}}-${{ steps.vars.outputs.sha_short }}-windows_pack
-          path: build/windows/x64/runner/Release
+          name: renamer-${{github.ref_name}}-${{ steps.vars.outputs.sha_short }}-macos
+          path: build/macos/Build/Products/Release/renamer.dmg
 
-#  build-and-release-macos:
-#    runs-on: macos-14
-#
-#    steps:
-#      - uses: actions/checkout@v4
-#      - uses: subosito/flutter-action@v2
-#        with:
-#          channel: 'stable'
-#          architecture: x64
-#          flutter-version: '3.19.1'
-#      - name: Install project dependencies
-#        run: flutter pub get
-#      - name: Enable macOS build
-#        run: flutter config --enable-macos-desktop
-#      - name: Build artifacts
-#        run: flutter build macos --release
-#      - name: install npm
-#        run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-#      - name: install appdmg
-#        run: npm install -g appdmg
-#      - name: build dmg
-#        run: appdmg ./dmg/config.json ./build/macos/Build/Products/Release/renamer.dmg
-#      - name: Set outputs
-#        id: vars
-#        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-#      - name: macOS Release
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: renamer-${{github.ref_name}}-${{ steps.vars.outputs.sha_short }}-macos
-#          path: build/macos/Build/Products/Release/renamer.dmg
-#
