@@ -85,6 +85,10 @@ extension ExLink on Link {
   FileSystemEntity toFileSystemEntity() => _toFileSystemEntity(this, (link) => link.targetSync());
 }
 
+extension ExPathString on String {
+  FileSystemEntity toFileSystemEntity() => _toFileSystemEntity(this, (str) => str);
+}
+
 FileSystemEntity _toFileSystemEntity<T>(T file, String Function(T file) func) {
   FileSystemEntity entity;
 

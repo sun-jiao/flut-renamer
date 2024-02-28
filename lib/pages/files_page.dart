@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import '../entity/theme_extension.dart';
 import '../l10n/l10n.dart';
 import '../pages/android_file_picker_page.dart';
+import '../tools/ios_platform.dart';
 import '../tools/responsive.dart';
 import '../entity/constants.dart';
 import '../tools/ex_file.dart';
@@ -39,7 +40,7 @@ class FilesPageState extends State<FilesPage> {
   String _filter = '';
 
   Future<void> addFileFromPicker() async {
-    late List<FileSystemEntity> entities;
+    late Iterable<FileSystemEntity> entities;
     if (Platform.isAndroid) {
       final result = await Navigator.push(
         context,
@@ -52,20 +53,29 @@ class FilesPageState extends State<FilesPage> {
         return;
       }
     } else if (Platform.isIOS) {
+      final dirs = await PlatformFilePicker.dirAccess();
+      if (dirs == null || dirs.first == null) {
+        return;
+      }
 
+      final files = await PlatformFilePicker.fileAccess(dirs.first.toString());
+      if (files == null) {
+        return;
+      }
+
+      entities = files.skipWhile((e) => e == null).map((e) => e.toString()).map((e) => e.toFileSystemEntity());
     } else {
       FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true);
       if (result != null) {
         entities = result.files
             .where((e1) => e1.path != null && _files.every((e2) => e1.path != e2.path))
-            .map((e) => e.toFileSystemEntity())
-            .toList();
+            .map((e) => e.toFileSystemEntity());
       } else {
         return;
       }
     }
     setState(() {
-      _files.addAll(entities);
+      _files.addAll(entities.skipWhile((eNew) => _files.any((eOld) => eNew.path == eOld.path)));
     });
   }
 

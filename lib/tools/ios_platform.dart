@@ -1,21 +1,44 @@
 import 'package:flutter/services.dart';
 
 class PlatformFilePicker {
-  static const MethodChannel _channel = MethodChannel('net.sunjiao.renamer/picker');
+  static const MethodChannel _channel =
+      MethodChannel('net.sunjiao.renamer/picker');
 
-  static Future<void> dirAccess() async {
+  static Future<List<Object?>?> dirAccess() async {
     try {
-      await _channel.invokeMethod('dirAccess');
+      return await _channel.invokeMethod('dirAccess');
     } on PlatformException catch (e) {
       // show error message
+      rethrow;
     }
   }
 
-  static Future<void> renameFile() async {
+  static Future<List<Object?>?> fileAccess(String startPath) async {
     try {
-      await _channel.invokeMethod('renameFile');
+      return await _channel.invokeMethod(
+        'fileAccess',
+        {
+          'startPath': startPath,
+        },
+      );
     } on PlatformException catch (e) {
       // show error message
+      rethrow;
+    }
+  }
+
+  static Future<bool> renameFile(String oldPath, String newPath) async {
+    try {
+      return await _channel.invokeMethod(
+        'renameFile',
+        {
+          'oldPath': oldPath,
+          'newPath': newPath,
+        },
+      );
+    } on PlatformException catch (e) {
+      // show error message
+      rethrow;
     }
   }
 }
