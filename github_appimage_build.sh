@@ -11,4 +11,3 @@ cp -r ./appimage/AppRun ./build/linux/x64/renamer.AppDir
 chmod +x ./build/linux/x64/renamer.AppDir/AppRun
 appimagetool ./build/linux/x64/renamer.AppDir
 rm -rf ./build/linux/x64/renamer.AppDir
-cp Renamer-x86_64.AppImage ./build/linux/x64/release/bundle/
