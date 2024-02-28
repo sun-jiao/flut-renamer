@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="windows-1252"?>
 <>
   <InputFile>.\build\windows\x64\runner\Release\renamer.exe</InputFile>
-  <OutputFile>.\build\windows\x64\runner\Release\renamer_evb.exe</OutputFile>
+  <OutputFile>.\renamer.exe</OutputFile>
   <Files>
     <Enabled>True</Enabled>
     <DeleteExtractedOnExit>False</DeleteExtractedOnExit>
