@@ -39,6 +39,7 @@ jobs:
           path: Renamer-x86_64.AppImage
       - uses: actions/setup-java@v2
         with:
+          distribution: 'zulu'
           java-version: '12.x'
       - name: decode key base64
         run: echo $KEYSTORE_BASE64 | base64 -di > ./android/app/renamer.jks
@@ -48,6 +49,7 @@ jobs:
           flutter build apk --release
           flutter build apk --release --split-per-abi
           flutter build appbundle --release
+          mv build/app/outputs/bundle/release/app-release.aab build/app/outputs/flutter-apk/
         env:
           KEYSTORE: renamer.jks
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
@@ -57,7 +59,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: renamer-${{github.ref_name}}-${{ steps.vars.outputs.sha_short }}-android
-          path: build/app/outputs/apk/release
+          path: build/app/outputs/flutter-apk
 
 
   build-and-release-windows:
