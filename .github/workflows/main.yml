@@ -40,7 +40,7 @@ jobs:
       - uses: actions/setup-java@v2
         with:
           distribution: 'zulu'
-          java-version: '12.x'
+          java-version: '17.x'
       - name: decode key base64
         run: echo $KEYSTORE_BASE64 | base64 -di > ./android/app/renamer.jks
         env:
