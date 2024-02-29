@@ -11,7 +11,7 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-          architecture: arm64
+          architecture: x64
       - name: Update dependencies
         run: sudo apt-get update
       - name: Install dependencies
@@ -102,7 +102,7 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-          architecture: x64
+          architecture: arm64
       - name: Install project dependencies
         run: flutter pub get
       - name: Enable macOS build
