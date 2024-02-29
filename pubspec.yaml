@@ -69,7 +69,7 @@ flutter_icons:
   ios: true
   image_path: "assets/icon.png"
   adaptive_icon_background: "assets/back.png"
-  adaptive_icon_foreground: "assets/fore.png"
+  adaptive_icon_foreground: "assets/android-fore.png"
   min_sdk_android: 21 # android min sdk min:16, default 21
   windows:
     generate: true
