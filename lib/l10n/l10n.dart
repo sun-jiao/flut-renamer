@@ -180,11 +180,31 @@ class L10n {
     );
   }
 
+  /// `Rename directory`
+  String get androidRemindTitle {
+    return Intl.message(
+      'Rename directory',
+      name: 'androidRemindTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Using the renamer you can not only rename files but also directories. Long press a directory to select it, then select "Files & Dirs" from the drop-down button in the upper left corner to enable directory renaming. For security reasons, some system reserved directories are not selectable.`
+  String get androidRemindContent {
+    return Intl.message(
+      'Using the renamer you can not only rename files but also directories. Long press a directory to select it, then select "Files & Dirs" from the drop-down button in the upper left corner to enable directory renaming. For security reasons, some system reserved directories are not selectable.',
+      name: 'androidRemindContent',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `OK. Do not remind me again.`
-  String get iosDoNotRemindAgain {
+  String get doNotRemindAgain {
     return Intl.message(
       'OK. Do not remind me again.',
-      name: 'iosDoNotRemindAgain',
+      name: 'doNotRemindAgain',
       desc: '',
       args: [],
     );
@@ -1261,10 +1281,10 @@ class L10n {
     );
   }
 
-  /// `Insert the specified text at the designated position.`
+  /// `Insert the specified text (or file metadata and EXIF data) at the designated position.`
   String get descriptionInsert {
     return Intl.message(
-      'Insert the specified text at the designated position.',
+      'Insert the specified text (or file metadata and EXIF data) at the designated position.',
       name: 'descriptionInsert',
       desc: '',
       args: [],

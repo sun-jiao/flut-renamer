@@ -49,6 +49,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "addFile": MessageLookupByLibrary.simpleMessage("Add file"),
         "addFiles": MessageLookupByLibrary.simpleMessage("Add files"),
         "addRule": MessageLookupByLibrary.simpleMessage("Add Rule"),
+        "androidRemindContent": MessageLookupByLibrary.simpleMessage(
+            "Using the renamer you can not only rename files but also directories. Long press a directory to select it, then select \"Files & Dirs\" from the drop-down button in the upper left corner to enable directory renaming. For security reasons, some system reserved directories are not selectable."),
+        "androidRemindTitle":
+            MessageLookupByLibrary.simpleMessage("Rename directory"),
         "appError": MessageLookupByLibrary.simpleMessage("Application error"),
         "appInfo": MessageLookupByLibrary.simpleMessage("App info"),
         "appName": MessageLookupByLibrary.simpleMessage("Renamer"),
@@ -62,7 +66,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "descriptionIncrement": MessageLookupByLibrary.simpleMessage(
             "Increment the filename, e.g., Photo-1, Photo-2, Photo-3."),
         "descriptionInsert": MessageLookupByLibrary.simpleMessage(
-            "Insert the specified text at the designated position."),
+            "Insert the specified text (or file metadata and EXIF data) at the designated position."),
         "descriptionRearrange": MessageLookupByLibrary.simpleMessage(
             "Splitting the filename by the user-specified delimiter and rearrange segments according to the provided order."),
         "descriptionRemove": MessageLookupByLibrary.simpleMessage(
@@ -74,6 +78,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "descriptionTruncate": MessageLookupByLibrary.simpleMessage(
             "Remove or keep the specified part of the filename, starting from one designated position to another."),
         "directories": MessageLookupByLibrary.simpleMessage("Directories"),
+        "doNotRemindAgain":
+            MessageLookupByLibrary.simpleMessage("OK. Do not remind me again."),
         "dragToAdd":
             MessageLookupByLibrary.simpleMessage("Drag and drop to add files."),
         "dropToAdd": MessageLookupByLibrary.simpleMessage("Drop to add files."),
@@ -123,8 +129,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "insertToString": m1,
         "insertedText":
             MessageLookupByLibrary.simpleMessage("Text to be inserted"),
-        "iosDoNotRemindAgain":
-            MessageLookupByLibrary.simpleMessage("OK. Do not remind me again."),
         "iosRemindContent": MessageLookupByLibrary.simpleMessage(
             "To pick files on iOS, first choose the directory where your files located. Then, within the selected folder, pick the files you want to rename. Because the restriction of iOS, we have to take the two-step process, which ensures safe file management. Let\'s get started!"),
         "iosRemindTitle":

@@ -47,6 +47,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "addFile": MessageLookupByLibrary.simpleMessage("添加文件"),
         "addFiles": MessageLookupByLibrary.simpleMessage("请添加文件。"),
         "addRule": MessageLookupByLibrary.simpleMessage("添加规则"),
+        "androidRemindContent": MessageLookupByLibrary.simpleMessage(
+            "使用批量重命名，您不仅可以重命名文件，还可以重命名目录。长按目录将其选中，然后在左上角下拉按钮中选择“文件和目录”即可启用目录重命名功能。出于安全考虑，某些系统保留目录不可选。"),
+        "androidRemindTitle": MessageLookupByLibrary.simpleMessage("重命名目录"),
         "appError": MessageLookupByLibrary.simpleMessage("应用程序错误"),
         "appInfo": MessageLookupByLibrary.simpleMessage("应用信息"),
         "appName": MessageLookupByLibrary.simpleMessage("批量重命名"),
@@ -59,18 +62,19 @@ class MessageLookup extends MessageLookupByLibrary {
         "descriptionIncrement": MessageLookupByLibrary.simpleMessage(
             "递增文件名，例如 Photo-1、Photo-2、Photo-3。"),
         "descriptionInsert":
-            MessageLookupByLibrary.simpleMessage("在指定位置插入指定文本。"),
+            MessageLookupByLibrary.simpleMessage("在指定位置插入指定文本（或文件元数据和EXIF数据）。"),
         "descriptionRearrange": MessageLookupByLibrary.simpleMessage(
             "以用户指定的分隔符将文件名分割成若干片段，并根据提供的顺序重新排列。"),
         "descriptionRemove": MessageLookupByLibrary.simpleMessage(
             "从文件名中删除指定的文本（或与提供的正则表达式匹配的文本）。"),
         "descriptionReplace": MessageLookupByLibrary.simpleMessage(
-            "用给定的替换文本（或文件元数据和 EXIF 数据）替换指定的文本（或与提供的正则表达式匹配的文本）。"),
+            "用给定的替换文本（或文件元数据和EXIF数据）替换指定的文本（或与提供的正则表达式匹配的文本）。"),
         "descriptionTransliterate": MessageLookupByLibrary.simpleMessage(
             "根据预先定义的规范转换字符，包括将字母转换为大写或小写、转换为不同的文字变体或转换为不同的书写系统。"),
         "descriptionTruncate": MessageLookupByLibrary.simpleMessage(
             "删除或保留文件名的指定部分，从一个指定位置开始到另一个指定位置。"),
         "directories": MessageLookupByLibrary.simpleMessage("目录"),
+        "doNotRemindAgain": MessageLookupByLibrary.simpleMessage("确定，不再提醒"),
         "dragToAdd": MessageLookupByLibrary.simpleMessage("拖放文件进行添加。"),
         "dropToAdd": MessageLookupByLibrary.simpleMessage("在此处释放文件。"),
         "errorDetails": MessageLookupByLibrary.simpleMessage("错误详情"),
@@ -108,7 +112,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("请勿在一个标签内插入另一个标签。"),
         "insertToString": m1,
         "insertedText": MessageLookupByLibrary.simpleMessage("要插入的文本"),
-        "iosDoNotRemindAgain": MessageLookupByLibrary.simpleMessage("确定，不再提醒"),
         "iosRemindContent": MessageLookupByLibrary.simpleMessage(
             "要在iOS上选取文件，首先选择一个包含您的文件的文件夹。然后，在选定的文件夹中，选择您要重命名的文件。由于iOS的限制，我们必须采取这两个步骤，这可以确保安全的文件访问。让我们开始吧！"),
         "iosRemindTitle": MessageLookupByLibrary.simpleMessage("关于在iOS上选取文件"),

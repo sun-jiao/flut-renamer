@@ -43,6 +43,14 @@ class FilesPageState extends State<FilesPage> {
   Future<void> addFileFromPicker() async {
     late Iterable<FileSystemEntity> entities;
     if (Platform.isAndroid) {
+      if (!Shared.doNotRemindAgain) {
+        await _remindDialog(context);
+      }
+
+      if (!mounted) {
+        return;
+      }
+      
       final result = await Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const AndroidFilePicker()),
@@ -54,8 +62,8 @@ class FilesPageState extends State<FilesPage> {
         return;
       }
     } else if (Platform.isIOS) {
-      if (!Shared.iosDoNotRemindAgain) {
-        final iosOK = await _iosRemind(context);
+      if (!Shared.doNotRemindAgain) {
+        final iosOK = await _remindDialog(context);
         if (iosOK != null && !iosOK) {
           return;
         }
@@ -87,13 +95,13 @@ class FilesPageState extends State<FilesPage> {
     });
   }
 
-  Future<bool?> _iosRemind(BuildContext contextD) => showDialog<bool>(
+  Future<bool?> _remindDialog(BuildContext contextD) => showDialog<bool>(
     context: contextD,
     builder: (contextD) => CustomDialog(
-      title: Text(L10n.current.iosRemindTitle),
-      content: Text(L10n.current.iosRemindContent),
+      title: Text(Platform.isIOS ? L10n.current.iosRemindTitle : L10n.current.androidRemindTitle),
+      content: Text(Platform.isIOS ? L10n.current.iosRemindContent : L10n.current.androidRemindContent),
       actions: [
-        TextButton(
+        if (Platform.isIOS) TextButton(
           onPressed: () => Navigator.pop(contextD, false),
           child: Text(L10n.current.cancel),
         ),
@@ -103,10 +111,10 @@ class FilesPageState extends State<FilesPage> {
         ),
         TextButton(
           onPressed: () {
-            Shared.iosDoNotRemindAgain = true;
+            Shared.doNotRemindAgain = true;
             Navigator.pop(contextD, true);
           },
-          child: Text(L10n.current.iosDoNotRemindAgain),
+          child: Text(L10n.current.doNotRemindAgain),
         ),
       ],
     ),
