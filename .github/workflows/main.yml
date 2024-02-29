@@ -45,7 +45,8 @@ jobs:
         run: echo $KEYSTORE_BASE64 | base64 -di > ./android/app/renamer.jks
         env:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
-      - run: |
+      - name: Build android
+        run: |
           flutter build apk --release
           flutter build apk --release --split-per-abi
           flutter build appbundle --release
