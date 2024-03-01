@@ -20,7 +20,7 @@ todo:
 | ![Desktop-2](/screenshots/Desktop-2.png?raw=true) | ![Desktop-3](/screenshots/Desktop-3.png?raw=true) |
 
 ## Phone
-| ![Phone-0](/screenshots/Phone-0.jpg?raw=true) | ![Phone-1](/screenshots/Phone-1.jpg?raw=true) | ![Phone-2](/screenshots/Phone-2.jpg?raw=true) | ![Phone-3](/screenshots/Phone-3.jpg?raw=true) |
+| ![Phone-0](/screenshots/Phone-0.png?raw=true) | ![Phone-1](/screenshots/Phone-1.png?raw=true) | ![Phone-2](/screenshots/Phone-2.png?raw=true) | ![Phone-3](/screenshots/Phone-3.png?raw=true) |
 |:----------------------------------------------|:----------------------------------------------|:----------------------------------------------|:----------------------------------------------|
 
 ## Seven-inch Tablet
