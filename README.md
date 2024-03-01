@@ -1,12 +1,15 @@
 # renamer
 
-<img alt="renamer app icon" src="https://raw.githubusercontent.com/sun-jiao/renamer/main/assets/desktop.png" height=100px /> 
+<img alt="renamer app icon" src="https://raw.githubusercontent.com/sun-jiao/renamer/main/assets/desktop.png" height=100px /> <a href="https://play.google.com/store/apps/details?id=net.sunjiao.renamer"><img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" height=60px /></a>
 
-A bulk file renamer written in flutter (dart).
+Renamer is a powerful yet easy-to-use tool designed to help users manage and rename files and directories. No more manually renaming one by one – our app offers various features including inserting text, inserting file metadata and Exif data, replacing text, deleting text, rearranging, and more, allowing you to quickly batch rename files according to your needs.
 
-<a href="https://play.google.com/store/apps/details?id=net.sunjiao.renamer"><img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" height=60px /></a>
+* Multiple renaming options: Easily achieve batch file renaming by inserting, replacing, deleting text, and rearranging.
+* Insert file metadata and Exif data: Extract information from file metadata and Exif data and insert it into the file name.
+* Completely open-source and free: Our app is entirely open-source and contains no advertisements or in-app purchases, allowing you to use it freely at any time.
+* Cross-platform compatibility: Built on the Flutter framework, our app can run on multiple operating systems, enabling you to use it anytime, anywhere.
 
-todo:
+## todo:
 - ~~Duplicate name check~~.(Done.)
 - ~~Convert, including case convert, Chinese simp/trad/pinyin convert, Latin/Cyrillic script transliteration~~.(Done.)
 - ~~Incremental renaming: for example, RenamerFile-1, RenamerFile-2, RenamerFile-3, RenamerFile-4, ...~~.(Done.)
