@@ -203,6 +203,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "removeAll": MessageLookupByLibrary.simpleMessage("移除全部"),
         "removeCharacters": MessageLookupByLibrary.simpleMessage("移除二者之间的字符"),
         "removeRenamed": MessageLookupByLibrary.simpleMessage("移除已重命名文件"),
+        "removeRule": MessageLookupByLibrary.simpleMessage("移除该规则"),
         "removeRules": MessageLookupByLibrary.simpleMessage("重命名后移除所有规则"),
         "removeToString": m3,
         "rename": MessageLookupByLibrary.simpleMessage("重命名"),
@@ -221,6 +222,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "semanticsFileManagerTitle": m8,
         "semanticsFilesDropdownButton":
             MessageLookupByLibrary.simpleMessage("。选择该项以将重命名目标限制在该范围内"),
+        "semanticsReorderableList": MessageLookupByLibrary.simpleMessage(
+            "规则列表现在是空的。单击“添加规则”按钮添加一条。规则是按顺序执行的。此列表是可重新排序的，允许您向上、向下移动规则，以及将它们移动到顶部或底部。当光标位于规则上时，使用垂直滑动手势在不同的操作之间切换，并使用双击执行选定的操作。"),
         "semanticsRuleDropdownButton":
             MessageLookupByLibrary.simpleMessage("。选择该项并点击“添加规则”按钮即可添加该规则"),
         "sourceCode": MessageLookupByLibrary.simpleMessage("源代码"),

@@ -340,6 +340,16 @@ class L10n {
     );
   }
 
+  /// `Remove this rule`
+  String get removeRule {
+    return Intl.message(
+      'Remove this rule',
+      name: 'removeRule',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Remove rules after renaming`
   String get removeRules {
     return Intl.message(
@@ -1652,6 +1662,16 @@ class L10n {
     return Intl.message(
       '. Select this item to restrict renaming targets.',
       name: 'semanticsFilesDropdownButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This is the rule list, it is empty now. Click the 'Add rule' button to add one. Rules are executed sequentially. This list is reorderable, allowing you to move a rule up, down, and to the top or bottom. When the cursor is on a rule, use a vertical swipe gesture to switch between actions, and use a double click to execute the selected action.`
+  String get semanticsReorderableList {
+    return Intl.message(
+      'This is the rule list, it is empty now. Click the \'Add rule\' button to add one. Rules are executed sequentially. This list is reorderable, allowing you to move a rule up, down, and to the top or bottom. When the cursor is on a rule, use a vertical swipe gesture to switch between actions, and use a double click to execute the selected action.',
+      name: 'semanticsReorderableList',
       desc: '',
       args: [],
     );

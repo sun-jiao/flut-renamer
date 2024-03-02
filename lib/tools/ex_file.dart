@@ -91,6 +91,9 @@ extension ExLink on Link {
 
 extension ExPathString on String {
   FileSystemEntity toFileSystemEntity() => _toFileSystemEntity(this, (str) => str);
+
+  // usually causes the talkback to choose a wrong language.
+  String toFilenameSemanticLabel() => RegExp(r'([a-zA-Z]+|\d.{0,3}|[^a-zA-Z0-9]+)').allMatches(this).map((e) => e.group(0)).join('，');
 }
 
 FileSystemEntity _toFileSystemEntity<T>(T file, String Function(T file) func) {

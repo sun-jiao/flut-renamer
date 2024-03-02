@@ -250,6 +250,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "removeCharacters": MessageLookupByLibrary.simpleMessage(
             "Remove characters between them"),
         "removeRenamed": MessageLookupByLibrary.simpleMessage("Remove renamed"),
+        "removeRule": MessageLookupByLibrary.simpleMessage("Remove this rule"),
         "removeRules":
             MessageLookupByLibrary.simpleMessage("Remove rules after renaming"),
         "removeToString": m3,
@@ -269,6 +270,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "semanticsFileManagerTitle": m8,
         "semanticsFilesDropdownButton": MessageLookupByLibrary.simpleMessage(
             ". Select this item to restrict renaming targets."),
+        "semanticsReorderableList": MessageLookupByLibrary.simpleMessage(
+            "This is the rule list, it is empty now. Click the \'Add rule\' button to add one. Rules are executed sequentially. This list is reorderable, allowing you to move a rule up, down, and to the top or bottom. When the cursor is on a rule, use a vertical swipe gesture to switch between actions, and use a double click to execute the selected action."),
         "semanticsRuleDropdownButton": MessageLookupByLibrary.simpleMessage(
             ". Select and then click the \"Add Rule\" button to add this rule."),
         "sourceCode": MessageLookupByLibrary.simpleMessage("Source code"),
