@@ -30,7 +30,7 @@
 	<string>NSApplication</string>
 
     <key>NSFullDiskAccessUsageDescription</key>
-    <string>Explain why your app uses this permission</string>
+    <string>For renaming files.</string>
 
 </dict>
 </plist>
