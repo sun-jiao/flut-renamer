@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:flutter_media_metadata/flutter_media_metadata.dart';
+import 'package:audio_metadata_reader/audio_metadata_reader.dart';
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:exif/exif.dart';
 import 'package:intl/intl.dart';
@@ -29,11 +29,11 @@ class FileMetadata {
       if (file is Directory) {
         _bytes = Uint8List(0);
         _exif = {};
-        _metadata = Metadata.fromJson({});
+        _metadata = AudioMetadata();
       } else {
         _bytes = await (file as File).readAsBytes();
         _exif = await readExifFromBytes(_bytes);
-        _metadata = await MetadataRetriever.fromFile(file as File);
+        _metadata = await readMetadata(file as File, getImage: false);
       }
 
       inited = true;
@@ -44,7 +44,7 @@ class FileMetadata {
   late FileStat _stat;
   late Uint8List _bytes;
   late Map<String, IfdTag> _exif;
-  Metadata? _metadata;
+  late AudioMetadata _metadata;
   bool inited = false;
 
   static final _key = utf8.encode('renamer');
@@ -112,25 +112,29 @@ class FileMetadata {
       case 'Photo:Copyright':
         return (_exif['Image Copyright'] ?? '').toString();
       case 'Music:AlbumName':
-        return (_metadata?.albumName ?? '');
-      case 'Music:AlbumArtist':
-        return (_metadata?.albumArtistName ?? '');
-      case 'Music:AlbumLength':
-        return (_metadata?.albumLength ?? '').toString();
+        return (_metadata.album ?? '');
+      // case 'Music:AlbumArtist':
+      //   return (_metadata?.artist ?? '');
+      // case 'Music:AlbumLength':
+      //   return (_metadata. ?? '').toString();
       case 'Music:Year':
-        return (_metadata?.year ?? '').toString();
+        return (_metadata.year ?? '').toString();
       case 'Music:TrackDuration':
-        return (_formatDuration(_metadata?.trackDuration) ?? '').toString();
+        return (_formatDuration(_metadata.duration) ?? '').toString();
       case 'Music:TrackName':
-        return (_metadata?.trackName ?? '');
-      case 'Music:TrackArtist':
-        return (_metadata?.trackArtistNames?.join(',') ?? '');
+        return (_metadata.title ?? '').toString();
+      // case 'Music:TrackArtist':
+      //   return (_metadata.artist ?? '');
       case 'Music:TrackNumber':
-        return (_metadata?.trackNumber ?? '').toString();
+        return (_metadata.trackNumber ?? '').toString();
+      case 'Music:DiscNumber':
+        return (_metadata.discNumber ?? '').toString();
+      case 'Music:Genres':
+        return _metadata.genres.join(',').toString();
       case 'Music:Author':
-        return (_metadata?.authorName ?? '');
-      case 'Music:Writer':
-        return (_metadata?.writerName ?? '');
+        return (_metadata.artist ?? '');
+      // case 'Music:Writer':
+      //   return (_metadata?.writerName ?? '');
       default:
         return '';
     }
@@ -209,21 +213,15 @@ class FileMetadata {
   }
 
   // ignore: body_might_complete_normally_nullable
-  String? _formatDuration(int? milliseconds) {
-    if (milliseconds == null) {
+  String? _formatDuration(Duration? dur) {
+    if (dur == null) {
       return null;
-    }
-
-    if (milliseconds < 0) {
-      throw ArgumentError('A music could never have a negative duration.');
     }
 
     String twoDigits(int n) {
       if (n >= 10) return "$n";
       return "0$n";
     }
-
-    final dur = Duration(milliseconds: milliseconds);
 
     int centiseconds = dur.inMilliseconds ~/ 10;
     int seconds = dur.inSeconds;
@@ -237,7 +235,7 @@ class FileMetadata {
     } else if (seconds > 0){
       return '${twoDigits(seconds)}.${twoDigits(centiseconds)}sec';
     } else {
-      return '${milliseconds}ms';
+      return '${dur.inMilliseconds}ms';
     }
   }
 }

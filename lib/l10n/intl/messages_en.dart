@@ -153,6 +153,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Name of the album"),
         "musicAuthor":
             MessageLookupByLibrary.simpleMessage("Author of the track"),
+        "musicDiscNumber":
+            MessageLookupByLibrary.simpleMessage("Position of disc"),
+        "musicGenres":
+            MessageLookupByLibrary.simpleMessage("Art type of the music"),
         "musicTrackArtist": MessageLookupByLibrary.simpleMessage(
             "Names of the artists performing in the track"),
         "musicTrackDuration":

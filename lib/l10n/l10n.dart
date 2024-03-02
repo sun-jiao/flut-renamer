@@ -1010,6 +1010,26 @@ class L10n {
     );
   }
 
+  /// `Position of disc`
+  String get musicDiscNumber {
+    return Intl.message(
+      'Position of disc',
+      name: 'musicDiscNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Art type of the music`
+  String get musicGenres {
+    return Intl.message(
+      'Art type of the music',
+      name: 'musicGenres',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Author of the track`
   String get musicAuthor {
     return Intl.message(

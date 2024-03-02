@@ -37,15 +37,17 @@ class MetadataDialog extends StatelessWidget {
     MapEntry('Photo:Photographer', L10n.current.photoPhotographer),
     MapEntry('Photo:Copyright', L10n.current.photoCopyright),
     MapEntry('Music:AlbumName', L10n.current.musicAlbumName),
-    MapEntry('Music:AlbumArtist', L10n.current.musicAlbumArtist),
-    MapEntry('Music:AlbumLength', L10n.current.musicAlbumLength),
+    // MapEntry('Music:AlbumArtist', L10n.current.musicAlbumArtist),
+    // MapEntry('Music:AlbumLength', L10n.current.musicAlbumLength),
     MapEntry('Music:Year', L10n.current.musicYear),
     MapEntry('Music:TrackDuration', L10n.current.musicTrackDuration),
     MapEntry('Music:TrackName', L10n.current.musicTrackName),
-    MapEntry('Music:TrackArtist', L10n.current.musicTrackArtist),
+    // MapEntry('Music:TrackArtist', L10n.current.musicTrackArtist),
     MapEntry('Music:TrackNumber', L10n.current.musicTrackNumber),
+    MapEntry('Music:DiscNumber', L10n.current.musicDiscNumber),
+    MapEntry('Music:Genres', L10n.current.musicGenres),
     MapEntry('Music:Author', L10n.current.musicAuthor),
-    MapEntry('Music:Writer', L10n.current.musicWriter),
+    // MapEntry('Music:Writer', L10n.current.musicWriter),
   ];
 
   @override

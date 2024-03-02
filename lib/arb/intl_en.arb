@@ -96,6 +96,8 @@
   "musicTrackName": "Name of the track",
   "musicTrackArtist": "Names of the artists performing in the track",
   "musicTrackNumber": "Position of track in the album",
+  "musicDiscNumber": "Position of disc",
+  "musicGenres": "Art type of the music",
   "musicAuthor": "Author of the track",
   "musicWriter": "Writer of the track",
   "prefix": "Prefix",

@@ -130,6 +130,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "musicAlbumLength": MessageLookupByLibrary.simpleMessage("专辑中的曲目数"),
         "musicAlbumName": MessageLookupByLibrary.simpleMessage("专辑名称"),
         "musicAuthor": MessageLookupByLibrary.simpleMessage("曲目的作者（Author）"),
+        "musicDiscNumber": MessageLookupByLibrary.simpleMessage("碟片的位置"),
+        "musicGenres": MessageLookupByLibrary.simpleMessage("曲目的艺术类型"),
         "musicTrackArtist": MessageLookupByLibrary.simpleMessage("表演曲目的艺术家姓名"),
         "musicTrackDuration": MessageLookupByLibrary.simpleMessage("曲目的持续时间"),
         "musicTrackName": MessageLookupByLibrary.simpleMessage("曲目名称"),
