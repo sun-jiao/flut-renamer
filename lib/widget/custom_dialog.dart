@@ -9,6 +9,7 @@ class CustomDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      semanticLabel: '',
       title: title,
       actions: actions,
       content: Container(

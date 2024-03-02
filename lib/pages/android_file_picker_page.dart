@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:file_manager/file_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import '../entity/constants.dart';
 import '../l10n/l10n.dart';
 import '../tools/ex_file.dart';
 
@@ -75,20 +76,27 @@ class _AndroidFilePickerState extends State<AndroidFilePicker> {
             entities = snapshot;
             return StatefulBuilder(
               key: _stfKey,
-              builder: (contextS, setStateS) => ListView.builder(
+              builder: (contextS, setStateS) => ListView.separated(
+                separatorBuilder: (_, __) => const Divider(),
                 padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 0),
                 itemCount: entities.length,
                 itemBuilder: (context, index) {
                   FileSystemEntity entity = entities[index];
-                  return Card(
+                  String basename = FileManager.basename(
+                    entity,
+                    showFileExtension: true,
+                  );
+                  bool entitySelected = _selected.contains(entity);
+                  return MergeSemantics(
                     child: ListTile(
                       leading: getIcon(entity),
-                      trailing:
-                          _selected.contains(entity) ? const Icon(Icons.task_alt_outlined) : null,
+                      trailing: entitySelected ? const Icon(Icons.task_alt_outlined) : null,
                       title: Text(
-                        FileManager.basename(
-                          entity,
-                          showFileExtension: true,
+                        basename,
+                        semanticsLabel: L10n.current.semanticsFileManagerTitle(
+                          getType(entity),
+                          entitySelected ? 0 : 1,
+                          basename,
                         ),
                       ),
                       subtitle: subtitle(entity),
@@ -99,7 +107,7 @@ class _AndroidFilePickerState extends State<AndroidFilePicker> {
                         } else {
                           // select or unselect a file
                           setStateS(() {
-                            if (_selected.contains(entity)) {
+                            if (entitySelected) {
                               _selected.remove(entity);
                             } else {
                               _selected.add(entity);
@@ -117,7 +125,7 @@ class _AndroidFilePickerState extends State<AndroidFilePicker> {
 
                         // select or unselect a file or a dir
                         setStateS(() {
-                          if (_selected.contains(entity)) {
+                          if (entitySelected) {
                             _selected.remove(entity);
                           } else {
                             _selected.add(entity);
@@ -151,34 +159,53 @@ class _AndroidFilePickerState extends State<AndroidFilePicker> {
     return const Icon(Icons.folder);
   }
 
+  String getType(FileSystemEntity entity) {
+    if (FileManager.isFile(entity)) {
+      return 'File';
+    }
+    return 'Directory';
+  }
+
   AppBar appBar(BuildContext context) {
     return AppBar(
       actions: [
         IconButton(
+          tooltip: L10n.current.fileManagerSortButton,
           onPressed: () => sort(context),
           icon: const Icon(Icons.sort_rounded),
         ),
         IconButton(
+          tooltip: L10n.current.fileManagerStorageButton,
           onPressed: () => selectStorage(context),
           icon: const Icon(Icons.sd_storage_rounded),
         ),
         IconButton(
+          tooltip: L10n.current.selectAll,
           onPressed: () => selectAll(),
           icon: const Icon(Icons.select_all_rounded),
         ),
         IconButton(
+          tooltip: L10n.current.fileManagerSaveButton,
           onPressed: () => saveSelected(context),
-          icon: const Icon(Icons.save),
+          icon: Text(L10n.current.select),
         ),
+        box,
       ],
       title: ValueListenableBuilder<String>(
         valueListenable: controller.titleNotifier,
         builder: (context, title, _) => Text(title),
       ),
       leading: IconButton(
+        tooltip: L10n.current.fileManagerBackButton,
         icon: const Icon(Icons.arrow_back),
         onPressed: () async {
-          await controller.goToParentDirectory();
+          if (await controller.isRootDirectory()) {
+            if (context.mounted) {
+              Navigator.pop(context);
+            }
+          } else {
+            await controller.goToParentDirectory();
+          }
         },
       ),
     );
@@ -189,15 +216,18 @@ class _AndroidFilePickerState extends State<AndroidFilePicker> {
       future: entity.stat(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
+          String last = "${snapshot.data!.modified}".substring(0, 10);
           if (entity is File) {
-            int size = snapshot.data!.size;
+            String size = FileManager.formatBytes(snapshot.data!.size);
 
             return Text(
-              FileManager.formatBytes(size),
+              '$last $size',
+              semanticsLabel: L10n.current.semanticsFileManagerSubtitle(last, size),
             );
           }
           return Text(
-            "${snapshot.data!.modified}".substring(0, 10),
+            last,
+            semanticsLabel: L10n.current.semanticsFileManagerDirSubtitle(last),
           );
         } else {
           return const Text("");

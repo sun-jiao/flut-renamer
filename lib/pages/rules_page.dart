@@ -93,6 +93,7 @@ class RulesPageState extends State<RulesPage> {
                   'Transliterate': L10n.current.transliterate,
                   'Truncate': L10n.current.truncate,
                 }[obj]!,
+                semanticsAppendix: L10n.current.semanticsRuleDropdownButton,
               ),
               ElevatedButton(
                 onPressed: showRuleDialog,

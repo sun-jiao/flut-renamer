@@ -450,6 +450,16 @@ class L10n {
     );
   }
 
+  /// `Select`
+  String get select {
+    return Intl.message(
+      'Select',
+      name: 'select',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Select All`
   String get selectAll {
     return Intl.message(
@@ -1536,6 +1546,112 @@ class L10n {
     return Intl.message(
       'Ukrainian',
       name: 'ua',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sort by`
+  String get fileManagerSortButton {
+    return Intl.message(
+      'Sort by',
+      name: 'fileManagerSortButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select storage`
+  String get fileManagerStorageButton {
+    return Intl.message(
+      'Select storage',
+      name: 'fileManagerStorageButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add selections to the list`
+  String get fileManagerSaveButton {
+    return Intl.message(
+      'Add selections to the list',
+      name: 'fileManagerSaveButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Back`
+  String get fileManagerBackButton {
+    return Intl.message(
+      'Back',
+      name: 'fileManagerBackButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{selectStatus, plural, =0{Selected} =1{Unselected} other{}} {entityType, select, File{File} Directory{Folder} Link{Link} other{File system entity}}, filename is {filename}, `
+  String semanticsFileManagerTitle(
+      String entityType, num selectStatus, String filename) {
+    return Intl.message(
+      '${Intl.plural(selectStatus, zero: 'Selected', one: 'Unselected', other: '')} ${Intl.select(entityType, {
+            'File': 'File',
+            'Directory': 'Folder',
+            'Link': 'Link',
+            'other': 'File system entity'
+          })}, filename is $filename, ',
+      name: 'semanticsFileManagerTitle',
+      desc: '',
+      args: [entityType, selectStatus, filename],
+    );
+  }
+
+  /// `last modified at {last}, sized {size}.`
+  String semanticsFileManagerSubtitle(String last, String size) {
+    return Intl.message(
+      'last modified at $last, sized $size.',
+      name: 'semanticsFileManagerSubtitle',
+      desc: '',
+      args: [last, size],
+    );
+  }
+
+  /// `last modified at {last}.`
+  String semanticsFileManagerDirSubtitle(String last) {
+    return Intl.message(
+      'last modified at $last.',
+      name: 'semanticsFileManagerDirSubtitle',
+      desc: '',
+      args: [last],
+    );
+  }
+
+  /// `This is a dropdown button, current value is "{value}", double click to open the it and pick another value.`
+  String semanticsDropdownButton(String value) {
+    return Intl.message(
+      'This is a dropdown button, current value is "$value", double click to open the it and pick another value.',
+      name: 'semanticsDropdownButton',
+      desc: '',
+      args: [value],
+    );
+  }
+
+  /// `. Select and then click the "Add Rule" button to add this rule.`
+  String get semanticsRuleDropdownButton {
+    return Intl.message(
+      '. Select and then click the "Add Rule" button to add this rule.',
+      name: 'semanticsRuleDropdownButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `. Select this item to restrict renaming targets.`
+  String get semanticsFilesDropdownButton {
+    return Intl.message(
+      '. Select this item to restrict renaming targets.',
+      name: 'semanticsFilesDropdownButton',
       desc: '',
       args: [],
     );

@@ -40,6 +40,7 @@
   "transliterate": "转写",
   "truncate": "截取",
   "cancelAll": "全部取消",
+  "select": "选择",
   "selectAll": "全选",
   "currentName": "当前文件名",
   "newName": "新文件名",
@@ -221,7 +222,7 @@
   "descriptionReplace": "用给定的替换文本（或文件元数据和EXIF数据）替换指定的文本（或与提供的正则表达式匹配的文本）。",
   "descriptionRemove": "从文件名中删除指定的文本（或与提供的正则表达式匹配的文本）。",
   "descriptionInsert": "在指定位置插入指定文本（或文件元数据和EXIF数据）。",
-  "descriptionIncrement": "递增文件名，例如 Photo-1、Photo-2、Photo-3。",
+  "descriptionIncrement": "递增文件名，例如 照片-1、照片-2、照片-3。",
   "descriptionRearrange": "以用户指定的分隔符将文件名分割成若干片段，并根据提供的顺序重新排列。",
   "descriptionTransliterate": "根据预先定义的规范转换字符，包括将字母转换为大写或小写、转换为不同的文字变体或转换为不同的书写系统。",
   "descriptionTruncate": "删除或保留文件名的指定部分，从一个指定位置开始到另一个指定位置。",
@@ -232,5 +233,53 @@
   "ru": "俄语",
   "sr": "塞尔维亚语",
   "tj": "塔吉克语",
-  "ua": "乌克兰语"
+  "ua": "乌克兰语",
+  "fileManagerSortButton": "文件排序",
+  "fileManagerStorageButton": "选取存储器",
+  "fileManagerSaveButton": "添加已选文件至列表",
+  "fileManagerBackButton": "返回",
+  "semanticsFileManagerTitle":  "{selectStatus, plural, =0{已选中的} =1{未选中的} other{}}{entityType, select, File{文件} Directory{文件夹} Link{链接} other{文件系统对象}}，文件名叫{filename}，",
+  "@semanticsFileManagerTitle": {
+    "placeholders": {
+      "selectStatus": {
+        "type": "num"
+      },
+      "entityType":{
+        "type": "String"
+      },
+      "filename":{
+        "type": "String"
+      }
+    }
+  },
+  "semanticsFileManagerSubtitle":  "上次修改时间是{last}，文件大小是{size}。",
+  "@semanticsFileManagerSubtitle": {
+    "placeholders": {
+      "last": {
+        "type": "String"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "semanticsFileManagerDirSubtitle":  "上次修改时间是{last}。",
+  "@semanticsFileManagerDirSubtitle": {
+    "placeholders": {
+      "last": {
+        "type": "String"
+      }
+    }
+  },
+  "semanticsDropdownButton": "这是一个下拉按钮，现在选中的是“{value}”，双击以打开下拉按钮并选取另一个值。",
+  "@semanticsDropdownButton": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "semanticsRuleDropdownButton": "。选择该项并点击“添加规则”按钮即可添加该规则",
+  "semanticsFilesDropdownButton": "。选择该项以将重命名目标限制在该范围内"
+
 }

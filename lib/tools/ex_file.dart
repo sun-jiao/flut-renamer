@@ -56,11 +56,15 @@ extension ExFile on FileSystemEntity {
   set parser(FileMetadata? metadata) => _metadataHandler.setValue(path, parser);
   static void clearParsers() => _metadataHandler.clearValues();
 
-  String fileOrDir() {
+  String fileOrDir([bool returnLink=false]) {
     FileSystemEntity file = this;
 
     while (file is Link) {
-      file = file.toFileSystemEntity();
+      if (returnLink) {
+        return 'Link';
+      } else {
+        file = file.toFileSystemEntity();
+      }
     }
 
     if (file is File) {

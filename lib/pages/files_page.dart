@@ -298,6 +298,7 @@ class FilesPageState extends State<FilesPage> {
                   'Directories': L10n.current.directories,
                   'Files & Dirs': L10n.current.filesDirs,
                 }[obj]!,
+                semanticsAppendix: L10n.current.semanticsFilesDropdownButton,
               ),
               Expanded(
                 child: TextField(
