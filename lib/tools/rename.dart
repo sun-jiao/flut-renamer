@@ -81,7 +81,7 @@ Future<FileSystemEntity?> rename(
 String replaceSpecialCharacters(String input) {
   input = input.replaceAll(r'\', '⧵');
   input = input.replaceAll('/', '∕');
-  input = input.replaceAll(':', '꞉');
+  input = input.replaceAll(':', '∶');
   input = input.replaceAll('*', '＊');
   input = input.replaceAll('?', '﹖');
   input = input.replaceAll('"', "''");

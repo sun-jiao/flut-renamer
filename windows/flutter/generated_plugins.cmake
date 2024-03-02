@@ -4,6 +4,7 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   desktop_drop
+  flutter_media_metadata
   permission_handler_windows
   url_launcher_windows
 )

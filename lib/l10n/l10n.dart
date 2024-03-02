@@ -930,6 +930,106 @@ class L10n {
     );
   }
 
+  /// `Name of the album`
+  String get musicAlbumName {
+    return Intl.message(
+      'Name of the album',
+      name: 'musicAlbumName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Name of the album artist`
+  String get musicAlbumArtist {
+    return Intl.message(
+      'Name of the album artist',
+      name: 'musicAlbumArtist',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Number of tracks in the album`
+  String get musicAlbumLength {
+    return Intl.message(
+      'Number of tracks in the album',
+      name: 'musicAlbumLength',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Publishing year of the track`
+  String get musicYear {
+    return Intl.message(
+      'Publishing year of the track',
+      name: 'musicYear',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Duration of the track`
+  String get musicTrackDuration {
+    return Intl.message(
+      'Duration of the track',
+      name: 'musicTrackDuration',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Name of the track`
+  String get musicTrackName {
+    return Intl.message(
+      'Name of the track',
+      name: 'musicTrackName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Names of the artists performing in the track`
+  String get musicTrackArtist {
+    return Intl.message(
+      'Names of the artists performing in the track',
+      name: 'musicTrackArtist',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Position of track in the album`
+  String get musicTrackNumber {
+    return Intl.message(
+      'Position of track in the album',
+      name: 'musicTrackNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Author of the track`
+  String get musicAuthor {
+    return Intl.message(
+      'Author of the track',
+      name: 'musicAuthor',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Writer of the track`
+  String get musicWriter {
+    return Intl.message(
+      'Writer of the track',
+      name: 'musicWriter',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Prefix`
   String get prefix {
     return Intl.message(

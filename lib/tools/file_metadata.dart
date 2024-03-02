@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:exif/exif.dart';
 import 'package:intl/intl.dart';
@@ -28,9 +29,11 @@ class FileMetadata {
       if (file is Directory) {
         _bytes = Uint8List(0);
         _exif = {};
+        _metadata = Metadata.fromJson({});
       } else {
         _bytes = await (file as File).readAsBytes();
         _exif = await readExifFromBytes(_bytes);
+        _metadata = await MetadataRetriever.fromFile(file as File);
       }
 
       inited = true;
@@ -41,6 +44,7 @@ class FileMetadata {
   late FileStat _stat;
   late Uint8List _bytes;
   late Map<String, IfdTag> _exif;
+  Metadata? _metadata;
   bool inited = false;
 
   static final _key = utf8.encode('renamer');
@@ -107,6 +111,26 @@ class FileMetadata {
         return (_exif['Image Artist'] ?? '').toString();
       case 'Photo:Copyright':
         return (_exif['Image Copyright'] ?? '').toString();
+      case 'Music:AlbumName':
+        return (_metadata?.albumName ?? '');
+      case 'Music:AlbumArtist':
+        return (_metadata?.albumArtistName ?? '');
+      case 'Music:AlbumLength':
+        return (_metadata?.albumLength ?? '').toString();
+      case 'Music:Year':
+        return (_metadata?.year ?? '').toString();
+      case 'Music:TrackDuration':
+        return (_formatDuration(_metadata?.trackDuration) ?? '').toString();
+      case 'Music:TrackName':
+        return (_metadata?.trackName ?? '');
+      case 'Music:TrackArtist':
+        return (_metadata?.trackArtistNames?.join(',') ?? '');
+      case 'Music:TrackNumber':
+        return (_metadata?.trackNumber ?? '').toString();
+      case 'Music:Author':
+        return (_metadata?.authorName ?? '');
+      case 'Music:Writer':
+        return (_metadata?.writerName ?? '');
       default:
         return '';
     }
@@ -168,6 +192,7 @@ class FileMetadata {
     'PB',
   ];
 
+  // ignore: body_might_complete_normally
   String _formatFileSize(int bytes) {
     if (bytes < 0) {
       throw ArgumentError('A file could never have a negative size.');
@@ -181,45 +206,38 @@ class FileMetadata {
         size = size / 1024;
       }
     }
+  }
 
-    throw AssertionError('Unreachable');
+  // ignore: body_might_complete_normally_nullable
+  String? _formatDuration(int? milliseconds) {
+    if (milliseconds == null) {
+      return null;
+    }
+
+    if (milliseconds < 0) {
+      throw ArgumentError('A music could never have a negative duration.');
+    }
+
+    String twoDigits(int n) {
+      if (n >= 10) return "$n";
+      return "0$n";
+    }
+
+    final dur = Duration(milliseconds: milliseconds);
+
+    int centiseconds = dur.inMilliseconds ~/ 10;
+    int seconds = dur.inSeconds;
+    int minutes = dur.inMinutes;
+    int hours = dur.inHours;
+
+    if (hours > 0){
+      return '$hours:${twoDigits(minutes)}:${twoDigits(seconds)}.${twoDigits(centiseconds)}';
+    } else if(minutes > 0){
+      return '${twoDigits(minutes)}:${twoDigits(seconds)}.${twoDigits(centiseconds)}';
+    } else if (seconds > 0){
+      return '${twoDigits(seconds)}.${twoDigits(centiseconds)}sec';
+    } else {
+      return '${milliseconds}ms';
+    }
   }
 }
-
-// import 'package:metadata_god/metadata_god.dart';
-// import 'package:flutter_media_metadata/flutter_media_metadata.dart';
-
-// _metadata = await MetadataRetriever.fromFile(file);
-// MetadataGod.initialize();
-// _metadata = await MetadataGod.readMetadata(file: file.path);
-
-// flutter_media_metadata:
-// String? get albumName => _metadata.albumName;
-// String? get albumArtistName => _metadata.albumArtistName;
-// int? get albumLength => _metadata.albumLength;
-// int? get albumYear => _metadata.year;
-// int? get trackDuration => _metadata.trackDuration;
-// String? get trackName => _metadata.trackName;
-// String? get trackArtistNames => _metadata.trackArtistNames?.join(',');
-// int? get trackNumber => _metadata.trackNumber;
-// String? get musicAuthor => _metadata.authorName;
-// String? get musicWriter => _metadata.writerName;
-
-// metadata_god:
-// String get albumName => (_metadata.album ?? '').toString();
-// String get albumArtist => (_metadata.albumArtist ?? '').toString();
-// String get albumSize => (_metadata.discTotal ?? '').toString();
-// String get albumYear => (_metadata.year ?? '').toString();
-// String get trackName => (_metadata.title ?? '').toString();
-// String get trackArtist => (_metadata.artist ?? '').toString();
-// String get trackNumber => (_metadata.trackNumber ?? '').toString();
-// String get trackTime {
-//   if (_metadata.duration == null) {
-//     return '';
-//   }
-//   final hr = (_metadata.duration!.inHours).toString().padLeft(2, '0');
-//   final min = (_metadata.duration!.inMinutes % 60).toString().padLeft(2, '0');
-//   final sec = (_metadata.duration!.inSeconds % 60).toString().padLeft(2, '0');
-//
-//   return '${hr}hrs-${min}mins-${sec}secs';
-// }

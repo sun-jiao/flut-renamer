@@ -145,6 +145,26 @@ class MessageLookup extends MessageLookupByLibrary {
         "metadataTags": MessageLookupByLibrary.simpleMessage("Metadata tags"),
         "mk": MessageLookupByLibrary.simpleMessage("Macedonian"),
         "mn": MessageLookupByLibrary.simpleMessage("Mongolian"),
+        "musicAlbumArtist":
+            MessageLookupByLibrary.simpleMessage("Name of the album artist"),
+        "musicAlbumLength": MessageLookupByLibrary.simpleMessage(
+            "Number of tracks in the album"),
+        "musicAlbumName":
+            MessageLookupByLibrary.simpleMessage("Name of the album"),
+        "musicAuthor":
+            MessageLookupByLibrary.simpleMessage("Author of the track"),
+        "musicTrackArtist": MessageLookupByLibrary.simpleMessage(
+            "Names of the artists performing in the track"),
+        "musicTrackDuration":
+            MessageLookupByLibrary.simpleMessage("Duration of the track"),
+        "musicTrackName":
+            MessageLookupByLibrary.simpleMessage("Name of the track"),
+        "musicTrackNumber": MessageLookupByLibrary.simpleMessage(
+            "Position of track in the album"),
+        "musicWriter":
+            MessageLookupByLibrary.simpleMessage("Writer of the track"),
+        "musicYear": MessageLookupByLibrary.simpleMessage(
+            "Publishing year of the track"),
         "newName": MessageLookupByLibrary.simpleMessage("New name"),
         "noSysDir": MessageLookupByLibrary.simpleMessage(
             "Do not rename a system reserved directory."),
