@@ -29,6 +29,7 @@
   "expandOptions": "Expand options",
   "onlySelected": "Only Selected",
   "removeRenamed": "Remove renamed",
+  "removeRule": "Remove this rule",
   "removeRules": "Remove rules after renaming",
   "addRule": "Add Rule",
   "removeAll": "Remove all",
@@ -40,6 +41,7 @@
   "transliterate": "Transliterate",
   "truncate": "Truncate",
   "cancelAll": "Cancel All",
+  "select": "Select",
   "selectAll": "Select All",
   "currentName": "Current name",
   "newName": "New name",
@@ -231,5 +233,52 @@
   "ru": "Russian",
   "sr": "Serbian",
   "tj": "Tajik",
-  "ua": "Ukrainian"
-}
+  "ua": "Ukrainian",
+  "fileManagerSortButton": "Sort by",
+  "fileManagerStorageButton": "Select storage",
+  "fileManagerSaveButton": "Add selections to the list",
+  "fileManagerBackButton": "Back",
+  "semanticsFileManagerTitle":  "{selectStatus, plural, =0{Selected} =1{Unselected} other{}} {entityType, select, File{File} Directory{Folder} Link{Link} other{File system entity}}, filename is {filename}, ",
+  "@semanticsFileManagerTitle": {
+    "placeholders": {
+      "selectStatus": {
+        "type": "num"
+      },
+      "entityType":{
+        "type": "String"
+      },
+      "filename":{
+        "type": "String"
+      }
+    }
+  },
+  "semanticsFileManagerSubtitle":  "last modified at {last}, sized {size}.",
+  "@semanticsFileManagerSubtitle": {
+    "placeholders": {
+      "last": {
+        "type": "String"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "semanticsFileManagerDirSubtitle":  "last modified at {last}.",
+  "@semanticsFileManagerDirSubtitle": {
+    "placeholders": {
+      "last": {
+        "type": "String"
+      }
+    }
+  },
+  "semanticsDropdownButton": "This is a dropdown button, current value is \"{value}\", double click to open the it and pick another value.",
+  "@semanticsDropdownButton": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "semanticsRuleDropdownButton": ". Select and then click the \"Add Rule\" button to add this rule.",
+  "semanticsFilesDropdownButton": ". Select this item to restrict renaming targets.",
+  "semanticsReorderableList": "This is the rule list, it is empty now. Click the 'Add rule' button to add one. Rules are executed sequentially. This list is reorderable, allowing you to move a rule up, down, and to the top or bottom. When the cursor is on a rule, use a vertical swipe gesture to switch between actions, and use a double click to execute the selected action."}

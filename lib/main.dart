@@ -149,6 +149,8 @@ class AppPage extends StatelessWidget {
   Widget build(BuildContext context) {
     _permissionCheck(context);
 
-    return HomePage();
+    return Semantics(
+      child: HomePage(),
+    );
   }
 }

@@ -21,8 +21,9 @@ class RulesPage extends StatefulWidget {
   State<RulesPage> createState() => RulesPageState();
 }
 
+final List<Rule> _rules = [];
+
 class RulesPageState extends State<RulesPage> {
-  final List<Rule> _rules = [];
   List<Rule> get rules => _rules;
 
   void clearRule() {
@@ -93,6 +94,7 @@ class RulesPageState extends State<RulesPage> {
                   'Transliterate': L10n.current.transliterate,
                   'Truncate': L10n.current.truncate,
                 }[obj]!,
+                semanticsAppendix: L10n.current.semanticsRuleDropdownButton,
               ),
               ElevatedButton(
                 onPressed: showRuleDialog,
@@ -114,7 +116,13 @@ class RulesPageState extends State<RulesPage> {
         if (_rules.isEmpty)
           Expanded(
             child: Center(
-              child: Text(L10n.current.rulesSequentially),
+              child: SizedBox(
+                width: 175,
+                child: Text(
+                  L10n.current.rulesSequentially,
+                  semanticsLabel: L10n.current.semanticsReorderableList,
+                ),
+              ),
             ),
           )
         else

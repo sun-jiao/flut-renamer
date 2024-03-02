@@ -32,11 +32,25 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m4(targetString, replacementString) =>
       "替换：将“${targetString}”替换为“${replacementString}”。";
 
-  static String m5(type) => "转写：${type}。";
+  static String m5(value) => "这是一个下拉按钮，现在选中的是“${value}”，双击以打开下拉按钮并选取另一个值。";
 
-  static String m6(langName, type) => "转写：将${langName}${type}。";
+  static String m6(last) => "上次修改时间是${last}。";
 
-  static String m7(keepType, i1toEnd, i2toEnd, i1, i2) =>
+  static String m7(last, size) => "上次修改时间是${last}，文件大小是${size}。";
+
+  static String m8(entityType, selectStatus, filename) =>
+      "${Intl.plural(selectStatus, zero: '已选中的', one: '未选中的', other: '')}${Intl.select(entityType, {
+            'File': '文件',
+            'Directory': '文件夹',
+            'Link': '链接',
+            'other': '文件系统对象',
+          })}，文件名叫${filename}，";
+
+  static String m9(type) => "转写：${type}。";
+
+  static String m10(langName, type) => "转写：将${langName}${type}。";
+
+  static String m11(keepType, i1toEnd, i2toEnd, i1, i2) =>
       "截取：${Intl.plural(keepType, zero: '仅保留', one: '移除', other: '')}从${Intl.plural(i1toEnd, zero: '倒数的', one: '', other: '')}第${i1}个字符至${Intl.plural(i2toEnd, zero: '倒数的', one: '', other: '')}第${i2}个字符之间的内容。";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -59,8 +73,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "caseSensitive": MessageLookupByLibrary.simpleMessage("区分大小写"),
         "collapseOptions": MessageLookupByLibrary.simpleMessage("收起选项"),
         "currentName": MessageLookupByLibrary.simpleMessage("当前文件名"),
-        "descriptionIncrement": MessageLookupByLibrary.simpleMessage(
-            "递增文件名，例如 Photo-1、Photo-2、Photo-3。"),
+        "descriptionIncrement":
+            MessageLookupByLibrary.simpleMessage("递增文件名，例如 照片-1、照片-2、照片-3。"),
         "descriptionInsert":
             MessageLookupByLibrary.simpleMessage("在指定位置插入指定文本（或文件元数据和EXIF数据）。"),
         "descriptionRearrange": MessageLookupByLibrary.simpleMessage(
@@ -85,6 +99,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "expandOptions": MessageLookupByLibrary.simpleMessage("展开选项"),
         "fileCreateDate": MessageLookupByLibrary.simpleMessage("文件创建日期"),
         "fileCreateTime": MessageLookupByLibrary.simpleMessage("文件创建时间"),
+        "fileManagerBackButton": MessageLookupByLibrary.simpleMessage("返回"),
+        "fileManagerSaveButton":
+            MessageLookupByLibrary.simpleMessage("添加已选文件至列表"),
+        "fileManagerSortButton": MessageLookupByLibrary.simpleMessage("文件排序"),
+        "fileManagerStorageButton":
+            MessageLookupByLibrary.simpleMessage("选取存储器"),
         "fileModifyDate": MessageLookupByLibrary.simpleMessage("文件修改日期"),
         "fileModifyTime": MessageLookupByLibrary.simpleMessage("文件修改时间"),
         "fileSize": MessageLookupByLibrary.simpleMessage("文件大小"),
@@ -183,6 +203,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "removeAll": MessageLookupByLibrary.simpleMessage("移除全部"),
         "removeCharacters": MessageLookupByLibrary.simpleMessage("移除二者之间的字符"),
         "removeRenamed": MessageLookupByLibrary.simpleMessage("移除已重命名文件"),
+        "removeRule": MessageLookupByLibrary.simpleMessage("移除该规则"),
         "removeRules": MessageLookupByLibrary.simpleMessage("重命名后移除所有规则"),
         "removeToString": m3,
         "rename": MessageLookupByLibrary.simpleMessage("重命名"),
@@ -193,7 +214,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "rulesSequentially": MessageLookupByLibrary.simpleMessage(
             "规则是按顺序执行的，按住左侧的“=”按钮并拖动即可对规则进行排序。"),
         "save": MessageLookupByLibrary.simpleMessage("保存"),
+        "select": MessageLookupByLibrary.simpleMessage("选择"),
         "selectAll": MessageLookupByLibrary.simpleMessage("全选"),
+        "semanticsDropdownButton": m5,
+        "semanticsFileManagerDirSubtitle": m6,
+        "semanticsFileManagerSubtitle": m7,
+        "semanticsFileManagerTitle": m8,
+        "semanticsFilesDropdownButton":
+            MessageLookupByLibrary.simpleMessage("。选择该项以将重命名目标限制在该范围内"),
+        "semanticsReorderableList": MessageLookupByLibrary.simpleMessage(
+            "规则列表现在是空的。单击“添加规则”按钮添加一条。规则是按顺序执行的。此列表是可重新排序的，允许您向上、向下移动规则，以及将它们移动到顶部或底部。当光标位于规则上时，使用垂直滑动手势在不同的操作之间切换，并使用双击执行选定的操作。"),
+        "semanticsRuleDropdownButton":
+            MessageLookupByLibrary.simpleMessage("。选择该项并点击“添加规则”按钮即可添加该规则"),
         "sourceCode": MessageLookupByLibrary.simpleMessage("源代码"),
         "sr": MessageLookupByLibrary.simpleMessage("塞尔维亚语"),
         "startIndex": MessageLookupByLibrary.simpleMessage("起始索引"),
@@ -209,13 +241,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "transliteratePinyin": MessageLookupByLibrary.simpleMessage("转换中文为拼音"),
         "transliterateSimplified":
             MessageLookupByLibrary.simpleMessage("转换为简体中文"),
-        "transliterateToString": m5,
-        "transliterateToStringCyrillic": m6,
+        "transliterateToString": m9,
+        "transliterateToStringCyrillic": m10,
         "transliterateTraditional":
             MessageLookupByLibrary.simpleMessage("转换为繁体中文"),
         "transliterateUpper": MessageLookupByLibrary.simpleMessage("转换为大写拉丁字符"),
         "truncate": MessageLookupByLibrary.simpleMessage("截取"),
-        "truncateToString": m7,
+        "truncateToString": m11,
         "ua": MessageLookupByLibrary.simpleMessage("乌克兰语")
       };
 }

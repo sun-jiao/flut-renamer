@@ -56,11 +56,15 @@ extension ExFile on FileSystemEntity {
   set parser(FileMetadata? metadata) => _metadataHandler.setValue(path, parser);
   static void clearParsers() => _metadataHandler.clearValues();
 
-  String fileOrDir() {
+  String fileOrDir([bool returnLink=false]) {
     FileSystemEntity file = this;
 
     while (file is Link) {
-      file = file.toFileSystemEntity();
+      if (returnLink) {
+        return 'Link';
+      } else {
+        file = file.toFileSystemEntity();
+      }
     }
 
     if (file is File) {
@@ -87,6 +91,9 @@ extension ExLink on Link {
 
 extension ExPathString on String {
   FileSystemEntity toFileSystemEntity() => _toFileSystemEntity(this, (str) => str);
+
+  // usually causes the talkback to choose a wrong language.
+  String toFilenameSemanticLabel() => RegExp(r'([a-zA-Z]+|\d.{0,3}|[^a-zA-Z0-9]+)').allMatches(this).map((e) => e.group(0)).join('，');
 }
 
 FileSystemEntity _toFileSystemEntity<T>(T file, String Function(T file) func) {

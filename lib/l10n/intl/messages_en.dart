@@ -33,12 +33,27 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m4(targetString, replacementString) =>
       "Replace \"${targetString}\" with \"${replacementString}\".";
 
-  static String m5(type) => "Transliterate: convert ${type}.";
+  static String m5(value) =>
+      "This is a dropdown button, current value is \"${value}\", double click to open the it and pick another value.";
 
-  static String m6(langName, type) =>
+  static String m6(last) => "last modified at ${last}.";
+
+  static String m7(last, size) => "last modified at ${last}, sized ${size}.";
+
+  static String m8(entityType, selectStatus, filename) =>
+      "${Intl.plural(selectStatus, zero: 'Selected', one: 'Unselected', other: '')} ${Intl.select(entityType, {
+            'File': 'File',
+            'Directory': 'Folder',
+            'Link': 'Link',
+            'other': 'File system entity',
+          })}, filename is ${filename}, ";
+
+  static String m9(type) => "Transliterate: convert ${type}.";
+
+  static String m10(langName, type) =>
       "Transliterate: convert ${langName} ${type}.";
 
-  static String m7(keepType, i1toEnd, i2toEnd, i1, i2) =>
+  static String m11(keepType, i1toEnd, i2toEnd, i1, i2) =>
       "Truncate: ${Intl.plural(keepType, zero: 'keep only', one: 'remove', other: '')} characters between the ${i1}th${Intl.plural(i1toEnd, zero: '-to-end', one: '', other: '')} character and the ${i2}th${Intl.plural(i2toEnd, zero: '-to-end', one: '', other: '')}.";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -94,6 +109,13 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Create date of file"),
         "fileCreateTime":
             MessageLookupByLibrary.simpleMessage("Create time of file"),
+        "fileManagerBackButton": MessageLookupByLibrary.simpleMessage("Back"),
+        "fileManagerSaveButton":
+            MessageLookupByLibrary.simpleMessage("Add selections to the list"),
+        "fileManagerSortButton":
+            MessageLookupByLibrary.simpleMessage("Sort by"),
+        "fileManagerStorageButton":
+            MessageLookupByLibrary.simpleMessage("Select storage"),
         "fileModifyDate":
             MessageLookupByLibrary.simpleMessage("Modify date of file"),
         "fileModifyTime":
@@ -228,6 +250,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "removeCharacters": MessageLookupByLibrary.simpleMessage(
             "Remove characters between them"),
         "removeRenamed": MessageLookupByLibrary.simpleMessage("Remove renamed"),
+        "removeRule": MessageLookupByLibrary.simpleMessage("Remove this rule"),
         "removeRules":
             MessageLookupByLibrary.simpleMessage("Remove rules after renaming"),
         "removeToString": m3,
@@ -239,7 +262,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "rulesSequentially": MessageLookupByLibrary.simpleMessage(
             "Rules are executed sequentially,  hold the \"=\" button on the left and drag it to sort rules."),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
+        "select": MessageLookupByLibrary.simpleMessage("Select"),
         "selectAll": MessageLookupByLibrary.simpleMessage("Select All"),
+        "semanticsDropdownButton": m5,
+        "semanticsFileManagerDirSubtitle": m6,
+        "semanticsFileManagerSubtitle": m7,
+        "semanticsFileManagerTitle": m8,
+        "semanticsFilesDropdownButton": MessageLookupByLibrary.simpleMessage(
+            ". Select this item to restrict renaming targets."),
+        "semanticsReorderableList": MessageLookupByLibrary.simpleMessage(
+            "This is the rule list, it is empty now. Click the \'Add rule\' button to add one. Rules are executed sequentially. This list is reorderable, allowing you to move a rule up, down, and to the top or bottom. When the cursor is on a rule, use a vertical swipe gesture to switch between actions, and use a double click to execute the selected action."),
+        "semanticsRuleDropdownButton": MessageLookupByLibrary.simpleMessage(
+            ". Select and then click the \"Add Rule\" button to add this rule."),
         "sourceCode": MessageLookupByLibrary.simpleMessage("Source code"),
         "sr": MessageLookupByLibrary.simpleMessage("Serbian"),
         "startIndex": MessageLookupByLibrary.simpleMessage("Start index"),
@@ -257,14 +291,14 @@ class MessageLookup extends MessageLookupByLibrary {
             "Chinese characters to pinyin"),
         "transliterateSimplified": MessageLookupByLibrary.simpleMessage(
             "Chinese characters to simplified Chinese"),
-        "transliterateToString": m5,
-        "transliterateToStringCyrillic": m6,
+        "transliterateToString": m9,
+        "transliterateToStringCyrillic": m10,
         "transliterateTraditional": MessageLookupByLibrary.simpleMessage(
             "Chinese characters to traditional Chinese"),
         "transliterateUpper": MessageLookupByLibrary.simpleMessage(
             "Latin characters to upper case"),
         "truncate": MessageLookupByLibrary.simpleMessage("Truncate"),
-        "truncateToString": m7,
+        "truncateToString": m11,
         "ua": MessageLookupByLibrary.simpleMessage("Ukrainian")
       };
 }

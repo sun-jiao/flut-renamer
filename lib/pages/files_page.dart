@@ -160,7 +160,8 @@ class FilesPageState extends State<FilesPage> {
       );
 
   Widget getRowText(String text, bool error) => Text(
-        text,
+    text,
+        semanticsLabel: text.toFilenameSemanticLabel(),
         style: TextStyle(
           fontSize: Platform.isAndroid ? 12 : 16,
           color: error ? Colors.red : null,
@@ -298,6 +299,7 @@ class FilesPageState extends State<FilesPage> {
                   'Directories': L10n.current.directories,
                   'Files & Dirs': L10n.current.filesDirs,
                 }[obj]!,
+                semanticsAppendix: L10n.current.semanticsFilesDropdownButton,
               ),
               Expanded(
                 child: TextField(
