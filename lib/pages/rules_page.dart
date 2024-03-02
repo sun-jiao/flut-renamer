@@ -112,8 +112,10 @@ class RulesPageState extends State<RulesPage> {
         ),
         const SizedBox(height: 16),
         if (_rules.isEmpty)
-          Center(
-            child: Text(L10n.current.rulesSequentially),
+          Expanded(
+            child: Center(
+              child: Text(L10n.current.rulesSequentially),
+            ),
           )
         else
           Expanded(
