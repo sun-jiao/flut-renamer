@@ -560,6 +560,16 @@ class L10n {
     );
   }
 
+  /// `Rules are executed sequentially,  hold the "=" button on the left and drag it to sort rules.`
+  String get rulesSequentially {
+    return Intl.message(
+      'Rules are executed sequentially,  hold the "=" button on the left and drag it to sort rules.',
+      name: 'rulesSequentially',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Do not rename a system reserved directory.`
   String get noSysDir {
     return Intl.message(

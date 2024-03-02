@@ -28,7 +28,7 @@ class RulesPageState extends State<RulesPage> {
   void clearRule() {
     if (Shared.removeRules) {
       setState(() {
-        rules.clear();
+        _rules.clear();
       });
     }
   }
@@ -66,87 +66,92 @@ class RulesPageState extends State<RulesPage> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomDrop<String>(
-                  value: Shared.ruleName,
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      Shared.ruleName = newValue!;
-                    });
-                  },
-                  items: const <String>[
-                    'Replace',
-                    'Remove',
-                    'Insert',
-                    'Increment',
-                    'Rearrange',
-                    'Transliterate',
-                    'Truncate',
-                  ],
-                  tToStr: (obj) => {
-                    'Replace': L10n.current.replace,
-                    'Remove': L10n.current.remove,
-                    'Insert': L10n.current.insert,
-                    'Increment': L10n.current.increment,
-                    'Rearrange': L10n.current.rearrange,
-                    'Transliterate': L10n.current.transliterate,
-                    'Truncate': L10n.current.truncate,
-                  }[obj]!,
-                ),
-                ElevatedButton(
-                  onPressed: showRuleDialog,
-                  child: Text(L10n.current.addRule),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      _rules.clear();
-                    });
-                    widget.onRuleChanged.call();
-                  },
-                  child: Text(L10n.current.removeAll),
-                ),
-              ],
-            ),
-        ),
-        const SizedBox(height: 16),
-        Expanded(
-          child: ReorderableListView.builder(
-            onReorder: (oldIndex, newIndex) {
-              setState(() {
-                if (newIndex > oldIndex) {
-                  newIndex -= 1;
-                }
-                final item = _rules.removeAt(oldIndex);
-                _rules.insert(newIndex, item);
-              });
-              widget.onRuleChanged.call();
-            },
-            buildDefaultDragHandles: false,
-            itemBuilder: (context, index) {
-              final item = _rules[index];
-              return ListTile(
-                title: Text(item.toString()),
-                key: ValueKey(item),
-                leading: ReorderableDragStartListener(
-                  index: index,
-                  child: const Icon(Icons.drag_handle),
-                ),
-                trailing: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      _rules.removeAt(index);
-                    });
-                    widget.onRuleChanged.call();
-                  },
-                  icon: const Icon(Icons.clear),
-                ),
-              );
-            },
-            itemCount: _rules.length,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              CustomDrop<String>(
+                value: Shared.ruleName,
+                onChanged: (String? newValue) {
+                  setState(() {
+                    Shared.ruleName = newValue!;
+                  });
+                },
+                items: const <String>[
+                  'Replace',
+                  'Remove',
+                  'Insert',
+                  'Increment',
+                  'Rearrange',
+                  'Transliterate',
+                  'Truncate',
+                ],
+                tToStr: (obj) => {
+                  'Replace': L10n.current.replace,
+                  'Remove': L10n.current.remove,
+                  'Insert': L10n.current.insert,
+                  'Increment': L10n.current.increment,
+                  'Rearrange': L10n.current.rearrange,
+                  'Transliterate': L10n.current.transliterate,
+                  'Truncate': L10n.current.truncate,
+                }[obj]!,
+              ),
+              ElevatedButton(
+                onPressed: showRuleDialog,
+                child: Text(L10n.current.addRule),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    _rules.clear();
+                  });
+                  widget.onRuleChanged.call();
+                },
+                child: Text(L10n.current.removeAll),
+              ),
+            ],
           ),
         ),
+        const SizedBox(height: 16),
+        if (_rules.isEmpty)
+          Center(
+            child: Text(L10n.current.rulesSequentially),
+          )
+        else
+          Expanded(
+            child: ReorderableListView.builder(
+              onReorder: (oldIndex, newIndex) {
+                setState(() {
+                  if (newIndex > oldIndex) {
+                    newIndex -= 1;
+                  }
+                  final item = _rules.removeAt(oldIndex);
+                  _rules.insert(newIndex, item);
+                });
+                widget.onRuleChanged.call();
+              },
+              buildDefaultDragHandles: false,
+              itemBuilder: (context, index) {
+                final item = _rules[index];
+                return ListTile(
+                  title: Text(item.toString()),
+                  key: ValueKey(item),
+                  leading: ReorderableDragStartListener(
+                    index: index,
+                    child: const Icon(Icons.drag_handle),
+                  ),
+                  trailing: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _rules.removeAt(index);
+                      });
+                      widget.onRuleChanged.call();
+                    },
+                    icon: const Icon(Icons.clear),
+                  ),
+                );
+              },
+              itemCount: _rules.length,
+            ),
+          ),
       ],
     );
   }

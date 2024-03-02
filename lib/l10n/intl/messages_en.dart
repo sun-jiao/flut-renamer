@@ -236,6 +236,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "replaceToString": m4,
         "replacement": MessageLookupByLibrary.simpleMessage("Replacement"),
         "ru": MessageLookupByLibrary.simpleMessage("Russian"),
+        "rulesSequentially": MessageLookupByLibrary.simpleMessage(
+            "Rules are executed sequentially,  hold the \"=\" button on the left and drag it to sort rules."),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
         "selectAll": MessageLookupByLibrary.simpleMessage("Select All"),
         "sourceCode": MessageLookupByLibrary.simpleMessage("Source code"),
