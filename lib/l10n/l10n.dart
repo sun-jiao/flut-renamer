@@ -140,20 +140,20 @@ class L10n {
     );
   }
 
-  /// `Can not access external storage`
+  /// `Cannot access external storage`
   String get exitTitle {
     return Intl.message(
-      'Can not access external storage',
+      'Cannot access external storage',
       name: 'exitTitle',
       desc: '',
       args: [],
     );
   }
 
-  /// `The manage external storage permission allows us to access and rename files stored on your device. Without this permission, the app won't be able to access the complete file paths and therefore can't rename files. Please go to Settings page and grant the permission manually, otherwise we cannot provide any service.`
+  /// `The manage external storage permission allows us to access and rename files stored on your device. Without this permission, the app won't be able to access the complete file paths and therefore can't rename files. Please go to the Settings page and grant the permission manually; otherwise, we cannot provide any service.`
   String get exitContent {
     return Intl.message(
-      'The manage external storage permission allows us to access and rename files stored on your device. Without this permission, the app won\'t be able to access the complete file paths and therefore can\'t rename files. Please go to Settings page and grant the permission manually, otherwise we cannot provide any service.',
+      'The manage external storage permission allows us to access and rename files stored on your device. Without this permission, the app won\'t be able to access the complete file paths and therefore can\'t rename files. Please go to the Settings page and grant the permission manually; otherwise, we cannot provide any service.',
       name: 'exitContent',
       desc: '',
       args: [],
@@ -170,10 +170,10 @@ class L10n {
     );
   }
 
-  /// `To pick files on iOS, first choose the directory where your files located. Then, within the selected folder, pick the files you want to rename. Because the restriction of iOS, we have to take the two-step process, which ensures safe file management. Let's get started!`
+  /// `To pick files on iOS, first choose the directory where your files are located. Then, within the selected folder, pick the files you want to rename. Due to the restrictions of iOS, we have to use a two-step process, which ensures safe file management. Let's get started!`
   String get iosRemindContent {
     return Intl.message(
-      'To pick files on iOS, first choose the directory where your files located. Then, within the selected folder, pick the files you want to rename. Because the restriction of iOS, we have to take the two-step process, which ensures safe file management. Let\'s get started!',
+      'To pick files on iOS, first choose the directory where your files are located. Then, within the selected folder, pick the files you want to rename. Due to the restrictions of iOS, we have to use a two-step process, which ensures safe file management. Let\'s get started!',
       name: 'iosRemindContent',
       desc: '',
       args: [],
@@ -190,10 +190,10 @@ class L10n {
     );
   }
 
-  /// `Using the renamer you can not only rename files but also directories. Long press a directory to select it, then select "Files & Dirs" from the drop-down button in the upper left corner to enable directory renaming. For security reasons, some system reserved directories are not selectable.`
+  /// `Using the renamer, you can not only rename files but also directories. Long-press a directory to select it, then select 'Files & Dirs' from the drop-down button in the upper-left corner to enable directory renaming. For security reasons, some system reserved directories are not selectable.`
   String get androidRemindContent {
     return Intl.message(
-      'Using the renamer you can not only rename files but also directories. Long press a directory to select it, then select "Files & Dirs" from the drop-down button in the upper left corner to enable directory renaming. For security reasons, some system reserved directories are not selectable.',
+      'Using the renamer, you can not only rename files but also directories. Long-press a directory to select it, then select \'Files & Dirs\' from the drop-down button in the upper-left corner to enable directory renaming. For security reasons, some system reserved directories are not selectable.',
       name: 'androidRemindContent',
       desc: '',
       args: [],
@@ -230,10 +230,10 @@ class L10n {
     );
   }
 
-  /// `This application is designed to help users rename their files. It is built with Flutter - a multi-platform application framework, and therefore it is also available on other operating systems. It is totally open source and could be reviewed or contributed to.`
+  /// `This application is designed to help users rename their files. It is built with Flutter - a multi-platform application framework, and therefore it is also available on other operating systems. It is totally open source and can be reviewed or contributed to.`
   String get aboutContent {
     return Intl.message(
-      'This application is designed to help users rename their files. It is built with Flutter - a multi-platform application framework, and therefore it is also available on other operating systems. It is totally open source and could be reviewed or contributed to.',
+      'This application is designed to help users rename their files. It is built with Flutter - a multi-platform application framework, and therefore it is also available on other operating systems. It is totally open source and can be reviewed or contributed to.',
       name: 'aboutContent',
       desc: '',
       args: [],
@@ -580,10 +580,10 @@ class L10n {
     );
   }
 
-  /// `Rules are executed sequentially,  hold the "=" button on the left and drag it to sort rules.`
+  /// `Rules are executed sequentially. Hold the '=' button on the left and drag it to sort rules.`
   String get rulesSequentially {
     return Intl.message(
-      'Rules are executed sequentially,  hold the "=" button on the left and drag it to sort rules.',
+      'Rules are executed sequentially. Hold the \'=\' button on the left and drag it to sort rules.',
       name: 'rulesSequentially',
       desc: '',
       args: [],

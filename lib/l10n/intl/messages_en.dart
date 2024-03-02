@@ -59,13 +59,13 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "aboutContent": MessageLookupByLibrary.simpleMessage(
-            "This application is designed to help users rename their files. It is built with Flutter - a multi-platform application framework, and therefore it is also available on other operating systems. It is totally open source and could be reviewed or contributed to."),
+            "This application is designed to help users rename their files. It is built with Flutter - a multi-platform application framework, and therefore it is also available on other operating systems. It is totally open source and can be reviewed or contributed to."),
         "add": MessageLookupByLibrary.simpleMessage("Add"),
         "addFile": MessageLookupByLibrary.simpleMessage("Add file"),
         "addFiles": MessageLookupByLibrary.simpleMessage("Add files"),
         "addRule": MessageLookupByLibrary.simpleMessage("Add Rule"),
         "androidRemindContent": MessageLookupByLibrary.simpleMessage(
-            "Using the renamer you can not only rename files but also directories. Long press a directory to select it, then select \"Files & Dirs\" from the drop-down button in the upper left corner to enable directory renaming. For security reasons, some system reserved directories are not selectable."),
+            "Using the renamer, you can not only rename files but also directories. Long-press a directory to select it, then select \'Files & Dirs\' from the drop-down button in the upper-left corner to enable directory renaming. For security reasons, some system reserved directories are not selectable."),
         "androidRemindTitle":
             MessageLookupByLibrary.simpleMessage("Rename directory"),
         "appError": MessageLookupByLibrary.simpleMessage("Application error"),
@@ -101,9 +101,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "errorDetails": MessageLookupByLibrary.simpleMessage("Error details"),
         "exit": MessageLookupByLibrary.simpleMessage("Exit"),
         "exitContent": MessageLookupByLibrary.simpleMessage(
-            "The manage external storage permission allows us to access and rename files stored on your device. Without this permission, the app won\'t be able to access the complete file paths and therefore can\'t rename files. Please go to Settings page and grant the permission manually, otherwise we cannot provide any service."),
+            "The manage external storage permission allows us to access and rename files stored on your device. Without this permission, the app won\'t be able to access the complete file paths and therefore can\'t rename files. Please go to the Settings page and grant the permission manually; otherwise, we cannot provide any service."),
         "exitTitle": MessageLookupByLibrary.simpleMessage(
-            "Can not access external storage"),
+            "Cannot access external storage"),
         "expandOptions": MessageLookupByLibrary.simpleMessage("Expand options"),
         "fileCreateDate":
             MessageLookupByLibrary.simpleMessage("Create date of file"),
@@ -152,7 +152,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "insertedText":
             MessageLookupByLibrary.simpleMessage("Text to be inserted"),
         "iosRemindContent": MessageLookupByLibrary.simpleMessage(
-            "To pick files on iOS, first choose the directory where your files located. Then, within the selected folder, pick the files you want to rename. Because the restriction of iOS, we have to take the two-step process, which ensures safe file management. Let\'s get started!"),
+            "To pick files on iOS, first choose the directory where your files are located. Then, within the selected folder, pick the files you want to rename. Due to the restrictions of iOS, we have to use a two-step process, which ensures safe file management. Let\'s get started!"),
         "iosRemindTitle":
             MessageLookupByLibrary.simpleMessage("About picking files on iOS"),
         "isRegex": MessageLookupByLibrary.simpleMessage("Is regex"),
@@ -260,7 +260,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "replacement": MessageLookupByLibrary.simpleMessage("Replacement"),
         "ru": MessageLookupByLibrary.simpleMessage("Russian"),
         "rulesSequentially": MessageLookupByLibrary.simpleMessage(
-            "Rules are executed sequentially,  hold the \"=\" button on the left and drag it to sort rules."),
+            "Rules are executed sequentially. Hold the \'=\' button on the left and drag it to sort rules."),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
         "select": MessageLookupByLibrary.simpleMessage("Select"),
         "selectAll": MessageLookupByLibrary.simpleMessage("Select All"),
