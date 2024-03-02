@@ -118,7 +118,7 @@ class FileMetadata {
       // case 'Music:AlbumLength':
       //   return (_metadata. ?? '').toString();
       case 'Music:Year':
-        return (_metadata.year ?? '').toString();
+        return (_metadata.year?.year ?? '').toString();
       case 'Music:TrackDuration':
         return (_formatDuration(_metadata.duration) ?? '').toString();
       case 'Music:TrackName':
@@ -196,7 +196,6 @@ class FileMetadata {
     'PB',
   ];
 
-  // ignore: body_might_complete_normally
   String _formatFileSize(int bytes) {
     if (bytes < 0) {
       throw ArgumentError('A file could never have a negative size.');
@@ -210,9 +209,10 @@ class FileMetadata {
         size = size / 1024;
       }
     }
+
+    throw AssertionError('Unreachable');
   }
 
-  // ignore: body_might_complete_normally_nullable
   String? _formatDuration(Duration? dur) {
     if (dur == null) {
       return null;
