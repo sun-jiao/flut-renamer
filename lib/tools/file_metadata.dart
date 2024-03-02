@@ -74,15 +74,13 @@ class FileMetadata {
                 '')
             .toString()
             .split(' ')
-            .first
-            .replaceAll(':', '-');
+            .first;
       case 'Photo:Time':
         return (_exif['EXIF DateTime'] ??
                 _exif['EXIF DateTimeOriginal'] ??
                 _exif['EXIF DateTimeDigitized'] ??
                 '')
-            .toString()
-            .replaceAll(':', '-');
+            .toString();
       case 'Photo:CamName':
         final oem = (_exif['Image Make'] ?? '').toString();
         final model = (_exif['Image Model'] ?? '').toString();
