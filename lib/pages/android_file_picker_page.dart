@@ -146,7 +146,6 @@ class _AndroidFilePickerState extends State<AndroidFilePicker> {
                 subtitle: Text(error.toString()),
               ),
             );
-            return Text(error.toString());
           },
         ),
       ),
