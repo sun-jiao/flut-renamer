@@ -201,27 +201,27 @@
       }
     }
   },
-  "truncateToString": "Truncate: {keepType, select, true{keep only} false{remove} other{}} characters between the {i1}{i2Ordinal, select, o1{st} o2{nd} o3{rd} other{th}}{i1toEnd, select, true{-to-end} false{} other{}} character and the {i2}{i1Ordinal, select, o1{st} o2{nd} o3{rd} other{th}}{i2toEnd, select, true{-to-end} false{} other{}}.",
+  "truncateToString": "Truncate: {keepType, select, true{keep only} false{remove} other{}} characters between the {iOne}{iTwoOrdinal, select, o1{st} o2{nd} o3{rd} other{th}}{iOneToEnd, select, true{-to-end} false{} other{}} character and the {iTwo}{iOneOrdinal, select, o1{st} o2{nd} o3{rd} other{th}}{iTwoToEnd, select, true{-to-end} false{} other{}}.",
   "@truncateToString": {
     "placeholders": {
-      "i1toEnd":{
+      "iOneToEnd":{
         "type": "String"
       },
-      "i1Ordinal": {
+      "iOneOrdinal": {
         "type": "String"
       },
-      "i2toEnd":{
+      "iTwoToEnd":{
         "type": "String"
       },
-      "i2Ordinal": {
+      "iTwoOrdinal": {
         "type": "String"
       },"keepType": {
         "type": "String"
       },
-      "i1": {
+      "iOne": {
         "type": "num"
       },
-      "i2": {
+      "iTwo": {
         "type": "num"
       }
     }

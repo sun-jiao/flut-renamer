@@ -1410,36 +1410,50 @@ class L10n {
     );
   }
 
-  /// `Truncate: {keepType, select, true{keep only} false{remove} other{}} characters between the {i1}{i2Ordinal, select, o1{st} o2{nd} o3{rd} other{th}}{i1toEnd, select, true{-to-end} false{} other{}} character and the {i2}{i1Ordinal, select, o1{st} o2{nd} o3{rd} other{th}}{i2toEnd, select, true{-to-end} false{} other{}}.`
-  String truncateToString(String i2toEnd, String i1Ordinal, String i1toEnd,
-      String i2Ordinal, String keepType, num i1, num i2) {
+  /// `Truncate: {keepType, select, true{keep only} false{remove} other{}} characters between the {iOne}{iTwoOrdinal, select, o1{st} o2{nd} o3{rd} other{th}}{iOneToEnd, select, true{-to-end} false{} other{}} character and the {iTwo}{iOneOrdinal, select, o1{st} o2{nd} o3{rd} other{th}}{iTwoToEnd, select, true{-to-end} false{} other{}}.`
+  String truncateToString(
+      String iTwoToEnd,
+      String iOneOrdinal,
+      String iOneToEnd,
+      String iTwoOrdinal,
+      String keepType,
+      num iOne,
+      num iTwo) {
     return Intl.message(
       'Truncate: ${Intl.select(keepType, {
             'true': 'keep only',
             'false': 'remove',
             'other': ''
-          })} characters between the $i1${Intl.select(i2Ordinal, {
+          })} characters between the $iOne${Intl.select(iTwoOrdinal, {
             'o1': 'st',
             'o2': 'nd',
             'o3': 'rd',
             'other': 'th'
-          })}${Intl.select(i1toEnd, {
+          })}${Intl.select(iOneToEnd, {
             'true': '-to-end',
             'false': '',
             'other': ''
-          })} character and the $i2${Intl.select(i1Ordinal, {
+          })} character and the $iTwo${Intl.select(iOneOrdinal, {
             'o1': 'st',
             'o2': 'nd',
             'o3': 'rd',
             'other': 'th'
-          })}${Intl.select(i2toEnd, {
+          })}${Intl.select(iTwoToEnd, {
             'true': '-to-end',
             'false': '',
             'other': ''
           })}.',
       name: 'truncateToString',
       desc: '',
-      args: [i2toEnd, i1Ordinal, i1toEnd, i2Ordinal, keepType, i1, i2],
+      args: [
+        iTwoToEnd,
+        iOneOrdinal,
+        iOneToEnd,
+        iTwoOrdinal,
+        keepType,
+        iOne,
+        iTwo
+      ],
     );
   }
 

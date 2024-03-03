@@ -65,20 +65,21 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m11(langName, type) => "转写：将${langName}${type}。";
 
-  static String m12(i2toEnd, i1Ordinal, i1toEnd, i2Ordinal, keepType, i1, i2) =>
+  static String m12(iTwoToEnd, iOneOrdinal, iOneToEnd, iTwoOrdinal, keepType,
+          iOne, iTwo) =>
       "截取：${Intl.select(keepType, {
             'true': '仅保留',
             'false': '移除',
             'other': '',
-          })}从${Intl.select(i1toEnd, {
+          })}从${Intl.select(iOneToEnd, {
             'true': '倒数的',
             'false': '',
             'other': '',
-          })}第${i1}个字符至${Intl.select(i2toEnd, {
+          })}第${iOne}个字符至${Intl.select(iTwoToEnd, {
             'true': '倒数的',
             'false': '',
             'other': '',
-          })}第${i2}个字符之间的内容。";
+          })}第${iTwo}个字符之间的内容。";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{

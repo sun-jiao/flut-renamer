@@ -7,9 +7,7 @@ class RuleInsert implements Rule {
     this.toEnd,
     this.withMetadata,
     this.ignoreExtension,
-  ) {
-    print(toEnd);
-  }
+  );
 
   final String insert; // string to be inserted
   final int insertIndex; // insert before character at index

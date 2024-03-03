@@ -136,7 +136,7 @@
   "rearrangeToString": "重排：分隔符：{delimiter}，顺序：{order}。",
   "transliterateToString": "转写：{type}。",
   "transliterateToStringCyrillic": "转写：将{langName}{type}。",
-  "truncateToString": "截取：{keepType, select, true{仅保留} false{移除} other{}}从{i1toEnd, select, true{倒数的} false{} other{}}第{i1}个字符至{i2toEnd, select, true{倒数的} false{} other{}}第{i2}个字符之间的内容。",
+  "truncateToString": "截取：{keepType, select, true{仅保留} false{移除} other{}}从{iOneToEnd, select, true{倒数的} false{} other{}}第{iOne}个字符至{iTwoToEnd, select, true{倒数的} false{} other{}}第{iTwo}个字符之间的内容。",
   "descriptionReplace": "用给定的替换文本（或文件元数据和EXIF数据）替换指定的文本（或与提供的正则表达式匹配的文本）。",
   "descriptionRemove": "从文件名中删除指定的文本（或与提供的正则表达式匹配的文本）。",
   "descriptionInsert": "在指定位置插入指定文本（或文件元数据和EXIF数据）。",

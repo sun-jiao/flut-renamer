@@ -73,26 +73,27 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m11(langName, type) =>
       "Transliterate: convert ${langName} ${type}.";
 
-  static String m12(i2toEnd, i1Ordinal, i1toEnd, i2Ordinal, keepType, i1, i2) =>
+  static String m12(iTwoToEnd, iOneOrdinal, iOneToEnd, iTwoOrdinal, keepType,
+          iOne, iTwo) =>
       "Truncate: ${Intl.select(keepType, {
             'true': 'keep only',
             'false': 'remove',
             'other': '',
-          })} characters between the ${i1}${Intl.select(i2Ordinal, {
+          })} characters between the ${iOne}${Intl.select(iTwoOrdinal, {
             'o1': 'st',
             'o2': 'nd',
             'o3': 'rd',
             'other': 'th',
-          })}${Intl.select(i1toEnd, {
+          })}${Intl.select(iOneToEnd, {
             'true': '-to-end',
             'false': '',
             'other': '',
-          })} character and the ${i2}${Intl.select(i1Ordinal, {
+          })} character and the ${iTwo}${Intl.select(iOneOrdinal, {
             'o1': 'st',
             'o2': 'nd',
             'o3': 'rd',
             'other': 'th',
-          })}${Intl.select(i2toEnd, {
+          })}${Intl.select(iTwoToEnd, {
             'true': '-to-end',
             'false': '',
             'other': '',
