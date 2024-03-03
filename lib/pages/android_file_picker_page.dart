@@ -138,6 +138,16 @@ class _AndroidFilePickerState extends State<AndroidFilePicker> {
               ),
             );
           },
+          errorBuilder: (context, error) {
+            return Center(
+              child: ListTile(
+                leading: const Icon(Icons.error),
+                title: Text(error.runtimeType.toString()),
+                subtitle: Text(error.toString()),
+              ),
+            );
+            return Text(error.toString());
+          },
         ),
       ),
     );
