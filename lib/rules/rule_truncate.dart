@@ -52,11 +52,11 @@ class RuleTruncate implements Rule {
   @override
   String toString() {
     return L10n.current.truncateToString(
+      i2toEnd.toString(),
       'o${index1 % 10}',
+      i1toEnd.toString(),
       'o${index2 % 10}',
-      keepBetween ? 0 : 1,
-      i1toEnd ? 0 : 1,
-      i2toEnd ? 0 : 1,
+      keepBetween.toString(),
       index1,
       index2,
     );

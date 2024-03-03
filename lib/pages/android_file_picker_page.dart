@@ -95,7 +95,7 @@ class _AndroidFilePickerState extends State<AndroidFilePicker> {
                         basename,
                         semanticsLabel: L10n.current.semanticsFileManagerTitle(
                           getType(entity),
-                          entitySelected ? 0 : 1,
+                          entitySelected.toString(),
                           basename.toFilenameSemanticLabel(),
                         ),
                       ),

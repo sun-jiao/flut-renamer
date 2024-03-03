@@ -1350,19 +1350,23 @@ class L10n {
     );
   }
 
-  /// `Insert "{insert}" at the {insertIndex}{ordinal, select, o1{st} o2{nd} o3{rd} other{th}}{location, plural, =0{-to-end} =1{} other{}} character.`
+  /// `Insert "{insert}" at the {insertIndex}{ordinal, select, o1{st} o2{nd} o3{rd} other{th}}{toEnd, select, true{-to-end} false{} other{}} character.`
   String insertToString(
-      String ordinal, num location, String insert, num insertIndex) {
+      String toEnd, String ordinal, String insert, num insertIndex) {
     return Intl.message(
       'Insert "$insert" at the $insertIndex${Intl.select(ordinal, {
             'o1': 'st',
             'o2': 'nd',
             'o3': 'rd',
             'other': 'th'
-          })}${Intl.plural(location, zero: '-to-end', one: '', other: '')} character.',
+          })}${Intl.select(toEnd, {
+            'true': '-to-end',
+            'false': '',
+            'other': ''
+          })} character.',
       name: 'insertToString',
       desc: '',
-      args: [ordinal, location, insert, insertIndex],
+      args: [toEnd, ordinal, insert, insertIndex],
     );
   }
 
@@ -1406,24 +1410,36 @@ class L10n {
     );
   }
 
-  /// `Truncate: {keepType, plural, =0{keep only} =1{remove} other{}} characters between the {i1}{i2Ordinal, select, o1{st} o2{nd} o3{rd} other{th}}{i1toEnd, plural, =0{-to-end} =1{} other{}} character and the {i2}{i1Ordinal, select, o1{st} o2{nd} o3{rd} other{th}}{i2toEnd, plural, =0{-to-end} =1{} other{}}.`
-  String truncateToString(String i1Ordinal, String i2Ordinal, num keepType,
-      num i1toEnd, num i2toEnd, num i1, num i2) {
+  /// `Truncate: {keepType, select, true{keep only} false{remove} other{}} characters between the {i1}{i2Ordinal, select, o1{st} o2{nd} o3{rd} other{th}}{i1toEnd, select, true{-to-end} false{} other{}} character and the {i2}{i1Ordinal, select, o1{st} o2{nd} o3{rd} other{th}}{i2toEnd, select, true{-to-end} false{} other{}}.`
+  String truncateToString(String i2toEnd, String i1Ordinal, String i1toEnd,
+      String i2Ordinal, String keepType, num i1, num i2) {
     return Intl.message(
-      'Truncate: ${Intl.plural(keepType, zero: 'keep only', one: 'remove', other: '')} characters between the $i1${Intl.select(i2Ordinal, {
+      'Truncate: ${Intl.select(keepType, {
+            'true': 'keep only',
+            'false': 'remove',
+            'other': ''
+          })} characters between the $i1${Intl.select(i2Ordinal, {
             'o1': 'st',
             'o2': 'nd',
             'o3': 'rd',
             'other': 'th'
-          })}${Intl.plural(i1toEnd, zero: '-to-end', one: '', other: '')} character and the $i2${Intl.select(i1Ordinal, {
+          })}${Intl.select(i1toEnd, {
+            'true': '-to-end',
+            'false': '',
+            'other': ''
+          })} character and the $i2${Intl.select(i1Ordinal, {
             'o1': 'st',
             'o2': 'nd',
             'o3': 'rd',
             'other': 'th'
-          })}${Intl.plural(i2toEnd, zero: '-to-end', one: '', other: '')}.',
+          })}${Intl.select(i2toEnd, {
+            'true': '-to-end',
+            'false': '',
+            'other': ''
+          })}.',
       name: 'truncateToString',
       desc: '',
-      args: [i1Ordinal, i2Ordinal, keepType, i1toEnd, i2toEnd, i1, i2],
+      args: [i2toEnd, i1Ordinal, i1toEnd, i2Ordinal, keepType, i1, i2],
     );
   }
 
@@ -1617,11 +1633,15 @@ class L10n {
     );
   }
 
-  /// `{selectStatus, plural, =0{Selected} =1{Unselected} other{}} {entityType, select, File{File} Directory{Folder} Link{Link} other{File system entity}}, filename is {filename}, `
+  /// `{selectStatus, select, true{Selected} false{Unselected} other{}} {entityType, select, File{File} Directory{Folder} Link{Link} other{File system entity}}, filename is {filename}, `
   String semanticsFileManagerTitle(
-      String entityType, num selectStatus, String filename) {
+      String entityType, String selectStatus, String filename) {
     return Intl.message(
-      '${Intl.plural(selectStatus, zero: 'Selected', one: 'Unselected', other: '')} ${Intl.select(entityType, {
+      '${Intl.select(selectStatus, {
+            'true': 'Selected',
+            'false': 'Unselected',
+            'other': ''
+          })} ${Intl.select(entityType, {
             'File': 'File',
             'Directory': 'Folder',
             'Link': 'Link',
@@ -1703,10 +1723,10 @@ class L10n {
     );
   }
 
-  /// `switch to between actions by a vertical swipe gesture`
+  /// `, switch between actions by a vertical swipe gesture`
   String get semanticsMultipleActionsHint {
     return Intl.message(
-      'switch to between actions by a vertical swipe gesture',
+      ', switch between actions by a vertical swipe gesture',
       name: 'semanticsMultipleActionsHint',
       desc: '',
       args: [],
@@ -1723,10 +1743,14 @@ class L10n {
     );
   }
 
-  /// `Switching counting direction between from the beginning and from the end, currently counting from {toEnd, plural, =0{the end} =1{the beginning} other{}}`
-  String semanticSwitchNumberToStartAndToEnd(num toEnd) {
+  /// `Switching counting direction between from the beginning and from the end, currently counting from {toEnd, select, true{the end} false{the beginning} other{}}`
+  String semanticSwitchNumberToStartAndToEnd(String toEnd) {
     return Intl.message(
-      'Switching counting direction between from the beginning and from the end, currently counting from ${Intl.plural(toEnd, zero: 'the end', one: 'the beginning', other: '')}',
+      'Switching counting direction between from the beginning and from the end, currently counting from ${Intl.select(toEnd, {
+            'true': 'the end',
+            'false': 'the beginning',
+            'other': ''
+          })}',
       name: 'semanticSwitchNumberToStartAndToEnd',
       desc: '',
       args: [toEnd],

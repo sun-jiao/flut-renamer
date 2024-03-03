@@ -22,13 +22,17 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m0(prefix) => "Incremental renaming: ${prefix}-index";
 
-  static String m1(ordinal, location, insert, insertIndex) =>
+  static String m1(toEnd, ordinal, insert, insertIndex) =>
       "Insert \"${insert}\" at the ${insertIndex}${Intl.select(ordinal, {
             'o1': 'st',
             'o2': 'nd',
             'o3': 'rd',
             'other': 'th',
-          })}${Intl.plural(location, zero: '-to-end', one: '', other: '')} character.";
+          })}${Intl.select(toEnd, {
+            'true': '-to-end',
+            'false': '',
+            'other': '',
+          })} character.";
 
   static String m2(delimiter, order) =>
       "Rearrange: delimiter: ${delimiter}, order: ${order}.";
@@ -39,7 +43,11 @@ class MessageLookup extends MessageLookupByLibrary {
       "Replace \"${targetString}\" with \"${replacementString}\".";
 
   static String m5(toEnd) =>
-      "Switching counting direction between from the beginning and from the end, currently counting from ${Intl.plural(toEnd, zero: 'the end', one: 'the beginning', other: '')}";
+      "Switching counting direction between from the beginning and from the end, currently counting from ${Intl.select(toEnd, {
+            'true': 'the end',
+            'false': 'the beginning',
+            'other': '',
+          })}";
 
   static String m6(value) =>
       "This is a dropdown button, current value is \"${value}\", double click to open the it and pick another value.";
@@ -49,7 +57,11 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m8(last, size) => "last modified at ${last}, sized ${size}.";
 
   static String m9(entityType, selectStatus, filename) =>
-      "${Intl.plural(selectStatus, zero: 'Selected', one: 'Unselected', other: '')} ${Intl.select(entityType, {
+      "${Intl.select(selectStatus, {
+            'true': 'Selected',
+            'false': 'Unselected',
+            'other': '',
+          })} ${Intl.select(entityType, {
             'File': 'File',
             'Directory': 'Folder',
             'Link': 'Link',
@@ -61,18 +73,30 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m11(langName, type) =>
       "Transliterate: convert ${langName} ${type}.";
 
-  static String m12(i1Ordinal, i2Ordinal, keepType, i1toEnd, i2toEnd, i1, i2) =>
-      "Truncate: ${Intl.plural(keepType, zero: 'keep only', one: 'remove', other: '')} characters between the ${i1}${Intl.select(i2Ordinal, {
+  static String m12(i2toEnd, i1Ordinal, i1toEnd, i2Ordinal, keepType, i1, i2) =>
+      "Truncate: ${Intl.select(keepType, {
+            'true': 'keep only',
+            'false': 'remove',
+            'other': '',
+          })} characters between the ${i1}${Intl.select(i2Ordinal, {
             'o1': 'st',
             'o2': 'nd',
             'o3': 'rd',
             'other': 'th',
-          })}${Intl.plural(i1toEnd, zero: '-to-end', one: '', other: '')} character and the ${i2}${Intl.select(i1Ordinal, {
+          })}${Intl.select(i1toEnd, {
+            'true': '-to-end',
+            'false': '',
+            'other': '',
+          })} character and the ${i2}${Intl.select(i1Ordinal, {
             'o1': 'st',
             'o2': 'nd',
             'o3': 'rd',
             'other': 'th',
-          })}${Intl.plural(i2toEnd, zero: '-to-end', one: '', other: '')}.";
+          })}${Intl.select(i2toEnd, {
+            'true': '-to-end',
+            'false': '',
+            'other': '',
+          })}.";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -292,7 +316,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "semanticsFilesDropdownButton": MessageLookupByLibrary.simpleMessage(
             ". Select this item to restrict renaming targets."),
         "semanticsMultipleActionsHint": MessageLookupByLibrary.simpleMessage(
-            "switch to between actions by a vertical swipe gesture"),
+            ", switch between actions by a vertical swipe gesture"),
         "semanticsOpenMetadataDialog": MessageLookupByLibrary.simpleMessage(
             "Double tap to open a dialog and select a metadata tag to be inserted."),
         "semanticsReorderableList": MessageLookupByLibrary.simpleMessage(

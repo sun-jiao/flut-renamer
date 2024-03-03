@@ -22,8 +22,12 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m0(prefix) => "递增：${prefix}-索引";
 
-  static String m1(ordinal, location, insert, insertIndex) =>
-      "插入：在${Intl.plural(location, zero: '倒数的', one: '', other: '')}第${insertIndex}个字符处插入“${insert}”。";
+  static String m1(toEnd, ordinal, insert, insertIndex) =>
+      "插入：在${Intl.select(toEnd, {
+            'true': '倒数的',
+            'false': '',
+            'other': '',
+          })}第${insertIndex}个字符处插入“${insert}”。";
 
   static String m2(delimiter, order) => "重排：分隔符：${delimiter}，顺序：${order}。";
 
@@ -33,7 +37,11 @@ class MessageLookup extends MessageLookupByLibrary {
       "替换：将“${targetString}”替换为“${replacementString}”。";
 
   static String m5(toEnd) =>
-      "切换计数方式是zhèng shǔ还是dào shǔ，当前是${Intl.plural(toEnd, zero: 'dào shǔ', one: 'zhèng shǔ', other: '')}";
+      "切换计数方式是zhèng shǔ还是dào shǔ，当前是${Intl.select(toEnd, {
+            'true': 'dào shǔ',
+            'false': 'zhèng shǔ',
+            'other': '',
+          })}";
 
   static String m6(value) => "这是一个下拉按钮，现在选中的是“${value}”，双击以打开下拉按钮并选取另一个值。";
 
@@ -42,7 +50,11 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m8(last, size) => "上次修改时间是${last}，文件大小是${size}。";
 
   static String m9(entityType, selectStatus, filename) =>
-      "${Intl.plural(selectStatus, zero: '已选中的', one: '未选中的', other: '')}${Intl.select(entityType, {
+      "${Intl.select(selectStatus, {
+            'true': '已选中的',
+            'false': '未选中的',
+            'other': '',
+          })}${Intl.select(entityType, {
             'File': '文件',
             'Directory': '文件夹',
             'Link': '链接',
@@ -53,8 +65,20 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m11(langName, type) => "转写：将${langName}${type}。";
 
-  static String m12(i1Ordinal, i2Ordinal, keepType, i1toEnd, i2toEnd, i1, i2) =>
-      "截取：${Intl.plural(keepType, zero: '仅保留', one: '移除', other: '')}从${Intl.plural(i1toEnd, zero: '倒数的', one: '', other: '')}第${i1}个字符至${Intl.plural(i2toEnd, zero: '倒数的', one: '', other: '')}第${i2}个字符之间的内容。";
+  static String m12(i2toEnd, i1Ordinal, i1toEnd, i2Ordinal, keepType, i1, i2) =>
+      "截取：${Intl.select(keepType, {
+            'true': '仅保留',
+            'false': '移除',
+            'other': '',
+          })}从${Intl.select(i1toEnd, {
+            'true': '倒数的',
+            'false': '',
+            'other': '',
+          })}第${i1}个字符至${Intl.select(i2toEnd, {
+            'true': '倒数的',
+            'false': '',
+            'other': '',
+          })}第${i2}个字符之间的内容。";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -227,7 +251,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "semanticsFilesDropdownButton":
             MessageLookupByLibrary.simpleMessage("。选择该项以将重命名目标限制在该范围内"),
         "semanticsMultipleActionsHint":
-            MessageLookupByLibrary.simpleMessage("上下滑动切换至其他操作。"),
+            MessageLookupByLibrary.simpleMessage("，上下滑动切换至其他操作。"),
         "semanticsOpenMetadataDialog":
             MessageLookupByLibrary.simpleMessage("双击打开一个对话框并从中选择要插入的元数据标签。"),
         "semanticsReorderableList": MessageLookupByLibrary.simpleMessage(

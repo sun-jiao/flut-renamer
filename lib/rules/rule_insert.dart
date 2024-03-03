@@ -4,14 +4,16 @@ class RuleInsert implements Rule {
   RuleInsert(
     this.insert,
     this.insertIndex,
-    this.fromStart,
+    this.toEnd,
     this.withMetadata,
     this.ignoreExtension,
-  );
+  ) {
+    print(toEnd);
+  }
 
   final String insert; // string to be inserted
   final int insertIndex; // insert before character at index
-  final bool fromStart; // true: count from start; false: from end.
+  final bool toEnd; // true: count from start; false: from end.
   final bool withMetadata; // true: replace metadata tag with metadata
   final bool ignoreExtension;
 
@@ -35,7 +37,7 @@ class RuleInsert implements Rule {
 
     int index = insertIndex;
 
-    if (!fromStart) {
+    if (toEnd) {
       index = newName.length - index;
     }
 
@@ -52,6 +54,6 @@ class RuleInsert implements Rule {
 
   @override
   String toString() {
-    return L10n.current.insertToString('o${insertIndex % 10}', fromStart ? 1 : 0, insert, insertIndex);
+    return L10n.current.insertToString(toEnd.toString(), 'o${insertIndex % 10}', insert, insertIndex);
   }
 }

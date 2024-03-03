@@ -31,7 +31,6 @@ class _InsertDialogState extends State<InsertDialog> {
   );
   ValueNotifier<bool> withMetadata = ValueNotifier(false);
   ValueNotifier<bool> toEnd = ValueNotifier(false);
-  bool get fromStart => !toEnd.value;
   bool beforeIndex = true; // true: insert before index; false: after
   bool ignoreExtension = true;
 
@@ -87,7 +86,7 @@ class _InsertDialogState extends State<InsertDialog> {
             final Rule rule = RuleInsert(
               insertText,
               insertIndex,
-              fromStart,
+              toEnd.value,
               withMetadata.value,
               ignoreExtension,
             );

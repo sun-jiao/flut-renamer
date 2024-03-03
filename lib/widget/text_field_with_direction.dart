@@ -40,7 +40,7 @@ class _DirectionTextFieldState extends State<DirectionTextField> {
           TextButton(
             child: Text(
               L10n.current.toLast,
-              semanticsLabel: L10n.current.semanticSwitchNumberToStartAndToEnd(toEnd.value ? 0 : 1),
+              semanticsLabel: L10n.current.semanticSwitchNumberToStartAndToEnd(toEnd.value.toString()),
               style: TextStyle(
                 color: toEnd.value ? null : Colors.grey,
               ),

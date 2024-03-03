@@ -146,20 +146,20 @@
       }
     }
   },
-  "insertToString": "Insert \"{insert}\" at the {insertIndex}{ordinal, select, o1{st} o2{nd} o3{rd} other{th}}{location, plural, =0{-to-end} =1{} other{}} character.",
+  "insertToString": "Insert \"{insert}\" at the {insertIndex}{ordinal, select, o1{st} o2{nd} o3{rd} other{th}}{toEnd, select, true{-to-end} false{} other{}} character.",
   "@insertToString": {
     "placeholders": {
-      "location": {
-        "type": "num"
+      "toEnd": {
+        "type": "String"
+      },
+      "ordinal": {
+        "type": "String"
       },
       "insert": {
         "type": "String"
       },
       "insertIndex": {
         "type": "num"
-      },
-      "ordinal": {
-        "type": "String"
       }
     }
   },
@@ -201,29 +201,28 @@
       }
     }
   },
-  "truncateToString": "Truncate: {keepType, plural, =0{keep only} =1{remove} other{}} characters between the {i1}{i2Ordinal, select, o1{st} o2{nd} o3{rd} other{th}}{i1toEnd, plural, =0{-to-end} =1{} other{}} character and the {i2}{i1Ordinal, select, o1{st} o2{nd} o3{rd} other{th}}{i2toEnd, plural, =0{-to-end} =1{} other{}}.",
+  "truncateToString": "Truncate: {keepType, select, true{keep only} false{remove} other{}} characters between the {i1}{i2Ordinal, select, o1{st} o2{nd} o3{rd} other{th}}{i1toEnd, select, true{-to-end} false{} other{}} character and the {i2}{i1Ordinal, select, o1{st} o2{nd} o3{rd} other{th}}{i2toEnd, select, true{-to-end} false{} other{}}.",
   "@truncateToString": {
     "placeholders": {
-      "keepType": {
-        "type": "num"
-      },
       "i1toEnd":{
-        "type": "num"
+        "type": "String"
+      },
+      "i1Ordinal": {
+        "type": "String"
       },
       "i2toEnd":{
-        "type": "num"
+        "type": "String"
+      },
+      "i2Ordinal": {
+        "type": "String"
+      },"keepType": {
+        "type": "String"
       },
       "i1": {
         "type": "num"
       },
       "i2": {
         "type": "num"
-      },
-      "i1Ordinal": {
-        "type": "String"
-      },
-      "i2Ordinal": {
-        "type": "String"
       }
     }
   },
@@ -246,14 +245,14 @@
   "fileManagerStorageButton": "Select storage",
   "fileManagerSaveButton": "Add selections to the list",
   "fileManagerBackButton": "Back",
-  "semanticsFileManagerTitle":  "{selectStatus, plural, =0{Selected} =1{Unselected} other{}} {entityType, select, File{File} Directory{Folder} Link{Link} other{File system entity}}, filename is {filename}, ",
+  "semanticsFileManagerTitle":  "{selectStatus, select, true{Selected} false{Unselected} other{}} {entityType, select, File{File} Directory{Folder} Link{Link} other{File system entity}}, filename is {filename}, ",
   "@semanticsFileManagerTitle": {
     "placeholders": {
       "entityType":{
         "type": "String"
       },
       "selectStatus": {
-        "type": "num"
+        "type": "String"
       },
       "filename":{
         "type": "String"
@@ -291,13 +290,13 @@
   "semanticsFilesDropdownButton": ". Select this item to restrict renaming targets.",
   "semanticsReorderableList": "This is the rule list, it is empty now. Click the 'Add rule' button to add one. Rules are executed sequentially. This list is reorderable, allowing you to move a rule up, down, and to the top or bottom. When the cursor is on a rule, use a vertical swipe gesture to switch between actions, and use a double click to execute the selected action.",
   "semanticsOpenMetadataDialog": "Double tap to open a dialog and select a metadata tag to be inserted.",
-  "semanticsMultipleActionsHint": "switch to between actions by a vertical swipe gesture",
+  "semanticsMultipleActionsHint": ", switch between actions by a vertical swipe gesture",
   "semanticNumberWithDirection": "Switching counting direction between from the beginning and from the end",
-  "semanticSwitchNumberToStartAndToEnd": "Switching counting direction between from the beginning and from the end, currently counting from {toEnd, plural, =0{the end} =1{the beginning} other{}}",
+  "semanticSwitchNumberToStartAndToEnd": "Switching counting direction between from the beginning and from the end, currently counting from {toEnd, select, true{the end} false{the beginning} other{}}",
   "@semanticSwitchNumberToStartAndToEnd": {
     "placeholders": {
       "toEnd":{
-        "type": "num"
+        "type": "String"
       }
     }
   }

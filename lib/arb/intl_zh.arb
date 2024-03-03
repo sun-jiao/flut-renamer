@@ -130,105 +130,13 @@
   "removeCharacters": "移除二者之间的字符",
   "metadataParserNotProvided": "包含元数据标签，但未提供元数据解析器。",
   "replaceToString": "替换：将“{targetString}”替换为“{replacementString}”。",
-  "@replaceToString": {
-    "placeholders": {
-      "targetString": {
-        "type": "String"
-      },
-      "replacementString": {
-        "type": "String"
-      }
-    }
-  },
   "removeToString": "删除：“{targetString}”",
-  "@removeToString": {
-    "placeholders": {
-      "targetString": {
-        "type": "String"
-      }
-    }
-  },
-  "insertToString": "插入：在{location, plural, =0{倒数的} =1{} other{}}第{insertIndex}个字符处插入“{insert}”。",
-  "@insertToString": {
-    "placeholders": {
-      "location": {
-        "type": "num"
-      },
-      "insert": {
-        "type": "String"
-      },
-      "insertIndex": {
-        "type": "num"
-      },
-      "ordinal": {
-        "type": "num"
-      }
-    }
-  },
+  "insertToString": "插入：在{toEnd, select, true{倒数的} false{} other{}}第{insertIndex}个字符处插入“{insert}”。",
   "incrementToString": "递增：{prefix}-索引",
-  "@incrementToString": {
-    "placeholders": {
-      "prefix": {
-        "type": "String"
-      }
-    }
-  },
   "rearrangeToString": "重排：分隔符：{delimiter}，顺序：{order}。",
-  "@rearrangeToString": {
-    "placeholders": {
-      "delimiter": {
-        "type": "String"
-      },
-      "order": {
-        "type": "String"
-      }
-    }
-  },
   "transliterateToString": "转写：{type}。",
-  "@transliterateToString": {
-    "placeholders": {
-      "type": {
-        "type": "String"
-      }
-    }
-  },
   "transliterateToStringCyrillic": "转写：将{langName}{type}。",
-  "@transliterateToStringCyrillic": {
-    "placeholders": {
-      "langName": {
-        "type": "String"
-      },
-      "type": {
-        "type": "String"
-      }
-    }
-  },
-  "truncateToString": "截取：{keepType, plural, =0{仅保留} =1{移除} other{}}从{i1toEnd, plural, =0{倒数的} =1{} other{}}第{i1}个字符至{i2toEnd, plural, =0{倒数的} =1{} other{}}第{i2}个字符之间的内容。",
-  "@truncateToString": {
-    "placeholders": {
-      "keepType": {
-        "type": "num"
-      },
-      "i1toEnd":{
-        "type": "num"
-      },
-      "i2toEnd":{
-        "type": "num"
-      },
-      "i1": {
-        "type": "num"
-      },
-      "i2": {
-        "type": "num"
-      },
-      "i1Ordinal": {
-        "type": "num"
-      },
-      "i2Ordinal": {
-        "type": "num"
-      }
-    }
-  },
+  "truncateToString": "截取：{keepType, select, true{仅保留} false{移除} other{}}从{i1toEnd, select, true{倒数的} false{} other{}}第{i1}个字符至{i2toEnd, select, true{倒数的} false{} other{}}第{i2}个字符之间的内容。",
   "descriptionReplace": "用给定的替换文本（或文件元数据和EXIF数据）替换指定的文本（或与提供的正则表达式匹配的文本）。",
   "descriptionRemove": "从文件名中删除指定的文本（或与提供的正则表达式匹配的文本）。",
   "descriptionInsert": "在指定位置插入指定文本（或文件元数据和EXIF数据）。",
@@ -248,58 +156,14 @@
   "fileManagerStorageButton": "选取存储器",
   "fileManagerSaveButton": "添加已选文件至列表",
   "fileManagerBackButton": "返回",
-  "semanticsFileManagerTitle":  "{selectStatus, plural, =0{已选中的} =1{未选中的} other{}}{entityType, select, File{文件} Directory{文件夹} Link{链接} other{文件系统对象}}，文件名叫{filename}，",
-  "@semanticsFileManagerTitle": {
-    "placeholders": {
-      "selectStatus": {
-        "type": "num"
-      },
-      "entityType":{
-        "type": "String"
-      },
-      "filename":{
-        "type": "String"
-      }
-    }
-  },
+  "semanticsFileManagerTitle":  "{selectStatus, select, true{已选中的} false{未选中的} other{}}{entityType, select, File{文件} Directory{文件夹} Link{链接} other{文件系统对象}}，文件名叫{filename}，",
   "semanticsFileManagerSubtitle":  "上次修改时间是{last}，文件大小是{size}。",
-  "@semanticsFileManagerSubtitle": {
-    "placeholders": {
-      "last": {
-        "type": "String"
-      },
-      "size": {
-        "type": "String"
-      }
-    }
-  },
   "semanticsFileManagerDirSubtitle":  "上次修改时间是{last}。",
-  "@semanticsFileManagerDirSubtitle": {
-    "placeholders": {
-      "last": {
-        "type": "String"
-      }
-    }
-  },
   "semanticsDropdownButton": "这是一个下拉按钮，现在选中的是“{value}”，双击以打开下拉按钮并选取另一个值。",
-  "@semanticsDropdownButton": {
-    "placeholders": {
-      "value": {
-        "type": "String"
-      }
-    }
-  },
   "semanticsRuleDropdownButton": "。选择该项并点击“添加规则”按钮即可添加该规则",
   "semanticsFilesDropdownButton": "。选择该项以将重命名目标限制在该范围内",
   "semanticsReorderableList": "规则列表现在是空的。单击“添加规则”按钮添加一条。规则是按顺序执行的。此列表可被重新排序，允许您向上、向下移动规则，以及将它们移动到顶部或底部。当光标位于规则上时，使用垂直滑动手势在不同的操作之间切换，并使用双击执行选定的操作。",
   "semanticsOpenMetadataDialog": "双击打开一个对话框并从中选择要插入的元数据标签。",
-  "semanticsMultipleActionsHint": "上下滑动切换至其他操作。",
-  "semanticSwitchNumberToStartAndToEnd": "切换计数方式是zhèng shǔ还是dào shǔ，当前是{toEnd, plural, =0{dào shǔ} =1{zhèng shǔ} other{}}",
-  "@semanticSwitchNumberToStartAndToEnd": {
-    "placeholders": {
-      "toEnd":{
-        "type": "num"
-      }
-    }
-  }
+  "semanticsMultipleActionsHint": "，上下滑动切换至其他操作。",
+  "semanticSwitchNumberToStartAndToEnd": "切换计数方式是zhèng shǔ还是dào shǔ，当前是{toEnd, select, true{dào shǔ} false{zhèng shǔ} other{}}"
 }
