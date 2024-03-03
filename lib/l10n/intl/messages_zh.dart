@@ -22,7 +22,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m0(prefix) => "递增：${prefix}-索引";
 
-  static String m1(location, insert, insertIndex) =>
+  static String m1(ordinal, location, insert, insertIndex) =>
       "插入：在${Intl.plural(location, zero: '倒数的', one: '', other: '')}第${insertIndex}个字符处插入“${insert}”。";
 
   static String m2(delimiter, order) => "重排：分隔符：${delimiter}，顺序：${order}。";
@@ -32,13 +32,16 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m4(targetString, replacementString) =>
       "替换：将“${targetString}”替换为“${replacementString}”。";
 
-  static String m5(value) => "这是一个下拉按钮，现在选中的是“${value}”，双击以打开下拉按钮并选取另一个值。";
+  static String m5(toEnd) =>
+      "切换计数方式是zhèng shǔ还是dào shǔ，当前是${Intl.plural(toEnd, zero: 'dào shǔ', one: 'zhèng shǔ', other: '')}";
 
-  static String m6(last) => "上次修改时间是${last}。";
+  static String m6(value) => "这是一个下拉按钮，现在选中的是“${value}”，双击以打开下拉按钮并选取另一个值。";
 
-  static String m7(last, size) => "上次修改时间是${last}，文件大小是${size}。";
+  static String m7(last) => "上次修改时间是${last}。";
 
-  static String m8(entityType, selectStatus, filename) =>
+  static String m8(last, size) => "上次修改时间是${last}，文件大小是${size}。";
+
+  static String m9(entityType, selectStatus, filename) =>
       "${Intl.plural(selectStatus, zero: '已选中的', one: '未选中的', other: '')}${Intl.select(entityType, {
             'File': '文件',
             'Directory': '文件夹',
@@ -46,11 +49,11 @@ class MessageLookup extends MessageLookupByLibrary {
             'other': '文件系统对象',
           })}，文件名叫${filename}，";
 
-  static String m9(type) => "转写：${type}。";
+  static String m10(type) => "转写：${type}。";
 
-  static String m10(langName, type) => "转写：将${langName}${type}。";
+  static String m11(langName, type) => "转写：将${langName}${type}。";
 
-  static String m11(keepType, i1toEnd, i2toEnd, i1, i2) =>
+  static String m12(i1Ordinal, i2Ordinal, keepType, i1toEnd, i2toEnd, i1, i2) =>
       "截取：${Intl.plural(keepType, zero: '仅保留', one: '移除', other: '')}从${Intl.plural(i1toEnd, zero: '倒数的', one: '', other: '')}第${i1}个字符至${Intl.plural(i2toEnd, zero: '倒数的', one: '', other: '')}第${i2}个字符之间的内容。";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -216,14 +219,19 @@ class MessageLookup extends MessageLookupByLibrary {
         "save": MessageLookupByLibrary.simpleMessage("保存"),
         "select": MessageLookupByLibrary.simpleMessage("选择"),
         "selectAll": MessageLookupByLibrary.simpleMessage("全选"),
-        "semanticsDropdownButton": m5,
-        "semanticsFileManagerDirSubtitle": m6,
-        "semanticsFileManagerSubtitle": m7,
-        "semanticsFileManagerTitle": m8,
+        "semanticSwitchNumberToStartAndToEnd": m5,
+        "semanticsDropdownButton": m6,
+        "semanticsFileManagerDirSubtitle": m7,
+        "semanticsFileManagerSubtitle": m8,
+        "semanticsFileManagerTitle": m9,
         "semanticsFilesDropdownButton":
             MessageLookupByLibrary.simpleMessage("。选择该项以将重命名目标限制在该范围内"),
+        "semanticsMultipleActionsHint":
+            MessageLookupByLibrary.simpleMessage("上下滑动切换至其他操作。"),
+        "semanticsOpenMetadataDialog":
+            MessageLookupByLibrary.simpleMessage("双击打开一个对话框并从中选择要插入的元数据标签。"),
         "semanticsReorderableList": MessageLookupByLibrary.simpleMessage(
-            "规则列表现在是空的。单击“添加规则”按钮添加一条。规则是按顺序执行的。此列表是可重新排序的，允许您向上、向下移动规则，以及将它们移动到顶部或底部。当光标位于规则上时，使用垂直滑动手势在不同的操作之间切换，并使用双击执行选定的操作。"),
+            "规则列表现在是空的。单击“添加规则”按钮添加一条。规则是按顺序执行的。此列表可被重新排序，允许您向上、向下移动规则，以及将它们移动到顶部或底部。当光标位于规则上时，使用垂直滑动手势在不同的操作之间切换，并使用双击执行选定的操作。"),
         "semanticsRuleDropdownButton":
             MessageLookupByLibrary.simpleMessage("。选择该项并点击“添加规则”按钮即可添加该规则"),
         "sourceCode": MessageLookupByLibrary.simpleMessage("源代码"),
@@ -241,13 +249,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "transliteratePinyin": MessageLookupByLibrary.simpleMessage("转换中文为拼音"),
         "transliterateSimplified":
             MessageLookupByLibrary.simpleMessage("转换为简体中文"),
-        "transliterateToString": m9,
-        "transliterateToStringCyrillic": m10,
+        "transliterateToString": m10,
+        "transliterateToStringCyrillic": m11,
         "transliterateTraditional":
             MessageLookupByLibrary.simpleMessage("转换为繁体中文"),
         "transliterateUpper": MessageLookupByLibrary.simpleMessage("转换为大写拉丁字符"),
         "truncate": MessageLookupByLibrary.simpleMessage("截取"),
-        "truncateToString": m11,
+        "truncateToString": m12,
         "ua": MessageLookupByLibrary.simpleMessage("乌克兰语")
       };
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:renamer/widget/text_field_with_direction.dart';
 
 import '../entity/constants.dart';
 import '../l10n/l10n.dart';
@@ -26,33 +26,10 @@ class TruncateDialog extends StatefulWidget {
 class _TruncateDialogState extends State<TruncateDialog> {
   TextEditingController i1Controller = TextEditingController(text: '0');
   TextEditingController i2Controller = TextEditingController(text: '0');
-  bool i1toEnd = false; // true: negative (Xth-to-last), false: positive (Xth)
-  bool i2toEnd = false; // true: negative (Xth-to-last), false: positive (Xth)
+  ValueNotifier<bool> i1toEnd = ValueNotifier(false); // true: negative (Xth-to-last), false: positive (Xth)
+  ValueNotifier<bool> i2toEnd = ValueNotifier(false); // true: negative (Xth-to-last), false: positive (Xth)
   bool ignoreExtension = true;
   bool keepBetween = true; // true: keep chars in ranges, false: remove in range
-
-  Widget _getRow(TextEditingController con, bool toEnd, VoidCallback callback) => Row(
-    children: [
-      Expanded(child: TextFormField(
-        controller: con,
-        keyboardType: TextInputType.number,
-        inputFormatters: <TextInputFormatter>[
-          FilteringTextInputFormatter.allow(RegExp('[0-9]')), // 只允许数字
-        ],
-        decoration: InputDecoration(labelText: L10n.current.indexOne),
-      ),),
-      TextButton(
-        child: Text(L10n.current.toLast, style: TextStyle(
-          color: toEnd ? null : Colors.grey,
-        ),),
-        onPressed: () {
-          setState(() {
-            callback.call();
-          });
-        },
-      ),
-    ],
-  );
 
   @override
   Widget build(BuildContext context) {
@@ -64,9 +41,9 @@ class _TruncateDialogState extends State<TruncateDialog> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(L10n.current.descriptionTruncate),
-            _getRow(i1Controller, i1toEnd, () => i1toEnd = !i1toEnd),
+            DirectionTextField(con: i1Controller, toEnd: i1toEnd, labelText: L10n.current.indexOne),
             box,
-            _getRow(i2Controller, i2toEnd, () => i2toEnd = !i2toEnd),
+            DirectionTextField(con: i2Controller, toEnd: i2toEnd, labelText: L10n.current.indexTwo),
             ListTile(
               title: TextButton(
                 child: Text(keepBetween ? L10n.current.keepCharacters : L10n.current.removeCharacters),
@@ -104,8 +81,8 @@ class _TruncateDialogState extends State<TruncateDialog> {
             final Rule rule = RuleTruncate(
               index1,
               index2,
-              i1toEnd,
-              i2toEnd,
+              i1toEnd.value,
+              i2toEnd.value,
               ignoreExtension,
               keepBetween,
             );

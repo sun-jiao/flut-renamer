@@ -16,13 +16,15 @@ class CheckboxTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: Checkbox(
-        value: value,
-        onChanged: onChanged,
+    return MergeSemantics(
+      child: ListTile(
+        leading: Checkbox(
+          value: value,
+          onChanged: onChanged,
+        ),
+        title: title,
+        trailing: trailing,
       ),
-      title: title,
-      trailing: trailing,
     );
   }
 }

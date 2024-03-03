@@ -22,8 +22,13 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m0(prefix) => "Incremental renaming: ${prefix}-index";
 
-  static String m1(location, insert, insertIndex) =>
-      "Insert \"${insert}\" at the char #${insertIndex}${Intl.plural(location, zero: '-to-end', one: '', other: '')}.";
+  static String m1(ordinal, location, insert, insertIndex) =>
+      "Insert \"${insert}\" at the ${insertIndex}${Intl.select(ordinal, {
+            'o1': 'st',
+            'o2': 'nd',
+            'o3': 'rd',
+            'other': 'th',
+          })}${Intl.plural(location, zero: '-to-end', one: '', other: '')} character.";
 
   static String m2(delimiter, order) =>
       "Rearrange: delimiter: ${delimiter}, order: ${order}.";
@@ -33,14 +38,17 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m4(targetString, replacementString) =>
       "Replace \"${targetString}\" with \"${replacementString}\".";
 
-  static String m5(value) =>
+  static String m5(toEnd) =>
+      "Switching counting direction between from the beginning and from the end, currently counting from ${Intl.plural(toEnd, zero: 'the end', one: 'the beginning', other: '')}";
+
+  static String m6(value) =>
       "This is a dropdown button, current value is \"${value}\", double click to open the it and pick another value.";
 
-  static String m6(last) => "last modified at ${last}.";
+  static String m7(last) => "last modified at ${last}.";
 
-  static String m7(last, size) => "last modified at ${last}, sized ${size}.";
+  static String m8(last, size) => "last modified at ${last}, sized ${size}.";
 
-  static String m8(entityType, selectStatus, filename) =>
+  static String m9(entityType, selectStatus, filename) =>
       "${Intl.plural(selectStatus, zero: 'Selected', one: 'Unselected', other: '')} ${Intl.select(entityType, {
             'File': 'File',
             'Directory': 'Folder',
@@ -48,13 +56,23 @@ class MessageLookup extends MessageLookupByLibrary {
             'other': 'File system entity',
           })}, filename is ${filename}, ";
 
-  static String m9(type) => "Transliterate: convert ${type}.";
+  static String m10(type) => "Transliterate: convert ${type}.";
 
-  static String m10(langName, type) =>
+  static String m11(langName, type) =>
       "Transliterate: convert ${langName} ${type}.";
 
-  static String m11(keepType, i1toEnd, i2toEnd, i1, i2) =>
-      "Truncate: ${Intl.plural(keepType, zero: 'keep only', one: 'remove', other: '')} characters between the ${i1}th${Intl.plural(i1toEnd, zero: '-to-end', one: '', other: '')} character and the ${i2}th${Intl.plural(i2toEnd, zero: '-to-end', one: '', other: '')}.";
+  static String m12(i1Ordinal, i2Ordinal, keepType, i1toEnd, i2toEnd, i1, i2) =>
+      "Truncate: ${Intl.plural(keepType, zero: 'keep only', one: 'remove', other: '')} characters between the ${i1}${Intl.select(i2Ordinal, {
+            'o1': 'st',
+            'o2': 'nd',
+            'o3': 'rd',
+            'other': 'th',
+          })}${Intl.plural(i1toEnd, zero: '-to-end', one: '', other: '')} character and the ${i2}${Intl.select(i1Ordinal, {
+            'o1': 'st',
+            'o2': 'nd',
+            'o3': 'rd',
+            'other': 'th',
+          })}${Intl.plural(i2toEnd, zero: '-to-end', one: '', other: '')}.";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -264,12 +282,19 @@ class MessageLookup extends MessageLookupByLibrary {
         "save": MessageLookupByLibrary.simpleMessage("Save"),
         "select": MessageLookupByLibrary.simpleMessage("Select"),
         "selectAll": MessageLookupByLibrary.simpleMessage("Select All"),
-        "semanticsDropdownButton": m5,
-        "semanticsFileManagerDirSubtitle": m6,
-        "semanticsFileManagerSubtitle": m7,
-        "semanticsFileManagerTitle": m8,
+        "semanticNumberWithDirection": MessageLookupByLibrary.simpleMessage(
+            "Switching counting direction between from the beginning and from the end"),
+        "semanticSwitchNumberToStartAndToEnd": m5,
+        "semanticsDropdownButton": m6,
+        "semanticsFileManagerDirSubtitle": m7,
+        "semanticsFileManagerSubtitle": m8,
+        "semanticsFileManagerTitle": m9,
         "semanticsFilesDropdownButton": MessageLookupByLibrary.simpleMessage(
             ". Select this item to restrict renaming targets."),
+        "semanticsMultipleActionsHint": MessageLookupByLibrary.simpleMessage(
+            "switch to between actions by a vertical swipe gesture"),
+        "semanticsOpenMetadataDialog": MessageLookupByLibrary.simpleMessage(
+            "Double tap to open a dialog and select a metadata tag to be inserted."),
         "semanticsReorderableList": MessageLookupByLibrary.simpleMessage(
             "This is the rule list, it is empty now. Click the \'Add rule\' button to add one. Rules are executed sequentially. This list is reorderable, allowing you to move a rule up, down, and to the top or bottom. When the cursor is on a rule, use a vertical swipe gesture to switch between actions, and use a double click to execute the selected action."),
         "semanticsRuleDropdownButton": MessageLookupByLibrary.simpleMessage(
@@ -291,14 +316,14 @@ class MessageLookup extends MessageLookupByLibrary {
             "Chinese characters to pinyin"),
         "transliterateSimplified": MessageLookupByLibrary.simpleMessage(
             "Chinese characters to simplified Chinese"),
-        "transliterateToString": m9,
-        "transliterateToStringCyrillic": m10,
+        "transliterateToString": m10,
+        "transliterateToStringCyrillic": m11,
         "transliterateTraditional": MessageLookupByLibrary.simpleMessage(
             "Chinese characters to traditional Chinese"),
         "transliterateUpper": MessageLookupByLibrary.simpleMessage(
             "Latin characters to upper case"),
         "truncate": MessageLookupByLibrary.simpleMessage("Truncate"),
-        "truncateToString": m11,
+        "truncateToString": m12,
         "ua": MessageLookupByLibrary.simpleMessage("Ukrainian")
       };
 }

@@ -146,7 +146,7 @@
       }
     }
   },
-  "insertToString": "Insert \"{insert}\" at the char #{insertIndex}{location, plural, =0{-to-end} =1{} other{}}.",
+  "insertToString": "Insert \"{insert}\" at the {insertIndex}{ordinal, select, o1{st} o2{nd} o3{rd} other{th}}{location, plural, =0{-to-end} =1{} other{}} character.",
   "@insertToString": {
     "placeholders": {
       "location": {
@@ -157,6 +157,9 @@
       },
       "insertIndex": {
         "type": "num"
+      },
+      "ordinal": {
+        "type": "String"
       }
     }
   },
@@ -198,7 +201,7 @@
       }
     }
   },
-  "truncateToString": "Truncate: {keepType, plural, =0{keep only} =1{remove} other{}} characters between the {i1}th{i1toEnd, plural, =0{-to-end} =1{} other{}} character and the {i2}th{i2toEnd, plural, =0{-to-end} =1{} other{}}.",
+  "truncateToString": "Truncate: {keepType, plural, =0{keep only} =1{remove} other{}} characters between the {i1}{i2Ordinal, select, o1{st} o2{nd} o3{rd} other{th}}{i1toEnd, plural, =0{-to-end} =1{} other{}} character and the {i2}{i1Ordinal, select, o1{st} o2{nd} o3{rd} other{th}}{i2toEnd, plural, =0{-to-end} =1{} other{}}.",
   "@truncateToString": {
     "placeholders": {
       "keepType": {
@@ -215,6 +218,12 @@
       },
       "i2": {
         "type": "num"
+      },
+      "i1Ordinal": {
+        "type": "String"
+      },
+      "i2Ordinal": {
+        "type": "String"
       }
     }
   },
@@ -240,11 +249,11 @@
   "semanticsFileManagerTitle":  "{selectStatus, plural, =0{Selected} =1{Unselected} other{}} {entityType, select, File{File} Directory{Folder} Link{Link} other{File system entity}}, filename is {filename}, ",
   "@semanticsFileManagerTitle": {
     "placeholders": {
-      "selectStatus": {
-        "type": "num"
-      },
       "entityType":{
         "type": "String"
+      },
+      "selectStatus": {
+        "type": "num"
       },
       "filename":{
         "type": "String"
@@ -280,5 +289,16 @@
   },
   "semanticsRuleDropdownButton": ". Select and then click the \"Add Rule\" button to add this rule.",
   "semanticsFilesDropdownButton": ". Select this item to restrict renaming targets.",
-  "semanticsReorderableList": "This is the rule list, it is empty now. Click the 'Add rule' button to add one. Rules are executed sequentially. This list is reorderable, allowing you to move a rule up, down, and to the top or bottom. When the cursor is on a rule, use a vertical swipe gesture to switch between actions, and use a double click to execute the selected action."
+  "semanticsReorderableList": "This is the rule list, it is empty now. Click the 'Add rule' button to add one. Rules are executed sequentially. This list is reorderable, allowing you to move a rule up, down, and to the top or bottom. When the cursor is on a rule, use a vertical swipe gesture to switch between actions, and use a double click to execute the selected action.",
+  "semanticsOpenMetadataDialog": "Double tap to open a dialog and select a metadata tag to be inserted.",
+  "semanticsMultipleActionsHint": "switch to between actions by a vertical swipe gesture",
+  "semanticNumberWithDirection": "Switching counting direction between from the beginning and from the end",
+  "semanticSwitchNumberToStartAndToEnd": "Switching counting direction between from the beginning and from the end, currently counting from {toEnd, plural, =0{the end} =1{the beginning} other{}}",
+  "@semanticSwitchNumberToStartAndToEnd": {
+    "placeholders": {
+      "toEnd":{
+        "type": "num"
+      }
+    }
+  }
 }

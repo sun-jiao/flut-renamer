@@ -52,6 +52,6 @@ class RuleInsert implements Rule {
 
   @override
   String toString() {
-    return L10n.current.insertToString(fromStart ? 1 : 0, insert, insertIndex);
+    return L10n.current.insertToString('o${insertIndex % 10}', fromStart ? 1 : 0, insert, insertIndex);
   }
 }

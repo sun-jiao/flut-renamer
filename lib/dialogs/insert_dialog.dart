@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:renamer/widget/metadata_tile.dart';
 
-import '../dialogs/metadata_dialog.dart';
 import '../entity/constants.dart';
 import '../l10n/l10n.dart';
-import '../tools/ex_text_editing_controller.dart';
 import '../rules/rule.dart';
 import '../widget/checkbox_tile.dart';
 import '../widget/custom_dialog.dart';
+import '../widget/text_field_with_direction.dart';
 
 void showInsertDialog(BuildContext context, Function(Rule) onSave) => showDialog(
       context: context,
@@ -30,8 +29,9 @@ class _InsertDialogState extends State<InsertDialog> {
   TextEditingController indexController = TextEditingController(
     text: '0',
   );
-  bool withMetadata = false;
-  bool fromStart = true;
+  ValueNotifier<bool> withMetadata = ValueNotifier(false);
+  ValueNotifier<bool> toEnd = ValueNotifier(false);
+  bool get fromStart => !toEnd.value;
   bool beforeIndex = true; // true: insert before index; false: after
   bool ignoreExtension = true;
 
@@ -49,23 +49,7 @@ class _InsertDialogState extends State<InsertDialog> {
               decoration: InputDecoration(labelText: L10n.current.insertedText),
             ),
             box,
-            TextFormField(
-              controller: indexController,
-              keyboardType: TextInputType.number,
-              inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.allow(RegExp('[0-9]')), // 只允许数字
-              ],
-              decoration: InputDecoration(labelText: L10n.current.insertIndex),
-            ),
-            CheckboxTile(
-              title: Text(L10n.current.fromStart),
-              value: fromStart,
-              onChanged: (value) {
-                setState(() {
-                  fromStart = value ?? fromStart;
-                });
-              },
-            ),
+            DirectionTextField(con: indexController, toEnd: toEnd, labelText: L10n.current.insertIndex),
             CheckboxTile(
               title: Text(L10n.current.insertBeforeIndex),
               value: beforeIndex,
@@ -75,29 +59,7 @@ class _InsertDialogState extends State<InsertDialog> {
                 });
               },
             ),
-            CheckboxTile(
-              title: Text(
-                L10n.current.metadataTags,
-                softWrap: false,
-              ),
-              value: withMetadata,
-              onChanged: (value) {
-                setState(() {
-                  withMetadata = value ?? withMetadata;
-                });
-              },
-              trailing: IconButton(
-                onPressed: () {
-                  showMetadataDialog(context, (tag) {
-                    textController.insertTag(tag, context);
-                    setState(() {
-                      withMetadata = true;
-                    });
-                  });
-                },
-                icon: const Icon(Icons.info_outline_rounded),
-              ),
-            ),
+            MetadataTile(textController: textController, withMetadata: withMetadata),
             CheckboxTile(
               title: Text(L10n.current.ignoreExtension),
               value: ignoreExtension,
@@ -126,7 +88,7 @@ class _InsertDialogState extends State<InsertDialog> {
               insertText,
               insertIndex,
               fromStart,
-              withMetadata,
+              withMetadata.value,
               ignoreExtension,
             );
 

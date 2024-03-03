@@ -1350,13 +1350,19 @@ class L10n {
     );
   }
 
-  /// `Insert "{insert}" at the char #{insertIndex}{location, plural, =0{-to-end} =1{} other{}}.`
-  String insertToString(num location, String insert, num insertIndex) {
+  /// `Insert "{insert}" at the {insertIndex}{ordinal, select, o1{st} o2{nd} o3{rd} other{th}}{location, plural, =0{-to-end} =1{} other{}} character.`
+  String insertToString(
+      String ordinal, num location, String insert, num insertIndex) {
     return Intl.message(
-      'Insert "$insert" at the char #$insertIndex${Intl.plural(location, zero: '-to-end', one: '', other: '')}.',
+      'Insert "$insert" at the $insertIndex${Intl.select(ordinal, {
+            'o1': 'st',
+            'o2': 'nd',
+            'o3': 'rd',
+            'other': 'th'
+          })}${Intl.plural(location, zero: '-to-end', one: '', other: '')} character.',
       name: 'insertToString',
       desc: '',
-      args: [location, insert, insertIndex],
+      args: [ordinal, location, insert, insertIndex],
     );
   }
 
@@ -1400,14 +1406,24 @@ class L10n {
     );
   }
 
-  /// `Truncate: {keepType, plural, =0{keep only} =1{remove} other{}} characters between the {i1}th{i1toEnd, plural, =0{-to-end} =1{} other{}} character and the {i2}th{i2toEnd, plural, =0{-to-end} =1{} other{}}.`
-  String truncateToString(
-      num keepType, num i1toEnd, num i2toEnd, num i1, num i2) {
+  /// `Truncate: {keepType, plural, =0{keep only} =1{remove} other{}} characters between the {i1}{i2Ordinal, select, o1{st} o2{nd} o3{rd} other{th}}{i1toEnd, plural, =0{-to-end} =1{} other{}} character and the {i2}{i1Ordinal, select, o1{st} o2{nd} o3{rd} other{th}}{i2toEnd, plural, =0{-to-end} =1{} other{}}.`
+  String truncateToString(String i1Ordinal, String i2Ordinal, num keepType,
+      num i1toEnd, num i2toEnd, num i1, num i2) {
     return Intl.message(
-      'Truncate: ${Intl.plural(keepType, zero: 'keep only', one: 'remove', other: '')} characters between the ${i1}th${Intl.plural(i1toEnd, zero: '-to-end', one: '', other: '')} character and the ${i2}th${Intl.plural(i2toEnd, zero: '-to-end', one: '', other: '')}.',
+      'Truncate: ${Intl.plural(keepType, zero: 'keep only', one: 'remove', other: '')} characters between the $i1${Intl.select(i2Ordinal, {
+            'o1': 'st',
+            'o2': 'nd',
+            'o3': 'rd',
+            'other': 'th'
+          })}${Intl.plural(i1toEnd, zero: '-to-end', one: '', other: '')} character and the $i2${Intl.select(i1Ordinal, {
+            'o1': 'st',
+            'o2': 'nd',
+            'o3': 'rd',
+            'other': 'th'
+          })}${Intl.plural(i2toEnd, zero: '-to-end', one: '', other: '')}.',
       name: 'truncateToString',
       desc: '',
-      args: [keepType, i1toEnd, i2toEnd, i1, i2],
+      args: [i1Ordinal, i2Ordinal, keepType, i1toEnd, i2toEnd, i1, i2],
     );
   }
 
@@ -1674,6 +1690,46 @@ class L10n {
       name: 'semanticsReorderableList',
       desc: '',
       args: [],
+    );
+  }
+
+  /// `Double tap to open a dialog and select a metadata tag to be inserted.`
+  String get semanticsOpenMetadataDialog {
+    return Intl.message(
+      'Double tap to open a dialog and select a metadata tag to be inserted.',
+      name: 'semanticsOpenMetadataDialog',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `switch to between actions by a vertical swipe gesture`
+  String get semanticsMultipleActionsHint {
+    return Intl.message(
+      'switch to between actions by a vertical swipe gesture',
+      name: 'semanticsMultipleActionsHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Switching counting direction between from the beginning and from the end`
+  String get semanticNumberWithDirection {
+    return Intl.message(
+      'Switching counting direction between from the beginning and from the end',
+      name: 'semanticNumberWithDirection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Switching counting direction between from the beginning and from the end, currently counting from {toEnd, plural, =0{the end} =1{the beginning} other{}}`
+  String semanticSwitchNumberToStartAndToEnd(num toEnd) {
+    return Intl.message(
+      'Switching counting direction between from the beginning and from the end, currently counting from ${Intl.plural(toEnd, zero: 'the end', one: 'the beginning', other: '')}',
+      name: 'semanticSwitchNumberToStartAndToEnd',
+      desc: '',
+      args: [toEnd],
     );
   }
 }

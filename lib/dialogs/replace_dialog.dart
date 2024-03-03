@@ -3,11 +3,10 @@ import 'package:flutter/services.dart';
 
 import '../entity/constants.dart';
 import '../l10n/l10n.dart';
-import '../tools/ex_text_editing_controller.dart';
 import '../rules/rule.dart';
 import '../widget/checkbox_tile.dart';
 import '../widget/custom_dialog.dart';
-import 'metadata_dialog.dart';
+import '../widget/metadata_tile.dart';
 
 void showReplaceDialog(BuildContext context, Function(Rule) onSave) => showDialog(
       context: context,
@@ -34,7 +33,7 @@ class _ReplaceDialogState extends State<ReplaceDialog> {
     text: '0',
   );
   bool fromStart = true;
-  bool withMetadata = false;
+  ValueNotifier<bool> withMetadata = ValueNotifier(false);
   bool caseSensitive = false;
   bool isRegex = false;
   bool ignoreExtension = true;
@@ -85,29 +84,8 @@ class _ReplaceDialogState extends State<ReplaceDialog> {
                 });
               },
             ),
-            CheckboxTile(
-              title: Text(
-                L10n.current.metadataTags,
-                softWrap: false,
-              ),
-              value: withMetadata,
-              onChanged: (value) {
-                setState(() {
-                  withMetadata = value ?? withMetadata;
-                });
-              },
-              trailing: IconButton(
-                onPressed: () {
-                  showMetadataDialog(context, (tag) {
-                    replacementController.insertTag(tag, context);
-                    setState(() {
-                      withMetadata = true;
-                    });
-                  });
-                },
-                icon: const Icon(Icons.info_outline_rounded),
-              ),
-            ),
+            if (!remove)
+              MetadataTile(textController: replacementController, withMetadata: withMetadata),
             CheckboxTile(
               title: Text(L10n.current.caseSensitive),
               value: caseSensitive,
@@ -165,7 +143,7 @@ class _ReplaceDialogState extends State<ReplaceDialog> {
                 targetString,
                 replacementString,
                 replaceLimit,
-                withMetadata,
+                withMetadata.value,
                 caseSensitive,
                 isRegex,
                 ignoreExtension,
