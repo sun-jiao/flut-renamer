@@ -168,7 +168,7 @@ class _HomeToolBarState extends State<HomeToolBar> {
                 'assets/desktop.png',
                 width: 48,
               ),
-              applicationLegalese: 'Copyright (C) 2023 Sun Jiao (孙娇). GNU GENERAL PUBLIC LICENSE Version 3.',
+              applicationLegalese: 'Copyright (C) 2023 Sun Jiao. GNU GENERAL PUBLIC LICENSE Version 3.',
               children: [
                 Text(L10n.current.aboutContent),
               ],
