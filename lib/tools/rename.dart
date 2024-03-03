@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:renamer/tools/ios_platform.dart';
+import 'package:renamer/tools/platform_specific.dart';
 
 import '../l10n/l10n.dart';
 import '../tools/ex_file.dart';

@@ -1,12 +1,16 @@
 import 'package:flutter/services.dart';
 
 class PlatformFilePicker {
-  static const MethodChannel _channel =
-      MethodChannel('net.sunjiao.renamer/picker');
+  static const MethodChannel _channel = MethodChannel('net.sunjiao.renamer/picker');
 
-  static Future<List<Object?>?> dirAccess() async {
+  static Future<List<Object?>?> dirAccess([String? startPath]) async {
     try {
-      return await _channel.invokeMethod('dirAccess');
+      return await _channel.invokeMethod(
+        'dirAccess',
+        {
+          'startPath': startPath,
+        },
+      );
     } on PlatformException {
       // TODO: show error message dialog
       rethrow;
