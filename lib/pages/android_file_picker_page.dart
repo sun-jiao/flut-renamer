@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:file_manager/file_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:renamer/tools/responsive.dart';
 import '../entity/constants.dart';
 import '../l10n/l10n.dart';
 import '../tools/ex_file.dart';
@@ -76,65 +77,25 @@ class _AndroidFilePickerState extends State<AndroidFilePicker> {
             entities = snapshot;
             return StatefulBuilder(
               key: _stfKey,
-              builder: (contextS, setStateS) => ListView.separated(
-                separatorBuilder: (_, __) => const Divider(),
-                padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 0),
-                itemCount: entities.length,
-                itemBuilder: (context, index) {
-                  FileSystemEntity entity = entities[index];
-                  String basename = FileManager.basename(
-                    entity,
-                    showFileExtension: true,
-                  );
-                  bool entitySelected = _selected.contains(entity);
-                  return MergeSemantics(
-                    child: ListTile(
-                      leading: getIcon(entity),
-                      trailing: entitySelected ? const Icon(Icons.task_alt_outlined) : null,
-                      title: Text(
-                        basename,
-                        semanticsLabel: L10n.current.semanticsFileManagerTitle(
-                          getType(entity),
-                          entitySelected.toString(),
-                          basename.toFilenameSemanticLabel(),
-                        ),
-                      ),
-                      subtitle: subtitle(entity),
-                      onTap: () async {
-                        if (FileManager.isDirectory(entity)) {
-                          // open the folder
-                          controller.openDirectory(entity);
-                        } else {
-                          // select or unselect a file
-                          setStateS(() {
-                            if (entitySelected) {
-                              _selected.remove(entity);
-                            } else {
-                              _selected.add(entity);
-                            }
-                          });
-                        }
-                      },
-                      onLongPress: () async {
-                        if (_reserveDirs.contains(entity.path) ||
-                            entity.path.startsWith(_androidDir) ||
-                            entity.path.startsWith(_androidDirFull)) {
-                          Fluttertoast.showToast(msg: L10n.current.noSysDir);
-                          return;
-                        }
-
-                        // select or unselect a file or a dir
-                        setStateS(() {
-                          if (entitySelected) {
-                            _selected.remove(entity);
-                          } else {
-                            _selected.add(entity);
-                          }
-                        });
-                      },
-                    ),
-                  );
-                },
+              builder: (contextS, setStateS) => Responsive(
+                mobile: ListView.separated(
+                  separatorBuilder: (_, __) => const Divider(),
+                  padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 0),
+                  itemCount: entities.length,
+                  itemBuilder: (context, index) =>
+                      itemBuilder(context, index, setStateS, entities),
+                ),
+                desktop: GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: MediaQuery.of(context).size.width ~/ 250, // Number of columns
+                    childAspectRatio: 4,
+                  ),
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: entities.length,
+                  itemBuilder: (context, index) =>
+                      itemBuilder(context, index, setStateS, entities),
+                ),
               ),
             );
           },
@@ -148,6 +109,67 @@ class _AndroidFilePickerState extends State<AndroidFilePicker> {
             );
           },
         ),
+      ),
+    );
+  }
+
+  Widget itemBuilder(
+    BuildContext context,
+    int index,
+    void Function(void Function()) setStateS,
+    List<FileSystemEntity> entities,
+  ) {
+    FileSystemEntity entity = entities[index];
+    String basename = FileManager.basename(
+      entity,
+      showFileExtension: true,
+    );
+    bool entitySelected = _selected.contains(entity);
+    return MergeSemantics(
+      child: ListTile(
+        leading: getIcon(entity),
+        trailing: entitySelected ? const Icon(Icons.task_alt_outlined) : null,
+        title: Text(
+          basename,
+          semanticsLabel: L10n.current.semanticsFileManagerTitle(
+            getType(entity),
+            entitySelected.toString(),
+            basename.toFilenameSemanticLabel(),
+          ),
+        ),
+        subtitle: subtitle(entity),
+        onTap: () async {
+          if (FileManager.isDirectory(entity)) {
+            // open the folder
+            controller.openDirectory(entity);
+          } else {
+            // select or unselect a file
+            setStateS(() {
+              if (entitySelected) {
+                _selected.remove(entity);
+              } else {
+                _selected.add(entity);
+              }
+            });
+          }
+        },
+        onLongPress: () async {
+          if (_reserveDirs.contains(entity.path) ||
+              entity.path.startsWith(_androidDir) ||
+              entity.path.startsWith(_androidDirFull)) {
+            Fluttertoast.showToast(msg: L10n.current.noSysDir);
+            return;
+          }
+
+          // select or unselect a file or a dir
+          setStateS(() {
+            if (entitySelected) {
+              _selected.remove(entity);
+            } else {
+              _selected.add(entity);
+            }
+          });
+        },
       ),
     );
   }
