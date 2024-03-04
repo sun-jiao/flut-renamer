@@ -58,7 +58,8 @@ void main() {
   final document = builder.buildDocument();
   File('renamer.evb')
     ..writeAsStringSync(String.fromCharCode(0xFEFF))
-    ..writeAsStringSync(document.toXmlString(pretty: true));
+    ..writeAsStringSync(document.toXmlString(pretty: true), mode: FileMode.append)
+    ..writeAsStringSync('\r\n', mode: FileMode.append);
 }
 
 void buildFile(XmlBuilder builder, String name, String path) {
