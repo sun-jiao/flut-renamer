@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/animation.dart';
 import 'package:xml/xml.dart';
 
 void main() {
