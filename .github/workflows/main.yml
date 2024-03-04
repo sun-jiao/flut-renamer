@@ -67,7 +67,6 @@ jobs:
           name: renamer-android
           path: build/app/outputs/flutter-apk
 
-
   build-and-release-windows:
     runs-on: windows-latest
 
@@ -91,13 +90,17 @@ jobs:
             node-version: 20
       - name: install evb
         run: npm install enigmavirtualbox -g
+      - name: create evb file
+        run: dart .\dev\windows_evb_config_generator.dart
       - name: build single exe file
-        run: enigmavirtualbox cli ".\evb\renamer.evb"
+        run: enigmavirtualbox cli "renamer.evb"
       - name: Windows Release
         uses: actions/upload-artifact@v4
         with:
           name: renamer-win
-          path: renamer.exe
+          path: |
+            renamer.exe
+            renamer.evb
 
   build-and-release-macos:
     runs-on: macos-14
@@ -127,7 +130,7 @@ jobs:
           path: build/macos/Build/Products/Release/renamer.dmg
       - name: Build ios
         run: |
-          flutter build ios --release --no-codesign 
+          flutter build ios --release --no-codesign
           ln -sf ./build/ios/iphoneos Payload
           zip -r9 renamer-release.ipa Payload/runner.app
       - name: ios Release
