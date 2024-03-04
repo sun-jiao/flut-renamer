@@ -82,19 +82,13 @@ class _AndroidFilePickerState extends State<AndroidFilePicker> {
                   separatorBuilder: (_, __) => const Divider(),
                   padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 0),
                   itemCount: entities.length,
-                  itemBuilder: (context, index) =>
-                      itemBuilder(context, index, setStateS, entities),
+                  itemBuilder: (context, index) => itemBuilder(context, index, setStateS, entities),
                 ),
-                desktop: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: MediaQuery.of(context).size.width ~/ 250, // Number of columns
-                    childAspectRatio: 4,
-                  ),
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
+                desktop: gridBuilder(
+                  context: contextS,
+                  crossAxisCount: MediaQuery.of(context).size.width ~/ 250, // Number of columns
                   itemCount: entities.length,
-                  itemBuilder: (context, index) =>
-                      itemBuilder(context, index, setStateS, entities),
+                  itemBuilder: (context, index) => itemBuilder(context, index, setStateS, entities),
                 ),
               ),
             );
@@ -113,12 +107,38 @@ class _AndroidFilePickerState extends State<AndroidFilePicker> {
     );
   }
 
-  Widget itemBuilder(
+  Widget gridBuilder({
+    required BuildContext context,
+    required int itemCount,
+    required int crossAxisCount,
+    required NullableIndexedWidgetBuilder itemBuilder,
+  }) {
+    int rows = (itemCount / crossAxisCount).ceil();
+    return ListView.separated(
+      itemCount: rows,
+      shrinkWrap: true,
+      separatorBuilder: (_, __) => const Divider(),
+      itemBuilder: (context, rowIndex) => Row(
+        children: List.generate(
+          crossAxisCount,
+          (index) => Expanded(
+            child: itemBuilder.call(context, rowIndex * crossAxisCount + index) ?? Container(),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget? itemBuilder(
     BuildContext context,
     int index,
     void Function(void Function()) setStateS,
     List<FileSystemEntity> entities,
   ) {
+    if (index >= entities.length) {
+      return null;
+    }
+
     FileSystemEntity entity = entities[index];
     String basename = FileManager.basename(
       entity,
