@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/animation.dart';
 import 'package:xml/xml.dart';
 
 void main() {
@@ -20,7 +21,9 @@ void main() {
       builder.element('Enabled', nest: 'True');
       builder.element('DeleteExtractedOnExit', nest: 'False');
       builder.element('CompressFiles', nest: 'False');
-      buildDir(builder, '%DEFAULT FOLDER%', entities);
+      builder.element('Files', nest: () {
+        buildDir(builder, '%DEFAULT FOLDER%', entities);
+      });
     });
     builder.element('Registries', nest: () {
       builder.element('Enabled', nest: 'False');
@@ -43,12 +46,11 @@ void main() {
       builder.element('ProcessesOfAnyPlatforms', nest: 'False');
     });
     builder.element('Storage', nest: () {
-      builder.element('Storage', nest: () {
+      builder.element('Files', nest: () {
         builder.element('Enabled', nest: 'False');
         builder.element('Folder', nest: '%DEFAULT FOLDER%\\');
         builder.element('RandomFileNames', nest: 'False');
         builder.element('EncryptContent', nest: 'False');
-        builder.element('ProcessesOfAnyPlatforms', nest: 'False');
       });
     });
   });
@@ -81,19 +83,19 @@ void buildDir(XmlBuilder builder, String name, List<FileSystemEntity> entities) 
     builder.element('OverwriteAttributes', nest: 'False');
     builder.element('HideFromDialogs', nest: 0);
     builder.element('Files', nest: () {
-      for (final file in entities.whereType<File>()) {
-        buildFile(builder, file.name, file.absolute.path);
-      }
-
       for (final dir in entities.whereType<Directory>()) {
         buildDir(builder, dir.name, dir.listSync());
+      }
+
+      for (final file in entities.whereType<File>()) {
+        buildFile(builder, file.name, file.absolute.path);
       }
     });
   });
 }
 
 void buildRegistry(XmlBuilder builder, String name) {
-  builder.element('File', nest: () {
+  builder.element('Registry', nest: () {
     builder.element('Type', nest: 1);
     builder.element('Virtual', nest: 'True');
     builder.element('Name', nest: name);
