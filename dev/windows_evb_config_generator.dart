@@ -85,8 +85,8 @@ void buildDir(XmlBuilder builder, String name, List<FileSystemEntity> entities) 
     builder.element('OverwriteAttributes', nest: 'False');
     builder.element('HideFromDialogs', nest: 0);
     builder.element('Files', nest: () {
-      for (final entity in entities
-        ..sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()))) {
+      entities.sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+      for (final entity in entities) {
         if (entity is Directory) {
           buildDir(builder, entity.name, entity.listSync());
         } else if (entity is File) {
