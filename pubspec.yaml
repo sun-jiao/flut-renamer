@@ -44,10 +44,7 @@ dependencies:
   file_picker: ^6.1.1
   fluttertoast: ^8.2.4
   intl: ^0.19.0
-  package_info_plus:
-    git:
-      url: https://github.com/fluttercommunity/plus_plugins.git
-      path: packages/package_info_plus/package_info_plus
+  package_info_plus: any
   path: ^1.9.0
   permission_handler: ^11.3.0
   pinyin: ^3.2.0
