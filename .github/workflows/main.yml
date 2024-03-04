@@ -1,68 +1,71 @@
 name: Flutter CI
 
-on: push
+on:
+  push:
+    tags:
+      - "*"
 
 jobs:
-#  build-and-release-linux:
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#      - uses: actions/checkout@v4
-#      - uses: subosito/flutter-action@v2
-#        with:
-#          channel: 'stable'
-#          architecture: x64
-#      - name: Update dependencies
-#        run: sudo apt-get update
-#      - name: Install dependencies
-#        run: sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-0 libgtk-3-dev libblkid1 liblzma5
-#      - name: Install project dependencies
-#        run: flutter pub get
-#      - name: Enable linux build
-#        run: flutter config --enable-linux-desktop
-#      - name: Build artifacts
-#        run: flutter build linux --release
-#      - name: Build Appimage
-#        run: bash ./github_appimage_build.sh
-#      - name: Compress action step
-#        uses: a7ul/tar-action@v1.1.0
-#        id: compress
-#        with:
-#          command: c
-#          files: build/linux/x64/release/bundle/
-#          outPath: renamer-linux.tar.gz
-#      - name: Linux Release
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: renamer-linux
-#          path: renamer-linux.tar.gz
-#      - name: Linux Appimage Release
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: renamer-appimage
-#          path: Renamer-x86_64.AppImage
-#      - uses: actions/setup-java@v2
-#        with:
-#          distribution: 'zulu'
-#          java-version: '17.x'
-#      - name: decode key base64
-#        run: echo $KEYSTORE_BASE64 | base64 -di > ./android/app/renamer.jks
-#        env:
-#          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
-#      - name: Build android
-#        run: |
-#          flutter build apk --release
-#          flutter build apk --release --split-per-abi
-#        env:
-#          KEYSTORE: renamer.jks
-#          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-#          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-#          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD}}
-#      - name: Android Release
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: renamer-android
-#          path: build/app/outputs/flutter-apk
+  build-and-release-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          architecture: x64
+      - name: Update dependencies
+        run: sudo apt-get update
+      - name: Install dependencies
+        run: sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-0 libgtk-3-dev libblkid1 liblzma5
+      - name: Install project dependencies
+        run: flutter pub get
+      - name: Enable linux build
+        run: flutter config --enable-linux-desktop
+      - name: Build artifacts
+        run: flutter build linux --release
+      - name: Build Appimage
+        run: bash ./github_appimage_build.sh
+      - name: Compress action step
+        uses: a7ul/tar-action@v1.1.0
+        id: compress
+        with:
+          command: c
+          files: build/linux/x64/release/bundle/
+          outPath: renamer-linux.tar.gz
+      - name: Linux Release
+        uses: actions/upload-artifact@v4
+        with:
+          name: renamer-linux
+          path: renamer-linux.tar.gz
+      - name: Linux Appimage Release
+        uses: actions/upload-artifact@v4
+        with:
+          name: renamer-appimage
+          path: Renamer-x86_64.AppImage
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '17.x'
+      - name: decode key base64
+        run: echo $KEYSTORE_BASE64 | base64 -di > ./android/app/renamer.jks
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+      - name: Build android
+        run: |
+          flutter build apk --release
+          flutter build apk --release --split-per-abi
+        env:
+          KEYSTORE: renamer.jks
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD}}
+      - name: Android Release
+        uses: actions/upload-artifact@v4
+        with:
+          name: renamer-android
+          path: build/app/outputs/flutter-apk
 
   build-and-release-windows:
     runs-on: windows-latest
@@ -87,75 +90,76 @@ jobs:
             node-version: 20
       - name: install evb
         run: npm install enigmavirtualbox -g
-#      - name: create evb file
-#        run: dart .\dev\windows_evb_config_generator.dart
+      - name: create evb file
+        run: dart .\dev\windows_evb_config_generator.dart
       - name: build single exe file
-        run: enigmavirtualbox cli ".\evb\renamer.evb"
+        run: enigmavirtualbox cli "renamer.evb"
       - name: Windows Release
         uses: actions/upload-artifact@v4
         with:
           name: renamer-win
-          path: renamer.exe
-#            renamer.evb
-#
-#  build-and-release-macos:
-#    runs-on: macos-14
-#
-#    steps:
-#      - uses: actions/checkout@v4
-#      - uses: subosito/flutter-action@v2
-#        with:
-#          channel: 'stable'
-#          architecture: arm64
-#      - name: Install project dependencies
-#        run: flutter pub get
-#      - name: Enable macOS build
-#        run: flutter config --enable-macos-desktop
-#      - name: Build artifacts
-#        run: flutter build macos --release
-#      - name: install npm
-#        run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-#      - name: install appdmg
-#        run: npm install -g appdmg
-#      - name: build dmg
-#        run: appdmg ./dmg/config.json ./build/macos/Build/Products/Release/renamer.dmg
-#      - name: macOS Release
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: renamer-macos
-#          path: build/macos/Build/Products/Release/renamer.dmg
-#      - name: Build ios
-#        run: |
-#          flutter build ios --release --no-codesign
-#          ln -sf ./build/ios/iphoneos Payload
-#          zip -r9 renamer-release.ipa Payload/runner.app
-#      - name: ios Release
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: renamer-ios
-#          path: renamer-release.ipa
-#
-#
-#  upload:
-#    runs-on: ubuntu-latest
-#
-#    needs:
-#      - build-and-release-linux
-#      - build-and-release-windows
-#      - build-and-release-macos
-#    steps:
-#      - uses: actions/download-artifact@v4
-#        with:
-#          path: ./renamer-release
-#          merge-multiple: true
-#      - name: Install dependencies
-#        run: sudo apt-get install tree -y
-#      - name: Upload Release
-#        uses: ncipollo/release-action@v1
-#        with:
-#          token: ${{ secrets.GIT_TOKEN }}
-#          omitBodyDuringUpdate: true
-#          omitNameDuringUpdate: true
-#          omitPrereleaseDuringUpdate: true
-#          allowUpdates: true
-#          artifacts: renamer-release/*
+          path: |
+            renamer.exe
+            renamer.evb
+
+  build-and-release-macos:
+    runs-on: macos-14
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          architecture: arm64
+      - name: Install project dependencies
+        run: flutter pub get
+      - name: Enable macOS build
+        run: flutter config --enable-macos-desktop
+      - name: Build artifacts
+        run: flutter build macos --release
+      - name: install npm
+        run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+      - name: install appdmg
+        run: npm install -g appdmg
+      - name: build dmg
+        run: appdmg ./dmg/config.json ./build/macos/Build/Products/Release/renamer.dmg
+      - name: macOS Release
+        uses: actions/upload-artifact@v4
+        with:
+          name: renamer-macos
+          path: build/macos/Build/Products/Release/renamer.dmg
+      - name: Build ios
+        run: |
+          flutter build ios --release --no-codesign
+          ln -sf ./build/ios/iphoneos Payload
+          zip -r9 renamer-release.ipa Payload/runner.app
+      - name: ios Release
+        uses: actions/upload-artifact@v4
+        with:
+          name: renamer-ios
+          path: renamer-release.ipa
+
+
+  upload:
+    runs-on: ubuntu-latest
+
+    needs:
+      - build-and-release-linux
+      - build-and-release-windows
+      - build-and-release-macos
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: ./renamer-release
+          merge-multiple: true
+      - name: Install dependencies
+        run: sudo apt-get install tree -y
+      - name: Upload Release
+        uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.GIT_TOKEN }}
+          omitBodyDuringUpdate: true
+          omitNameDuringUpdate: true
+          omitPrereleaseDuringUpdate: true
+          allowUpdates: true
+          artifacts: renamer-release/*
