@@ -82,12 +82,13 @@ void buildDir(XmlBuilder builder, String name, List<FileSystemEntity> entities) 
     builder.element('OverwriteAttributes', nest: 'False');
     builder.element('HideFromDialogs', nest: 0);
     builder.element('Files', nest: () {
-      for (final dir in entities.whereType<Directory>()) {
-        buildDir(builder, dir.name, dir.listSync());
-      }
+      for (final entity in entities) {
+        if (entity is Directory) {
+          buildDir(builder, entity.name, entity.listSync());
+        } else if (entity is File) {
+          buildFile(builder, entity.name, entity.absolute.path);
 
-      for (final file in entities.whereType<File>()) {
-        buildFile(builder, file.name, file.absolute.path);
+        }
       }
     });
   });
