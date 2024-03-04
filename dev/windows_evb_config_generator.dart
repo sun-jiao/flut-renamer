@@ -7,7 +7,8 @@ void main() {
   builder.processing('xml', 'version="1.0" encoding="windows-1252"');
   // evb needs absolute dir, in fact the relative dir works in wine, but not work on
   // Windows runner of Github Actions. I cannot test it on a physical Windows machine.
-  final windowsBuildDir = Directory(r"build\windows\x64\runner\Release").absolute; // use this for test: "build/linux/x64/release/bundle"
+  final windowsBuildDir = Directory(r"build/linux/x64/release/bundle")
+      .absolute; // use this for test: "build/linux/x64/release/bundle"
   final entities = windowsBuildDir.listSync();
   final input = entities.firstWhere((e) => e is File && e.path.endsWith('.exe'));
   final output = File(input.name).absolute;
@@ -55,7 +56,9 @@ void main() {
   });
 
   final document = builder.buildDocument();
-  File('renamer.evb').writeAsStringSync(document.toXmlString(pretty: true));
+  File('renamer.evb')
+    ..writeAsStringSync(String.fromCharCode(0xFEFF))
+    ..writeAsStringSync(document.toXmlString(pretty: true));
 }
 
 void buildFile(XmlBuilder builder, String name, String path) {
@@ -82,12 +85,12 @@ void buildDir(XmlBuilder builder, String name, List<FileSystemEntity> entities) 
     builder.element('OverwriteAttributes', nest: 'False');
     builder.element('HideFromDialogs', nest: 0);
     builder.element('Files', nest: () {
-      for (final entity in entities) {
+      for (final entity in entities
+        ..sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()))) {
         if (entity is Directory) {
           buildDir(builder, entity.name, entity.listSync());
         } else if (entity is File) {
           buildFile(builder, entity.name, entity.absolute.path);
-
         }
       }
     });
