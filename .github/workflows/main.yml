@@ -95,7 +95,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: renamer-win
-          path: renamer.exe
+          path: |
+            renamer.exe
+            renamer.evb
 #
 #  build-and-release-macos:
 #    runs-on: macos-14
