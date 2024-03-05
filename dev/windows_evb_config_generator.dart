@@ -9,6 +9,22 @@ void main() {
   // Windows runner of Github Actions. I cannot test it on a physical Windows machine.
   final windowsBuildDir = Directory(r"build\windows\x64\runner\Release").absolute;
   // use this for test: "build/linux/x64/release/bundle"
+
+  // add vc runtime dlls according to https://docs.flutter.dev/platform-integration/windows/building
+  // works find on a newly installed windows vm, but still not work on wine.
+  for (var e in [
+    File(r'C:\Windows\System32\msvcp140.dll'),
+    File(r'C:\Windows\System32\vcruntime140.dll'),
+    File(r'C:\Windows\System32\vcruntime140_1.dll'),
+  ]) {
+    try {
+      e.copySync(windowsBuildDir.path + r'\' + e.name);
+    } catch (e, s) {
+      print(e);
+      print(s);
+    }
+  }
+
   final entities = windowsBuildDir.listSync();
   final input = entities.firstWhere((e) => e is File && e.path.endsWith('.exe'));
   final output = File(input.name).absolute;
