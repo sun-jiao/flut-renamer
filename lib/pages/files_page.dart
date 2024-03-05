@@ -132,11 +132,15 @@ class FilesPageState extends State<FilesPage> {
       file.newName = await widget.getNewName(file.name, metadata);
       if (file.newName != file.name && ((await File(file.newPath).exists()) || file.newNameDuplicate)) {
         file.error = L10n.current.fileAlreadyExists;
+        return;
       }
     } catch (e) {
       file.newName = file.name;
-      file.error = e.runtimeType.toString();
+      file.error = e.toString();
+      return;
     }
+
+    file.error = null;
   }
 
   List<FileSystemEntity> _filteredList() {
@@ -361,6 +365,8 @@ class FilesPageState extends State<FilesPage> {
                         )
                         .map((xFile) => xFile.toFileSystemEntity()),
                   );
+
+                  _dragging = false;
                 });
               },
               onDragEntered: (detail) {
