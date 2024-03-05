@@ -53,6 +53,8 @@
   "addFiles": "Add files",
   "dragToAdd": "Drag and drop to add files.",
   "dropToAdd": "Drop to add files.",
+  "fileAlreadyExists": "Filename already used by another file",
+  "renameFailed": "Rename failed",
   "rulesSequentially": "Rules are executed sequentially. Hold the '=' button on the left and drag it to sort rules.",  "noSysDir": "Do not rename a system reserved directory.",
   "fileSortName": "Name",
   "fileSortSize": "Size",

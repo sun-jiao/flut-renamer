@@ -148,6 +148,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "exitTitle": MessageLookupByLibrary.simpleMessage(
             "Cannot access external storage"),
         "expandOptions": MessageLookupByLibrary.simpleMessage("Expand options"),
+        "fileAlreadyExists": MessageLookupByLibrary.simpleMessage(
+            "Filename already used by another file"),
         "fileCreateDate":
             MessageLookupByLibrary.simpleMessage("Create date of file"),
         "fileCreateTime":
@@ -298,6 +300,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Remove rules after renaming"),
         "removeToString": m3,
         "rename": MessageLookupByLibrary.simpleMessage("Rename"),
+        "renameFailed": MessageLookupByLibrary.simpleMessage("Rename failed"),
         "replace": MessageLookupByLibrary.simpleMessage("Replace"),
         "replaceToString": m4,
         "replacement": MessageLookupByLibrary.simpleMessage("Replacement"),

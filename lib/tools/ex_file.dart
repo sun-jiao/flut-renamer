@@ -38,9 +38,9 @@ extension ExFile on FileSystemEntity {
   set selected(bool? val) => _selectionHandler.setValue(path, val);
   static void clearSelections() => _selectionHandler.clearValues();
 
-  static final ExtFieldHandler<bool> _errorHandler = ExtFieldHandler();
-  bool get error => _errorHandler.getValue(path) ?? false;
-  set error(bool? val) => _errorHandler.setValue(path, val);
+  static final ExtFieldHandler<String> _errorHandler = ExtFieldHandler();
+  String? get error => _errorHandler.getValue(path);
+  set error(String? val) => _errorHandler.setValue(path, val);
   static void clearErrors() => _errorHandler.clearValues();
 
   static final ExtFieldHandler<String> _newNameHandler = ExtFieldHandler();

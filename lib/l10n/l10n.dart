@@ -580,6 +580,26 @@ class L10n {
     );
   }
 
+  /// `Filename already used by another file`
+  String get fileAlreadyExists {
+    return Intl.message(
+      'Filename already used by another file',
+      name: 'fileAlreadyExists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rename failed`
+  String get renameFailed {
+    return Intl.message(
+      'Rename failed',
+      name: 'renameFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Rules are executed sequentially. Hold the '=' button on the left and drag it to sort rules.`
   String get rulesSequentially {
     return Intl.message(

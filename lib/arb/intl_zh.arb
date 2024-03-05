@@ -53,6 +53,8 @@
   "addFiles": "请添加文件。",
   "dragToAdd": "拖放文件进行添加。",
   "dropToAdd": "在此处释放文件。",
+  "fileAlreadyExists": "文件名已被占用",
+  "renameFailed": "重命名失败",
   "rulesSequentially": "规则是按顺序执行的，按住左侧的“=”按钮并拖动即可对规则进行排序。",
   "noSysDir": "请勿重命名系统保留目录。",
   "fileSortName": "名称",

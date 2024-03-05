@@ -13,7 +13,7 @@ Future<FileSystemEntity?> rename(
   FileSystemEntity file, {
   BuildContext? context,
 }) async {
-  if (file.error) {
+  if (file.error != null) {
     return null;
   }
 

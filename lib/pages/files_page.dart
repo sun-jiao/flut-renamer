@@ -130,11 +130,12 @@ class FilesPageState extends State<FilesPage> {
 
     try {
       file.newName = await widget.getNewName(file.name, metadata);
-      file.error =
-          file.newName != file.name && ((await File(file.newPath).exists()) || file.newNameDuplicate);
-    } catch (_) {
+      if (file.newName != file.name && ((await File(file.newPath).exists()) || file.newNameDuplicate)) {
+        file.error = L10n.current.fileAlreadyExists;
+      }
+    } catch (e) {
       file.newName = file.name;
-      file.error = true;
+      file.error = e.runtimeType.toString();
     }
   }
 
@@ -161,20 +162,30 @@ class FilesPageState extends State<FilesPage> {
                   return const LinearProgressIndicator();
                 },
               )
-            : getRowText(file.name, false),
+            : getRowText(file.name, null),
       );
 
-  Widget getRowText(String text, bool error) => Text(
-    text,
-        semanticsLabel: text.toFilenameSemanticLabel(),
-        style: TextStyle(
-          fontSize: Platform.isAndroid ? 12 : 16,
-          color: error ? Colors.red : null,
-        ),
-        maxLines: 3,
-        overflow: TextOverflow.ellipsis,
-      );
+  Widget getRowText(String text, String? error) {
+    final textWidget = Text(
+      text,
+      semanticsLabel: text.toFilenameSemanticLabel(),
+      style: TextStyle(
+        fontSize: Platform.isAndroid ? 12 : 16,
+        color: error != null ? Colors.red : null,
+      ),
+      maxLines: 3,
+      overflow: TextOverflow.ellipsis,
+    );
 
+    if (error == null) {
+      return textWidget;
+    }
+
+    return Tooltip(
+      message: error,
+      child: textWidget,
+    );
+  }
   List<TableRow> _tableRows() {
     final filteredList = _filteredList();
     final fileListColors = Theme.of(context).extension<FileListColors>()!;
@@ -408,7 +419,7 @@ class FilesPageState extends State<FilesPage> {
             if (value == null) {
               noError = false;
               setState(() {
-                file.error = true;
+                file.error = L10n.current.renameFailed;
               });
             } else if (remove) {
               setState(() {
