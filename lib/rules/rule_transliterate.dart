@@ -3,11 +3,13 @@ part of 'rule.dart';
 class RuleTransliterate implements Rule {
   RuleTransliterate(
     this.type, {
-    this.langCode,
-  });
+    String? langCode,
+  }) {
+    this.langCode = langCode ?? 'bg';
+  }
 
   final Transliterate type;
-  final String? langCode;
+  late final String langCode;
 
   @override
   String newName(String oldName, {FileMetadata? metadata}) {
@@ -31,9 +33,9 @@ class RuleTransliterate implements Rule {
             ) +
             extension;
       case Transliterate.cyrillic2Latin:
-        return cyrtranslit.cyr2Lat(newName, langCode: langCode!) + extension;
+        return cyrtranslit.cyr2Lat(newName, langCode: langCode) + extension;
       case Transliterate.latin2Cyrillic:
-        return cyrtranslit.lat2Cyr(newName, langCode: langCode!) + extension;
+        return cyrtranslit.lat2Cyr(newName, langCode: langCode) + extension;
       default:
         return oldName;
     }
