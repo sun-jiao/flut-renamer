@@ -128,9 +128,14 @@ class FilesPageState extends State<FilesPage> {
       widget.resetRules.call();
     }
 
-    file.newName = await widget.getNewName(file.name, metadata);
-    file.error =
-        file.newName != file.name && ((await File(file.newPath).exists()) || file.newNameDuplicate);
+    try {
+      file.newName = await widget.getNewName(file.name, metadata);
+      file.error =
+          file.newName != file.name && ((await File(file.newPath).exists()) || file.newNameDuplicate);
+    } catch (_) {
+      file.newName = file.name;
+      file.error = true;
+    }
   }
 
   List<FileSystemEntity> _filteredList() {
