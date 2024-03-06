@@ -168,9 +168,19 @@ class _HomeToolBarState extends State<HomeToolBar> {
                 'assets/desktop.png',
                 width: 48,
               ),
-              applicationLegalese: 'Copyright (C) 2023 Sun Jiao. GNU GENERAL PUBLIC LICENSE Version 3.',
+              applicationLegalese:
+                  'Copyright (C) 2023 Sun Jiao. GNU GENERAL PUBLIC LICENSE Version 3.',
               children: [
                 Text(L10n.current.aboutContent),
+                InkWell(
+                  child: const Text(
+                    'Localized text is generated using machine translation, if you find any errors please help us fix it.',
+                    style: TextStyle(color: Colors.blue),
+                  ),
+                  onTap: () {
+                    launchUrl(Uri.parse('https://github.com/sun-jiao/renamer/issues/new'));
+                  },
+                ),
               ],
             );
           },
