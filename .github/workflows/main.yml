@@ -32,7 +32,7 @@ jobs:
         id: compress
         with:
           command: c
-          files: build/linux/x64/release/bundle/
+          files: build/linux/x64/release/bundle/*
           outPath: renamer-linux.tar.gz
       - name: Linux Release
         uses: actions/upload-artifact@v4
