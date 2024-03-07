@@ -28,12 +28,7 @@ jobs:
       - name: Build Appimage
         run: bash ./github_appimage_build.sh
       - name: Compress action step
-        uses: a7ul/tar-action@v1.1.0
-        id: compress
-        with:
-          command: c
-          files: build/linux/x64/release/bundle/
-          outPath: renamer-linux.tar.gz
+        run:  tar  -C build/linux/x64/release/bundle -cf renamer-linux.tar.gz ./
       - name: Linux Release
         uses: actions/upload-artifact@v4
         with:
