@@ -90,7 +90,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Si prega di aggiungere dei file."),
         "addRule": MessageLookupByLibrary.simpleMessage("Aggiungi regola"),
         "androidRemindContent": MessageLookupByLibrary.simpleMessage(
-            "Con la Rinominatore, puoi rinominare non solo i file, ma anche le directory. Tieni premuta una directory per selezionarla e quindi abilita la funzione di rinomina directory dal menu a discesa nell\'angolo in alto a sinistra. Per motivi di sicurezza, alcune directory di sistema potrebbero non essere selezionabili."),
+            "Usando il Flut Renamer, puoi rinominare non solo i file, ma anche le directory. Tieni premuta una directory per selezionarla, quindi seleziona \'File e directory\' dal pulsante a discesa nell\'angolo in alto a sinistra per abilitare la rinomina delle directory. Per motivi di sicurezza, alcune directory riservate al sistema non sono selezionabili."),
         "androidRemindTitle":
             MessageLookupByLibrary.simpleMessage("Rinomina directory"),
         "appError":

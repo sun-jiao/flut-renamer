@@ -88,7 +88,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "addFiles": MessageLookupByLibrary.simpleMessage("โปรดเพิ่มไฟล์"),
         "addRule": MessageLookupByLibrary.simpleMessage("เพิ่มกฏ"),
         "androidRemindContent": MessageLookupByLibrary.simpleMessage(
-            "โดยใช้ เปลี่ยนชื่อ คุณไม่เพียงแค่สามารถเปลี่ยนชื่อไฟล์ได้ แต่ยังสามารถเปลี่ยนชื่อโฟลเดอร์ได้อีกด้วย กดค้างโฟลเดอร์เพื่อเลือก และจากนั้นในปุ่มดร็อปดาวน์ที่มุมบนซ้ายเลือก \"ไฟล์และโฟลเดอร์\" เพื่อเปิดใช้งานฟังก์ชันการเปลี่ยนชื่อโฟลเดอร์ ด้วยเหตุนี้ ระบบบางระบบอาจจะสงวนโฟลเดอร์ที่เป็นของระบบไว้"),
+            "การใช้ Flut Renamer คุณสามารถเปลี่ยนชื่อไฟล์และไดเรกทอรีได้ กดค้างไดเรกทอรีเพื่อเลือก จากนั้นเลือก \'ไฟล์และไดเรกทอรี\' จากปุ่มแบบเลื่อนลงที่มุมบนซ้ายเพื่อเปิดใช้งานการเปลี่ยนชื่อไดเรกทอรี เนื่องจากเหตุผลด้านความปลอดภัย บางไดเรกทอรีที่สงวนไว้สำหรับระบบจะไม่สามารถเลือกได้"),
         "androidRemindTitle":
             MessageLookupByLibrary.simpleMessage("เปลี่ยนชื่อโฟลเดอร์"),
         "appError": MessageLookupByLibrary.simpleMessage("ข้อผิดพลาดของแอป"),

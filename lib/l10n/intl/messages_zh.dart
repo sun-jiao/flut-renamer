@@ -90,7 +90,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "addFiles": MessageLookupByLibrary.simpleMessage("请添加文件。"),
         "addRule": MessageLookupByLibrary.simpleMessage("添加规则"),
         "androidRemindContent": MessageLookupByLibrary.simpleMessage(
-            "使用批量重命名，您不仅可以重命名文件，还可以重命名目录。长按目录将其选中，然后在左上角下拉按钮中选择“文件和目录”即可启用目录重命名功能。出于安全考虑，某些系统保留目录不可选。"),
+            "使用Flut Renamer，您不仅可以重命名文件，还可以重命名目录。长按目录将其选中，然后在左上角下拉按钮中选择“文件和目录”即可启用目录重命名功能。出于安全考虑，某些系统保留目录不可选。"),
         "androidRemindTitle": MessageLookupByLibrary.simpleMessage("重命名目录"),
         "appError": MessageLookupByLibrary.simpleMessage("应用程序错误"),
         "appInfo": MessageLookupByLibrary.simpleMessage("应用信息"),

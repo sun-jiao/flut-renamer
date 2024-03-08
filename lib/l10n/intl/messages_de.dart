@@ -92,7 +92,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Bitte fügen Sie Dateien hinzu."),
         "addRule": MessageLookupByLibrary.simpleMessage("Regel hinzufügen"),
         "androidRemindContent": MessageLookupByLibrary.simpleMessage(
-            "Mit der Flut Renamer können Sie nicht nur Dateien umbenennen, sondern auch Verzeichnisse umbenennen. Halten Sie ein Verzeichnis gedrückt, um es auszuwählen, und wählen Sie dann in der Dropdown-Schaltfläche oben links \"Dateien und Verzeichnisse\" aus, um die Verzeichnisumbenennung zu aktivieren. Aus Sicherheitsgründen können bestimmte Systemverzeichnisse nicht ausgewählt werden."),
+            "Mit dem Flut Renamer können Sie nicht nur Dateien, sondern auch Verzeichnisse umbenennen. Drücken Sie lange auf ein Verzeichnis, um es auszuwählen, und wählen Sie dann \'Dateien & Verzeichnisse\' aus dem Dropdown-Button in der oberen linken Ecke, um die Umbenennung von Verzeichnissen zu aktivieren. Aus Sicherheitsgründen sind einige systemreservierte Verzeichnisse nicht auswählbar."),
         "androidRemindTitle":
             MessageLookupByLibrary.simpleMessage("Verzeichnis umbenennen"),
         "appError": MessageLookupByLibrary.simpleMessage("App-Fehler"),

@@ -89,7 +89,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Lütfen dosyalar ekleyin."),
         "addRule": MessageLookupByLibrary.simpleMessage("Kural Ekle"),
         "androidRemindContent": MessageLookupByLibrary.simpleMessage(
-            "Toplu yeniden adlandırma kullanarak dosyaları değil, aynı zamanda klasörleri de yeniden adlandırabilirsiniz. Bir klasörü uzun basılı tutun, ardından sol üst köşedeki açılır menüden \'Dosya ve Klasör\'ü seçerek klasör yeniden adlandırma işlevini etkinleştirin. Güvenlik nedeniyle, bazı sistem klasörlerinin seçilemez olduğunu unutmayın."),
+            "Flut Renamer\'ı kullanarak sadece dosyaların değil, dizinlerin de adını değiştirebilirsiniz. Bir dizini seçmek için uzun basın, ardından dizin yeniden adlandırmayı etkinleştirmek için sol üst köşedeki açılır düğmeden \'Dosyalar ve Dizinler\'i seçin. Güvenlik nedeniyle, bazı sistem ayrılmış dizinler seçilemez."),
         "androidRemindTitle":
             MessageLookupByLibrary.simpleMessage("Klasör Yeniden Adlandırma"),
         "appError": MessageLookupByLibrary.simpleMessage("Uygulama Hatası"),
