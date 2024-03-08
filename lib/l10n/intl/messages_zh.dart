@@ -94,7 +94,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "androidRemindTitle": MessageLookupByLibrary.simpleMessage("重命名目录"),
         "appError": MessageLookupByLibrary.simpleMessage("应用程序错误"),
         "appInfo": MessageLookupByLibrary.simpleMessage("应用信息"),
-        "appName": MessageLookupByLibrary.simpleMessage("批量重命名"),
+        "appName": MessageLookupByLibrary.simpleMessage("Flut Renamer"),
         "bg": MessageLookupByLibrary.simpleMessage("保加利亚语"),
         "cancel": MessageLookupByLibrary.simpleMessage("取消"),
         "cancelAll": MessageLookupByLibrary.simpleMessage("全部取消"),
@@ -168,7 +168,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "keepCharacters": MessageLookupByLibrary.simpleMessage("保留二者之间的字符"),
         "language": MessageLookupByLibrary.simpleMessage("语言："),
         "limit": MessageLookupByLibrary.simpleMessage("次数"),
-        "lowercaseAppName": MessageLookupByLibrary.simpleMessage("批量重命名"),
+        "lowercaseAppName":
+            MessageLookupByLibrary.simpleMessage("flut renamer"),
         "me": MessageLookupByLibrary.simpleMessage("黑山语"),
         "metadataParserNotProvided":
             MessageLookupByLibrary.simpleMessage("包含元数据标签，但未提供元数据解析器。"),

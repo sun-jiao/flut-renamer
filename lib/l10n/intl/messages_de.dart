@@ -92,12 +92,12 @@ class MessageLookup extends MessageLookupByLibrary {
             "Bitte fügen Sie Dateien hinzu."),
         "addRule": MessageLookupByLibrary.simpleMessage("Regel hinzufügen"),
         "androidRemindContent": MessageLookupByLibrary.simpleMessage(
-            "Mit der umbenennung können Sie nicht nur Dateien umbenennen, sondern auch Verzeichnisse umbenennen. Halten Sie ein Verzeichnis gedrückt, um es auszuwählen, und wählen Sie dann in der Dropdown-Schaltfläche oben links \"Dateien und Verzeichnisse\" aus, um die Verzeichnisumbenennung zu aktivieren. Aus Sicherheitsgründen können bestimmte Systemverzeichnisse nicht ausgewählt werden."),
+            "Mit der Flut Renamer können Sie nicht nur Dateien umbenennen, sondern auch Verzeichnisse umbenennen. Halten Sie ein Verzeichnis gedrückt, um es auszuwählen, und wählen Sie dann in der Dropdown-Schaltfläche oben links \"Dateien und Verzeichnisse\" aus, um die Verzeichnisumbenennung zu aktivieren. Aus Sicherheitsgründen können bestimmte Systemverzeichnisse nicht ausgewählt werden."),
         "androidRemindTitle":
             MessageLookupByLibrary.simpleMessage("Verzeichnis umbenennen"),
         "appError": MessageLookupByLibrary.simpleMessage("App-Fehler"),
         "appInfo": MessageLookupByLibrary.simpleMessage("App-Information"),
-        "appName": MessageLookupByLibrary.simpleMessage("Umbenennung"),
+        "appName": MessageLookupByLibrary.simpleMessage("Flut Renamer"),
         "bg": MessageLookupByLibrary.simpleMessage("Bulgarisch"),
         "cancel": MessageLookupByLibrary.simpleMessage("Abbrechen"),
         "cancelAll": MessageLookupByLibrary.simpleMessage("Alle abbrechen"),
@@ -195,7 +195,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Zeichen zwischen beiden behalten"),
         "language": MessageLookupByLibrary.simpleMessage("Sprache:"),
         "limit": MessageLookupByLibrary.simpleMessage("Limit"),
-        "lowercaseAppName": MessageLookupByLibrary.simpleMessage("umbenennung"),
+        "lowercaseAppName":
+            MessageLookupByLibrary.simpleMessage("flut renamer"),
         "me": MessageLookupByLibrary.simpleMessage("Montenegrinisch"),
         "metadataParserNotProvided": MessageLookupByLibrary.simpleMessage(
             "Metadatentags vorhanden, aber kein Metadatenparser bereitgestellt."),

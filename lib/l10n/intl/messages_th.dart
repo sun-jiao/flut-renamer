@@ -93,7 +93,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("เปลี่ยนชื่อโฟลเดอร์"),
         "appError": MessageLookupByLibrary.simpleMessage("ข้อผิดพลาดของแอป"),
         "appInfo": MessageLookupByLibrary.simpleMessage("ข้อมูลแอป"),
-        "appName": MessageLookupByLibrary.simpleMessage("เปลี่ยนชื่อ"),
+        "appName": MessageLookupByLibrary.simpleMessage("Flut Renamer"),
         "bg": MessageLookupByLibrary.simpleMessage("ภาษาบัลแกเรีย"),
         "cancel": MessageLookupByLibrary.simpleMessage("ยกเลิก"),
         "cancelAll": MessageLookupByLibrary.simpleMessage("ยกเลิกทั้งหมด"),
@@ -184,7 +184,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("เก็บอักขระทั้งสองข้าง"),
         "language": MessageLookupByLibrary.simpleMessage("ภาษา:"),
         "limit": MessageLookupByLibrary.simpleMessage("จำกัด"),
-        "lowercaseAppName": MessageLookupByLibrary.simpleMessage("เปลี่ยนชื่อ"),
+        "lowercaseAppName":
+            MessageLookupByLibrary.simpleMessage("flut renamer"),
         "me": MessageLookupByLibrary.simpleMessage("เมอร์เซเดีย"),
         "metadataParserNotProvided": MessageLookupByLibrary.simpleMessage(
             "มีแท็กข้อมูลแต่ไม่มีตัวแยก ไม่สามารถแยกและดึงข้อมูลได้"),

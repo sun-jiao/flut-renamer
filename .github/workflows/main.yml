@@ -28,23 +28,23 @@ jobs:
       - name: Build Appimage
         run: bash ./github_appimage_build.sh
       - name: Compress action step
-        run:  tar  -C build/linux/x64/release/bundle -cf renamer-linux.tar.gz ./
+        run:  tar  -C build/linux/x64/release/bundle -cf flut-renamer-linux.tar.gz ./
       - name: Linux Release
         uses: actions/upload-artifact@v4
         with:
-          name: renamer-linux
-          path: renamer-linux.tar.gz
+          name: flut-renamer-linux
+          path: flut-renamer-linux.tar.gz
       - name: Linux Appimage Release
         uses: actions/upload-artifact@v4
         with:
-          name: renamer-appimage
-          path: Renamer-x86_64.AppImage
+          name: flut-renamer-appimage
+          path: FlutRenamer-x86_64.AppImage
       - uses: actions/setup-java@v2
         with:
           distribution: 'zulu'
           java-version: '17.x'
       - name: decode key base64
-        run: echo $KEYSTORE_BASE64 | base64 -di > ./android/app/renamer.jks
+        run: echo $KEYSTORE_BASE64 | base64 -di > ./android/app/flut-renamer.jks
         env:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
       - name: Build android
@@ -52,14 +52,14 @@ jobs:
           flutter build apk --release
           flutter build apk --release --split-per-abi
         env:
-          KEYSTORE: renamer.jks
+          KEYSTORE: flut-renamer.jks
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD}}
       - name: Android Release
         uses: actions/upload-artifact@v4
         with:
-          name: renamer-android
+          name: flut-renamer-android
           path: build/app/outputs/flutter-apk
 
   build-and-release-windows:
@@ -88,12 +88,12 @@ jobs:
       - name: create evb file
         run: dart .\dev\windows_evb_config_generator.dart
       - name: build single exe file
-        run: enigmavirtualbox cli "renamer.evb"
+        run: enigmavirtualbox cli "flut-renamer.evb"
       - name: Windows Release
         uses: actions/upload-artifact@v4
         with:
-          name: renamer-win
-          path: renamer.exe
+          name: flut-renamer-win
+          path: flut-renamer.exe
 
   build-and-release-macos:
     runs-on: macos-14
@@ -115,22 +115,22 @@ jobs:
       - name: install appdmg
         run: npm install -g appdmg
       - name: build dmg
-        run: appdmg ./dmg/config.json ./build/macos/Build/Products/Release/renamer.dmg
+        run: appdmg ./dmg/config.json ./build/macos/Build/Products/Release/flut-renamer.dmg
       - name: macOS Release
         uses: actions/upload-artifact@v4
         with:
-          name: renamer-macos
-          path: build/macos/Build/Products/Release/renamer.dmg
+          name: flut-renamer-macos
+          path: build/macos/Build/Products/Release/flut-renamer.dmg
       - name: Build ios
         run: |
           flutter build ios --release --no-codesign
           ln -sf ./build/ios/iphoneos Payload
-          zip -r9 renamer-release.ipa Payload/runner.app
+          zip -r9 flut-renamer-release.ipa Payload/runner.app
       - name: ios Release
         uses: actions/upload-artifact@v4
         with:
-          name: renamer-ios
-          path: renamer-release.ipa
+          name: flut-renamer-ios
+          path: flut-renamer-release.ipa
 
 
   upload:
@@ -143,7 +143,7 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
         with:
-          path: ./renamer-release
+          path: ./flut-renamer-release
           merge-multiple: true
       - name: Install dependencies
         run: sudo apt-get install tree -y
@@ -155,4 +155,4 @@ jobs:
           omitNameDuringUpdate: true
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
-          artifacts: renamer-release/*
+          artifacts: flut-renamer-release/*

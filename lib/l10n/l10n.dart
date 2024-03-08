@@ -50,20 +50,20 @@ class L10n {
     return Localizations.of<L10n>(context, L10n);
   }
 
-  /// `Renamer`
+  /// `Flut Renamer`
   String get appName {
     return Intl.message(
-      'Renamer',
+      'Flut Renamer',
       name: 'appName',
       desc: '',
       args: [],
     );
   }
 
-  /// `renamer`
+  /// `flut renamer`
   String get lowercaseAppName {
     return Intl.message(
-      'renamer',
+      'flut renamer',
       name: 'lowercaseAppName',
       desc: '',
       args: [],

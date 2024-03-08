@@ -94,8 +94,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Klasör Yeniden Adlandırma"),
         "appError": MessageLookupByLibrary.simpleMessage("Uygulama Hatası"),
         "appInfo": MessageLookupByLibrary.simpleMessage("Uygulama Bilgileri"),
-        "appName":
-            MessageLookupByLibrary.simpleMessage("Toplu Yeniden Adlandırma"),
+        "appName": MessageLookupByLibrary.simpleMessage("Flut Renamer"),
         "bg": MessageLookupByLibrary.simpleMessage("Bulgarca"),
         "cancel": MessageLookupByLibrary.simpleMessage("İptal"),
         "cancelAll": MessageLookupByLibrary.simpleMessage("Tümünü İptal Et"),
@@ -189,7 +188,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "language": MessageLookupByLibrary.simpleMessage("Dil:"),
         "limit": MessageLookupByLibrary.simpleMessage("Sınır"),
         "lowercaseAppName":
-            MessageLookupByLibrary.simpleMessage("toplu yeniden adlandırma"),
+            MessageLookupByLibrary.simpleMessage("flut renamer"),
         "me": MessageLookupByLibrary.simpleMessage("Karadağca"),
         "metadataParserNotProvided": MessageLookupByLibrary.simpleMessage(
             "Meta veri etiketleri içeriyor ancak meta veri ayrıştırıcısı sağlanmadı."),

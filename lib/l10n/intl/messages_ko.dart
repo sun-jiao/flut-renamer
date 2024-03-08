@@ -95,7 +95,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("디렉터리 이름 변경"),
         "appError": MessageLookupByLibrary.simpleMessage("애플리케이션 오류"),
         "appInfo": MessageLookupByLibrary.simpleMessage("애플리케이션 정보"),
-        "appName": MessageLookupByLibrary.simpleMessage("이름 바꾸기"),
+        "appName": MessageLookupByLibrary.simpleMessage("Flut Renamer"),
         "bg": MessageLookupByLibrary.simpleMessage("불가리아어"),
         "cancel": MessageLookupByLibrary.simpleMessage("취소"),
         "cancelAll": MessageLookupByLibrary.simpleMessage("모두 취소"),
@@ -175,7 +175,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("두 문자 사이의 문자 유지"),
         "language": MessageLookupByLibrary.simpleMessage("언어:"),
         "limit": MessageLookupByLibrary.simpleMessage("제한"),
-        "lowercaseAppName": MessageLookupByLibrary.simpleMessage("이름 바꾸기"),
+        "lowercaseAppName":
+            MessageLookupByLibrary.simpleMessage("flut renamer"),
         "me": MessageLookupByLibrary.simpleMessage("몬테네그로어"),
         "metadataParserNotProvided": MessageLookupByLibrary.simpleMessage(
             "메타데이터 태그가 포함되어 있지만 메타데이터 파서가 제공되지 않았습니다."),

@@ -1,8 +1,10 @@
-# renamer
+# Flut Renamer
 
-<img alt="renamer app icon" src="https://raw.githubusercontent.com/sun-jiao/renamer/main/assets/desktop.png" height=100px /> <a href="https://play.google.com/store/apps/details?id=net.sunjiao.renamer"><img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" height=60px /></a>
+<img alt="flut-renamer app icon" src="https://raw.githubusercontent.com/sun-jiao/renamer/main/assets/desktop.png" height=100px /> <a href="https://play.google.com/store/apps/details?id=net.sunjiao.renamer"><img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" height=60px /></a>
 
-Renamer is a powerful yet easy-to-use tool designed to help users manage and rename files and directories. No more manually renaming one by one – our app offers various features including inserting text, inserting file metadata and Exif data, replacing text, deleting text, rearranging, and more, allowing you to quickly batch rename files according to your needs.
+Flut Renamer is a powerful yet easy-to-use tool designed to help users manage and rename files and directories. No more manually renaming one by one – our app offers various features including inserting text, inserting file metadata and Exif data, replacing text, deleting text, rearranging, and more, allowing you to quickly batch rename files according to your needs.
+
+"Flut" is derived from "Flutter", meaning the app is built using Flutter, but does not use the full name to avoid any possible trademark infringement. And "Flut" means flood in German, which implies that this software can batch rename files as fast as a flood.
 
 * Multiple renaming options: Easily achieve batch file renaming by inserting, replacing, deleting text, and rearranging.
 * Insert file metadata and Exif data: Extract information from file metadata and Exif data and insert it into the file name.
@@ -35,3 +37,6 @@ Renamer is a powerful yet easy-to-use tool designed to help users manage and ren
 | ![Ten-inch_Tablet-0](/screenshots/Ten-inch_Tablet-0.png?raw=true) | ![Ten-inch_Tablet-1](/screenshots/Ten-inch_Tablet-1.png?raw=true) |
 |:------------------------------------------------------------------|:------------------------------------------------------------------|
 | ![Ten-inch_Tablet-2](/screenshots/Ten-inch_Tablet-2.png?raw=true) | ![Ten-inch_Tablet-3](/screenshots/Ten-inch_Tablet-3.png?raw=true) |
+
+# Credit
+Thanks to [m040601](https://aur.archlinux.org/account/m040601) for suggesting a new name for this application. "flut renamer" is based on their suggestion "renamer-flutter"

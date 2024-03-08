@@ -1,7 +1,7 @@
 {
   "@@locale": "de",
-  "appName": "Umbenennung",
-  "lowercaseAppName": "umbenennung",
+  "appName": "Flut Renamer",
+  "lowercaseAppName": "flut renamer",
   "ok": "OK",
   "cancel": "Abbrechen",
   "exit": "Beenden",
@@ -14,7 +14,7 @@
   "iosRemindTitle": "Dateiauswahl auf iOS",
   "iosRemindContent": "Um Dateien auf iOS auszuwählen, wählen Sie zunächst einen Ordner aus, der Ihre Dateien enthält. Wählen Sie dann in dem ausgewählten Ordner die Dateien aus, die Sie umbenennen möchten. Aufgrund von iOS-Beschränkungen müssen wir diese beiden Schritte durchführen, um einen sicheren Dateizugriff zu gewährleisten. Lass uns anfangen!",
   "androidRemindTitle": "Verzeichnis umbenennen",
-  "androidRemindContent": "Mit der umbenennung können Sie nicht nur Dateien umbenennen, sondern auch Verzeichnisse umbenennen. Halten Sie ein Verzeichnis gedrückt, um es auszuwählen, und wählen Sie dann in der Dropdown-Schaltfläche oben links \"Dateien und Verzeichnisse\" aus, um die Verzeichnisumbenennung zu aktivieren. Aus Sicherheitsgründen können bestimmte Systemverzeichnisse nicht ausgewählt werden.",
+  "androidRemindContent": "Mit der Flut Renamer können Sie nicht nur Dateien umbenennen, sondern auch Verzeichnisse umbenennen. Halten Sie ein Verzeichnis gedrückt, um es auszuwählen, und wählen Sie dann in der Dropdown-Schaltfläche oben links \"Dateien und Verzeichnisse\" aus, um die Verzeichnisumbenennung zu aktivieren. Aus Sicherheitsgründen können bestimmte Systemverzeichnisse nicht ausgewählt werden.",
   "doNotRemindAgain": "Nicht mehr erinnern",
   "rename": "Umbenennen",
   "appInfo": "App-Information",

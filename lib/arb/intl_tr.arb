@@ -1,7 +1,7 @@
 {
   "@@locale": "tr",
-  "appName": "Toplu Yeniden Adlandırma",
-  "lowercaseAppName": "toplu yeniden adlandırma",
+  "appName": "Flut Renamer",
+  "lowercaseAppName": "flut renamer",
   "ok": "Tamam",
   "cancel": "İptal",
   "exit": "Çıkış",

@@ -39,8 +39,8 @@ void main() {
       builder.element('CompressFiles', nest: 'False');
       builder.element('Files', nest: () {
         buildDir(builder, '%DEFAULT FOLDER%', entities);
-      });
-    });
+      },);
+    },);
     builder.element('Registries', nest: () {
       builder.element('Enabled', nest: 'False');
       builder.element('Registries', nest: () {
@@ -49,30 +49,30 @@ void main() {
         buildRegistry(builder, 'Machine');
         buildRegistry(builder, 'Users');
         buildRegistry(builder, 'Config');
-      });
-    });
+      },);
+    },);
     builder.element('Packaging', nest: () {
       builder.element('Enabled', nest: 'False');
-    });
+    },);
     builder.element('Options', nest: () {
       builder.element('ShareVirtualSystem', nest: 'False');
       builder.element('MapExecutableWithTemporaryFile', nest: 'True');
       builder.element('TemporaryFileMask');
       builder.element('AllowRunningOfVirtualExeFiles', nest: 'True');
       builder.element('ProcessesOfAnyPlatforms', nest: 'False');
-    });
+    },);
     builder.element('Storage', nest: () {
       builder.element('Files', nest: () {
         builder.element('Enabled', nest: 'False');
         builder.element('Folder', nest: '%DEFAULT FOLDER%\\');
         builder.element('RandomFileNames', nest: 'False');
         builder.element('EncryptContent', nest: 'False');
-      });
-    });
-  });
+      },);
+    },);
+  },);
 
   final document = builder.buildDocument();
-  File('renamer.evb').writeAsStringSync(document.toXmlString(pretty: true), mode: FileMode.append);
+  File('flut-renamer.evb').writeAsStringSync(document.toXmlString(pretty: true), mode: FileMode.append);
 }
 
 void buildFile(XmlBuilder builder, String name, String path) {
@@ -87,7 +87,7 @@ void buildFile(XmlBuilder builder, String name, String path) {
     builder.element('OverwriteAttributes', nest: 'False');
     builder.element('PassCommandLine', nest: 'False');
     builder.element('HideFromDialogs', nest: 0);
-  });
+  },);
 }
 
 void buildDir(XmlBuilder builder, String name, List<FileSystemEntity> entities) {
@@ -107,8 +107,8 @@ void buildDir(XmlBuilder builder, String name, List<FileSystemEntity> entities) 
           buildFile(builder, entity.name, entity.absolute.path);
         }
       }
-    });
-  });
+    },);
+  },);
 }
 
 void buildRegistry(XmlBuilder builder, String name) {
@@ -119,7 +119,7 @@ void buildRegistry(XmlBuilder builder, String name) {
     builder.element('ValueType', nest: 0);
     builder.element('Value');
     builder.element('Registries');
-  });
+  },);
 }
 
 extension on FileSystemEntity {

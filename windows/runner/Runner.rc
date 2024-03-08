@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "net.sunjiao" "\0"
-            VALUE "FileDescription", "renamer" "\0"
+            VALUE "FileDescription", "flut-renamer" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "renamer" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2023 Sun Jiao. GNU GENERAL PUBLIC LICENSE Version 3." "\0"
-            VALUE "OriginalFilename", "renamer.exe" "\0"
-            VALUE "ProductName", "renamer" "\0"
+            VALUE "OriginalFilename", "flut-renamer.exe" "\0"
+            VALUE "ProductName", "flut-renamer" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

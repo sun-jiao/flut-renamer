@@ -1,7 +1,7 @@
 {
   "@@locale": "ja",
-  "appName": "名前変更者",
-  "lowercaseAppName": "名前変更者",
+  "appName": "Flut Renamer",
+  "lowercaseAppName": "flut renamer",
   "ok": "OK",
   "cancel": "キャンセル",
   "exit": "終了",

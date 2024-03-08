@@ -1,7 +1,7 @@
 {
   "@@locale": "es",
-  "appName": "Renombrador",
-  "lowercaseAppName": "renombrador",
+  "appName": "Flut Renamer",
+  "lowercaseAppName": "flut renamer",
   "ok": "Aceptar",
   "cancel": "Cancelar",
   "exit": "Salir",

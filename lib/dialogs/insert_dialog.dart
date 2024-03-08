@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:renamer/widget/metadata_tile.dart';
 
+import '../widget/metadata_tile.dart';
 import '../entity/constants.dart';
 import '../l10n/l10n.dart';
 import '../rules/rule.dart';

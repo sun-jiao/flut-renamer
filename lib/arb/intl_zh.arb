@@ -1,7 +1,7 @@
 {
   "@@locale": "zh",
-  "appName": "批量重命名",
-  "lowercaseAppName": "批量重命名",
+  "appName": "Flut Renamer",
+  "lowercaseAppName": "flut renamer",
   "ok": "确定",
   "cancel": "取消",
   "exit": "退出",

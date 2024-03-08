@@ -97,7 +97,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("إعادة تسمية الدلائل"),
         "appError": MessageLookupByLibrary.simpleMessage("خطأ في التطبيق"),
         "appInfo": MessageLookupByLibrary.simpleMessage("معلومات التطبيق"),
-        "appName": MessageLookupByLibrary.simpleMessage("إعادة تسمية مجماعة"),
+        "appName": MessageLookupByLibrary.simpleMessage("Flut Renamer"),
         "bg": MessageLookupByLibrary.simpleMessage("البلغارية"),
         "cancel": MessageLookupByLibrary.simpleMessage("إلغاء"),
         "cancelAll": MessageLookupByLibrary.simpleMessage("إلغاء الكل"),
@@ -189,7 +189,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "language": MessageLookupByLibrary.simpleMessage("اللغة:"),
         "limit": MessageLookupByLibrary.simpleMessage("الحد"),
         "lowercaseAppName":
-            MessageLookupByLibrary.simpleMessage("إعادة تسمية مجماعة"),
+            MessageLookupByLibrary.simpleMessage("flut renamer"),
         "me": MessageLookupByLibrary.simpleMessage("المونتينيغرين"),
         "metadataParserNotProvided": MessageLookupByLibrary.simpleMessage(
             "يحتوي على علامات البيانات الوصفية، لكن لم يتم توفير محلل البيانات الوصفية."),

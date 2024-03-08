@@ -95,7 +95,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("ディレクトリのリネーム"),
         "appError": MessageLookupByLibrary.simpleMessage("アプリケーションエラー"),
         "appInfo": MessageLookupByLibrary.simpleMessage("アプリ情報"),
-        "appName": MessageLookupByLibrary.simpleMessage("名前変更者"),
+        "appName": MessageLookupByLibrary.simpleMessage("Flut Renamer"),
         "bg": MessageLookupByLibrary.simpleMessage("ブルガリア語"),
         "cancel": MessageLookupByLibrary.simpleMessage("キャンセル"),
         "cancelAll": MessageLookupByLibrary.simpleMessage("すべてキャンセル"),
@@ -175,7 +175,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "keepCharacters": MessageLookupByLibrary.simpleMessage("両方の文字を保持"),
         "language": MessageLookupByLibrary.simpleMessage("言語："),
         "limit": MessageLookupByLibrary.simpleMessage("回数制限"),
-        "lowercaseAppName": MessageLookupByLibrary.simpleMessage("名前変更者"),
+        "lowercaseAppName":
+            MessageLookupByLibrary.simpleMessage("flut renamer"),
         "me": MessageLookupByLibrary.simpleMessage("モンテネグロ語"),
         "metadataParserNotProvided": MessageLookupByLibrary.simpleMessage(
             "メタデータタグが含まれていますが、メタデータパーサーが提供されていません。"),

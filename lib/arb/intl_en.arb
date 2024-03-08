@@ -1,7 +1,7 @@
 {
   "@@locale": "en",
-  "appName": "Renamer",
-  "lowercaseAppName": "renamer",
+  "appName": "Flut Renamer",
+  "lowercaseAppName": "flut renamer",
   "ok": "OK",
   "cancel": "Cancel",
   "exit": "Exit",

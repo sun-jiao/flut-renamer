@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
 
     <application
-        android:label="renamer"
+        android:label="Flut Renamer"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon"
         android:requestLegacyExternalStorage="true">

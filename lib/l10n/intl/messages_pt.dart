@@ -101,7 +101,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "appError": MessageLookupByLibrary.simpleMessage("Erro do aplicativo"),
         "appInfo":
             MessageLookupByLibrary.simpleMessage("Informações do aplicativo"),
-        "appName": MessageLookupByLibrary.simpleMessage("Renomeador"),
+        "appName": MessageLookupByLibrary.simpleMessage("Flut Renamer"),
         "bg": MessageLookupByLibrary.simpleMessage("Búlgaro"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancelar"),
         "cancelAll": MessageLookupByLibrary.simpleMessage("Cancelar tudo"),
@@ -199,7 +199,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Manter caracteres entre os dois"),
         "language": MessageLookupByLibrary.simpleMessage("Idioma:"),
         "limit": MessageLookupByLibrary.simpleMessage("Limite"),
-        "lowercaseAppName": MessageLookupByLibrary.simpleMessage("renomeador"),
+        "lowercaseAppName":
+            MessageLookupByLibrary.simpleMessage("flut renamer"),
         "me": MessageLookupByLibrary.simpleMessage("Montenegrino"),
         "metadataParserNotProvided": MessageLookupByLibrary.simpleMessage(
             "Tags de metadados estão presentes, mas nenhum analisador de metadados foi fornecido."),

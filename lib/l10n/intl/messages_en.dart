@@ -113,7 +113,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Rename directory"),
         "appError": MessageLookupByLibrary.simpleMessage("Application error"),
         "appInfo": MessageLookupByLibrary.simpleMessage("App info"),
-        "appName": MessageLookupByLibrary.simpleMessage("Renamer"),
+        "appName": MessageLookupByLibrary.simpleMessage("Flut Renamer"),
         "bg": MessageLookupByLibrary.simpleMessage("Bulgarian"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "cancelAll": MessageLookupByLibrary.simpleMessage("Cancel All"),
@@ -205,7 +205,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Keep characters between them"),
         "language": MessageLookupByLibrary.simpleMessage("Language: "),
         "limit": MessageLookupByLibrary.simpleMessage("limit"),
-        "lowercaseAppName": MessageLookupByLibrary.simpleMessage("renamer"),
+        "lowercaseAppName":
+            MessageLookupByLibrary.simpleMessage("flut renamer"),
         "me": MessageLookupByLibrary.simpleMessage("Montenegrin"),
         "metadataParserNotProvided": MessageLookupByLibrary.simpleMessage(
             "Contains metadata tag while MetadataParser was not provided."),

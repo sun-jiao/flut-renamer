@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:renamer/l10n/l10n.dart';
 
+import '../l10n/l10n.dart';
 import '../widget/custom_dialog.dart';
 
 void showMetadataDialog(BuildContext context, Function(String tag) onInsert) => showDialog(

@@ -3,7 +3,8 @@ import 'dart:io';
 import 'package:file_manager/file_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:renamer/tools/responsive.dart';
+
+import '../tools/responsive.dart';
 import '../entity/constants.dart';
 import '../l10n/l10n.dart';
 import '../tools/ex_file.dart';

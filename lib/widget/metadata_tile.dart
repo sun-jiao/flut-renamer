@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:renamer/tools/ex_text_editing_controller.dart';
 
+import '../tools/ex_text_editing_controller.dart';
 import '../dialogs/metadata_dialog.dart';
 import '../l10n/l10n.dart';
 import 'checkbox_tile.dart';

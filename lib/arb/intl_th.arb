@@ -1,7 +1,7 @@
 {
   "@@locale": "th",
-  "appName": "เปลี่ยนชื่อ",
-  "lowercaseAppName": "เปลี่ยนชื่อ",
+  "appName": "Flut Renamer",
+  "lowercaseAppName": "flut renamer",
   "ok": "ตกลง",
   "cancel": "ยกเลิก",
   "exit": "ออก",

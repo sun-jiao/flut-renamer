@@ -2,7 +2,7 @@
 Version=1.0
 Type=Application
 Terminal=false
-Name=Renamer
-Exec=renamer %u
+Name=Flut Renamer
+Exec=flut-renamer %u
 Icon=desktop
 Categories=Utility;

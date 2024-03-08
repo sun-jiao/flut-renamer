@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:renamer/widget/text_field_with_direction.dart';
 
+import '../widget/text_field_with_direction.dart';
 import '../entity/constants.dart';
 import '../l10n/l10n.dart';
 import '../rules/rule.dart';

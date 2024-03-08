@@ -1,7 +1,7 @@
 {
   "@@locale": "ko",
-  "appName": "이름 바꾸기",
-  "lowercaseAppName": "이름 바꾸기",
+  "appName": "Flut Renamer",
+  "lowercaseAppName": "flut renamer",
   "ok": "확인",
   "cancel": "취소",
   "exit": "나가기",

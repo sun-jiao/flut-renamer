@@ -1,7 +1,7 @@
 library renamer.test.rule.replace;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:renamer/rules/rule.dart';
+import 'package:flut_renamer/rules/rule.dart';
 
 void main() {
   test('basic replace', () async {
