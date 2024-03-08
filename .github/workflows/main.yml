@@ -38,7 +38,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: flut-renamer-appimage
-          path: FlutRenamer-x86_64.AppImage
+          path: Flut_Renamer-x86_64.AppImage
       - uses: actions/setup-java@v2
         with:
           distribution: 'zulu'
