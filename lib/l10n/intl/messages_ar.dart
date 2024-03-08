@@ -92,7 +92,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "addFiles": MessageLookupByLibrary.simpleMessage("الرجاء إضافة ملفات."),
         "addRule": MessageLookupByLibrary.simpleMessage("إضافة قاعدة"),
         "androidRemindContent": MessageLookupByLibrary.simpleMessage(
-            "باستخدام إعادة التسمية بالجملة، يمكنك ليس فقط إعادة تسمية الملفات، ولكن يمكنك أيضًا إعادة تسمية الدلائل. اضغط مطولًا على المجلد لتحديده، ثم اختر \"الملفات والدلائل\" من الزر المنسدل في الزاوية اليسرى العلوية لتمكين وظيفة إعادة تسمية الدلائل. لأسباب أمان، قد تحتفظ بعض النظم بالدلائل الأساسية من التحديد."),
+            "باستخدام Flut Renamer ، يمكنك إعادة تسمية الملفات والمجلدات. اضغط مع الاستمرار على مجلد لتحديده ، ثم حدد \'الملفات والمجلدات\' من الزر المنسدل في الزاوية اليسرى العليا لتمكين إعادة تسمية المجلد. لأسباب أمنية ، بعض المجلدات المحجوزة للنظام غير قابلة للتحديد."),
         "androidRemindTitle":
             MessageLookupByLibrary.simpleMessage("إعادة تسمية الدلائل"),
         "appError": MessageLookupByLibrary.simpleMessage("خطأ في التطبيق"),

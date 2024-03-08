@@ -14,7 +14,7 @@
   "iosRemindTitle": "About picking files on iOS",
   "iosRemindContent": "To pick files on iOS, first choose the directory where your files are located. Then, within the selected folder, pick the files you want to rename. Due to the restrictions of iOS, we have to use a two-step process, which ensures safe file management. Let's get started!",
   "androidRemindTitle": "Rename directory",
-  "androidRemindContent": "Using the renamer, you can not only rename files but also directories. Long-press a directory to select it, then select 'Files & Dirs' from the drop-down button in the upper-left corner to enable directory renaming. For security reasons, some system reserved directories are not selectable.",
+  "androidRemindContent": "Using the Flut Renamer, you can not only rename files but also directories. Long-press a directory to select it, then select 'Files & Dirs' from the drop-down button in the upper-left corner to enable directory renaming. For security reasons, some system reserved directories are not selectable.",
   "doNotRemindAgain": "OK. Do not remind me again.",
   "rename": "Rename",
   "appInfo": "App info",
