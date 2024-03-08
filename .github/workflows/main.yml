@@ -110,6 +110,11 @@ jobs:
         run: flutter config --enable-macos-desktop
       - name: Build artifacts
         run: flutter build macos --release
+      - name: macOS Release 1
+        uses: actions/upload-artifact@v4
+        with:
+          name: flut-renamer-macos-1
+          path: build/macos/Build/Products/Release
       - name: install npm
         run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
       - name: install appdmg
