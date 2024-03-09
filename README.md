@@ -4,7 +4,7 @@
 
 Flut Renamer is a powerful yet easy-to-use tool designed to help users manage and rename files and directories. No more manually renaming one by one – our app offers various features including inserting text, inserting file metadata and Exif data, replacing text, deleting text, rearranging, and more, allowing you to quickly batch rename files according to your needs.
 
-"Flut" is derived from "Flutter", meaning the app is built using Flutter, but does not use the full name to avoid any possible trademark infringement. And "Flut" means flood in German, which implies that this software can batch rename files as fast as a flood.
+"Flut" is derived from "Flutter", meaning the app is built using Flutter, but does not use the full name to avoid any possible trademark infringement. And "Flut" means flood in German, which implies that this app can batch rename files as fast as a flood.
 
 * Multiple renaming options: Easily achieve batch file renaming by inserting, replacing, deleting text, and rearranging.
 * Insert file metadata and Exif data: Extract information from file metadata and Exif data and insert it into the file name.
@@ -22,7 +22,7 @@ Download *.AppImage or *.tar.gz from [releases](https://github.com/sun-jiao/rena
 
 For Arch Linux users, just run:
 ```shell
-yay/yarn -S renamer
+yay/yarn -S flut-renamer
 ```
 
 ### Windows
