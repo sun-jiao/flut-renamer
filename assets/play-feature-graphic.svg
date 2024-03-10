@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
+
 <!-- Uses free and opensource font URW Gothic and Noto Serif -->
 
 <svg
@@ -29,10 +30,10 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      inkscape:zoom="0.33026975"
-     inkscape:cx="1199.0199"
-     inkscape:cy="440.54898"
+     inkscape:cx="1153.6025"
+     inkscape:cy="443.5768"
      inkscape:window-width="1646"
-     inkscape:window-height="931"
+     inkscape:window-height="939"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
@@ -73,35 +74,35 @@
          height="198.57632"
          xlink:href="fore.svg"
          id="image1-6"
-         x="0.0090602972"
+         x="-37.032604"
          y="58.478462" /><text
          xml:space="preserve"
          style="font-size:19.7556px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#15384f;fill-opacity:1;stroke:#000000;stroke-width:2"
-         x="335.84128"
+         x="321.55374"
          y="154.96423"
          id="text1"><tspan
            sodipodi:role="line"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:66.3222px;font-family:'URW Gothic';-inkscape-font-specification:'URW Gothic';text-align:center;text-anchor:middle;fill:#15384f;fill-opacity:1;stroke:none;stroke-width:2"
-           x="335.84128"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:61.3833px;font-family:'URW Gothic';-inkscape-font-specification:'URW Gothic';text-align:center;text-anchor:middle;fill:#15384f;fill-opacity:1;stroke:none;stroke-width:2"
+           x="321.55374"
            y="154.96423"
-           id="tspan3">Renamer</tspan><tspan
+           id="tspan3">Flut Renamer</tspan><tspan
            sodipodi:role="line"
            style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:35.2778px;font-family:'URW Gothic';-inkscape-font-specification:'URW Gothic';text-align:center;text-anchor:middle;fill:#15384f;fill-opacity:1;stroke:none;stroke-width:2"
-           x="335.84128"
-           y="211.04462"
+           x="321.55374"
+           y="209.13821"
            id="tspan5">bulk file renamer</tspan><tspan
            sodipodi:role="line"
            style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14.1111px;font-family:'Noto Serif';-inkscape-font-specification:'Noto Serif';text-align:center;text-anchor:middle;fill:#15384f;fill-opacity:1;stroke:none;stroke-width:2"
-           x="335.84128"
-           y="244.51624"
+           x="321.55374"
+           y="242.60982"
            id="tspan6" /></text><text
          xml:space="preserve"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:19.7556px;font-family:'Noto Serif';-inkscape-font-specification:'Noto Serif';text-align:start;text-anchor:start;fill:#15384f;fill-opacity:1;stroke:none;stroke-width:2"
-         x="36.981129"
+         x="10.522797"
          y="262.99026"
          id="text12"><tspan
            sodipodi:role="line"
            id="tspan12"
            style="font-weight:bold;font-size:19.7556px;stroke-width:2"
-           x="36.981129"
-           y="262.99026">help users rename their files in essential ways.</tspan></text></g></g></svg>
+           x="10.522797"
+           y="262.99026">help you rename files essentially in multiple ways.</tspan></text></g></g></svg>
