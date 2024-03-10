@@ -22,7 +22,8 @@ Download *.AppImage or *.tar.gz from [releases](https://github.com/sun-jiao/rena
 
 For Arch Linux users, just run:
 ```shell
-yay/yarn -S flut-renamer
+yay/yarn -S flut-renamer # build from source code
+yay/yarn -S flut-renamer-bin # binary version
 ```
 
 ### Windows
