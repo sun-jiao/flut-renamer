@@ -1,24 +1,24 @@
+![feature graphic image](/assets/play-feature-graphic.png?raw=true)
+
 # Flut Renamer
 
-<img alt="renamer app icon" src="https://raw.githubusercontent.com/sun-jiao/renamer/main/assets/desktop.png" height=100px /> 
+**Flut Renamer** is a powerful yet easy-to-use tool designed to help users manage and rename files and directories. No more manually renaming one by one – our app offers various features including inserting text, inserting file metadata and Exif data, replacing text, deleting text, rearranging, and more, allowing you to quickly batch rename files according to your needs.
 
-Flut Renamer is a powerful yet easy-to-use tool designed to help users manage and rename files and directories. No more manually renaming one by one – our app offers various features including inserting text, inserting file metadata and Exif data, replacing text, deleting text, rearranging, and more, allowing you to quickly batch rename files according to your needs.
-
-"Flut" is derived from "Flutter", meaning the app is built using Flutter, but does not use the full name to avoid any possible trademark infringement. And "Flut" means flood in German, which implies that this app can batch rename files as fast as a flood.
+"**Flut**" is derived from "**Flutter**", meaning the app is built using Flutter, but does not use the full name to avoid any possible trademark infringement. And "Flut" means flood in German, which implies that this app can batch rename files as fast as a flood.
 
 * Multiple renaming options: Easily achieve batch file renaming by inserting, replacing, deleting text, and rearranging.
 * Insert file metadata and Exif data: Extract information from file metadata and Exif data and insert it into the file name.
-* Completely open-source and free: Our app is entirely open-source and contains no advertisements or in-app purchases, allowing you to use it freely at any time.
-* Cross-platform compatibility: Built on the Flutter framework, our app can run on multiple operating systems, enabling you to use it anytime, anywhere.
+* Completely open-source and free: Flut Renamer is entirely open-source and contains no advertisements or in-app purchases, allowing you to use it freely at any time.
+* Cross-platform compatibility: Built on the Flutter framework, Flut Renamer can run on multiple operating systems, enabling you to use it anytime, anywhere.
 
 ## Install
-### Android 
+### Android
 <a href="https://play.google.com/store/apps/details?id=net.sunjiao.renamer"><img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" height=60px /></a>
 
-Install from Google Play Store or download *.apk from [releases](https://github.com/sun-jiao/renamer/releases).
+Install from Google Play Store or download *.apk from [releases].
 
 ### Linux
-Download *.AppImage or *.tar.gz from [releases](https://github.com/sun-jiao/renamer/releases).
+Download *.AppImage or *.tar.gz from [releases].
 
 For Arch Linux users, just run:
 ```shell
@@ -27,13 +27,13 @@ yay -S flut-renamer-bin # binary version
 ```
 
 ### Windows
-Download *.exe from [releases](https://github.com/sun-jiao/renamer/releases).
+Download *.exe from [releases].
 
 ### macOS
-Download *.dmg from [releases](https://github.com/sun-jiao/renamer/releases).
+Download *.dmg from [releases].
 
 ### iOS
-Download *.ipa from [releases](https://github.com/sun-jiao/renamer/releases) and install by AltStore or other tools.
+Download *.ipa from [releases] and install by AltStore or other tools.
 
 ## todo:
 - ~~Duplicate name check~~.(Done.)
@@ -64,3 +64,5 @@ Download *.ipa from [releases](https://github.com/sun-jiao/renamer/releases) and
 
 # Credit
 Thanks to [m040601](https://aur.archlinux.org/account/m040601) for suggesting a new name for this application. "flut renamer" is inspired by their suggestion "renamer-flutter"
+
+[releases]: https://github.com/sun-jiao/renamer/releases

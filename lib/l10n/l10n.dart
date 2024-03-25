@@ -190,10 +190,10 @@ class L10n {
     );
   }
 
-  /// `Using the Flut Renamer, you can not only rename files but also directories. Long-press a directory to select it, then select 'Files & Dirs' from the drop-down button in the upper-left corner to enable directory renaming. For security reasons, some system reserved directories are not selectable.`
+  /// `Using the Flut Renamer, you can rename not only files but also directories. Long-press a directory to select it, and select 'Files & Dirs' from the dropdown button in the upper-left corner to enable directory renaming. For security reasons, some system reserved directories are not selectable.`
   String get androidRemindContent {
     return Intl.message(
-      'Using the Flut Renamer, you can not only rename files but also directories. Long-press a directory to select it, then select \'Files & Dirs\' from the drop-down button in the upper-left corner to enable directory renaming. For security reasons, some system reserved directories are not selectable.',
+      'Using the Flut Renamer, you can rename not only files but also directories. Long-press a directory to select it, and select \'Files & Dirs\' from the dropdown button in the upper-left corner to enable directory renaming. For security reasons, some system reserved directories are not selectable.',
       name: 'androidRemindContent',
       desc: '',
       args: [],

@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart' hide TextDirection;
 import 'package:permission_handler/permission_handler.dart';
+// import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'entity/sharedpref.dart';
 import 'entity/theme_extension.dart';
@@ -48,8 +50,35 @@ class RenamerApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       locale: _appLocale,
       debugShowCheckedModeBanner: false,
+
+      /// The following code should automatically set the right direction for
+      /// rtl languages, while audio_metadata_reader 0.0.4 (depends on intl
+      /// 0.18.1) is incompatible with flutter_localizations from the flutter
+      /// SDK (depends on 0.19.0), therefore, I have to implement it manually
+      /// using `Directionality` widget.
+
+      // localizationsDelegates: const [
+      //   GlobalCupertinoLocalizations.delegate,
+      //   GlobalMaterialLocalizations.delegate,
+      //   GlobalWidgetsLocalizations.delegate,
+      // ],
+      // supportedLocales: const [
+      //   Locale("ar"),
+      //   Locale("de"),
+      //   Locale("en"),
+      //   Locale("es"),
+      //   Locale("fr"),
+      //   Locale("it"),
+      //   Locale("ja"),
+      //   Locale("ko"),
+      //   Locale("pt"),
+      //   Locale("th"),
+      //   Locale("tr"),
+      //   Locale("zh"),
+      // ],
       theme: ThemeData(
-        fontFamily: Platform.isWindows ? "微软雅黑" : null, // fixed Chinese font rendering error
+        // fixed Chinese font rendering error on Windows
+        fontFamily: Platform.isWindows ? "微软雅黑" : null,
         colorScheme: ColorScheme.fromSeed(
           brightness: Brightness.light,
           seedColor: const Color(0xff9cdce8),
@@ -64,7 +93,8 @@ class RenamerApp extends StatelessWidget {
         ],
       ),
       darkTheme: ThemeData(
-        fontFamily: Platform.isWindows ? "微软雅黑" : null, // fixed Chinese font rendering error
+        // fixed Chinese font rendering error on Windows
+        fontFamily: Platform.isWindows ? "微软雅黑" : null,
         colorScheme: ColorScheme.fromSeed(
           brightness: Brightness.dark,
           seedColor: const Color(0xff26546e),
@@ -78,7 +108,12 @@ class RenamerApp extends StatelessWidget {
           ),
         ],
       ),
-      home: const AppPage(),
+      home: Directionality(
+        textDirection: Bidi.isRtlLanguage(_appLocale.languageCode)
+            ? TextDirection.rtl
+            : TextDirection.ltr,
+        child: const AppPage(),
+      ),
     );
   }
 }
@@ -88,7 +123,8 @@ class AppPage extends StatelessWidget {
 
   void _permissionCheck(BuildContext context) async {
     if (Platform.isAndroid) {
-      final PermissionStatus value = await Permission.manageExternalStorage.status;
+      final PermissionStatus value =
+          await Permission.manageExternalStorage.status;
 
       switch (value) {
         case PermissionStatus.permanentlyDenied:
@@ -116,7 +152,10 @@ class AppPage extends StatelessWidget {
               child: Text(L10n.current.exit),
             ),
             TextButton(
-              onPressed: () => Permission.manageExternalStorage.request().isGranted.then((value) {
+              onPressed: () => Permission.manageExternalStorage
+                  .request()
+                  .isGranted
+                  .then((value) {
                 if (value) {
                   Navigator.pop(contextD);
                 }

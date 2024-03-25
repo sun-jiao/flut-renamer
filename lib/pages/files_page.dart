@@ -344,62 +344,57 @@ class FilesPageState extends State<FilesPage> {
         const SizedBox(height: 16),
         _table(_headerRow()),
         Expanded(
-          child: Responsive(
-            mobile: Container(
+          child: DropTarget(
+            enable: Responsive.isDesktop(context) && !Platform.isIOS,
+            onDragDone: (detail) {
+              print('done');
+              setState(() {
+                _files.addAll(
+                  detail.files
+                      .where(
+                        (dragged) => _files.every((exist) => dragged.path != exist.path),
+                  )
+                      .map((xFile) => xFile.toFileSystemEntity()),
+                );
+
+                _dragging = false;
+              });
+            },
+            onDragEntered: (detail) {
+              print('enter');
+              setState(() {
+                _dragging = true;
+              });
+            },
+            onDragExited: (detail) {
+              print('exit');
+              setState(() {
+                _dragging = false;
+              });
+            },
+            onDragUpdated: (detail) {
+              print('update ${DateTime.now().microsecondsSinceEpoch}');
+            },
+            child: Container(
               color: Theme.of(context).extension<FileListColors>()!.primaryColor,
-              child: _files.isNotEmpty
-                  ? SingleChildScrollView(
+              child: Stack(
+                children: [
+                  if (_files.isNotEmpty)
+                    SingleChildScrollView(
                       child: _table(_tableRows()),
                     )
-                  : Center(
-                      child: Text(L10n.current.addFiles),
+                  else if (!_dragging)
+                    Center(
+                      child: Text(L10n.current.dragToAdd),
                     ),
-            ),
-            desktop: DropTarget(
-              onDragDone: (detail) {
-                setState(() {
-                  _files.addAll(
-                    detail.files
-                        .where(
-                          (dragged) => _files.every((exist) => dragged.path != exist.path),
-                        )
-                        .map((xFile) => xFile.toFileSystemEntity()),
-                  );
-
-                  _dragging = false;
-                });
-              },
-              onDragEntered: (detail) {
-                setState(() {
-                  _dragging = true;
-                });
-              },
-              onDragExited: (detail) {
-                setState(() {
-                  _dragging = false;
-                });
-              },
-              child: Container(
-                color: Theme.of(context).extension<FileListColors>()!.primaryColor,
-                child: Stack(
-                  children: [
-                    if (_files.isNotEmpty)
-                      SingleChildScrollView(
-                        child: _table(_tableRows()),
-                      )
-                    else if (!_dragging)
-                      Center(
-                        child: Text(L10n.current.dragToAdd),
+                  if (_dragging)
+                    Container(
+                      color: Colors.blue.withOpacity(0.2),
+                      child: Center(
+                        child: Text(L10n.current.dropToAdd),
                       ),
-                    if (_dragging)
-                      Container(
-                        color: Colors.blue.withOpacity(0.2),
-                        child: Center(
-                          child: Text(L10n.current.dropToAdd),
-                        ),
-                      ),
-                  ],
-                ),
+                    ),
+                ],
               ),
             ),
           ),
