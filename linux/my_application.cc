@@ -36,6 +36,14 @@ static void my_application_activate(GApplication* application) {
       use_header_bar = FALSE;
     }
   }
+
+  const char * desktopEnv = std::getenv("XDG_CURRENT_DESKTOP");
+  if (desktopEnv) {
+    const char * lowercaseDesktopEnv = g_ascii_strdown(desktopEnv, -1);
+    if (strcmp(lowercaseDesktopEnv, "gnome") != 0) {
+      use_header_bar = FALSE;
+    }
+  }
 #endif
   if (use_header_bar) {
     GtkHeaderBar* header_bar = GTK_HEADER_BAR(gtk_header_bar_new());
