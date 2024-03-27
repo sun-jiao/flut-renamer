@@ -40,7 +40,10 @@ dependencies:
   cross_file: ^0.3.4+1
   crypto: ^3.0.3
   cyrtranslit: ^1.0.1
-  desktop_drop: ^0.4.4 # not compatible with iOS
+  desktop_drop: # ^0.4.4 # not compatible with iOS
+    git:
+      url: https://github.com/MixinNetwork/flutter-plugins.git
+      path: packages/desktop_drop
   exif: ^3.3.0
   file_manager: ^1.0.2
   file_picker: ^8.0.0+1
@@ -48,7 +51,7 @@ dependencies:
   intl: any
   package_info_plus: 6.0.0
   path: ^1.9.0
-  permission_handler: ^11.3.0
+  permission_handler: ^11.3.1
   pinyin: ^3.2.0
   shared_preferences: ^2.2.2
   toastification: ^1.2.1
@@ -65,7 +68,7 @@ dev_dependencies:
   # rules and activating additional ones.
   change_app_package_name: ^1.1.0
   flutter_launcher_icons: ^0.13.1
-  flutter_lints: ^3.0.1
+  flutter_lints: ^3.0.2
   xml: ^6.5.0
 
 # dart run flutter_launcher_icons
