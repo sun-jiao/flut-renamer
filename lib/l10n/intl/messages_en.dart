@@ -309,7 +309,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "replacement": MessageLookupByLibrary.simpleMessage("Replacement"),
         "ru": MessageLookupByLibrary.simpleMessage("Russian"),
         "rulesSequentially": MessageLookupByLibrary.simpleMessage(
-            "Rules are executed sequentially. Hold the \'=\' button on the left and drag it to sort rules."),
+            "Rules are executed sequentially. Click a rule to edit it. Hold the \'=\' button on the left and drag it to sort rules."),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
         "select": MessageLookupByLibrary.simpleMessage("Select"),
         "selectAll": MessageLookupByLibrary.simpleMessage("Select All"),

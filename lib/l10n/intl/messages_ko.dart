@@ -261,7 +261,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "replacement": MessageLookupByLibrary.simpleMessage("대체할 문자"),
         "ru": MessageLookupByLibrary.simpleMessage("러시아어"),
         "rulesSequentially": MessageLookupByLibrary.simpleMessage(
-            "규칙은 순차적으로 실행되며 왼쪽의 \'=\' 버튼을 누른 채로 드래그하여 규칙을 정렬할 수 있습니다."),
+            "규칙은 순차적으로 실행됩니다. 규칙을 편집하려면 클릭하십시오. 왼쪽에있는 \'=\' 버튼을 누른 상태에서 드래그하여 규칙을 정렬하십시오."),
         "save": MessageLookupByLibrary.simpleMessage("저장"),
         "select": MessageLookupByLibrary.simpleMessage("선택"),
         "selectAll": MessageLookupByLibrary.simpleMessage("모두 선택"),

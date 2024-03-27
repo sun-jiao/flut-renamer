@@ -290,7 +290,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "replacement": MessageLookupByLibrary.simpleMessage("Değiştirme"),
         "ru": MessageLookupByLibrary.simpleMessage("Rusça"),
         "rulesSequentially": MessageLookupByLibrary.simpleMessage(
-            "Kurallar sırayla uygulanır, kuralları sıralamak için sol taraftaki \'=\' düğmesini basılı tutun ve sürükleyin."),
+            "Kurallar sırayla uygulanır. Bir kuralı düzenlemek için tıklayın. Kuralları sıralamak için sol taraftaki \'=\' düğmesini basılı tutun ve sürükleyin."),
         "save": MessageLookupByLibrary.simpleMessage("Kaydet"),
         "select": MessageLookupByLibrary.simpleMessage("Seç"),
         "selectAll": MessageLookupByLibrary.simpleMessage("Tümünü Seç"),

@@ -288,7 +288,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "replacement": MessageLookupByLibrary.simpleMessage("البديل"),
         "ru": MessageLookupByLibrary.simpleMessage("الروسية"),
         "rulesSequentially": MessageLookupByLibrary.simpleMessage(
-            "تُنفَّذ القواعد بترتيب، اسحب واسحب على زر \'=\' في الجانب الأيسر وقم بسحب لترتيب القواعد."),
+            "تُنفذ القواعد بترتيب متسلسل. انقر على قاعدة لتحريرها. اسحب زر \"=\" على اليسار واسحبه لترتيب القواعد."),
         "save": MessageLookupByLibrary.simpleMessage("حفظ"),
         "select": MessageLookupByLibrary.simpleMessage("تحديد"),
         "selectAll": MessageLookupByLibrary.simpleMessage("تحديد الكل"),

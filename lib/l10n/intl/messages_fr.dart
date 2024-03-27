@@ -308,7 +308,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "replacement": MessageLookupByLibrary.simpleMessage("Remplacement"),
         "ru": MessageLookupByLibrary.simpleMessage("Russe"),
         "rulesSequentially": MessageLookupByLibrary.simpleMessage(
-            "Les règles sont exécutées séquentiellement. Maintenez le bouton \'=\' à gauche d\'une règle et faites glisser pour les réorganiser."),
+            "Les règles sont exécutées séquentiellement. Cliquez sur une règle pour la modifier. Maintenez le bouton \'=\' à gauche enfoncé et faites-le glisser pour trier les règles."),
         "save": MessageLookupByLibrary.simpleMessage("Enregistrer"),
         "select": MessageLookupByLibrary.simpleMessage("Sélectionner"),
         "selectAll": MessageLookupByLibrary.simpleMessage("Tout sélectionner"),

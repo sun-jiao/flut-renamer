@@ -254,7 +254,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "replacement": MessageLookupByLibrary.simpleMessage("置換文字"),
         "ru": MessageLookupByLibrary.simpleMessage("ロシア語"),
         "rulesSequentially": MessageLookupByLibrary.simpleMessage(
-            "ルールは順番に実行されます。左側の「=」ボタンを押しながらドラッグしてルールを並べ替えることができます。"),
+            "ルールは順次実行されます。ルールを編集するにはクリックします。左側の「=」ボタンを押しながらドラッグしてルールを並べ替えることができます。"),
         "save": MessageLookupByLibrary.simpleMessage("保存"),
         "select": MessageLookupByLibrary.simpleMessage("選択"),
         "selectAll": MessageLookupByLibrary.simpleMessage("すべて選択"),

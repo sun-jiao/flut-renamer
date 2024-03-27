@@ -282,7 +282,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "replacement": MessageLookupByLibrary.simpleMessage("การแทนที่ด้วย"),
         "ru": MessageLookupByLibrary.simpleMessage("รัสเซีย"),
         "rulesSequentially": MessageLookupByLibrary.simpleMessage(
-            "กฏถูกประมวลผลตามลำดับ กดค้างที่ปุ่ม \"=\" ทางด้านซ้ายและลากรายการเพื่อเรียงลำดับกฏ"),
+            "กฏถูกดำเนินการต่อเนื่องกัน. คลิกที่กฏเพื่อแก้ไข. กดปุ่ม \'=\' ทางซ้ายและลากเพื่อเรียงลำดับกฏ."),
         "save": MessageLookupByLibrary.simpleMessage("บันทึก"),
         "select": MessageLookupByLibrary.simpleMessage("เลือก"),
         "selectAll": MessageLookupByLibrary.simpleMessage("เลือกทั้งหมด"),

@@ -610,10 +610,10 @@ class L10n {
     );
   }
 
-  /// `Rules are executed sequentially. Hold the '=' button on the left and drag it to sort rules.`
+  /// `Rules are executed sequentially. Click a rule to edit it. Hold the '=' button on the left and drag it to sort rules.`
   String get rulesSequentially {
     return Intl.message(
-      'Rules are executed sequentially. Hold the \'=\' button on the left and drag it to sort rules.',
+      'Rules are executed sequentially. Click a rule to edit it. Hold the \'=\' button on the left and drag it to sort rules.',
       name: 'rulesSequentially',
       desc: '',
       args: [],

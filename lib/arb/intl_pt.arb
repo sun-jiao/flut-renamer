@@ -55,7 +55,7 @@
   "dropToAdd": "Solte os arquivos aqui para adicionar.",
   "fileAlreadyExists": "O nome do arquivo já está em uso",
   "renameFailed": "Falha ao renomear",
-  "rulesSequentially": "As regras são executadas sequencialmente. Segure o botão '=' à esquerda de uma regra e arraste para reordenar.",
+  "rulesSequentially": " As regras são executadas sequencialmente. Clique em uma regra para editá-la. Mantenha pressionado o botão '=' à esquerda e arraste-o para classificar as regras.",
   "noSysDir": "Não renomeie diretórios protegidos pelo sistema.",
   "fileSortName": "Nome",
   "fileSortSize": "Tamanho",

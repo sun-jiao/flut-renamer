@@ -55,7 +55,7 @@
   "dropToAdd": "Legen Sie Dateien hier ab, um sie hinzuzufügen.",
   "fileAlreadyExists": "Dateiname wird bereits verwendet",
   "renameFailed": "Umbenennen fehlgeschlagen",
-  "rulesSequentially": "Regeln werden sequenziell ausgeführt. Halten Sie die Schaltfläche '=' links neben einer Regel gedrückt und ziehen Sie sie, um sie neu anzuordnen.",
+  "rulesSequentially": "Regeln werden nacheinander ausgeführt. Klicken Sie auf eine Regel, um sie zu bearbeiten. Halten Sie die '='-Taste auf der linken Seite gedrückt und ziehen Sie sie, um die Regeln zu sortieren.",
   "noSysDir": "Reservierte Systemverzeichnisse nicht umbenennen.",
   "fileSortName": "Name",
   "fileSortSize": "Größe",
