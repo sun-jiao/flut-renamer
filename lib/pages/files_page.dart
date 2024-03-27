@@ -74,6 +74,8 @@ class FilesPageState extends State<FilesPage> {
         return;
       }
 
+      await PlatformFilePicker.changeScopedAccess(dirs.first.toString(), true);
+
       final files = await PlatformFilePicker.fileAccess(dirs.first.toString());
       if (files == null) {
         return;
@@ -153,21 +155,27 @@ class FilesPageState extends State<FilesPage> {
         .toList();
   }
 
-  TableCell _rowTextCell(FileSystemEntity file, {bool isNew = false}) => TableCell(
-        child: isNew
-            ? FutureBuilder(
-                future: getNewName(file, FileMetadata(file)),
-                builder: (context, snap) {
-                  if ((snap.connectionState == ConnectionState.active ||
-                          snap.connectionState == ConnectionState.done) &&
-                      (!snap.hasError)) {
-                    return getRowText(file.newName, file.error);
-                  }
-                  return const LinearProgressIndicator();
-                },
-              )
-            : getRowText(file.name, null),
+  TableCell _rowTextCell(FileSystemEntity file, {bool isNew = false}) {
+    if (!file.existsSync()) {
+      return TableCell(
+        child: getRowText(L10n.current.fileNotExist, null),
       );
+    }
+
+    return TableCell(
+      child: isNew ? FutureBuilder(
+        future: getNewName(file, FileMetadata(file)),
+        builder: (context, snap) {
+          if ((snap.connectionState == ConnectionState.active ||
+              snap.connectionState == ConnectionState.done) &&
+              (!snap.hasError)) {
+            return getRowText(file.newName, file.error);
+          }
+          return const LinearProgressIndicator();
+        },
+      ) : getRowText(file.name, null),
+    );
+  }
 
   Widget getRowText(String text, String? error) {
     final textWidget = Text(
@@ -190,6 +198,7 @@ class FilesPageState extends State<FilesPage> {
       child: textWidget,
     );
   }
+
   List<TableRow> _tableRows() {
     final filteredList = _filteredList();
     final fileListColors = Theme.of(context).extension<FileListColors>()!;
@@ -347,7 +356,6 @@ class FilesPageState extends State<FilesPage> {
           child: DropTarget(
             enable: Responsive.isDesktop(context) && !Platform.isIOS,
             onDragDone: (detail) {
-              print('done');
               setState(() {
                 _files.addAll(
                   detail.files
@@ -361,20 +369,16 @@ class FilesPageState extends State<FilesPage> {
               });
             },
             onDragEntered: (detail) {
-              print('enter');
               setState(() {
                 _dragging = true;
               });
             },
             onDragExited: (detail) {
-              print('exit');
               setState(() {
                 _dragging = false;
               });
             },
-            onDragUpdated: (detail) {
-              print('update ${DateTime.now().microsecondsSinceEpoch}');
-            },
+            onDragUpdated: (detail) {},
             child: Container(
               color: Theme.of(context).extension<FileListColors>()!.primaryColor,
               child: Stack(
@@ -426,6 +430,10 @@ class FilesPageState extends State<FilesPage> {
               setState(() {
                 _files.remove(file);
               });
+
+              if (!_files.map((e) => e.parent.path).contains(file.parent.path)) {
+                PlatformFilePicker.changeScopedAccess(file.parent.path, false);
+              }
             } else {
               setState(() {
                 _files[index] = value;

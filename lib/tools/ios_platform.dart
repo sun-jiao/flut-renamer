@@ -27,13 +27,13 @@ class PlatformFilePicker {
     }
   }
 
-  static Future<bool> renameFile(String oldPath, String newPath) async {
+  static Future<bool> changeScopedAccess(String targetPath, bool startOrEnd) async {
     try {
       return await _channel.invokeMethod(
-        'renameFile',
+        'changeScopedAccess',
         {
-          'oldPath': oldPath,
-          'newPath': newPath,
+          'targetPath': targetPath,
+          'startOrEnd': startOrEnd,
         },
       );
     } on PlatformException {

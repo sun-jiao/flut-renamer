@@ -23,14 +23,6 @@ Future<FileSystemEntity?> rename(
 
   try {
     file.newName = replaceSpecialCharacters(file.newName);
-    if (Platform.isIOS) {
-      final success = await PlatformFilePicker.renameFile(file.path, file.newPath);
-
-      if (success) {
-        return file.newPath.toFileSystemEntity();
-      }
-    }
-
     return await file.rename(file.newPath);
   } catch (e, s) {
     debugPrint(e.toString());

@@ -22,12 +22,12 @@ import UniformTypeIdentifiers
                 let startPath = args["startPath"] as! String
                 
                 self!.fileAccess(startPath: startPath, result: result)
-            } else if call.method == "renameFile" {
+            } else if call.method == "changeScopedAccess" {
                 guard let args = call.arguments as? [String : Any] else {return}
-                let oldPath = args["oldPath"] as! String
-                let newPath = args["newPath"] as! String
-                
-                self!.renameFile(oldPath: oldPath, newPath: newPath, result: result)
+                let targetPath = args["targetPath"] as! String
+                let startOrEnd = args["startOrEnd"] as! Bool
+
+                self!.changeScopedAccess(targetPath: targetPath, startOrEnd: startOrEnd, result: result)
             } else {
                 result(FlutterMethodNotImplemented)
             }
@@ -55,17 +55,15 @@ import UniformTypeIdentifiers
         window?.rootViewController?.present(documentPicker, animated: true, completion: nil)
     }
     
-    private func renameFile(oldPath: String, newPath: String, result: FlutterResult) {
-        let oldUrl = URL(fileURLWithPath: oldPath)
-        let dirUrl = oldUrl.deletingLastPathComponent()
-        let newUrl = URL(fileURLWithPath: newPath)
+    private func changeScopedAccess(targetPath: String, startOrEnd: Bool, result: FlutterResult) {
+        let targetUrl = URL(fileURLWithPath: targetPath)
         
         do {
-            let access = oldUrl.startAccessingSecurityScopedResource()
-            let folderAccess = dirUrl.startAccessingSecurityScopedResource()
-            try FileManager.default.moveItem(at: oldUrl, to: newUrl)
-            dirUrl.stopAccessingSecurityScopedResource()
-            oldUrl.stopAccessingSecurityScopedResource()
+            if (startOrEnd) {
+                let access = targetUrl.startAccessingSecurityScopedResource()
+            } else {
+                targetUrl.stopAccessingSecurityScopedResource()
+            }
             result(NSNumber(value: true))
             return
         } catch let error as NSError {
@@ -73,10 +71,7 @@ import UniformTypeIdentifiers
         } catch let error {
             result(FlutterError(code: error.localizedDescription, message: error.localizedDescription, details: nil))
         }
-        
         result(NSNumber(value: false))
-        dirUrl.stopAccessingSecurityScopedResource()
-        oldUrl.stopAccessingSecurityScopedResource()
     }
 }
 

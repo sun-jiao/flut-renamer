@@ -35,12 +35,14 @@ Download *.dmg from [releases].
 ### iOS
 Download *.ipa from [releases] and install by AltStore or other tools.
 
+In fact, I have no Apple development experience at all, and I don’t even know the Swift language. The iOS and macOS native code was completed with the following links as references: [Writing custom platform-specific code](https://docs.flutter.dev/platform-integration/platform-channels?tab=type-mappings-swift-tab#type-mappings-swift-tab), [Providing access to directories](https://developer.apple.com/documentation/uikit/view_controllers/providing_access_to_directories), [juanmartin/renamerApp-ios](https://github.com/juanmartin/renamerApp-ios). Therefore, if there are any errors in the swift code, please fell free to point them out by opening an issue or a pull request. I'll be very grateful to you.
+
 ## todo:
 - ~~Duplicate name check~~.(Done.)
 - ~~Convert, including case convert, Chinese simp/trad/pinyin convert, Latin/Cyrillic script transliteration~~.(Done.)
 - ~~Incremental renaming: for example, RenamerFile-1, RenamerFile-2, RenamerFile-3, RenamerFile-4, ...~~.(Done.)
 - Rules re-editing.
-- ~~Implement iOS renamer with specific code and Platform channel~~.(Done.) In fact, I have no Apple development experience at all, and I don’t even know the Swift language. The iOS and macOS native code was completed with the following links as references: [Writing custom platform-specific code](https://docs.flutter.dev/platform-integration/platform-channels?tab=type-mappings-swift-tab#type-mappings-swift-tab), [Providing access to directories](https://developer.apple.com/documentation/uikit/view_controllers/providing_access_to_directories), [juanmartin/renamerApp-ios](https://github.com/juanmartin/renamerApp-ios). Therefore, if there are any errors in the swift code, please fell free to point them out by opening an issue or a pull request. I'll be very grateful to you.
+- ~~Implement iOS renamer with specific code and Platform channel~~.(Done.)
 
 # Screenshots
 ## Desktop
