@@ -136,6 +136,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("选取存储器"),
         "fileModifyDate": MessageLookupByLibrary.simpleMessage("文件修改日期"),
         "fileModifyTime": MessageLookupByLibrary.simpleMessage("文件修改时间"),
+        "fileNotExist": MessageLookupByLibrary.simpleMessage("文件不存在"),
         "fileSize": MessageLookupByLibrary.simpleMessage("文件大小"),
         "fileSortDate": MessageLookupByLibrary.simpleMessage("日期"),
         "fileSortName": MessageLookupByLibrary.simpleMessage("名称"),

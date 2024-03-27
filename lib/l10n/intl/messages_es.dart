@@ -150,6 +150,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Fecha de modificación del archivo"),
         "fileModifyTime": MessageLookupByLibrary.simpleMessage(
             "Hora de modificación del archivo"),
+        "fileNotExist":
+            MessageLookupByLibrary.simpleMessage("El archivo no existe"),
         "fileSize": MessageLookupByLibrary.simpleMessage("Tamaño del archivo"),
         "fileSortDate": MessageLookupByLibrary.simpleMessage("Fecha"),
         "fileSortName": MessageLookupByLibrary.simpleMessage("Nombre"),

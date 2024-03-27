@@ -150,6 +150,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("تاريخ تعديل الملف"),
         "fileModifyTime":
             MessageLookupByLibrary.simpleMessage("وقت تعديل الملف"),
+        "fileNotExist": MessageLookupByLibrary.simpleMessage("الملف غير موجود"),
         "fileSize": MessageLookupByLibrary.simpleMessage("حجم الملف"),
         "fileSortDate": MessageLookupByLibrary.simpleMessage("التاريخ"),
         "fileSortName": MessageLookupByLibrary.simpleMessage("الاسم"),

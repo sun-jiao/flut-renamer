@@ -45,6 +45,7 @@
   "currentName": "الاسم الحالي",
   "newName": "الاسم الجديد",
   "files": "الملفات",
+  "fileNotExist": "الملف غير موجود",
   "directories": "الدلائل",
   "filesDirs": "الملفات والدلائل",
   "filter": "تصفية",

@@ -45,6 +45,7 @@
   "currentName": "Aktueller Dateiname",
   "newName": "Neuer Dateiname",
   "files": "Dateien",
+  "fileNotExist": "Datei existiert nicht",
   "directories": "Verzeichnisse",
   "filesDirs": "Dateien und Verzeichnisse",
   "filter": "Filter",

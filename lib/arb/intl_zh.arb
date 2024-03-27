@@ -45,6 +45,7 @@
   "selectAll": "全选",
   "currentName": "当前文件名",
   "newName": "新文件名",
+  "fileNotExist": "文件不存在",
   "files": "文件",
   "directories": "目录",
   "filesDirs": "文件和目录",
