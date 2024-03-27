@@ -41,7 +41,7 @@ In fact, I have no Apple development experience at all, and I don’t even know 
 - ~~Duplicate name check~~.(Done.)
 - ~~Convert, including case convert, Chinese simp/trad/pinyin convert, Latin/Cyrillic script transliteration~~.(Done.)
 - ~~Incremental renaming: for example, RenamerFile-1, RenamerFile-2, RenamerFile-3, RenamerFile-4, ...~~.(Done.)
-- Rules re-editing.
+- ~~Rules re-editing~~.(Done.)
 - ~~Implement iOS renamer with specific code and Platform channel~~.(Done.)
 
 # Screenshots

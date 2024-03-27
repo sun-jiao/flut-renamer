@@ -8,20 +8,22 @@ import '../widget/checkbox_tile.dart';
 import '../widget/custom_dialog.dart';
 import '../widget/metadata_tile.dart';
 
-void showReplaceDialog(BuildContext context, Function(Rule) onSave) => showDialog(
+void showReplaceDialog(BuildContext context, Function(Rule) onSave, [RuleReplace? rule]) => showDialog(
       context: context,
       builder: (context) => ReplaceDialog(
         onSave: onSave,
         remove: false,
+        rule: rule,
       ),
     );
 
 class ReplaceDialog extends StatefulWidget {
-  const ReplaceDialog({super.key, required this.onSave, required this.remove});
+  const ReplaceDialog({super.key, required this.onSave, required this.remove, this.rule});
 
   final Function(Rule) onSave;
   final bool remove;
-
+  final RuleReplace? rule;
+  
   @override
   State<ReplaceDialog> createState() => _ReplaceDialogState();
 }
@@ -44,6 +46,18 @@ class _ReplaceDialogState extends State<ReplaceDialog> {
   void initState() {
     remove = widget.remove;
     ruleName = remove ? L10n.current.remove : L10n.current.replace;
+
+    if (widget.rule != null) {
+      targetController.text = widget.rule!.targetString;
+      replacementController.text = widget.rule!.replacementString;
+      limitController.text = widget.rule!.replaceLimit.abs().toString();
+      fromStart = widget.rule!.replaceLimit >= 0;
+      withMetadata.value = widget.rule!.withMetadata;
+      caseSensitive = widget.rule!.caseSensitive;
+      isRegex = widget.rule!.isRegex;
+      ignoreExtension = widget.rule!.ignoreExtension;
+    }
+
     super.initState();
   }
 

@@ -1,8 +1,16 @@
 import 'dart:async';
 
+import 'package:flut_renamer/dialogs/rearrange_dialog.dart';
+import 'package:flut_renamer/dialogs/remove_dialog.dart';
+import 'package:flut_renamer/dialogs/replace_dialog.dart';
+import 'package:flut_renamer/dialogs/transliterate_dialog.dart';
+import 'package:flut_renamer/dialogs/truncate_dialog.dart';
+import 'package:flutter/widgets.dart';
 import 'package:pinyin/pinyin.dart';
 import 'package:cyrtranslit/cyrtranslit.dart' as cyrtranslit;
 
+import '../dialogs/increment_dialog.dart';
+import '../dialogs/insert_dialog.dart';
 import '../l10n/l10n.dart';
 import '../entity/transliterate.dart';
 import '../tools/file_metadata.dart';

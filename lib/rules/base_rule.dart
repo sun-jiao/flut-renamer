@@ -3,6 +3,8 @@ part of 'rule.dart';
 abstract interface class Rule {
   FutureOr<String> newName(String oldName, {FileMetadata? metadata});
 
+  void openDialog(BuildContext context, Function(Rule rule) onSave);
+
   @override
   String toString();
 }

@@ -8,17 +8,19 @@ import '../widget/checkbox_tile.dart';
 import '../widget/custom_dialog.dart';
 import '../widget/text_field_with_direction.dart';
 
-void showInsertDialog(BuildContext context, Function(Rule) onSave) => showDialog(
+void showInsertDialog(BuildContext context, Function(Rule) onSave, [RuleInsert? rule]) => showDialog(
       context: context,
       builder: (context) => InsertDialog(
         onSave: onSave,
+        rule: rule,
       ),
     );
 
 class InsertDialog extends StatefulWidget {
-  const InsertDialog({super.key, required this.onSave});
+  const InsertDialog({super.key, required this.onSave, this.rule});
 
   final Function(Rule) onSave;
+  final RuleInsert? rule;
 
   @override
   State<InsertDialog> createState() => _InsertDialogState();
@@ -31,8 +33,19 @@ class _InsertDialogState extends State<InsertDialog> {
   );
   ValueNotifier<bool> withMetadata = ValueNotifier(false);
   ValueNotifier<bool> toEnd = ValueNotifier(false);
-  bool beforeIndex = true; // true: insert before index; false: after
   bool ignoreExtension = true;
+
+  @override
+  void initState() {
+    if (widget.rule != null) {
+      textController.text = widget.rule!.insert;
+      indexController.text = widget.rule!.insertIndex.toString();
+      withMetadata.value = widget.rule!.withMetadata;
+      toEnd.value = widget.rule!.toEnd;
+    }
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +54,7 @@ class _InsertDialogState extends State<InsertDialog> {
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Text(L10n.current.descriptionInsert),
             TextFormField(
@@ -49,15 +63,7 @@ class _InsertDialogState extends State<InsertDialog> {
             ),
             box,
             DirectionTextField(con: indexController, toEnd: toEnd, labelText: L10n.current.insertIndex),
-            CheckboxTile(
-              title: Text(L10n.current.insertBeforeIndex),
-              value: beforeIndex,
-              onChanged: (value) {
-                setState(() {
-                  beforeIndex = value ?? beforeIndex;
-                });
-              },
-            ),
+            // Text(L10n.current.insertBeforeIndex, style: const TextStyle(fontSize: 13),),
             MetadataTile(textController: textController, withMetadata: withMetadata),
             CheckboxTile(
               title: Text(L10n.current.ignoreExtension),

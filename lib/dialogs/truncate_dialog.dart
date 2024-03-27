@@ -7,17 +7,19 @@ import '../rules/rule.dart';
 import '../widget/checkbox_tile.dart';
 import '../widget/custom_dialog.dart';
 
-void showTruncateDialog(BuildContext context, Function(Rule) onSave) => showDialog(
+void showTruncateDialog(BuildContext context, Function(Rule) onSave, [RuleTruncate? rule]) => showDialog(
       context: context,
       builder: (context) => TruncateDialog(
         onSave: onSave,
+        rule: rule,
       ),
     );
 
 class TruncateDialog extends StatefulWidget {
-  const TruncateDialog({super.key, required this.onSave});
+  const TruncateDialog({super.key, required this.onSave, this.rule});
 
   final Function(Rule) onSave;
+  final RuleTruncate? rule;
 
   @override
   State<TruncateDialog> createState() => _TruncateDialogState();
@@ -30,6 +32,20 @@ class _TruncateDialogState extends State<TruncateDialog> {
   ValueNotifier<bool> i2toEnd = ValueNotifier(false); // true: negative (Xth-to-last), false: positive (Xth)
   bool ignoreExtension = true;
   bool keepBetween = true; // true: keep chars in ranges, false: remove in range
+
+  @override
+  void initState() {
+    if (widget.rule != null) {
+      i1Controller.text = widget.rule!.index1.toString();
+      i2Controller.text = widget.rule!.index2.toString();
+      i1toEnd.value = widget.rule!.i1toEnd;
+      i2toEnd.value = widget.rule!.i2toEnd;
+      ignoreExtension = widget.rule!.ignoreExtension;
+      keepBetween = widget.rule!.keepBetween;
+    }
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

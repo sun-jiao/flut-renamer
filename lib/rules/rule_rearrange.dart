@@ -35,4 +35,7 @@ class RuleRearrange implements Rule {
   String toString() {
     return L10n.current.rearrangeToString(delimiter, order.toString());
   }
+
+  @override
+  void openDialog(BuildContext context, Function(Rule rule) onSave) => showRearrangeDialog(context, onSave, this);
 }

@@ -30,4 +30,7 @@ class RuleRemove implements Rule {
   String toString() {
     return L10n.current.removeToString(targetString);
   }
+
+  @override
+  void openDialog(BuildContext context, Function(Rule rule) onSave) => showRemoveDialog(context, onSave, this);
 }

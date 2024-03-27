@@ -61,4 +61,7 @@ class RuleTruncate implements Rule {
       index2,
     );
   }
+
+  @override
+  void openDialog(BuildContext context, Function(Rule rule) onSave) => showTruncateDialog(context, onSave, this);
 }

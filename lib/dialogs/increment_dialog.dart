@@ -7,17 +7,19 @@ import '../rules/rule.dart';
 import '../widget/checkbox_tile.dart';
 import '../widget/custom_dialog.dart';
 
-void showIncrementDialog(BuildContext context, Function(Rule) onSave) => showDialog(
+void showIncrementDialog(BuildContext context, Function(Rule) onSave, [RuleIncrement? rule]) => showDialog(
       context: context,
       builder: (context) => IncrementDialog(
         onSave: onSave,
+        rule: rule,
       ),
     );
 
 class IncrementDialog extends StatefulWidget {
-  const IncrementDialog({super.key, required this.onSave});
+  const IncrementDialog({super.key, required this.onSave, required this.rule});
 
   final Function(Rule) onSave;
+  final RuleIncrement? rule;
 
   @override
   State<IncrementDialog> createState() => _IncrementDialogState();
@@ -33,6 +35,19 @@ class _IncrementDialogState extends State<IncrementDialog> {
   );
   bool omitDash = false;
   bool ignoreExtension = true;
+
+  @override
+  void initState() {
+    if (widget.rule != null) {
+      prefixController.text = widget.rule!.prefix;
+      indexController.text = widget.rule!.index.toString();
+      stepController.text = widget.rule!.step.toString();
+      omitDash = widget.rule!.omitDash;
+      ignoreExtension = widget.rule!.ignoreExtension;
+    }
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

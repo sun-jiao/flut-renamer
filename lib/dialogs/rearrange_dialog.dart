@@ -7,7 +7,7 @@ import '../rules/rule.dart';
 import '../widget/checkbox_tile.dart';
 import '../widget/custom_dialog.dart';
 
-void showRearrangeDialog(BuildContext context, Function(Rule) onSave) => showDialog(
+void showRearrangeDialog(BuildContext context, Function(Rule) onSave, [RuleRearrange? rule]) => showDialog(
       context: context,
       builder: (context) => RearrangeDialog(
         onSave: onSave,
@@ -15,9 +15,10 @@ void showRearrangeDialog(BuildContext context, Function(Rule) onSave) => showDia
     );
 
 class RearrangeDialog extends StatefulWidget {
-  const RearrangeDialog({super.key, required this.onSave});
+  const RearrangeDialog({super.key, required this.onSave, this.rule});
 
   final Function(Rule) onSave;
+  final RuleRearrange? rule;
 
   @override
   State<RearrangeDialog> createState() => _RearrangeDialogState();
@@ -27,6 +28,16 @@ class _RearrangeDialogState extends State<RearrangeDialog> {
   TextEditingController delimiterController = TextEditingController();
   TextEditingController intArrayController = TextEditingController();
   bool ignoreExtension = true;
+
+  @override
+  void initState() {
+    if (widget.rule != null) {
+      delimiterController.text = widget.rule!.delimiter;
+      intArrayController.text = widget.rule!.order.join(',');
+      ignoreExtension = widget.rule!.ignoreExtension;
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +88,7 @@ class _RearrangeDialogState extends State<RearrangeDialog> {
           onPressed: () {
             String delimiter = delimiterController.text;
             String order = intArrayController.text;
-            List<int> orderList = order.split(',').map((s) => int.tryParse(s.trim()) ?? 0).toList();
+            List<int> orderList = order.split(RegExp('[,，]')).map((s) => int.tryParse(s.trim()) ?? 0).toList();
 
             final Rule rule = RuleRearrange(delimiter, orderList, ignoreExtension);
 

@@ -157,6 +157,17 @@ class RulesPageState extends State<RulesPage> {
                     },
                     icon: const Icon(Icons.clear),
                   ),
+                  onTap: () {
+                    item.openDialog(
+                      context,
+                      (rule) {
+                        setState(() {
+                          _rules[index] = rule;
+                        });
+                        widget.onRuleChanged.call();
+                      },
+                    );
+                  },
                 );
               },
               itemCount: _rules.length,

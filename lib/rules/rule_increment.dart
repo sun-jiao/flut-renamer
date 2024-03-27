@@ -42,4 +42,7 @@ class RuleIncrement implements Rule {
   void indexReset() {
     index = startIndex;
   }
+
+  @override
+  void openDialog(BuildContext context, Function(Rule rule) onSave) => showIncrementDialog(context, onSave, this);
 }

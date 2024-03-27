@@ -60,4 +60,7 @@ class RuleTransliterate implements Rule {
       return L10n.current.transliterateToString(type.toString());
     }
   }
+
+  @override
+  void openDialog(BuildContext context, Function(Rule rule) onSave) => showTransliterateDialog(context, onSave, this);
 }

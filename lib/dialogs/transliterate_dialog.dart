@@ -7,17 +7,19 @@ import 'package:cyrtranslit/cyrtranslit.dart' as cyrtranslit;
 
 import '../rules/rule.dart';
 
-void showTransliterateDialog(BuildContext context, Function(Rule) onSave) => showDialog(
+void showTransliterateDialog(BuildContext context, Function(Rule) onSave, [RuleTransliterate? rule]) => showDialog(
       context: context,
       builder: (context) => TransliterateDialog(
         onSave: onSave,
+        rule: rule,
       ),
     );
 
 class TransliterateDialog extends StatefulWidget {
-  const TransliterateDialog({super.key, required this.onSave});
+  const TransliterateDialog({super.key, required this.onSave, this.rule});
 
   final Function(Rule) onSave;
+  final RuleTransliterate? rule;
 
   @override
   State<TransliterateDialog> createState() => _TransliterateDialogState();
@@ -26,6 +28,16 @@ class TransliterateDialog extends StatefulWidget {
 class _TransliterateDialogState extends State<TransliterateDialog> {
   Transliterate type = Transliterate.values.first;
   String? langCode;
+
+  @override
+  void initState() {
+    if (widget.rule != null) {
+      type = widget.rule!.type;
+      langCode = widget.rule!.langCode;
+    }
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

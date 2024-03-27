@@ -76,4 +76,7 @@ class RuleReplace implements Rule {
   String toString() {
     return L10n.current.replaceToString(targetString, replacementString);
   }
+
+  @override
+  void openDialog(BuildContext context, Function(Rule rule) onSave) => showReplaceDialog(context, onSave, this);
 }
