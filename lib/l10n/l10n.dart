@@ -320,20 +320,20 @@ class L10n {
     );
   }
 
-  /// `Only Selected`
+  /// `Only selected`
   String get onlySelected {
     return Intl.message(
-      'Only Selected',
+      'Only selected',
       name: 'onlySelected',
       desc: '',
       args: [],
     );
   }
 
-  /// `Remove renamed`
+  /// `Remove renamed files`
   String get removeRenamed {
     return Intl.message(
-      'Remove renamed',
+      'Remove renamed files',
       name: 'removeRenamed',
       desc: '',
       args: [],
@@ -495,6 +495,16 @@ class L10n {
     return Intl.message(
       'New name',
       name: 'newName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `File not exist`
+  String get fileNotExist {
+    return Intl.message(
+      'File not exist',
+      name: 'fileNotExist',
       desc: '',
       args: [],
     );

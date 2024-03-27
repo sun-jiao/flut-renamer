@@ -165,6 +165,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Modify date of file"),
         "fileModifyTime":
             MessageLookupByLibrary.simpleMessage("Modify time of file"),
+        "fileNotExist": MessageLookupByLibrary.simpleMessage("File not exist"),
         "fileSize": MessageLookupByLibrary.simpleMessage("Size of file"),
         "fileSortDate": MessageLookupByLibrary.simpleMessage("Date"),
         "fileSortName": MessageLookupByLibrary.simpleMessage("Name"),
@@ -242,7 +243,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Do not rename a system reserved directory."),
         "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "omitDash": MessageLookupByLibrary.simpleMessage("Omit dash"),
-        "onlySelected": MessageLookupByLibrary.simpleMessage("Only Selected"),
+        "onlySelected": MessageLookupByLibrary.simpleMessage("Only selected"),
         "osNowTime": MessageLookupByLibrary.simpleMessage("Time of now"),
         "osTodayDate": MessageLookupByLibrary.simpleMessage("Date of today"),
         "permissionContent": MessageLookupByLibrary.simpleMessage(
@@ -295,7 +296,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "removeAll": MessageLookupByLibrary.simpleMessage("Remove all"),
         "removeCharacters": MessageLookupByLibrary.simpleMessage(
             "Remove characters between them"),
-        "removeRenamed": MessageLookupByLibrary.simpleMessage("Remove renamed"),
+        "removeRenamed":
+            MessageLookupByLibrary.simpleMessage("Remove renamed files"),
         "removeRule": MessageLookupByLibrary.simpleMessage("Remove this rule"),
         "removeRules":
             MessageLookupByLibrary.simpleMessage("Remove rules after renaming"),
