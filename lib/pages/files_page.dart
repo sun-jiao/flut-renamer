@@ -74,7 +74,9 @@ class FilesPageState extends State<FilesPage> {
         return;
       }
 
-      await PlatformFilePicker.changeScopedAccess(dirs.first.toString(), true);
+      if (!_files.map((e) => e.parent.path).contains(dirs.first.toString())) {
+        await PlatformFilePicker.changeScopedAccess(dirs.first.toString(), true);
+      }
 
       final files = await PlatformFilePicker.fileAccess(dirs.first.toString());
       if (files == null) {
