@@ -590,10 +590,10 @@ class L10n {
     );
   }
 
-  /// `Dur to system security restriction, drag-drop files from this app is not supported.`
+  /// `Due to system security restriction, drag-drop files from this app is not supported.`
   String get dragNotSupported {
     return Intl.message(
-      'Dur to system security restriction, drag-drop files from this app is not supported.',
+      'Due to system security restriction, drag-drop files from this app is not supported.',
       name: 'dragNotSupported',
       desc: '',
       args: [],

@@ -54,7 +54,7 @@
   "addFiles": "Add files",
   "dragToAdd": "Drag and drop to add files.",
   "dropToAdd": "Drop to add files.",
-  "dragNotSupported": "Dur to system security restriction, drag-drop files from this app is not supported.",
+  "dragNotSupported": "Due to system security restriction, drag-drop files from this app is not supported.",
   "fileAlreadyExists": "Filename already used by another file",
   "renameFailed": "Rename failed",
   "rulesSequentially": "Rules are executed sequentially. Click a rule to edit it. Hold the '=' button on the left and drag it to sort rules.",
