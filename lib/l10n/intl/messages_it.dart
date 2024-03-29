@@ -123,6 +123,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "directories": MessageLookupByLibrary.simpleMessage("Directory"),
         "doNotRemindAgain":
             MessageLookupByLibrary.simpleMessage("Non mostrare più"),
+        "dragNotSupported": MessageLookupByLibrary.simpleMessage(
+            "A causa delle restrizioni di sicurezza del sistema, il trascinamento di file da questa app non è supportato."),
         "dragToAdd": MessageLookupByLibrary.simpleMessage(
             "Trascina i file per aggiungerli."),
         "dropToAdd": MessageLookupByLibrary.simpleMessage(

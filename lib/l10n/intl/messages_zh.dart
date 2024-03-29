@@ -117,6 +117,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "删除或保留文件名的指定部分，从一个指定位置开始到另一个指定位置。"),
         "directories": MessageLookupByLibrary.simpleMessage("目录"),
         "doNotRemindAgain": MessageLookupByLibrary.simpleMessage("确定，不再提醒"),
+        "dragNotSupported":
+            MessageLookupByLibrary.simpleMessage("由于系统安全限制，我们无法重命名从该应用拖放的文件。"),
         "dragToAdd": MessageLookupByLibrary.simpleMessage("拖放文件进行添加。"),
         "dropToAdd": MessageLookupByLibrary.simpleMessage("在此处释放文件。"),
         "errorDetails": MessageLookupByLibrary.simpleMessage("错误详情"),

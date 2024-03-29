@@ -54,6 +54,7 @@
   "addFiles": "Veuillez ajouter des fichiers.",
   "dragToAdd": "Glissez et déposez des fichiers pour les ajouter.",
   "dropToAdd": "Déposez des fichiers ici.",
+  "dragNotSupported": "En raison des restrictions de sécurité du système, le glisser-déposer de fichiers depuis cette application n'est pas pris en charge.",
   "fileAlreadyExists": "Le nom de fichier est déjà utilisé",
   "renameFailed": "Échec du renommage",
   "rulesSequentially": "Les règles sont exécutées séquentiellement. Cliquez sur une règle pour la modifier. Maintenez le bouton '=' à gauche enfoncé et faites-le glisser pour trier les règles.",

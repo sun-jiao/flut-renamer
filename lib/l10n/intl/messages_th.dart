@@ -118,6 +118,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "directories": MessageLookupByLibrary.simpleMessage("โฟลเดอร์"),
         "doNotRemindAgain":
             MessageLookupByLibrary.simpleMessage("ตกลง ไม่ต้องเตือนอีก"),
+        "dragNotSupported": MessageLookupByLibrary.simpleMessage(
+            "เนื่องจากข้อจำกัดด้านความปลอดภัยของระบบ การลากและวางไฟล์จากแอปนี้ไม่ได้รับการสนับสนุน"),
         "dragToAdd":
             MessageLookupByLibrary.simpleMessage("ลากและวางไฟล์เพื่อเพิ่ม"),
         "dropToAdd":

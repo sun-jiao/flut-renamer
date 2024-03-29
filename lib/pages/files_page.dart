@@ -4,12 +4,12 @@ import 'dart:io';
 import 'package:desktop_drop/desktop_drop.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../entity/theme_extension.dart';
 import '../l10n/l10n.dart';
 import '../pages/android_file_picker_page.dart';
-import '../tools/ios_platform.dart';
-import '../tools/responsive.dart';
+import '../tools/platform_channel.dart';
 import '../entity/constants.dart';
 import '../tools/ex_file.dart';
 import '../tools/file_metadata.dart';
@@ -356,17 +356,29 @@ class FilesPageState extends State<FilesPage> {
         _table(_headerRow()),
         Expanded(
           child: DropTarget(
-            enable: Responsive.isDesktop(context) && !Platform.isIOS,
-            onDragDone: (detail) {
-              setState(() {
-                _files.addAll(
-                  detail.files
-                      .where(
-                        (dragged) => _files.every((exist) => dragged.path != exist.path),
-                  )
-                      .map((xFile) => xFile.toFileSystemEntity()),
-                );
+            enable: !Platform.isIOS,
+            onDragDone: (detail) async {
+              for (var xFile in detail.files) {
+                late final FileSystemEntity file;
+                if (Platform.isAndroid && xFile.path.startsWith('content://')) {
+                  try {
+                    file = (await PlatformFilePicker.getRealPathFromURI(xFile.path)).toFileSystemEntity();
+                  } catch (e) {
+                    Fluttertoast.showToast(msg: L10n.current.dragNotSupported);
+                    return;
+                  }
+                } else {
+                  file = xFile.toFileSystemEntity();
+                }
 
+                if (_files.every((exist) => file.path != exist.path)) {
+                  setState(() {
+                    _files.add(file);
+                  });
+                }
+              }
+
+              setState(() {
                 _dragging = false;
               });
             },
@@ -391,7 +403,7 @@ class FilesPageState extends State<FilesPage> {
                     )
                   else if (!_dragging)
                     Center(
-                      child: Text(L10n.current.dragToAdd),
+                      child: Text(Platform.isIOS ? L10n.current.addFiles : L10n.current.dragToAdd),
                     ),
                   if (_dragging)
                     Container(

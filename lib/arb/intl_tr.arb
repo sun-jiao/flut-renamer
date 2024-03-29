@@ -54,6 +54,7 @@
   "addFiles": "Lütfen dosyalar ekleyin.",
   "dragToAdd": "Eklemek için dosyaları sürükleyin.",
   "dropToAdd": "Dosyaları buraya bırakın.",
+  "dragNotSupported": "Sistem güvenlik kısıtlamaları nedeniyle, bu uygulamadan dosyaların sürüklenip bırakılması desteklenmemektedir.",
   "fileAlreadyExists": "Dosya Adı Zaten Kullanımda",
   "renameFailed": "Yeniden Adlandırma Başarısız Oldu",
   "rulesSequentially": "Kurallar sırayla uygulanır. Bir kuralı düzenlemek için tıklayın. Kuralları sıralamak için sol taraftaki '=' düğmesini basılı tutun ve sürükleyin.",

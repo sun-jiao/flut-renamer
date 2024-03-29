@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../tools/ios_platform.dart';
 import '../l10n/l10n.dart';
 import '../tools/ex_file.dart';
 import '../widget/custom_dialog.dart';

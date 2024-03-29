@@ -590,6 +590,16 @@ class L10n {
     );
   }
 
+  /// `Dur to system security restriction, drag-drop files from this app is not supported.`
+  String get dragNotSupported {
+    return Intl.message(
+      'Dur to system security restriction, drag-drop files from this app is not supported.',
+      name: 'dragNotSupported',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Filename already used by another file`
   String get fileAlreadyExists {
     return Intl.message(

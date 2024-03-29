@@ -127,6 +127,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "directories": MessageLookupByLibrary.simpleMessage("Diretórios"),
         "doNotRemindAgain":
             MessageLookupByLibrary.simpleMessage("Não mostrar novamente"),
+        "dragNotSupported": MessageLookupByLibrary.simpleMessage(
+            "Devido a restrições de segurança do sistema, não é suportado arrastar e soltar arquivos desta aplicação."),
         "dragToAdd": MessageLookupByLibrary.simpleMessage(
             "Arraste e solte arquivos para adicionar."),
         "dropToAdd": MessageLookupByLibrary.simpleMessage(

@@ -54,6 +54,7 @@
   "addFiles": "Si prega di aggiungere dei file.",
   "dragToAdd": "Trascina i file per aggiungerli.",
   "dropToAdd": "Rilascia i file qui per aggiungerli.",
+  "dragNotSupported": "A causa delle restrizioni di sicurezza del sistema, il trascinamento di file da questa app non è supportato.",
   "fileAlreadyExists": "Il nome del file è già in uso",
   "renameFailed": "Rinomina non riuscita",
   "rulesSequentially": "Le regole vengono eseguite sequenzialmente. Fare clic su una regola per modificarla. Tenere premuto il pulsante '=' a sinistra e trascinarlo per ordinare le regole.",

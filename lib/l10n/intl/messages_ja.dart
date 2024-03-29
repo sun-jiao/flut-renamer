@@ -118,6 +118,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "ファイル名の指定された部分を削除または保持し、指定された位置から別の指定された位置までの内容を取得します。"),
         "directories": MessageLookupByLibrary.simpleMessage("ディレクトリ"),
         "doNotRemindAgain": MessageLookupByLibrary.simpleMessage("今後表示しない"),
+        "dragNotSupported": MessageLookupByLibrary.simpleMessage(
+            "システムのセキュリティ制限により、このアプリからのファイルのドラッグ＆ドロップはサポートされていません。"),
         "dragToAdd": MessageLookupByLibrary.simpleMessage(
             "追加するためにファイルをドラッグ＆ドロップしてください。"),
         "dropToAdd":

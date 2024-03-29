@@ -118,6 +118,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "파일 이름의 지정된 부분을 제거하거나 유지합니다. 시작 위치에서 끝 위치까지입니다."),
         "directories": MessageLookupByLibrary.simpleMessage("디렉터리"),
         "doNotRemindAgain": MessageLookupByLibrary.simpleMessage("다시 알림하지 않음"),
+        "dragNotSupported": MessageLookupByLibrary.simpleMessage(
+            "시스템 보안 제한으로 인해 이 앱에서 파일을 드래그 앤 드롭하는 것은 지원되지 않습니다."),
         "dragToAdd":
             MessageLookupByLibrary.simpleMessage("추가하려면 파일을 여기로 끌어다 놓으세요."),
         "dropToAdd": MessageLookupByLibrary.simpleMessage("파일을 여기에 놓아 추가하세요."),

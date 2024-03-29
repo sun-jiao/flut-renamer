@@ -122,6 +122,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "directories": MessageLookupByLibrary.simpleMessage("الدلائل"),
         "doNotRemindAgain":
             MessageLookupByLibrary.simpleMessage("لا تذكر مرة أخرى"),
+        "dragNotSupported": MessageLookupByLibrary.simpleMessage(
+            "بسبب قيود أمان النظام، لا يُدعم سحب وإسقاط الملفات من هذا التطبيق."),
         "dragToAdd":
             MessageLookupByLibrary.simpleMessage("اسحب وأسقط الملفات للإضافة."),
         "dropToAdd":

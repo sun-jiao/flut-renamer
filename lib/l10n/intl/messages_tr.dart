@@ -120,6 +120,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "directories": MessageLookupByLibrary.simpleMessage("Klasörler"),
         "doNotRemindAgain":
             MessageLookupByLibrary.simpleMessage("Tamam, Bir Daha Hatırlatma"),
+        "dragNotSupported": MessageLookupByLibrary.simpleMessage(
+            "Sistem güvenlik kısıtlamaları nedeniyle, bu uygulamadan dosyaların sürüklenip bırakılması desteklenmemektedir."),
         "dragToAdd": MessageLookupByLibrary.simpleMessage(
             "Eklemek için dosyaları sürükleyin."),
         "dropToAdd":

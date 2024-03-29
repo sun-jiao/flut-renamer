@@ -128,6 +128,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "directories": MessageLookupByLibrary.simpleMessage("Répertoires"),
         "doNotRemindAgain":
             MessageLookupByLibrary.simpleMessage("OK. Ne plus me rappeler."),
+        "dragNotSupported": MessageLookupByLibrary.simpleMessage(
+            "En raison des restrictions de sécurité du système, le glisser-déposer de fichiers depuis cette application n\'est pas pris en charge."),
         "dragToAdd": MessageLookupByLibrary.simpleMessage(
             "Glissez et déposez des fichiers pour les ajouter."),
         "dropToAdd":

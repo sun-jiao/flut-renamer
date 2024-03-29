@@ -41,4 +41,18 @@ class PlatformFilePicker {
       rethrow;
     }
   }
+
+  static Future<String> getRealPathFromURI(String uriPath) async {
+    try {
+      return await _channel.invokeMethod(
+        'getRealPathFromURI',
+        {
+          'uri': uriPath,
+        },
+      );
+    } on PlatformException {
+      // TODO: show error message dialog
+      rethrow;
+    }
+  }
 }
