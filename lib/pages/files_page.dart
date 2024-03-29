@@ -74,7 +74,7 @@ class FilesPageState extends State<FilesPage> {
         return;
       }
 
-      if (!_files.map((e) => e.parent.path).contains(dirs.first.toString())) {
+      if (!_files.any((e) => e.parent.path == dirs.first.toString())) {
         await PlatformFilePicker.changeScopedAccess(dirs.first.toString(), true);
       }
 
@@ -433,7 +433,7 @@ class FilesPageState extends State<FilesPage> {
                 _files.remove(file);
               });
 
-              if (Platform.isIOS && !_files.map((e) => e.parent.path).contains(file.parent.path)) {
+              if (Platform.isIOS && !_files.any((e) => e.parent.path == file.parent.path)) {
                 PlatformFilePicker.changeScopedAccess(file.parent.path, false);
               }
             } else {
