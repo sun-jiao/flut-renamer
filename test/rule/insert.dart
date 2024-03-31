@@ -8,13 +8,13 @@ void main() {
     String fileName = "SJ628901.ARW";
     String insert = 'Bambusicola thoracicus-'; // string to be inserted
     int index = 0; // insert before character at index
-    bool fromStart = true; // true: count from start; false: from end.
+    bool toEnd = false; // true: count from end; false: from start.
     bool ignoreExtension = true;
 
     String newFileName = await RuleInsert(
       insert,
       index,
-      fromStart,
+      toEnd,
       false,
       ignoreExtension,
     ).newName(fileName);
@@ -26,13 +26,13 @@ void main() {
     String fileName = "SJ628901.ARW";
     String insert = '-Bambusicola thoracicus'; // string to be inserted
     int index = 0; // insert before character at index
-    bool fromStart = false; // true: count from start; false: from end.
+    bool toEnd = true; // true: count from end; false: from start.
     bool ignoreExtension = true;
 
     String newFileName = await RuleInsert(
       insert,
       index,
-      fromStart,
+      toEnd,
       false,
       ignoreExtension,
     ).newName(fileName);
@@ -44,13 +44,13 @@ void main() {
     String fileName = "SJ628901.ARW";
     String insert = '-Bamtho'; // string to be inserted
     int index = 4; // insert before character at index
-    bool fromStart = false; // true: count from start; false: from end.
+    bool toEnd = true; // true: count from end; false: from start.
     bool ignoreExtension = true;
 
     final rule = RuleInsert(
       insert,
       index,
-      fromStart,
+      toEnd,
       false,
       ignoreExtension,
     );
