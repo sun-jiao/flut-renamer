@@ -5,6 +5,7 @@ import 'package:desktop_drop/desktop_drop.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:native_drag_n_drop/native_drag_n_drop.dart';
 
 import '../entity/theme_extension.dart';
 import '../l10n/l10n.dart';
@@ -50,7 +51,7 @@ class FilesPageState extends State<FilesPage> {
       if (!mounted) {
         return;
       }
-      
+
       final result = await Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const AndroidFilePicker()),
@@ -355,7 +356,51 @@ class FilesPageState extends State<FilesPage> {
         const SizedBox(height: 16),
         _table(_headerRow()),
         Expanded(
-          child: DropTarget(
+          child: Platform.isIOS ? NativeDropView(
+              allowedDropDataTypes: const [DropDataType.file],
+              receiveNonAllowedItems: false,
+              child: Container(
+                color: Theme.of(context).extension<FileListColors>()!.primaryColor,
+                child: Stack(
+                  children: [
+                    if (_files.isNotEmpty)
+                      SingleChildScrollView(
+                        child: _table(_tableRows()),
+                      )
+                    else if (!_dragging)
+                      Center(
+                        child: Text(Platform.isIOS ? L10n.current.addFiles : L10n.current.dragToAdd),
+                      ),
+                    if (_dragging)
+                      Container(
+                        color: Colors.blue.withOpacity(0.2),
+                        child: Center(
+                          child: Text(L10n.current.dropToAdd),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              loading: (loading) {
+                // display loading indicator / hide loading indicator
+              },
+              dataReceived: (List<DropData> data) async {
+
+                for (var xFile in data) {
+                  late final FileSystemEntity file;
+                  file = xFile.dropFile!.path.toFileSystemEntity();
+
+                  if (_files.every((exist) => file.path != exist.path)) {
+                    setState(() {
+                      _files.add(file);
+                    });
+                  }
+                }
+
+                setState(() {
+                  _dragging = false;
+                });
+              }) : DropTarget(
             enable: !Platform.isIOS,
             onDragDone: (detail) async {
               for (var xFile in detail.files) {

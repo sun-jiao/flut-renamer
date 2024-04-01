@@ -49,6 +49,7 @@ dependencies:
   file_picker: ^8.0.0+1
   fluttertoast: ^8.2.4
   intl: any
+  native_drag_n_drop: ^0.0.5
   package_info_plus: 6.0.0
   path: ^1.9.0
   permission_handler: ^11.3.1
