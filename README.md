@@ -36,7 +36,7 @@ Download the *.dmg from [releases].
 ### iOS
 Download the *.ipa from [releases] and install it using AltStore or other tools.
 
-## Known issues or possible shortages 
+## Known issues or limitations 
 
 ### Android
 
@@ -46,9 +46,15 @@ Drag-and-dropped files from the [AOSP Files app](https://www.androidpolice.com/2
 
 Drag-and-drop works fine with Solid Explorer and OnePlus File Explorer.
 
-### iOS and macOS
+### iOS
 
-In fact, I have no Apple development experience at all, and I don’t even know the Swift language. The iOS and macOS native code were completed with the following links as references: [Writing custom platform-specific code](https://docs.flutter.dev/platform-integration/platform-channels?tab=type-mappings-swift-tab#type-mappings-swift-tab), [Providing access to directories](https://developer.apple.com/documentation/uikit/view_controllers/providing_access_to_directories), [juanmartin/renamerApp-ios](https://github.com/juanmartin/renamerApp-ios). Therefore, if there are any errors in the Swift code, please feel free to point them out by opening an issue or a pull request. I'll be very grateful to you.
+There are two steps to pick files on iOS, first choose the directory where your files are located. Then, within the selected folder, pick the files you want to rename. Due to the system restrictions, we have to use the two-step process. Otherwise, Flut Renamer can not rename picked files.
+
+The [`desktop_drop`](https://pub.dev/packages/desktop_drop) library does not have iOS support yet, so drag-and-drop is not available on iOS. 
+
+I tried a few other libraries, such as [`super_drag_and_drop`](https://pub.dev/packages/super_drag_and_drop), which fails to provide the path to the dropped file, and [`native_drag_n_drop`](https://pub.dev/packages/native_drag_n_drop), which copies the file into the app's sandbox directory. None of them provide the path to the original file, so renaming dropped files is impossible.
+
+(In fact, I have no Apple development experience at all, and I don’t even know the Swift language. The iOS and macOS native code were completed with the following links as references: [Writing custom platform-specific code](https://docs.flutter.dev/platform-integration/platform-channels?tab=type-mappings-swift-tab#type-mappings-swift-tab), [Providing access to directories](https://developer.apple.com/documentation/uikit/view_controllers/providing_access_to_directories), [juanmartin/renamerApp-ios](https://github.com/juanmartin/renamerApp-ios). Therefore, if there are any errors in the Swift code, please feel free to point them out by opening an issue or a pull request. I'll be very grateful to you.)
 
 ## todo:
 - ~~Duplicate name check.~~ (Done.)
