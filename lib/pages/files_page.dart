@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:desktop_drop/desktop_drop.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:super_drag_and_drop/super_drag_and_drop.dart';
 
 import '../entity/theme_extension.dart';
 import '../l10n/l10n.dart';
@@ -26,7 +26,8 @@ class FilesPage extends StatefulWidget {
     required this.resetRules,
   });
 
-  final FutureOr<String> Function(String name, FileMetadata metadata) getNewName;
+  final FutureOr<String> Function(String name, FileMetadata metadata)
+      getNewName;
   final VoidCallback clearRules;
   final VoidCallback resetRules;
 
@@ -50,7 +51,7 @@ class FilesPageState extends State<FilesPage> {
       if (!mounted) {
         return;
       }
-      
+
       final result = await Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const AndroidFilePicker()),
@@ -355,25 +356,63 @@ class FilesPageState extends State<FilesPage> {
         const SizedBox(height: 16),
         _table(_headerRow()),
         Expanded(
-          child: DropTarget(
-            enable: !Platform.isIOS,
-            onDragDone: (detail) async {
-              for (var xFile in detail.files) {
-                late final FileSystemEntity file;
-                if (Platform.isAndroid && xFile.path.startsWith('content://')) {
-                  try {
-                    file = (await PlatformFilePicker.getRealPathFromURI(xFile.path)).toFileSystemEntity();
-                  } catch (e) {
-                    Fluttertoast.showToast(msg: L10n.current.dragNotSupported);
-                    return;
-                  }
-                } else {
-                  file = xFile.toFileSystemEntity();
+          child: DropRegion(
+            formats: const [
+              ...Formats.standardFormats,
+            ],
+            hitTestBehavior: HitTestBehavior.opaque,
+            onDropOver: (event) {
+              setState(() {
+                _dragging = true;
+              });
+              return event.session.allowedOperations.firstOrNull ?? DropOperation.none;
+            },
+            onPerformDrop: (event) async {
+              for (var item in event.session.items) {
+                final reader = item.dataReader!;
+
+                if (!reader.canProvide(Formats.fileUri) && !reader.canProvide(Formats.uri)) {
+                  return;
                 }
 
-                if (_files.every((exist) => file.path != exist.path)) {
-                  setState(() {
-                    _files.add(file);
+                if (Platform.isAndroid) {
+                  reader.getValue(Formats.uri, (uri) async {
+                    if (uri == null) {
+                      return;
+                    }
+
+                    late final FileSystemEntity file;
+                    final path = uri.uri.path;
+                    try {
+                      file = (await PlatformFilePicker.getRealPathFromURI(path))
+                          .toFileSystemEntity();
+                    } catch (e) {
+                      Fluttertoast.showToast(
+                          msg: L10n.current.dragNotSupported);
+                      return;
+                    }
+
+                    if (_files.every((exist) => file.path != exist.path)) {
+                      setState(() {
+                        _files.add(file);
+                      });
+                    }
+                  });
+                } else {
+                  reader.getValue(Formats.fileUri, (uri) async {
+                    if (uri == null) {
+                      return;
+                    }
+
+                    late final FileSystemEntity file;
+                    final path = uri.path;
+                    file = path.toFileSystemEntity();
+
+                    if (_files.every((exist) => file.path != exist.path)) {
+                      setState(() {
+                        _files.add(file);
+                      });
+                    }
                   });
                 }
               }
@@ -382,17 +421,11 @@ class FilesPageState extends State<FilesPage> {
                 _dragging = false;
               });
             },
-            onDragEntered: (detail) {
-              setState(() {
-                _dragging = true;
-              });
-            },
-            onDragExited: (detail) {
+            onDropLeave: (event) {
               setState(() {
                 _dragging = false;
               });
             },
-            onDragUpdated: (detail) {},
             child: Container(
               color: Theme.of(context).extension<FileListColors>()!.primaryColor,
               child: Stack(
@@ -445,7 +478,8 @@ class FilesPageState extends State<FilesPage> {
                 _files.remove(file);
               });
 
-              if (Platform.isIOS && !_files.any((e) => e.parent.path == file.parent.path)) {
+              if (Platform.isIOS &&
+                  !_files.any((e) => e.parent.path == file.parent.path)) {
                 PlatformFilePicker.changeScopedAccess(file.parent.path, false);
               }
             } else {

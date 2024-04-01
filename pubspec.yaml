@@ -40,10 +40,6 @@ dependencies:
   cross_file: ^0.3.4+1
   crypto: ^3.0.3
   cyrtranslit: ^1.0.1
-  desktop_drop: # ^0.4.4 # not compatible with iOS
-    git:
-      url: https://github.com/MixinNetwork/flutter-plugins.git
-      path: packages/desktop_drop
   exif: ^3.3.0
   file_manager: ^1.0.2
   file_picker: ^8.0.0+1
@@ -54,6 +50,7 @@ dependencies:
   permission_handler: ^11.3.1
   pinyin: ^3.2.0
   shared_preferences: ^2.2.2
+  super_drag_and_drop: ^0.8.10
   toastification: ^1.2.1
   url_launcher: ^6.2.5
 
