@@ -1,4 +1,6 @@
 PODS:
+  - device_info_plus (0.0.1):
+    - Flutter
   - DKImagePickerController/Core (4.3.4):
     - DKImagePickerController/ImageDataManager
     - DKImagePickerController/Resource
@@ -37,6 +39,8 @@ PODS:
   - fluttertoast (0.0.2):
     - Flutter
     - Toast
+  - irondash_engine_context (0.0.1):
+    - Flutter
   - package_info_plus (0.4.5):
     - Flutter
   - path_provider_foundation (0.0.1):
@@ -50,19 +54,24 @@ PODS:
   - shared_preferences_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
+  - super_native_extensions (0.0.1):
+    - Flutter
   - SwiftyGif (5.4.4)
   - Toast (4.1.0)
   - url_launcher_ios (0.0.1):
     - Flutter
 
 DEPENDENCIES:
+  - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - file_picker (from `.symlinks/plugins/file_picker/ios`)
   - Flutter (from `Flutter`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
+  - irondash_engine_context (from `.symlinks/plugins/irondash_engine_context/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
+  - super_native_extensions (from `.symlinks/plugins/super_native_extensions/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
 
 SPEC REPOS:
@@ -74,12 +83,16 @@ SPEC REPOS:
     - Toast
 
 EXTERNAL SOURCES:
+  device_info_plus:
+    :path: ".symlinks/plugins/device_info_plus/ios"
   file_picker:
     :path: ".symlinks/plugins/file_picker/ios"
   Flutter:
     :path: Flutter
   fluttertoast:
     :path: ".symlinks/plugins/fluttertoast/ios"
+  irondash_engine_context:
+    :path: ".symlinks/plugins/irondash_engine_context/ios"
   package_info_plus:
     :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_foundation:
@@ -88,20 +101,25 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/permission_handler_apple/ios"
   shared_preferences_foundation:
     :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
+  super_native_extensions:
+    :path: ".symlinks/plugins/super_native_extensions/ios"
   url_launcher_ios:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
 
 SPEC CHECKSUMS:
+  device_info_plus: 97af1d7e84681a90d0693e63169a5d50e0839a0d
   DKImagePickerController: b512c28220a2b8ac7419f21c491fc8534b7601ac
   DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
   file_picker: 09aa5ec1ab24135ccd7a1621c46c84134bfd6655
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   fluttertoast: 31b00dabfa7fb7bacd9e7dbee580d7a2ff4bf265
+  irondash_engine_context: 3458bf979b90d616ffb8ae03a150bafe2e860cc9
   package_info_plus: 58f0028419748fad15bf008b270aaa8e54380b1c
   path_provider_foundation: 3784922295ac71e43754bd15e0653ccfd36a147c
-  permission_handler_apple: 036b856153a2b1f61f21030ff725f3e6fece2b78
+  permission_handler_apple: 9878588469a2b0d0fc1e048d9f43605f92e6cec2
   SDWebImage: a3ba0b8faac7228c3c8eadd1a55c9c9fe5e16457
   shared_preferences_foundation: b4c3b4cddf1c21f02770737f147a3f5da9d39695
+  super_native_extensions: 4916b3c627a9c7fffdc48a23a9eca0b1ac228fa7
   SwiftyGif: 93a1cc87bf3a51916001cf8f3d63835fb64c819f
   Toast: ec33c32b8688982cecc6348adeae667c1b9938da
   url_launcher_ios: bbd758c6e7f9fd7b5b1d4cde34d2b95fcce5e812
