@@ -5,6 +5,8 @@ abstract interface class Rule {
 
   void openDialog(BuildContext context, Function(Rule rule) onSave);
 
+  DialogConfig get dialogConfig;
+
   @override
   String toString();
 }
@@ -23,4 +25,30 @@ abstract interface class Rule {
   }
 
   return (newName, extension);
+}
+
+class DialogConfig {
+  DialogConfig(this.title, this.description, this.fields);
+
+  final String title;
+  final String description;
+  final List<DialogField> fields;
+}
+
+class DialogField<T> extends ValueNotifier<T> {
+  DialogField(
+    super._value, {
+    this.description = "",
+    Map<String, dynamic>? appendixData,
+  }) : appendixData = appendixData ?? {};
+
+  final String description;
+  final Map<String, dynamic> appendixData;
+}
+
+class DirectionalInt {
+  DirectionalInt(this.value, bool direction):direction = ValueNotifier(direction);
+
+  int value;
+  ValueNotifier<bool> direction;
 }
