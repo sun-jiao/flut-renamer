@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:args/args.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart' hide TextDirection;
@@ -19,7 +20,7 @@ Locale _getLocale() {
   return Locale(localeNames[0], localeNames.length > 1 ? localeNames[1] : null);
 }
 
-void main() async {
+void main([List<String> arguments = const []]) async {
   WidgetsFlutterBinding.ensureInitialized();
   _appLocale = _getLocale();
   L10n.load(_appLocale);
@@ -32,6 +33,8 @@ void main() async {
       systemNavigationBarColor: Colors.transparent,
     ),
   );
+
+  print(arguments);
 
   while (!Shared.initialed) {
     await Shared.init();
