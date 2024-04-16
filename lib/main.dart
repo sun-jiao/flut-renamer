@@ -34,6 +34,12 @@ void main([List<String> arguments = const []]) async {
     ),
   );
 
+  final results = ArgParser().parse(arguments);
+
+  print(results.options.toList());
+  print(results.arguments);
+  print(results.rest);
+
   print(arguments);
 
   while (!Shared.initialed) {
