@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:args/args.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart' hide TextDirection;
@@ -10,6 +11,8 @@ import 'entity/sharedpref.dart';
 import 'entity/theme_extension.dart';
 import 'l10n/l10n.dart';
 import 'pages/home_page.dart';
+import 'pages/files_page.dart';
+import 'tools/ex_file.dart';
 import 'widget/custom_dialog.dart';
 
 late Locale _appLocale;
@@ -19,7 +22,7 @@ Locale _getLocale() {
   return Locale(localeNames[0], localeNames.length > 1 ? localeNames[1] : null);
 }
 
-void main() async {
+void main([List<String> arguments = const []]) async {
   WidgetsFlutterBinding.ensureInitialized();
   _appLocale = _getLocale();
   L10n.load(_appLocale);
@@ -32,6 +35,11 @@ void main() async {
       systemNavigationBarColor: Colors.transparent,
     ),
   );
+
+  final results = ArgParser().parse(arguments);
+
+  final initFiles = results.rest.map((e) => e.toFileSystemEntity().absolute);
+  FilesPage.addFiles(initFiles);
 
   while (!Shared.initialed) {
     await Shared.init();

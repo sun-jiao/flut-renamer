@@ -32,6 +32,10 @@ class FilesPage extends StatefulWidget {
 
   @override
   State<FilesPage> createState() => FilesPageState();
+
+  static void addFiles(Iterable<FileSystemEntity> files) {
+    _files.addAll(files);
+  }
 }
 
 final List<FileSystemEntity> _files = [];
