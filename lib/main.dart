@@ -11,6 +11,8 @@ import 'entity/sharedpref.dart';
 import 'entity/theme_extension.dart';
 import 'l10n/l10n.dart';
 import 'pages/home_page.dart';
+import 'pages/files_page.dart';
+import 'tools/ex_file.dart';
 import 'widget/custom_dialog.dart';
 
 late Locale _appLocale;
@@ -36,11 +38,8 @@ void main([List<String> arguments = const []]) async {
 
   final results = ArgParser().parse(arguments);
 
-  print(results.options.toList());
-  print(results.arguments);
-  print(results.rest);
-
-  print(arguments);
+  final initFiles = results.rest.map((e) => e.toFileSystemEntity().absolute);
+  FilesPage.addFiles(initFiles);
 
   while (!Shared.initialed) {
     await Shared.init();
