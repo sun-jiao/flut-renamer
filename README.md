@@ -87,6 +87,7 @@ I tried a few other libraries, such as [`super_drag_and_drop`](https://pub.dev/p
 - Thanks to [m040601](https://aur.archlinux.org/account/m040601) for suggesting a new name for this application. "flut renamer" is inspired by their suggestion "renamer-flutter"
 - Thanks to [LinuxLinks](https://www.linuxlinks.com) for recommending this application in [their article](https://www.linuxlinks.com/flut-renamer-bulk-file-renamer/).
 - Thanks to [HowToMen](https://www.youtube.com/@howtomen) for recommending this application in [their video](https://www.youtube.com/watch?v=ekUuJyX3ITk).
+- Thanks to [Andy](https://www.justgeek.fr/author/andy/) for recommending this application in [their article](https://www.justgeek.fr/flut-renamer-125392/).
 
 
 [releases]: https://github.com/sun-jiao/renamer/releases
