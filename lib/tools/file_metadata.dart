@@ -29,7 +29,6 @@ class FileMetadata {
       if (file is Directory) {
         _bytes = Uint8List(0);
         _exif = {};
-        _metadata = AudioMetadata();
       } else {
         _bytes = await (file as File).readAsBytes();
         _exif = await readExifFromBytes(_bytes);
@@ -44,7 +43,7 @@ class FileMetadata {
   late FileStat _stat;
   late Uint8List _bytes;
   late Map<String, IfdTag> _exif;
-  late AudioMetadata _metadata;
+  late AudioMetadata? _metadata;
   bool inited = false;
 
   static final _key = utf8.encode('renamer');
@@ -110,27 +109,27 @@ class FileMetadata {
       case 'Photo:Copyright':
         return (_exif['Image Copyright'] ?? '').toString();
       case 'Music:AlbumName':
-        return (_metadata.album ?? '');
+        return (_metadata?.album ?? '');
       // case 'Music:AlbumArtist':
       //   return (_metadata?.artist ?? '');
       // case 'Music:AlbumLength':
       //   return (_metadata. ?? '').toString();
       case 'Music:Year':
-        return (_metadata.year?.year ?? '').toString();
+        return (_metadata?.year?.year ?? '').toString();
       case 'Music:TrackDuration':
-        return (_formatDuration(_metadata.duration) ?? '').toString();
+        return (_formatDuration(_metadata?.duration) ?? '').toString();
       case 'Music:TrackName':
-        return (_metadata.title ?? '').toString();
+        return (_metadata?.title ?? '').toString();
       // case 'Music:TrackArtist':
       //   return (_metadata.artist ?? '');
       case 'Music:TrackNumber':
-        return (_metadata.trackNumber ?? '').toString();
+        return (_metadata?.trackNumber ?? '').toString();
       case 'Music:DiscNumber':
-        return (_metadata.discNumber ?? '').toString();
+        return (_metadata?.discNumber ?? '').toString();
       case 'Music:Genres':
-        return _metadata.genres.join(',').toString();
+        return (_metadata?.genres.join(',') ?? '').toString();
       case 'Music:Author':
-        return (_metadata.artist ?? '');
+        return (_metadata?.artist ?? '');
       // case 'Music:Writer':
       //   return (_metadata?.writerName ?? '');
       default:

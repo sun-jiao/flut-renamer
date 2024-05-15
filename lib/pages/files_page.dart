@@ -138,7 +138,8 @@ class FilesPageState extends State<FilesPage> {
         file.error = L10n.current.fileAlreadyExists;
         return;
       }
-    } catch (e) {
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
       file.newName = file.name;
       file.error = e.toString();
       return;
