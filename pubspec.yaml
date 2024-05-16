@@ -45,6 +45,7 @@ dependencies:
     git:
       url: https://github.com/MixinNetwork/flutter-plugins.git
       path: packages/desktop_drop
+  device_info_plus: ^10.1.0
   exif: ^3.3.0
   file_manager: ^1.0.2
   file_picker: ^8.0.3

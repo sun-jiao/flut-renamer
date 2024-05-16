@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:args/args.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart' hide TextDirection;
@@ -132,8 +133,12 @@ class AppPage extends StatelessWidget {
 
   void _permissionCheck(BuildContext context) async {
     if (Platform.isAndroid) {
-      final PermissionStatus value =
-          await Permission.manageExternalStorage.status;
+      final Permission permission =
+          (await DeviceInfoPlugin().androidInfo).version.sdkInt <= 29
+              ? Permission.storage
+              : Permission.manageExternalStorage;
+
+      final PermissionStatus value = await permission.status;
 
       switch (value) {
         case PermissionStatus.permanentlyDenied:
@@ -142,7 +147,7 @@ class AppPage extends StatelessWidget {
           }
         case PermissionStatus.denied:
           if (context.mounted) {
-            _permissionRequest(context);
+            _permissionRequest(context, permission);
           }
         default:
           return;
@@ -150,7 +155,7 @@ class AppPage extends StatelessWidget {
     }
   }
 
-  void _permissionRequest(BuildContext context) => showDialog(
+  void _permissionRequest(BuildContext context, Permission permission) => showDialog(
         context: context,
         builder: (contextD) => CustomDialog(
           title: Text(L10n.current.permissionTitle),
@@ -161,14 +166,15 @@ class AppPage extends StatelessWidget {
               child: Text(L10n.current.exit),
             ),
             TextButton(
-              onPressed: () => Permission.manageExternalStorage
-                  .request()
-                  .isGranted
-                  .then((value) {
-                if (value) {
-                  Navigator.pop(contextD);
-                }
-              }),
+              onPressed: () {
+                permission.request()
+                    .isGranted
+                    .then((value) {
+                  if (value) {
+                    Navigator.pop(contextD);
+                  }
+                });
+              },
               child: Text(L10n.current.ok),
             ),
           ],
