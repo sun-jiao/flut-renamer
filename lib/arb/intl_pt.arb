@@ -160,6 +160,8 @@
   "fileManagerStorageButton": "Selecionar armazenamento",
   "fileManagerSaveButton": "Adicionar arquivos selecionados à lista",
   "fileManagerBackButton": "Voltar",
+  "showHiddenFiles": "Mostrar arquivos ocultos",
+  "hideHiddenFiles": "Ocultar arquivos ocultos",
   "semanticsFileManagerTitle": "{selectStatus, select, true{Selecionado} false{Não selecionado} other{}}{entityType, select, File{arquivo} Directory{diretório} Link{link} other{objeto do sistema de arquivos}} chamado {filename},",
   "semanticsFileManagerSubtitle": "Última modificação em {last}, tamanho do arquivo {size}.",
   "semanticsFileManagerDirSubtitle": "Última modificação em {last}.",

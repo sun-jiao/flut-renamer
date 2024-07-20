@@ -178,6 +178,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "filter": MessageLookupByLibrary.simpleMessage("Filter"),
         "fromStart": MessageLookupByLibrary.simpleMessage("From start"),
         "goingForward": MessageLookupByLibrary.simpleMessage("Going forward"),
+        "hideHiddenFiles":
+            MessageLookupByLibrary.simpleMessage("Hide hidden files"),
         "ifFileNotShown": MessageLookupByLibrary.simpleMessage(
             "If files does not shown in file list, please clear all and continue."),
         "ignoreExtension":
@@ -332,6 +334,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "This is the rule list, it is empty now. Click the \'Add rule\' button to add one. Rules are executed sequentially. This list is reorderable, allowing you to move a rule up, down, and to the top or bottom. When the cursor is on a rule, use a vertical swipe gesture to switch between actions, and use a double click to execute the selected action."),
         "semanticsRuleDropdownButton": MessageLookupByLibrary.simpleMessage(
             ". Select and then click the \"Add Rule\" button to add this rule."),
+        "showHiddenFiles":
+            MessageLookupByLibrary.simpleMessage("Show hidden files"),
         "sourceCode": MessageLookupByLibrary.simpleMessage("Source code"),
         "sr": MessageLookupByLibrary.simpleMessage("Serbian"),
         "startIndex": MessageLookupByLibrary.simpleMessage("Start index"),

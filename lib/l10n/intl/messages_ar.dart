@@ -163,6 +163,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "filter": MessageLookupByLibrary.simpleMessage("تصفية"),
         "fromStart": MessageLookupByLibrary.simpleMessage("من البداية"),
         "goingForward": MessageLookupByLibrary.simpleMessage("الانتقال للأمام"),
+        "hideHiddenFiles":
+            MessageLookupByLibrary.simpleMessage("إخفاء الملفات المخفية"),
         "ifFileNotShown": MessageLookupByLibrary.simpleMessage(
             "إذا لم يتم عرض الملفات في القائمة، يرجى مسح كل المحتوى والمحاولة مرة أخرى."),
         "ignoreExtension":
@@ -309,6 +311,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "قائمة القواعد فارغة الآن. انقر فوق زر \'إضافة قاعدة\' لإضافة واحدة. تُنفَّذ القواعد بالترتيب، ويمكن إعادة ترتيب هذه القائمة لتمكينك من تغيير ترتيب القواعد، ونقلها للأعلى أو للأسفل، أو تحريكها إلى الأعلى أو الأسفل. عند وضع المؤشر فوق القاعدة، استخدم اللمس الرأسي للتبديل بين الإجراءات المختلفة، واستخدم النقر المزدوج لتنفيذ الإجراء المحدد."),
         "semanticsRuleDropdownButton": MessageLookupByLibrary.simpleMessage(
             ". حدد هذا الخيار وانقر على زر \'إضافة قاعدة\' لإضافة هذه القاعدة"),
+        "showHiddenFiles":
+            MessageLookupByLibrary.simpleMessage("إظهار الملفات المخفية"),
         "sourceCode": MessageLookupByLibrary.simpleMessage("الشيفرة المصدرية"),
         "sr": MessageLookupByLibrary.simpleMessage("الصربية"),
         "startIndex": MessageLookupByLibrary.simpleMessage("الفهرس البدئي"),

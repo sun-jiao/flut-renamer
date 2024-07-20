@@ -160,6 +160,8 @@
   "fileManagerStorageButton": "تحديد التخزين",
   "fileManagerSaveButton": "إضافة الملفات المحددة إلى القائمة",
   "fileManagerBackButton": "عودة",
+  "showHiddenFiles": "إظهار الملفات المخفية",
+  "hideHiddenFiles": "إخفاء الملفات المخفية",
   "semanticsFileManagerTitle": "{selectStatus, select, true{المحدد} false{غير المحدد} other{}} {entityType, select, File{ملف} Directory{دليل} Link{رابط} other{كائن في نظام الملفات}}، الاسم: {filename}،",
   "semanticsFileManagerSubtitle": "آخر تعديل كان في {last}، الحجم: {size}.",
   "semanticsFileManagerDirSubtitle": "آخر تعديل كان في {last}.",

@@ -159,6 +159,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "filter": MessageLookupByLibrary.simpleMessage("กรอง"),
         "fromStart": MessageLookupByLibrary.simpleMessage("จากจุดเริ่มต้น"),
         "goingForward": MessageLookupByLibrary.simpleMessage("ไปข้างหน้า"),
+        "hideHiddenFiles":
+            MessageLookupByLibrary.simpleMessage("ซ่อนไฟล์ที่ซ่อนอยู่"),
         "ifFileNotShown": MessageLookupByLibrary.simpleMessage(
             "หากไม่มีไฟล์แสดงในรายการโปรดล้างข้อมูลทั้งหมดและลองอีกครั้ง"),
         "ignoreExtension":
@@ -303,6 +305,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "ลิสต์กฎว่างอยู่ คลิกปุ่ม \"เพิ่มกฎ\" เพื่อเพิ่ม กฎจะถูกปฏิบัติตามลำดับ ลิสต์นี้สามารถเรียงลำดับได้ใหม่ อนุญาตให้คุณย้ายกฎขึ้นหรือลง และเลื่อนมันไปที่ด้านบนหรือด้านล่าง เมื่อเอาเมาส์มาวางบนกฎ ใช้การเลื่อนแนวตั้งเพื่อสลับไปมาระหว่างการดำเนินการแต่ละอย่าง และใช้การคลิกสองครั้งเพื่อดำเนินการที่เลือก"),
         "semanticsRuleDropdownButton": MessageLookupByLibrary.simpleMessage(
             "เลือกแล้วคลิกปุ่ม \"เพิ่มกฎ\" เพื่อเพิ่มกฎ"),
+        "showHiddenFiles":
+            MessageLookupByLibrary.simpleMessage("แสดงไฟล์ที่ซ่อนอยู่"),
         "sourceCode": MessageLookupByLibrary.simpleMessage("โค้ดต้นฉบับ"),
         "sr": MessageLookupByLibrary.simpleMessage("เซอร์เบีย"),
         "startIndex": MessageLookupByLibrary.simpleMessage("ดัชนีเริ่มต้น"),

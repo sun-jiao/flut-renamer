@@ -152,6 +152,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "filter": MessageLookupByLibrary.simpleMessage("필터"),
         "fromStart": MessageLookupByLibrary.simpleMessage("처음부터 계산"),
         "goingForward": MessageLookupByLibrary.simpleMessage("앞으로"),
+        "hideHiddenFiles": MessageLookupByLibrary.simpleMessage("숨김 파일 숨기기"),
         "ifFileNotShown": MessageLookupByLibrary.simpleMessage(
             "파일 목록에 파일이 표시되지 않으면 모든 내용을 지우고 계속 진행하십시오."),
         "ignoreExtension": MessageLookupByLibrary.simpleMessage("확장자 무시"),
@@ -282,6 +283,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "규칙 목록이 비어 있습니다. \"규칙 추가\" 버튼을 클릭하여 추가하세요. 규칙은 순서대로 실행되며이 목록을 재정렬하여 규칙을 위로 끌어 올리거나 아래로 이동하거나 맨 위 또는 맨 아래로 이동할 수 있습니다. 규칙 위에 커서가 있으면 수직 스와이프 제스처를 사용하여 다른 작업으로 전환하고 두 번 탭하여 선택한 작업을 수행하세요."),
         "semanticsRuleDropdownButton": MessageLookupByLibrary.simpleMessage(
             "이 옵션을 선택하고 \"규칙 추가\" 버튼을 클릭하여이 규칙을 추가할 수 있습니다."),
+        "showHiddenFiles": MessageLookupByLibrary.simpleMessage("숨김 파일 보기"),
         "sourceCode": MessageLookupByLibrary.simpleMessage("소스 코드"),
         "sr": MessageLookupByLibrary.simpleMessage("세르비아어"),
         "startIndex": MessageLookupByLibrary.simpleMessage("시작 인덱스"),

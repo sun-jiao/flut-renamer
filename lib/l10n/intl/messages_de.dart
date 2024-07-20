@@ -169,6 +169,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "fromStart":
             MessageLookupByLibrary.simpleMessage("Von Anfang an zählen"),
         "goingForward": MessageLookupByLibrary.simpleMessage("Vorwärts"),
+        "hideHiddenFiles": MessageLookupByLibrary.simpleMessage(
+            "Versteckte Dateien ausblenden"),
         "ifFileNotShown": MessageLookupByLibrary.simpleMessage(
             "Wenn keine Dateien in der Liste angezeigt werden, löschen Sie bitte alles und fahren Sie fort."),
         "ignoreExtension":
@@ -322,6 +324,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Die Regel-Liste ist derzeit leer. Klicken Sie auf \"Regel hinzufügen\", um eine Regel hinzuzufügen. Regeln werden sequenziell ausgeführt. Diese Liste kann neu angeordnet werden, sodass Sie Regeln nach oben, unten, an den Anfang oder das Ende verschieben können. Wenn der Cursor über einer Regel steht, verwenden Sie eine vertikale Wischgeste, um zwischen verschiedenen Aktionen zu wechseln, und doppelklicken Sie, um die ausgewählte Aktion auszuführen."),
         "semanticsRuleDropdownButton": MessageLookupByLibrary.simpleMessage(
             ". Wählen Sie es aus und klicken Sie auf die Schaltfläche \"Regel hinzufügen\", um diese Regel hinzuzufügen."),
+        "showHiddenFiles":
+            MessageLookupByLibrary.simpleMessage("Versteckte Dateien anzeigen"),
         "sourceCode": MessageLookupByLibrary.simpleMessage("Quellcode"),
         "sr": MessageLookupByLibrary.simpleMessage("Serbisch"),
         "startIndex": MessageLookupByLibrary.simpleMessage("Startindex"),

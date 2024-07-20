@@ -160,6 +160,8 @@
   "fileManagerStorageButton": "เลือกพื้นที่จัดเก็บ",
   "fileManagerSaveButton": "เพิ่มไฟล์ที่เลือกเข้าสู่รายการ",
   "fileManagerBackButton": "ย้อนกลับ",
+  "showHiddenFiles": "แสดงไฟล์ที่ซ่อนอยู่",
+  "hideHiddenFiles": "ซ่อนไฟล์ที่ซ่อนอยู่",
   "semanticsFileManagerTitle": "{selectStatus, select, true{ไฟล์ที่เลือก} false{ไฟล์ที่ไม่ได้เลือก} other{อ็อบเจ็กต์ในระบบไฟล์}} ชื่อไฟล์คือ {filename} และ",
   "semanticsFileManagerSubtitle": "แก้ไขล่าสุดเมื่อ {last} ขนาดไฟล์ {size}",
   "semanticsFileManagerDirSubtitle": "แก้ไขล่าสุดเมื่อ {last}",

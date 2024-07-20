@@ -160,6 +160,8 @@
   "fileManagerStorageButton": "ストレージの選択",
   "fileManagerSaveButton": "選択したファイルをリストに追加",
   "fileManagerBackButton": "戻る",
+  "showHiddenFiles": "隠しファイルを表示する",
+  "hideHiddenFiles": "隠しファイルを隠す",
   "semanticsFileManagerTitle":  "{selectStatus, select, true{選択中の} false{選択されていない} other{}}{entityType, select, File{ファイル} Directory{ディレクトリ} Link{リンク} other{ファイルシステムオブジェクト}}、ファイル名は{filename}、",
   "semanticsFileManagerSubtitle":  "最終更新日は{last}、ファイルサイズは{size}です。",
   "semanticsFileManagerDirSubtitle":  "最終更新日は{last}です。",

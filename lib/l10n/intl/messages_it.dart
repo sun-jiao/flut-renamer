@@ -168,6 +168,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "filter": MessageLookupByLibrary.simpleMessage("Filtra"),
         "fromStart": MessageLookupByLibrary.simpleMessage("Dall\'inizio"),
         "goingForward": MessageLookupByLibrary.simpleMessage("Avanti"),
+        "hideHiddenFiles":
+            MessageLookupByLibrary.simpleMessage("Nascondi i file nascosti"),
         "ifFileNotShown": MessageLookupByLibrary.simpleMessage(
             "Se i file non vengono mostrati nell\'elenco, cancella tutto e continua."),
         "ignoreExtension":
@@ -324,6 +326,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "La lista delle regole è attualmente vuota. Tocca \"Aggiungi regola\" per aggiungerne una. Le regole vengono eseguite in sequenza. È possibile riordinare la lista trascinando verso l\'alto o il basso e spostando le regole in cima o in fondo. Tocca con due dita su una regola per attivare le azioni e tocca due volte per eseguire l\'azione selezionata."),
         "semanticsRuleDropdownButton": MessageLookupByLibrary.simpleMessage(
             ". Seleziona questa voce e premi il pulsante \"Aggiungi regola\" per aggiungere questa regola"),
+        "showHiddenFiles":
+            MessageLookupByLibrary.simpleMessage("Mostra i file nascosti"),
         "sourceCode": MessageLookupByLibrary.simpleMessage("Codice sorgente"),
         "sr": MessageLookupByLibrary.simpleMessage("Serbo"),
         "startIndex":

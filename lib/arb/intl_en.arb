@@ -250,6 +250,8 @@
   "fileManagerStorageButton": "Select storage",
   "fileManagerSaveButton": "Add selections to the list",
   "fileManagerBackButton": "Back",
+  "showHiddenFiles": "Show hidden files",
+  "hideHiddenFiles": "Hide hidden files",
   "semanticsFileManagerTitle":  "{selectStatus, select, true{Selected} false{Unselected} other{}} {entityType, select, File{File} Directory{Folder} Link{Link} other{File system entity}}, filename is {filename}, ",
   "@semanticsFileManagerTitle": {
     "placeholders": {

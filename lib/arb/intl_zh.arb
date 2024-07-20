@@ -160,6 +160,8 @@
   "fileManagerStorageButton": "选取存储器",
   "fileManagerSaveButton": "添加已选文件至列表",
   "fileManagerBackButton": "返回",
+  "showHiddenFiles": "显示隐藏文件",
+  "hideHiddenFiles": "不显示隐藏文件",
   "semanticsFileManagerTitle":  "{selectStatus, select, true{已选中的} false{未选中的} other{}}{entityType, select, File{文件} Directory{文件夹} Link{链接} other{文件系统对象}}，文件名叫{filename}，",
   "semanticsFileManagerSubtitle":  "上次修改时间是{last}，文件大小是{size}。",
   "semanticsFileManagerDirSubtitle":  "上次修改时间是{last}。",

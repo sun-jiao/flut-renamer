@@ -164,6 +164,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "filter": MessageLookupByLibrary.simpleMessage("Filtrele"),
         "fromStart": MessageLookupByLibrary.simpleMessage("Baştan Başla"),
         "goingForward": MessageLookupByLibrary.simpleMessage("İleri Gitme"),
+        "hideHiddenFiles":
+            MessageLookupByLibrary.simpleMessage("Gizli dosyaları gizle"),
         "ifFileNotShown": MessageLookupByLibrary.simpleMessage(
             "Dosya listesinde dosyalar görüntülenmiyorsa, tüm içeriği temizleyin ve devam edin."),
         "ignoreExtension":
@@ -310,6 +312,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Kural listesi şu anda boş. Bir tane eklemek için \'Kural Ekle\' düğmesine tıklayın. Kurallar sırayla uygulanır. Bu liste yeniden düzenlenebilir, böylece kuralları yukarı ve aşağı taşıyabilir, onları listenin başına veya sonuna taşıyabilirsiniz. Bir kural üzerindeyken, dikey kaydırma hareketleri arasında geçiş yapmak ve seçilen işlemi çift tıklayarak gerçekleştirmek için kullanın."),
         "semanticsRuleDropdownButton": MessageLookupByLibrary.simpleMessage(
             ". Bu seçeneği seçin ve kural eklemek için \'Kural Ekle\' düğmesine tıklayın"),
+        "showHiddenFiles":
+            MessageLookupByLibrary.simpleMessage("Gizli dosyaları göster"),
         "sourceCode": MessageLookupByLibrary.simpleMessage("Kaynak Kodu"),
         "sr": MessageLookupByLibrary.simpleMessage("Sırpça"),
         "startIndex": MessageLookupByLibrary.simpleMessage("Başlangıç İndeksi"),

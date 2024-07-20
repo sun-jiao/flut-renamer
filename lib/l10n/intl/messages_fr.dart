@@ -173,6 +173,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "filter": MessageLookupByLibrary.simpleMessage("Filtrer"),
         "fromStart": MessageLookupByLibrary.simpleMessage("À partir du début"),
         "goingForward": MessageLookupByLibrary.simpleMessage("Avancer"),
+        "hideHiddenFiles":
+            MessageLookupByLibrary.simpleMessage("Masquer les fichiers cachés"),
         "ifFileNotShown": MessageLookupByLibrary.simpleMessage(
             "Si aucun fichier n\'apparaît dans la liste, veuillez tout effacer et recommencer."),
         "ignoreExtension":
@@ -329,6 +331,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "La liste des règles est actuellement vide. Appuyez sur le bouton \"Ajouter une règle\" pour en ajouter une. Les règles sont exécutées dans l\'ordre. Vous pouvez réorganiser cette liste en la faisant glisser vers le haut ou vers le bas, ou en la plaçant en haut ou en bas. Lorsque le curseur est sur une règle, faites défiler verticalement pour changer d\'action, et double-cliquez pour sélectionner l\'action."),
         "semanticsRuleDropdownButton": MessageLookupByLibrary.simpleMessage(
             ". Sélectionnez cela et appuyez sur le bouton \"Ajouter une règle\" pour ajouter cette règle"),
+        "showHiddenFiles": MessageLookupByLibrary.simpleMessage(
+            "Afficher les fichiers cachés"),
         "sourceCode": MessageLookupByLibrary.simpleMessage("Code source"),
         "sr": MessageLookupByLibrary.simpleMessage("Serbe"),
         "startIndex": MessageLookupByLibrary.simpleMessage("Index de départ"),

@@ -154,6 +154,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "filter": MessageLookupByLibrary.simpleMessage("フィルター"),
         "fromStart": MessageLookupByLibrary.simpleMessage("先頭から"),
         "goingForward": MessageLookupByLibrary.simpleMessage("前進中"),
+        "hideHiddenFiles": MessageLookupByLibrary.simpleMessage("隠しファイルを隠す"),
         "ifFileNotShown": MessageLookupByLibrary.simpleMessage(
             "ファイルがリストに表示されない場合は、すべてクリアして続行してください。"),
         "ignoreExtension": MessageLookupByLibrary.simpleMessage("拡張子を無視"),
@@ -275,6 +276,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "ルールリストは現在空です。ルールは順番に実行されます。リストを並べ替えてルールを上下に移動したり、先頭や末尾に移動したりすることができます。ルールを選択した状態で、垂直スワイプジェスチャを使用して異なる操作を切り替え、ダブルクリックして選択した操作を実行します。"),
         "semanticsRuleDropdownButton": MessageLookupByLibrary.simpleMessage(
             "。この項目を選択し、「ルールを追加」ボタンをクリックしてルールを追加します。"),
+        "showHiddenFiles": MessageLookupByLibrary.simpleMessage("隠しファイルを表示する"),
         "sourceCode": MessageLookupByLibrary.simpleMessage("ソースコード"),
         "sr": MessageLookupByLibrary.simpleMessage("セルビア語"),
         "startIndex": MessageLookupByLibrary.simpleMessage("開始インデックス"),

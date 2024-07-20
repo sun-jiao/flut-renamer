@@ -160,6 +160,8 @@
   "fileManagerStorageButton": "Depolama Alanını Seç",
   "fileManagerSaveButton": "Seçilen Dosyaları Listeye Ekle",
   "fileManagerBackButton": "Geri",
+  "showHiddenFiles": "Gizli dosyaları göster",
+  "hideHiddenFiles": "Gizli dosyaları gizle",
   "semanticsFileManagerTitle":  "{selectStatus, select, true{seçili olan} false{seçili olmayan} other{}}{entityType, select, File{dosya} Directory{dizin} Link{bağlantı} other{dosya sistem öğesi}}, adı {filename}.",
   "semanticsFileManagerSubtitle":  "En son değiştirilme zamanı {last}, dosya boyutu {size}",
   "semanticsDropdownButton": "Bu bir açılır düğmedir, şu anda seçili olan '{value}', başka bir değer seçmek için çift tıklayın.",

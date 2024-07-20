@@ -149,6 +149,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "filter": MessageLookupByLibrary.simpleMessage("筛选"),
         "fromStart": MessageLookupByLibrary.simpleMessage("从开头计数"),
         "goingForward": MessageLookupByLibrary.simpleMessage("向前"),
+        "hideHiddenFiles": MessageLookupByLibrary.simpleMessage("不显示隐藏文件"),
         "ifFileNotShown":
             MessageLookupByLibrary.simpleMessage("如果文件列表中未显示文件，请清除所有内容并继续。"),
         "ignoreExtension": MessageLookupByLibrary.simpleMessage("忽略扩展名"),
@@ -265,6 +266,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "规则列表现在是空的。单击“添加规则”按钮添加一条。规则是按顺序执行的。此列表可被重新排序，允许您向上、向下移动规则，以及将它们移动到顶部或底部。当光标位于规则上时，使用垂直滑动手势在不同的操作之间切换，并使用双击执行选定的操作。"),
         "semanticsRuleDropdownButton":
             MessageLookupByLibrary.simpleMessage("。选择该项并点击“添加规则”按钮即可添加该规则"),
+        "showHiddenFiles": MessageLookupByLibrary.simpleMessage("显示隐藏文件"),
         "sourceCode": MessageLookupByLibrary.simpleMessage("源代码"),
         "sr": MessageLookupByLibrary.simpleMessage("塞尔维亚语"),
         "startIndex": MessageLookupByLibrary.simpleMessage("起始索引"),

@@ -160,6 +160,8 @@
   "fileManagerStorageButton": "저장소 선택",
   "fileManagerSaveButton": "선택한 파일을 목록에 추가",
   "fileManagerBackButton": "뒤로",
+  "showHiddenFiles": "숨김 파일 보기",
+  "hideHiddenFiles": "숨김 파일 숨기기",
   "semanticsFileManagerTitle": "{selectStatus, select, true{선택한} false{선택하지 않은} other{}}{entityType, select, File{파일} Directory{디렉터리} Link{링크} other{파일 시스템 항목}} 이름은 {filename},",
   "semanticsFileManagerSubtitle": "마지막 수정 시간은 {last}이고 파일 크기는 {size}입니다.",
   "semanticsFileManagerDirSubtitle": "마지막 수정 시간은 {last}입니다.",

@@ -173,6 +173,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "fromStart": MessageLookupByLibrary.simpleMessage("Do início"),
         "goingForward":
             MessageLookupByLibrary.simpleMessage("Indo para frente"),
+        "hideHiddenFiles":
+            MessageLookupByLibrary.simpleMessage("Ocultar arquivos ocultos"),
         "ifFileNotShown": MessageLookupByLibrary.simpleMessage(
             "Se os arquivos não estiverem listados, limpe tudo e continue."),
         "ignoreExtension":
@@ -325,6 +327,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "A lista de regras está vazia agora. Clique em \"Adicionar regra\" para adicionar uma. As regras são executadas em ordem. Esta lista pode ser reordenada, permitindo mover as regras para cima ou para baixo, bem como movê-las para o topo ou para o final. Com o cursor sobre uma regra, use o gesto de rolagem vertical para alternar entre diferentes ações e clique duplo para executar a ação selecionada."),
         "semanticsRuleDropdownButton": MessageLookupByLibrary.simpleMessage(
             ". Selecione isto e clique em \"Adicionar regra\" para adicionar esta regra"),
+        "showHiddenFiles":
+            MessageLookupByLibrary.simpleMessage("Mostrar arquivos ocultos"),
         "sourceCode": MessageLookupByLibrary.simpleMessage("Código-fonte"),
         "sr": MessageLookupByLibrary.simpleMessage("Sérvio"),
         "startIndex": MessageLookupByLibrary.simpleMessage("Índice inicial"),

@@ -160,6 +160,8 @@
   "fileManagerStorageButton": "Seleziona memoria",
   "fileManagerSaveButton": "Aggiungi i file selezionati alla lista",
   "fileManagerBackButton": "Indietro",
+  "showHiddenFiles": "Mostra i file nascosti",
+  "hideHiddenFiles": "Nascondi i file nascosti",
   "semanticsFileManagerTitle": "{selectStatus, select, true{Selezionato} false{Non selezionato} other{}}{entityType, select, File{file} Directory{directory} Link{link} other{entity}} chiamato {filename},",
   "semanticsFileManagerSubtitle": "Ultima modifica il {last} e di dimensioni {size}.",
   "semanticsFileManagerDirSubtitle": "Ultima modifica il {last}.",

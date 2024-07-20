@@ -1687,6 +1687,26 @@ class L10n {
     );
   }
 
+  /// `Show hidden files`
+  String get showHiddenFiles {
+    return Intl.message(
+      'Show hidden files',
+      name: 'showHiddenFiles',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hide hidden files`
+  String get hideHiddenFiles {
+    return Intl.message(
+      'Hide hidden files',
+      name: 'hideHiddenFiles',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `{selectStatus, select, true{Selected} false{Unselected} other{}} {entityType, select, File{File} Directory{Folder} Link{Link} other{File system entity}}, filename is {filename}, `
   String semanticsFileManagerTitle(
       String entityType, String selectStatus, String filename) {

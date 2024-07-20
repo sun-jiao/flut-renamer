@@ -62,7 +62,7 @@ GlobalKey<State<StatefulBuilder>> _stfKey = GlobalKey<State<StatefulBuilder>>();
 
 class _AndroidFilePickerState extends State<AndroidFilePicker> {
   final FileManagerController controller = FileManagerController();
-
+  bool hideHiddenEntities = true;
   final List<FileSystemEntity> _selected = [];
   List<FileSystemEntity> entities = [];
 
@@ -74,6 +74,7 @@ class _AndroidFilePickerState extends State<AndroidFilePicker> {
         appBar: appBar(context),
         body: FileManager(
           controller: controller,
+          hideHiddenEntity: hideHiddenEntities,
           builder: (context, snapshot) {
             entities = snapshot;
             return StatefulBuilder(
@@ -235,6 +236,15 @@ class _AndroidFilePickerState extends State<AndroidFilePicker> {
           tooltip: L10n.current.selectAll,
           onPressed: () => selectAll(),
           icon: const Icon(Icons.select_all_rounded),
+        ),
+        IconButton(
+          tooltip: hideHiddenEntities ? L10n.current.hideHiddenFiles : L10n.current.showHiddenFiles,
+          onPressed: () {
+            setState(() {
+              hideHiddenEntities = !hideHiddenEntities;
+            });
+          },
+          icon: Icon(hideHiddenEntities ? Icons.visibility_off : Icons.visibility),
         ),
         IconButton(
           tooltip: L10n.current.fileManagerSaveButton,
