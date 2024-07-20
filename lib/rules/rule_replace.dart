@@ -22,6 +22,10 @@ class RuleReplace implements Rule {
 
   @override
   Future<String> newName(String oldName, {FileMetadata? metadata}) async {
+    if (targetString.isEmpty) {
+      return oldName;
+    }
+
     if (withMetadata && metadata == null) {
       throw ArgumentError(L10n.current.metadataParserNotProvided);
     }
