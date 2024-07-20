@@ -73,9 +73,10 @@ class RenamerApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
       ],
       supportedLocales: const [
+        Locale("en"),
+        // place English at the beginning to set it as the default fallback for unsupported languages
         Locale("ar"),
         Locale("de"),
-        Locale("en"),
         Locale("es"),
         Locale("fr"),
         Locale("it"),
