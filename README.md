@@ -11,6 +11,8 @@
 * Completely open-source and free: Flut Renamer is entirely open-source and contains no advertisements or in-app purchases, allowing you to use it freely at any time.
 * Cross-platform compatibility: Built on the Flutter framework, Flut Renamer can run on multiple operating systems, enabling you to use it anytime, anywhere.
 
+[![Star History Chart](https://api.star-history.com/svg?repos=sun-jiao/flut-renamer&type=Date)](https://star-history.com/#sun-jiao/flut-renamer&Date)
+
 ## Install
 ### Android
 
