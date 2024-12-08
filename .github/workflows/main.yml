@@ -15,6 +15,7 @@ jobs:
         with:
           channel: 'stable'
           architecture: x64
+          flutter-version: 3.24.5
       - name: Update dependencies
         run: sudo apt-get update
       - name: Install dependencies
@@ -73,6 +74,7 @@ jobs:
         with:
           channel: 'stable'
           architecture: x64
+          flutter-version: 3.24.5
       - name: Install project dependencies
         run: flutter pub get
       - name: Enable windows build
@@ -104,6 +106,7 @@ jobs:
         with:
           channel: 'stable'
           architecture: arm64
+          flutter-version: 3.24.5
       - name: Install project dependencies
         run: flutter pub get
       - name: Enable macOS build
