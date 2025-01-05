@@ -21,17 +21,17 @@ class ExtFieldHandler<T> {
 
   void clearValues() => _values.clear();
 
-  bool checkDuplicatedValue(String path, T value) =>
-      _values.entries.where((e) => e.key != path && e.value == value).isNotEmpty;
+  bool checkDuplicatedPath(String path, T value) =>
+      _values.entries.where((e) => e.key != path && p.join(p.dirname(path), value.toString()) == p.join(p.dirname(e.key), e.value.toString())).isNotEmpty;
 }
 
 // an extension to control file list selection.
 extension ExFile on FileSystemEntity {
   // get file name
-  String get name => path.substring(path.lastIndexOf(Platform.pathSeparator) + 1);
+  String get name => p.basename(path);
 
   // get the directory
-  String get directory => path.substring(0, path.lastIndexOf(Platform.pathSeparator));
+  String get directory => p.dirname(path);
 
   static final ExtFieldHandler<bool> _selectionHandler = ExtFieldHandler();
   bool get selected => _selectionHandler.getValue(path) ?? false;
@@ -48,7 +48,7 @@ extension ExFile on FileSystemEntity {
   set newName(String? val) => _newNameHandler.setValue(path, val);
   static void clearNewNames() => _newNameHandler.clearValues();
 
-  bool get newNameDuplicate => _newNameHandler.checkDuplicatedValue(path, newName);
+  bool get newNameDuplicate => _newNameHandler.checkDuplicatedPath(path, newName);
   String get newPath => p.join(directory, newName);
 
   static final ExtFieldHandler<FileMetadata> _metadataHandler = ExtFieldHandler();
