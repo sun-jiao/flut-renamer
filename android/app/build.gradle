@@ -28,7 +28,7 @@ if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 
-def _storeFile = file(System.getenv("KEYSTORE") ?: keystoreProperties["storeFile"])
+def _storeFile = System.getenv("KEYSTORE") ?: keystoreProperties["storeFile"]
 def _storePassword = System.getenv("KEYSTORE_PASSWORD") ?: keystoreProperties["storePassword"]
 def _keyAlias = System.getenv("KEY_ALIAS") ?: keystoreProperties["keyAlias"]
 def _keyPassword = System.getenv("KEY_PASSWORD") ?: keystoreProperties["keyPassword"]
@@ -64,17 +64,21 @@ android {
 
     signingConfigs {
         debug {
-            keyAlias _keyAlias
-            keyPassword _keyPassword
-            storeFile _storeFile
-            storePassword _storePassword
+            if (_storeFile && _storePassword && _keyAlias && _keyPassword) {
+                keyAlias _keyAlias
+                keyPassword _keyPassword
+                storeFile file(_storeFile)
+                storePassword _storePassword
+            } else null
         }
 
         release {
-            keyAlias _keyAlias
-            keyPassword _keyPassword
-            storeFile _storeFile
-            storePassword _storePassword
+            if (_storeFile && _storePassword && _keyAlias && _keyPassword) {
+                keyAlias _keyAlias
+                keyPassword _keyPassword
+                storeFile file(_storeFile)
+                storePassword _storePassword
+            } else null
         }
     }
 

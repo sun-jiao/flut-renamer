@@ -15,7 +15,7 @@ jobs:
         with:
           channel: 'stable'
           architecture: x64
-          flutter-version: 3.24.5
+          flutter-version: 3.27.1
       - name: Update dependencies
         run: sudo apt-get update
       - name: Install dependencies
