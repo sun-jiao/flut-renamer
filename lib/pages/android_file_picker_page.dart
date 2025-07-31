@@ -65,6 +65,7 @@ class _AndroidFilePickerState extends State<AndroidFilePicker> {
   bool hideHiddenEntities = true;
   final List<FileSystemEntity> _selected = [];
   List<FileSystemEntity> entities = [];
+  bool isDescending = false;
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +77,12 @@ class _AndroidFilePickerState extends State<AndroidFilePicker> {
           controller: controller,
           hideHiddenEntity: hideHiddenEntities,
           builder: (context, snapshot) {
-            entities = snapshot;
+            if (isDescending) {
+              // Reversing entities to add descending functionality as not already there in original controller.
+              entities = snapshot.reversed.toList();
+            } else {
+              entities = snapshot;
+            }
             return StatefulBuilder(
               key: _stfKey,
               builder: (contextS, setStateS) => Responsive(
@@ -352,38 +358,114 @@ class _AndroidFilePickerState extends State<AndroidFilePicker> {
       builder: (context) => Dialog(
         child: Container(
           padding: const EdgeInsets.all(10),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ListTile(
-                title: Text(L10n.current.fileSortName),
-                onTap: () {
-                  controller.sortBy(SortBy.name);
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                title: Text(L10n.current.fileSortSize),
-                onTap: () {
-                  controller.sortBy(SortBy.size);
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                title: Text(L10n.current.fileSortDate),
-                onTap: () {
-                  controller.sortBy(SortBy.date);
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                title: Text(L10n.current.fileSortType),
-                onTap: () {
-                  controller.sortBy(SortBy.type);
-                  Navigator.pop(context);
-                },
-              ),
-            ],
+          child: IntrinsicWidth(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ListTile(
+                        title: Text("${L10n.current.fileSortName} ↓"),
+                        onTap: () {
+                          Navigator.pop(context);
+                          setState(() {
+                            isDescending = false;
+                          });
+                          controller.sortBy(SortBy.name);
+                        },
+                      ),
+                      ListTile(
+                        title: Text("${L10n.current.fileSortSize} ↓"),
+                        onTap: () {
+                          Navigator.pop(context);
+                          setState(() {
+                            isDescending = false;
+                          });
+                          controller.sortBy(SortBy.size);
+                        },
+                      ),
+                      ListTile(
+                        title: Text("${L10n.current.fileSortDate} ↓"),
+                        onTap: () {
+                          Navigator.pop(context);
+                          setState(() {
+                            isDescending = false;
+                          });
+                          controller.sortBy(SortBy.date);
+                        },
+                      ),
+                      ListTile(
+                        title: Text("${L10n.current.fileSortType} ↓"),
+                        onTap: () {
+                          Navigator.pop(context);
+                          setState(() {
+                            isDescending = false;
+                          });
+                          controller.sortBy(SortBy.type);
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ListTile(
+                        title: Text("${L10n.current.fileSortName} ↑"),
+                        onTap: () {
+                          Navigator.pop(context);
+                          setState(() {
+                            isDescending = true;
+                          });
+                          controller.sortBy(
+                            SortBy.name,
+                          );
+                        },
+                      ),
+                      ListTile(
+                        title: Text("${L10n.current.fileSortSize} ↑"),
+                        onTap: () {
+                          Navigator.pop(context);
+                          setState(() {
+                            isDescending = true;
+                          });
+                          controller.sortBy(
+                            SortBy.size,
+                          );
+                        },
+                      ),
+                      ListTile(
+                        title: Text("${L10n.current.fileSortDate} ↑"),
+                        onTap: () {
+                          Navigator.pop(context);
+                          setState(() {
+                            isDescending = true;
+                          });
+                          controller.sortBy(
+                            SortBy.date,
+                          );
+                        },
+                      ),
+                      ListTile(
+                        title: Text("${L10n.current.fileSortType} ↑"),
+                        onTap: () {
+                          Navigator.pop(context);
+                          setState(() {
+                            isDescending = true;
+                          });
+                          controller.sortBy(
+                            SortBy.type,
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
