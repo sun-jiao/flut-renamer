@@ -36,25 +36,25 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  args: ^2.6.0
-  audio_metadata_reader: ^1.1.0
+  args: ^2.7.0
+  audio_metadata_reader: ^1.4.2
   cross_file: ^0.3.4+2
-  crypto: ^3.0.6
+  crypto: ^3.0.7
   cyrtranslit: ^1.0.1
-  desktop_drop: ^0.5.0 # not compatible with iOS
-  device_info_plus: ^11.2.0
+  desktop_drop: ^0.7.0 # not compatible with iOS
+  device_info_plus: ^12.2.0
   exif: ^3.3.0
   file_manager: ^1.0.2
-  file_picker: ^8.1.7
-  fluttertoast: ^8.2.10
+  file_picker: ^10.3.6
+  fluttertoast: ^9.0.0
   intl: any
-  package_info_plus: ^8.1.2
+  package_info_plus: ^9.0.0
   path: any
-  permission_handler: ^11.3.1
+  permission_handler: ^12.0.1
   pinyin: ^3.3.0
-  shared_preferences: ^2.3.4
-  toastification: ^2.3.0
-  url_launcher: ^6.3.1
+  shared_preferences: ^2.5.3
+  toastification: ^3.0.3
+  url_launcher: ^6.3.2
 
 dev_dependencies:
   flutter_test:
@@ -65,10 +65,10 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  change_app_package_name: ^1.4.0
-  flutter_launcher_icons: ^0.14.2
-  flutter_lints: ^5.0.0
-  xml: ^6.5.0
+  change_app_package_name: ^1.5.0
+  flutter_launcher_icons: ^0.14.4
+  flutter_lints: ^6.0.0
+  xml: ^6.6.1
 
 # dart run flutter_launcher_icons
 flutter_icons:
