@@ -77,7 +77,7 @@ class _InsertDialogState extends State<InsertDialog> {
                 return Column(
                   children: [
                     CheckboxTile(
-                      title: Text('插入随机字符串'),
+                      title: Text(L10n.current.insertRandomString),
                       value: useRandom,
                       onChanged: (value) {
                         setState(() {
@@ -94,13 +94,13 @@ class _InsertDialogState extends State<InsertDialog> {
                         controller: randomLengthController,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
-                          labelText: '随机字符串长度',
-                          hintText: '8',
+                          labelText: L10n.current.randomStringLength,
+                          hintText: L10n.current.randomStringLengthHint,
                         ),
                         validator: (value) {
                           final int? length = int.tryParse(value ?? '');
                           if (length == null || length < 1 || length > 32) {
-                            return '长度应在1-32之间';
+                            return L10n.current.randomStringLengthError;
                           }
                           return null;
                         },

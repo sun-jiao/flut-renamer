@@ -245,6 +245,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "replace": MessageLookupByLibrary.simpleMessage("替换"),
         "replaceToString": m4,
         "replacement": MessageLookupByLibrary.simpleMessage("替换为"),
+        "insertRandomString": MessageLookupByLibrary.simpleMessage("插入随机字符串"),
+        "randomStringLength": MessageLookupByLibrary.simpleMessage("随机字符串长度"),
+        "randomStringLengthHint": MessageLookupByLibrary.simpleMessage("8"),
+        "randomStringLengthError": MessageLookupByLibrary.simpleMessage("长度应在1-32之间"),
         "ru": MessageLookupByLibrary.simpleMessage("俄语"),
         "rulesSequentially": MessageLookupByLibrary.simpleMessage(
             "规则是按顺序执行的，点击规则可以重新编辑，按住左侧的“=”按钮并拖动即可对规则进行排序。"),
