@@ -38,7 +38,9 @@ class RuleInsert implements Rule {
           // 确保长度在合理范围内
           length = length.clamp(1, 32);
         }
-        return Uuid().v4().substring(0, length);
+        // 生成不包含特殊字符的随机字符串
+        String uuid = Uuid().v4().replaceAll('-', '');
+        return uuid.substring(0, length);
       });
     }
 
