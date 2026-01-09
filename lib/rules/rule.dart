@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:pinyin/pinyin.dart';
 import 'package:cyrtranslit/cyrtranslit.dart' as cyrtranslit;
+import 'package:uuid/uuid.dart';
 
 import '../dialogs/increment_dialog.dart';
 import '../dialogs/insert_dialog.dart';
@@ -15,6 +16,7 @@ import '../l10n/l10n.dart';
 import '../entity/transliterate.dart';
 import '../tools/file_metadata.dart';
 import '../tools/ex_string.dart';
+import '../tools/logger.dart';
 
 part 'base_rule.dart';
 

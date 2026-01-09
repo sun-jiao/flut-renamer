@@ -36,7 +36,7 @@ def _keyPassword = System.getenv("KEY_PASSWORD") ?: keystoreProperties["keyPassw
 
 android {
     namespace "net.sunjiao.renamer"
-    compileSdkVersion 35
+    compileSdkVersion 36
     ndkVersion = "27.0.12077973"
 
     compileOptions {
@@ -56,8 +56,8 @@ android {
         applicationId "net.sunjiao.renamer"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion 21
-        targetSdkVersion 35
+        minSdkVersion flutter.minSdkVersion
+        targetSdkVersion 36
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -73,12 +73,18 @@ android {
         }
 
         release {
+            // 如果没有找到签名配置，使用 debug 签名作为默认，这样可以成功打包
             if (_storeFile && _storePassword && _keyAlias && _keyPassword) {
                 keyAlias _keyAlias
                 keyPassword _keyPassword
                 storeFile file(_storeFile)
                 storePassword _storePassword
-            } else null
+            } else {
+                keyAlias 'androiddebugkey'
+                keyPassword 'android'
+                storeFile file("${System.getProperty('user.home')}/.android/debug.keystore")
+                storePassword 'android'
+            }
         }
     }
 

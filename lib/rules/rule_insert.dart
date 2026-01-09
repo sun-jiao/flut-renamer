@@ -28,6 +28,20 @@ class RuleInsert implements Rule {
 
     String insert = this.insert;
 
+    // 检查并替换特殊的随机字符串标记，支持在任何位置出现
+    final RegExp randomStringRegex = RegExp(r'\{RandomString(?::(\d+))?\}');
+    if (randomStringRegex.hasMatch(insert)) {
+      insert = insert.replaceAllMapped(randomStringRegex, (match) {
+        int length = 8;
+        if (match.group(1) != null) {
+          length = int.tryParse(match.group(1)!) ?? 8;
+          // 确保长度在合理范围内
+          length = length.clamp(1, 32);
+        }
+        return Uuid().v4().substring(0, length);
+      });
+    }
+
     if (withMetadata) {
       await metadata!.init();
       insert = metadata.parse(insert);

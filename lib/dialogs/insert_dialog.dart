@@ -31,8 +31,12 @@ class _InsertDialogState extends State<InsertDialog> {
   TextEditingController indexController = TextEditingController(
     text: '0',
   );
+  TextEditingController randomLengthController = TextEditingController(
+    text: '8',
+  );
   ValueNotifier<bool> withMetadata = ValueNotifier(false);
   ValueNotifier<bool> toEnd = ValueNotifier(false);
+  ValueNotifier<bool> useRandomString = ValueNotifier(false);
   bool ignoreExtension = true;
 
   @override
@@ -42,6 +46,16 @@ class _InsertDialogState extends State<InsertDialog> {
       indexController.text = widget.rule!.insertIndex.toString();
       withMetadata.value = widget.rule!.withMetadata;
       toEnd.value = widget.rule!.toEnd;
+      // 检查是否使用随机字符串
+      useRandomString.value = widget.rule!.insert.contains('{RandomString');
+      // 如果是随机字符串，尝试提取长度
+      if (useRandomString.value) {
+        final RegExp lengthRegex = RegExp(r'\{RandomString(?::(\d+))?\}');
+        final match = lengthRegex.firstMatch(widget.rule!.insert);
+        if (match != null && match.group(1) != null) {
+          randomLengthController.text = match.group(1)!;
+        }
+      }
     }
 
     super.initState();
@@ -57,14 +71,56 @@ class _InsertDialogState extends State<InsertDialog> {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Text(L10n.current.descriptionInsert),
-            TextFormField(
-              controller: textController,
-              decoration: InputDecoration(labelText: L10n.current.insertedText),
+            ValueListenableBuilder<bool>(
+              valueListenable: useRandomString,
+              builder: (context, useRandom, child) {
+                return Column(
+                  children: [
+                    CheckboxTile(
+                      title: Text('插入随机字符串'),
+                      value: useRandom,
+                      onChanged: (value) {
+                        setState(() {
+                          useRandomString.value = value ?? useRandom;
+                          if (value == true) {
+                            // 如果启用随机字符串，清除文本输入框
+                            textController.text = '';
+                          }
+                        });
+                      },
+                    ),
+                    if (useRandom) ...[
+                      TextFormField(
+                        controller: randomLengthController,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          labelText: '随机字符串长度',
+                          hintText: '8',
+                        ),
+                        validator: (value) {
+                          final int? length = int.tryParse(value ?? '');
+                          if (length == null || length < 1 || length > 32) {
+                            return '长度应在1-32之间';
+                          }
+                          return null;
+                        },
+                      ),
+                    ] else ...[
+                      TextFormField(
+                        controller: textController,
+                        decoration: InputDecoration(labelText: L10n.current.insertedText),
+                      ),
+                    ],
+                  ],
+                );
+              },
             ),
             box,
             DirectionTextField(con: indexController, toEnd: toEnd, labelText: L10n.current.insertIndex),
             // Text(L10n.current.insertBeforeIndex, style: const TextStyle(fontSize: 13),),
-            MetadataTile(textController: textController, withMetadata: withMetadata),
+            if (!useRandomString.value) ...[
+              MetadataTile(textController: textController, withMetadata: withMetadata),
+            ],
             CheckboxTile(
               title: Text(L10n.current.ignoreExtension),
               value: ignoreExtension,
@@ -86,7 +142,16 @@ class _InsertDialogState extends State<InsertDialog> {
         ),
         TextButton(
           onPressed: () {
-            String insertText = textController.text;
+            String insertText;
+            if (useRandomString.value) {
+              int length = int.tryParse(randomLengthController.text) ?? 8;
+              // 确保长度在合理范围内
+              length = length.clamp(1, 32);
+              insertText = '{RandomString:$length}';
+            } else {
+              insertText = textController.text;
+            }
+            
             int insertIndex = int.tryParse(indexController.text) ?? 0;
 
             final Rule rule = RuleInsert(

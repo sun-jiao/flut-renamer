@@ -41,7 +41,7 @@ class FileMetadata {
           _exif = {};
         }
         try {
-          _metadata = await readMetadata(file as File, getImage: false);
+          _metadata = readMetadata(file as File, getImage: false);
         } catch (e) {
           logger.log('Failed to read metadata for ${file.path}: $e');
           _metadata = null;
