@@ -1260,6 +1260,46 @@ class L10n {
     );
   }
 
+  /// `Insert random string`
+  String get insertRandomString {
+    return Intl.message(
+      'Insert random string',
+      name: 'insertRandomString',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Random string length`
+  String get randomStringLength {
+    return Intl.message(
+      'Random string length',
+      name: 'randomStringLength',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `8`
+  String get randomStringLengthHint {
+    return Intl.message(
+      '8',
+      name: 'randomStringLengthHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Length should be between 1 and 32`
+  String get randomStringLengthError {
+    return Intl.message(
+      'Length should be between 1 and 32',
+      name: 'randomStringLengthError',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `limit`
   String get limit {
     return Intl.message(

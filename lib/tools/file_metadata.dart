@@ -6,10 +6,12 @@ import 'package:audio_metadata_reader/audio_metadata_reader.dart';
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:exif/exif.dart';
 import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 
 import '../tools/ex_file.dart';
+import './logger.dart';
 
-final metadataTagRegex = RegExp(r'\{([A-Za-z]+:[A-Za-z]+)\}');
+final metadataTagRegex = RegExp(r'\{([A-Za-z_][A-Za-z0-9_]*:[A-Za-z_][A-Za-z0-9_]*)\}');
 
 class FileMetadata {
   FileMetadata(this.file) {
@@ -29,10 +31,21 @@ class FileMetadata {
       if (file is Directory) {
         _bytes = Uint8List(0);
         _exif = {};
+        _metadata = null;
       } else {
         _bytes = await (file as File).readAsBytes();
-        _exif = await readExifFromBytes(_bytes);
-        _metadata = await readMetadata(file as File, getImage: false);
+        try {
+          _exif = await readExifFromBytes(_bytes);
+        } catch (e) {
+          logger.log('Failed to read EXIF data for ${file.path}: $e');
+          _exif = {};
+        }
+        try {
+          _metadata = readMetadata(file as File, getImage: false);
+        } catch (e) {
+          logger.log('Failed to read metadata for ${file.path}: $e');
+          _metadata = null;
+        }
       }
 
       inited = true;
@@ -49,6 +62,7 @@ class FileMetadata {
   static final _key = utf8.encode('renamer');
   static final _date = DateFormat('y-MM-d');
   static final _time = DateFormat('y-MM-d HH-mm-ss');
+  static final _uuid = Uuid();
 
   String getByName(String name) {
     switch (name) {
@@ -56,6 +70,10 @@ class FileMetadata {
         return _date.format(DateTime.now().toLocal());
       case 'OS:NowTime':
         return _time.format(DateTime.now().toLocal());
+      case 'OS:UUID':
+        return _uuid.v4();
+      case 'OS:RandomString':
+        return _uuid.v4().substring(0, 8); // 生成8位随机字符串
       case 'File:Size':
         return _formatFileSize(_stat.size);
       case 'File:CreateDate':
@@ -137,10 +155,17 @@ class FileMetadata {
     }
   }
 
-  String parse(String target) => target.replaceAllMapped(
+  String parse(String target) {
+    try {
+      return target.replaceAllMapped(
         metadataTagRegex,
         (match) => getByName(match.group(1).toString()),
       );
+    } catch (e) {
+      logger.log('Failed to parse metadata tag: $e');
+      return target; // 如果解析失败，返回原始文本
+    }
+  }
 
   String _getLatLng(IfdTag? coordTag, IfdTag? refTag) {
     if (coordTag == null) {

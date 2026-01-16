@@ -26,18 +26,31 @@ class RuleReplace implements Rule {
       return oldName;
     }
 
-    if (withMetadata && metadata == null) {
-      throw ArgumentError(L10n.current.metadataParserNotProvided);
-    }
-
     String newName, extension;
     (newName, extension) = splitFileName(oldName, ignoreExtension);
 
-    String replacementString = this.replacementString;
+    String parsedReplacement = replacementString;
 
-    if (withMetadata) {
-      await metadata!.init();
-      replacementString = metadata.parse(replacementString);
+    // 检查并替换特殊的随机字符串标记，支持在任何位置出现
+    if (parsedReplacement.contains('{RandomString}')) {
+      parsedReplacement = parsedReplacement.replaceAll('{RandomString}', Uuid().v4().substring(0, 8));
+    }
+
+    // 原有元数据标签处理逻辑
+    final bool hasMetadataTag = parsedReplacement.contains(metadataTagRegex);
+    // 如果文本包含元数据标签，自动解析，无论withMetadata参数是什么
+    if (hasMetadataTag) {
+      if (metadata != null) {
+        try {
+          await metadata.init();
+          parsedReplacement = metadata.parse(parsedReplacement);
+        } catch (e) {
+          // 如果处理标签时出现异常，记录日志但继续执行
+          logger.log('Failed to parse metadata tag in replace rule: $e');
+        }
+      } else {
+        logger.log('Metadata not provided for replace rule with tag: $parsedReplacement');
+      }
     }
 
     Pattern target;
@@ -49,7 +62,7 @@ class RuleReplace implements Rule {
         List<String?> groups =
             match.groups(List<int>.generate(match.groupCount + 1, (index) => index));
 
-        String replacedString = replacementString;
+        String replacedString = parsedReplacement;
         for (int i = 0; i <= match.groupCount; i++) {
           replacedString = replacedString.replaceAll('\\$i', groups[i] ?? '');
         }
@@ -58,7 +71,7 @@ class RuleReplace implements Rule {
       };
     } else {
       target = RegExp(RegExp.escape(targetString), caseSensitive: caseSensitive);
-      replacer = (match) => replacementString;
+      replacer = (match) => parsedReplacement;
     }
 
     if (replaceLimit == 0) {

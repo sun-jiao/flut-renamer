@@ -55,6 +55,7 @@ dependencies:
   shared_preferences: ^2.3.4
   toastification: ^2.3.0
   url_launcher: ^6.3.1
+  uuid: ^4.4.0
 
 dev_dependencies:
   flutter_test:

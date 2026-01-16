@@ -311,6 +311,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "replace": MessageLookupByLibrary.simpleMessage("Replace"),
         "replaceToString": m4,
         "replacement": MessageLookupByLibrary.simpleMessage("Replacement"),
+        "insertRandomString": MessageLookupByLibrary.simpleMessage("Insert random string"),
+        "randomStringLength": MessageLookupByLibrary.simpleMessage("Random string length"),
+        "randomStringLengthHint": MessageLookupByLibrary.simpleMessage("8"),
+        "randomStringLengthError": MessageLookupByLibrary.simpleMessage("Length should be between 1 and 32"),
         "ru": MessageLookupByLibrary.simpleMessage("Russian"),
         "rulesSequentially": MessageLookupByLibrary.simpleMessage(
             "Rules are executed sequentially. Click a rule to edit it. Hold the \'=\' button on the left and drag it to sort rules."),

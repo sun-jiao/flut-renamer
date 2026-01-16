@@ -55,4 +55,14 @@ class PlatformFilePicker {
       rethrow;
     }
   }
+
+  static Future<List<String>> getSharedFiles() async {
+    try {
+      final result = await _channel.invokeMethod<List<dynamic>>('getSharedFiles');
+      return result?.map((e) => e as String).toList() ?? [];
+    } on PlatformException {
+      // TODO: show error message dialog
+      return [];
+    }
+  }
 }
