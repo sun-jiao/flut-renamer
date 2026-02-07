@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import '../l10n/l10n.dart';
 import '../tools/ex_file.dart';
 import '../widget/custom_dialog.dart';
+import '../tools/platform_channel.dart';
 
 Future<FileSystemEntity?> rename(
   FileSystemEntity file, {
@@ -22,7 +23,16 @@ Future<FileSystemEntity?> rename(
 
   try {
     file.newName = replaceSpecialCharacters(file.newName);
-    return await file.rename(file.newPath);
+    if (Platform.isAndroid && file.path.startsWith('content://')) {
+      final newUriString = await PlatformFilePicker.rename(file.path, file.newName);
+      if (newUriString != null) {
+        return File(newUriString);
+      } else {
+        throw const FileSystemException("SAF rename returned null");
+      }
+    } else {
+      return await file.rename(file.newPath);
+    }
   } catch (e, s) {
     debugPrint(e.toString());
     debugPrintStack(stackTrace: s);

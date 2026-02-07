@@ -55,4 +55,41 @@ class PlatformFilePicker {
       rethrow;
     }
   }
+
+  static Future<String?> rename(String uri, String newName) async {
+    try {
+      return await _channel.invokeMethod<String>(
+        'rename',
+        {
+          'uri': uri,
+          'newName': newName,
+        },
+      );
+    } on PlatformException {
+      // TODO: show error message dialog
+      rethrow;
+    }
+  }
+
+  static Future<Map<dynamic, dynamic>?> getMetaData(String uri) async {
+    try {
+      return await _channel.invokeMethod<Map<dynamic, dynamic>>(
+        'getMetaData',
+        {'uri': uri},
+      );
+    } on PlatformException {
+      return null;
+    }
+  }
+
+  static Future<Uint8List?> readFile(String uri) async {
+    try {
+      return await _channel.invokeMethod<Uint8List>(
+        'readFile',
+        {'uri': uri},
+      );
+    } on PlatformException {
+      return null;
+    }
+  }
 }

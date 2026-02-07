@@ -4,11 +4,9 @@ import 'dart:io';
 import 'package:desktop_drop/desktop_drop.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import '../entity/theme_extension.dart';
 import '../l10n/l10n.dart';
-import '../pages/android_file_picker_page.dart';
 import '../tools/platform_channel.dart';
 import '../entity/constants.dart';
 import '../tools/ex_file.dart';
@@ -54,17 +52,16 @@ class FilesPageState extends State<FilesPage> {
       if (!mounted) {
         return;
       }
-      
-      final result = await Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const AndroidFilePicker()),
-      );
 
-      if (result != null && result is List<FileSystemEntity>) {
-        entities = result;
+      List<Object?>? paths;
+      if (Shared.fileOrDir == 'Directories') {
+        paths = await PlatformFilePicker.dirAccess();
       } else {
-        return;
+        paths = await PlatformFilePicker.fileAccess('');
       }
+
+      if (paths == null || paths.isEmpty) return;
+      entities = paths.map((e) => e.toString()).map((e) => File(e));
     } else if (Platform.isIOS) {
       if (!Shared.doNotRemindAgain) {
         final iosOK = await _remindDialog(context);
@@ -131,20 +128,28 @@ class FilesPageState extends State<FilesPage> {
 
   void update() => setState(() {});
 
-  Future<void> getNewName(FileSystemEntity file, FileMetadata metadata) async {
+  Future<void> getNewName(FileSystemEntity file) async {
     if (file == _files.first) {
       widget.resetRules.call();
     }
 
+    late final String filename;
+
+    if (Platform.isAndroid && file.path.startsWith('content://')) {
+      filename = file.metadata!.androidRealName;
+    } else {
+      filename = file.name;
+    }
+
     try {
-      file.newName = await widget.getNewName(file.name, metadata);
-      if (file.newName != file.name && ((await File(file.newPath).exists()) || file.newNameDuplicate)) {
+      file.newName = await widget.getNewName(filename, file.metadata!);
+      if (file.newName != filename && ((await File(file.newPath).exists()) || file.newNameDuplicate)) {
         file.error = L10n.current.fileAlreadyExists;
         return;
       }
     } catch (e, s) {
       debugPrintStack(stackTrace: s);
-      file.newName = file.name;
+      file.newName = filename;
       file.error = e.toString();
       return;
     }
@@ -163,15 +168,19 @@ class FilesPageState extends State<FilesPage> {
   }
 
   TableCell _rowTextCell(FileSystemEntity file, {bool isNew = false}) {
-    if (!file.existsSync()) {
+    if (!(Platform.isAndroid && file.path.startsWith('content://')) && !file.existsSync()) {
       return TableCell(
         child: getRowText(L10n.current.fileNotExist, null),
       );
     }
 
-    return TableCell(
-      child: isNew ? FutureBuilder(
-        future: getNewName(file, FileMetadata(file)),
+    file.initMetadata();
+
+    late final Widget content;
+
+    if (isNew) {
+      content = FutureBuilder(
+        future: getNewName(file),
         builder: (context, snap) {
           if ((snap.connectionState == ConnectionState.active ||
               snap.connectionState == ConnectionState.done) &&
@@ -180,7 +189,15 @@ class FilesPageState extends State<FilesPage> {
           }
           return const LinearProgressIndicator();
         },
-      ) : getRowText(file.name, null),
+      );
+    } else if (Platform.isAndroid && file.path.startsWith('content://')) {
+      content = getRowText(file.metadata!.androidRealName, null);
+    } else {
+      content = getRowText(file.name, null);
+    }
+
+    return TableCell(
+      child: content,
     );
   }
 
@@ -364,17 +381,7 @@ class FilesPageState extends State<FilesPage> {
             enable: !Platform.isIOS,
             onDragDone: (detail) async {
               for (var xFile in detail.files) {
-                late final FileSystemEntity file;
-                if (Platform.isAndroid && xFile.path.startsWith('content://')) {
-                  try {
-                    file = (await PlatformFilePicker.getRealPathFromURI(xFile.path)).toFileSystemEntity();
-                  } catch (e) {
-                    Fluttertoast.showToast(msg: L10n.current.dragNotSupported);
-                    return;
-                  }
-                } else {
-                  file = xFile.toFileSystemEntity();
-                }
+                final FileSystemEntity file = xFile.toFileSystemEntity();
 
                 if (_files.every((exist) => file.path != exist.path)) {
                   setState(() {
@@ -412,7 +419,7 @@ class FilesPageState extends State<FilesPage> {
                     ),
                   if (_dragging)
                     Container(
-                      color: Colors.blue.withOpacity(0.2),
+                      color: Colors.blue.withValues(alpha: 0.2),
                       child: Center(
                         child: Text(L10n.current.dropToAdd),
                       ),

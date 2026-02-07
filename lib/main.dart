@@ -1,11 +1,9 @@
 import 'dart:io';
 
 import 'package:args/args.dart';
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart' hide TextDirection;
-import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'entity/sharedpref.dart';
@@ -14,7 +12,6 @@ import 'l10n/l10n.dart';
 import 'pages/home_page.dart';
 import 'pages/files_page.dart';
 import 'tools/ex_file.dart';
-import 'widget/custom_dialog.dart';
 
 late Locale _appLocale;
 
@@ -132,78 +129,8 @@ class RenamerApp extends StatelessWidget {
 class AppPage extends StatelessWidget {
   const AppPage({super.key});
 
-  void _permissionCheck(BuildContext context) async {
-    if (Platform.isAndroid) {
-      final Permission permission =
-          (await DeviceInfoPlugin().androidInfo).version.sdkInt <= 29
-              ? Permission.storage
-              : Permission.manageExternalStorage;
-
-      final PermissionStatus value = await permission.status;
-
-      switch (value) {
-        case PermissionStatus.permanentlyDenied:
-          if (context.mounted) {
-            _cannotRun(context);
-          }
-        case PermissionStatus.denied:
-          if (context.mounted) {
-            _permissionRequest(context, permission);
-          }
-        default:
-          return;
-      }
-    }
-  }
-
-  void _permissionRequest(BuildContext context, Permission permission) => showDialog(
-        context: context,
-        builder: (contextD) => CustomDialog(
-          title: Text(L10n.current.permissionTitle),
-          content: Text(L10n.current.permissionContent),
-          actions: [
-            TextButton(
-              onPressed: () => _cannotRun(contextD),
-              child: Text(L10n.current.exit),
-            ),
-            TextButton(
-              onPressed: () {
-                permission.request()
-                    .isGranted
-                    .then((value) {
-                  if (value) {
-                    Navigator.pop(contextD);
-                  }
-                });
-              },
-              child: Text(L10n.current.ok),
-            ),
-          ],
-        ),
-      );
-
-  void _cannotRun(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => CustomDialog(
-        title: Text(L10n.current.exitTitle),
-        content: Text(L10n.current.exitContent),
-        actions: [
-          TextButton(
-            onPressed: () {
-              SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-            },
-            child: Text(L10n.current.ok),
-          ),
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    _permissionCheck(context);
-
     return Semantics(
       child: HomePage(),
     );

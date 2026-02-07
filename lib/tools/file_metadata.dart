@@ -3,16 +3,23 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:audio_metadata_reader/audio_metadata_reader.dart';
+import 'package:audio_metadata_reader/src/metadata/base.dart';
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:exif/exif.dart';
+import 'package:flut_renamer/tools/platform_channel.dart';
 import 'package:intl/intl.dart';
 
 import '../tools/ex_file.dart';
+import 'audio_metadata.dart';
 
 final metadataTagRegex = RegExp(r'\{([A-Za-z]+:[A-Za-z]+)\}');
 
 class FileMetadata {
   FileMetadata(this.file) {
+    if (Platform.isAndroid && file.path.startsWith('content://')) {
+      return;
+    }
+
     if (!file.existsSync()) {
       throw PathNotFoundException(file.path, const OSError());
     }
@@ -24,17 +31,20 @@ class FileMetadata {
 
   Future<void> init() async {
     if (!inited) {
-      _stat = await file.stat();
-
-      if (file is Directory) {
-        _bytes = Uint8List(0);
-        _exif = {};
+      if (Platform.isAndroid && file.path.startsWith('content://')) {
+        await _initFromSaf();
       } else {
-        _bytes = await (file as File).readAsBytes();
-        _exif = await readExifFromBytes(_bytes);
-        _metadata = readMetadata(file as File, getImage: false);
-      }
+        _stat = await file.stat();
 
+        if (file is Directory) {
+          _bytes = Uint8List(0);
+          _exif = {};
+        } else {
+          _bytes = await (file as File).readAsBytes();
+          _exif = await readExifFromBytes(_bytes);
+          _audioMetadata = readAllMetadata(file as File, getImage: false);
+        }
+      }
       inited = true;
     }
   }
@@ -43,8 +53,9 @@ class FileMetadata {
   late FileStat _stat;
   late Uint8List _bytes;
   late Map<String, IfdTag> _exif;
-  late AudioMetadata? _metadata;
+  late ParserTag? _audioMetadata;
   bool inited = false;
+  late String androidRealName;
 
   static final _key = utf8.encode('renamer');
   static final _date = DateFormat('y-MM-d');
@@ -109,27 +120,27 @@ class FileMetadata {
       case 'Photo:Copyright':
         return (_exif['Image Copyright'] ?? '').toString();
       case 'Music:AlbumName':
-        return (_metadata?.album ?? '');
+        return (_audioMetadata?.album ?? '');
       // case 'Music:AlbumArtist':
       //   return (_metadata?.artist ?? '');
       // case 'Music:AlbumLength':
       //   return (_metadata. ?? '').toString();
       case 'Music:Year':
-        return (_metadata?.year?.year ?? '').toString();
+        return (_audioMetadata?.year?.year ?? '').toString();
       case 'Music:TrackDuration':
-        return (_formatDuration(_metadata?.duration) ?? '').toString();
+        return (_formatDuration(_audioMetadata?.duration) ?? '').toString();
       case 'Music:TrackName':
-        return (_metadata?.title ?? '').toString();
+        return (_audioMetadata?.title ?? '').toString();
       // case 'Music:TrackArtist':
       //   return (_metadata.artist ?? '');
       case 'Music:TrackNumber':
-        return (_metadata?.trackNumber ?? '').toString();
+        return (_audioMetadata?.trackNumber ?? '').toString();
       case 'Music:DiscNumber':
-        return (_metadata?.discNumber ?? '').toString();
+        return (_audioMetadata?.discNumber ?? '').toString();
       case 'Music:Genres':
-        return (_metadata?.genres.join(',') ?? '').toString();
+        return (_audioMetadata?.genres.join(',') ?? '').toString();
       case 'Music:Author':
-        return (_metadata?.artist ?? '');
+        return (_audioMetadata?.trackArtist ?? '');
       // case 'Music:Writer':
       //   return (_metadata?.writerName ?? '');
       default:
@@ -235,4 +246,71 @@ class FileMetadata {
       return '${dur.inMilliseconds}ms';
     }
   }
+
+  Future<void> _initFromSaf() async {
+    final metaMap = await PlatformFilePicker.getMetaData(file.path);
+    androidRealName = (metaMap?['name'] as String?) ?? "unknown";
+    
+    final now = DateTime.now();
+
+    final modified = metaMap != null && metaMap['modified'] != null
+        ? DateTime.fromMillisecondsSinceEpoch(metaMap['modified'] as int)
+        : now;
+
+    _stat = _FileStat(
+      modified: modified,
+      changed: modified,
+      accessed: now,
+      size: metaMap != null && metaMap['size'] != null ? metaMap['size'] as int : 0,
+    );
+
+    final fetchedBytes = await PlatformFilePicker.readFile(file.path);
+    if (fetchedBytes == null) {
+      _bytes = Uint8List(0);
+      _exif = {};
+      return;
+    }
+    _bytes = fetchedBytes;
+
+    _exif = await readExifFromBytes(_bytes);
+
+    try {
+      final tempDir = Directory.systemTemp;
+      final tempFile = File('${tempDir.path}/temp_${DateTime.now().millisecondsSinceEpoch}');
+      await tempFile.writeAsBytes(_bytes);
+
+      _audioMetadata = readAllMetadata(tempFile, getImage: false);
+
+      await tempFile.delete();
+    } catch (e) {
+      _audioMetadata = null;
+    }
+  }
+}
+
+class _FileStat implements FileStat {
+  @override
+  final DateTime changed;
+  @override
+  final DateTime modified;
+  @override
+  final DateTime accessed;
+  @override
+  final int size;
+
+  _FileStat({
+    required this.changed,
+    required this.modified,
+    required this.accessed,
+    required this.size,
+  });
+
+  @override
+  FileSystemEntityType get type => FileSystemEntityType.file;
+
+  @override
+  String modeString() => "rwxrwxrwx";
+
+  @override
+  int get mode => 0;
 }

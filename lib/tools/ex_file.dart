@@ -52,9 +52,16 @@ extension ExFile on FileSystemEntity {
   String get newPath => p.join(directory, newName);
 
   static final ExtFieldHandler<FileMetadata> _metadataHandler = ExtFieldHandler();
-  FileMetadata? get parser => _metadataHandler.getValue(path);
-  set parser(FileMetadata? metadata) => _metadataHandler.setValue(path, parser);
-  static void clearParsers() => _metadataHandler.clearValues();
+  FileMetadata? get metadata => _metadataHandler.getValue(path);
+  void initMetadata() async {
+    if (metadata == null) {
+      _metadataHandler.setValue(path, FileMetadata(this));
+    }
+    if (!metadata!.inited) {
+      await metadata!.init();
+    }
+  }
+  static void clearMetadata() => _metadataHandler.clearValues();
 
   String fileOrDir([bool returnLink=false]) {
     FileSystemEntity file = this;
