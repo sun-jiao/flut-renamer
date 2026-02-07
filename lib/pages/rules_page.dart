@@ -96,11 +96,11 @@ class RulesPageState extends State<RulesPage> {
                 }[obj]!,
                 semanticsAppendix: L10n.current.semanticsRuleDropdownButton,
               ),
-              ElevatedButton(
+              TextButton(
                 onPressed: showRuleDialog,
                 child: Text(L10n.current.addRule),
               ),
-              ElevatedButton(
+              TextButton(
                 onPressed: () {
                   setState(() {
                     _rules.clear();

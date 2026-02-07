@@ -350,7 +350,7 @@ class FilesPageState extends State<FilesPage> {
                 ),
               ),
               box,
-              ElevatedButton(
+              TextButton(
                 onPressed: addFileFromPicker,
                 child: Text(L10n.current.addFile),
               ),

@@ -32,7 +32,7 @@ class FileMetadata {
       } else {
         _bytes = await (file as File).readAsBytes();
         _exif = await readExifFromBytes(_bytes);
-        _metadata = await readMetadata(file as File, getImage: false);
+        _metadata = readMetadata(file as File, getImage: false);
       }
 
       inited = true;
