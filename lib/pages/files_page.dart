@@ -133,6 +133,8 @@ class FilesPageState extends State<FilesPage> {
       widget.resetRules.call();
     }
 
+    await file.initMetadata();
+
     late final String filename;
 
     if (Platform.isAndroid && file.path.startsWith('content://')) {
@@ -174,8 +176,6 @@ class FilesPageState extends State<FilesPage> {
       );
     }
 
-    file.initMetadata();
-
     late final Widget content;
 
     if (isNew) {
@@ -191,11 +191,21 @@ class FilesPageState extends State<FilesPage> {
         },
       );
     } else if (Platform.isAndroid && file.path.startsWith('content://')) {
-      content = getRowText(file.metadata!.androidRealName, null);
+      content = FutureBuilder(
+        future: file.initMetadata(),
+        builder: (context, snap) {
+          if ((snap.connectionState == ConnectionState.active ||
+              snap.connectionState == ConnectionState.done) &&
+              (!snap.hasError)) {
+            return getRowText(file.metadata!.androidRealName, file.error);
+          }
+          return const LinearProgressIndicator();
+        },
+      );
     } else {
       content = getRowText(file.name, null);
     }
-
+    file.initMetadata();
     return TableCell(
       child: content,
     );

@@ -53,7 +53,7 @@ extension ExFile on FileSystemEntity {
 
   static final ExtFieldHandler<FileMetadata> _metadataHandler = ExtFieldHandler();
   FileMetadata? get metadata => _metadataHandler.getValue(path);
-  void initMetadata() async {
+  Future<void> initMetadata() async {
     if (metadata == null) {
       _metadataHandler.setValue(path, FileMetadata(this));
     }
