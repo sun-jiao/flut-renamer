@@ -31,19 +31,19 @@ class FilesPage extends StatefulWidget {
   @override
   State<FilesPage> createState() => FilesPageState();
 
-  static void addFiles(Iterable<FileSystemEntity> files) {
+  static void addFiles(Iterable<FileEntity> files) {
     _files.addAll(files);
   }
 }
 
-final List<FileSystemEntity> _files = [];
+final List<FileEntity> _files = [];
 
 class FilesPageState extends State<FilesPage> {
   bool _dragging = false;
   String _filter = '';
 
   Future<void> addFileFromPicker() async {
-    late Iterable<FileSystemEntity> entities;
+    late Iterable<FileEntity> entities;
     if (Platform.isAndroid) {
       if (!Shared.doNotRemindAgain) {
         await _remindDialog(context);
@@ -61,7 +61,7 @@ class FilesPageState extends State<FilesPage> {
       }
 
       if (paths == null || paths.isEmpty) return;
-      entities = paths.map((e) => e.toString()).map((e) => File(e));
+      entities = paths.map((e) => e.toString()).map((e) => FileEntity(File(e)));
     } else if (Platform.isIOS) {
       if (!Shared.doNotRemindAgain) {
         final iosOK = await _remindDialog(context);
@@ -84,13 +84,13 @@ class FilesPageState extends State<FilesPage> {
         return;
       }
 
-      entities = files.skipWhile((e) => e == null).map((e) => e.toString()).map((e) => e.toFileSystemEntity());
+      entities = files.skipWhile((e) => e == null).map((e) => e.toString()).map((e) => e.toFileEntity());
     } else {
-      FilePickerResult? result = await FilePicker.pickFiles(allowMultiple: true);
+      FilePickerResult? result = await FilePicker.pickFiles();
       if (result != null) {
         entities = result.files
             .where((e1) => e1.path != null && _files.every((e2) => e1.path != e2.path))
-            .map((e) => e.toFileSystemEntity());
+            .map((e) => e.toFileEntity());
       } else {
         return;
       }
@@ -128,7 +128,7 @@ class FilesPageState extends State<FilesPage> {
 
   void update() => setState(() {});
 
-  Future<void> getNewName(FileSystemEntity file) async {
+  Future<void> getNewName(FileEntity file) async {
     if (file == _files.first) {
       widget.resetRules.call();
     }
@@ -145,7 +145,7 @@ class FilesPageState extends State<FilesPage> {
 
     try {
       file.newName = await widget.getNewName(filename, file.metadata!);
-      if (file.newName != filename && ((await File(file.newPath).exists()) || file.newNameDuplicate)) {
+      if (file.newName != filename && ((await File(file.newPath).exists()) || file.isNewNameDuplicate(_files..remove(file)))) {
         file.error = L10n.current.fileAlreadyExists;
         return;
       }
@@ -159,17 +159,17 @@ class FilesPageState extends State<FilesPage> {
     file.error = null;
   }
 
-  List<FileSystemEntity> _filteredList() {
+  List<FileEntity> _filteredList() {
     return _files
         .where(
           (element) =>
-              element.name.toString().toLowerCase().contains(_filter.toLowerCase()) &&
-              Shared.fileOrDir.contains(element.fileOrDir()),
-        )
+      element.name.toString().toLowerCase().contains(_filter.toLowerCase()) &&
+          Shared.fileOrDir.contains(element.fileOrDir()),
+    )
         .toList();
   }
 
-  TableCell _rowTextCell(FileSystemEntity file, {bool isNew = false}) {
+  TableCell _rowTextCell(FileEntity file, {bool isNew = false}) {
     if (!(Platform.isAndroid && file.path.startsWith('content://')) && !file.existsSync()) {
       return TableCell(
         child: getRowText(L10n.current.fileNotExist, null),
@@ -238,7 +238,7 @@ class FilesPageState extends State<FilesPage> {
     final fileListColors = Theme.of(context).extension<FileListColors>()!;
     return List.generate(
       filteredList.length,
-      (index) => TableRow(
+          (index) => TableRow(
         decoration: BoxDecoration(
           color: index % 2 == 0 ? fileListColors.primaryColor : fileListColors.secondaryColor,
         ),
@@ -262,7 +262,7 @@ class FilesPageState extends State<FilesPage> {
               onPressed: () {
                 setState(() {
                   _files.removeWhere(
-                    (element) => element.path == filteredList[index].path,
+                        (element) => element.path == filteredList[index].path,
                   );
                 });
               },
@@ -275,70 +275,72 @@ class FilesPageState extends State<FilesPage> {
   }
 
   List<TableRow> _headerRow() => [
-        TableRow(
-          decoration: BoxDecoration(
-            color: Theme.of(context).scaffoldBackgroundColor,
+    TableRow(
+      decoration: BoxDecoration(
+        color: Theme.of(context).scaffoldBackgroundColor,
+      ),
+      children: [
+        TableCell(
+          child: Tooltip(
+            message: _files.isNotEmpty && _files.every((element) => element.selected)
+                ? L10n.current.cancelAll
+                : L10n.current.selectAll,
+            child: Checkbox(
+              value: _files.isNotEmpty && _files.every((element) => element.selected),
+              onChanged: (_) {
+                setState(() {
+                  if (_files.every((element) => element.selected)) {
+                    for (var element in _files) {
+                      element.selected = false;
+                    }
+                  } else {
+                    for (var element in _files) {
+                      element.selected = true;
+                    }
+                  }
+                });
+              },
+            ),
           ),
-          children: [
-            TableCell(
-              child: Tooltip(
-                message: _files.isNotEmpty && _files.every((element) => element.selected)
-                    ? L10n.current.cancelAll
-                    : L10n.current.selectAll,
-                child: Checkbox(
-                  value: _files.isNotEmpty && _files.every((element) => element.selected),
-                  onChanged: (_) {
-                    setState(() {
-                      if (_files.every((element) => element.selected)) {
-                        ExFile.clearSelections();
-                      } else {
-                        for (var element in _files) {
-                          element.selected = true;
-                        }
-                      }
-                    });
-                  },
-                ),
-              ),
-            ),
-            TableCell(
-              child: Center(
-                child: Text(L10n.current.currentName),
-              ),
-            ),
-            TableCell(
-              child: Center(
-                child: Text(L10n.current.newName),
-              ),
-            ),
-            TableCell(
-              child: Tooltip(
-                message: L10n.current.removeAll,
-                child: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      _files.clear();
-                    });
-                  },
-                  icon: const Icon(Icons.clear),
-                ),
-              ),
-            ),
-          ],
         ),
-      ];
+        TableCell(
+          child: Center(
+            child: Text(L10n.current.currentName),
+          ),
+        ),
+        TableCell(
+          child: Center(
+            child: Text(L10n.current.newName),
+          ),
+        ),
+        TableCell(
+          child: Tooltip(
+            message: L10n.current.removeAll,
+            child: IconButton(
+              onPressed: () {
+                setState(() {
+                  _files.clear();
+                });
+              },
+              icon: const Icon(Icons.clear),
+            ),
+          ),
+        ),
+      ],
+    ),
+  ];
 
   Widget _table(List<TableRow> children) => Table(
-        columnWidths: const <int, TableColumnWidth>{
-          0: IntrinsicColumnWidth(),
-          1: FlexColumnWidth(1.2),
-          2: FlexColumnWidth(1.5),
-          3: IntrinsicColumnWidth(),
-        },
-        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-        border: TableBorder.all(width: 24, color: Colors.transparent),
-        children: children,
-      );
+    columnWidths: const <int, TableColumnWidth>{
+      0: IntrinsicColumnWidth(),
+      1: FlexColumnWidth(1.2),
+      2: FlexColumnWidth(1.5),
+      3: IntrinsicColumnWidth(),
+    },
+    defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+    border: TableBorder.all(width: 24, color: Colors.transparent),
+    children: children,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -391,7 +393,7 @@ class FilesPageState extends State<FilesPage> {
             enable: !Platform.isIOS,
             onDragDone: (detail) async {
               for (var xFile in detail.files) {
-                final FileSystemEntity file = xFile.toFileSystemEntity();
+                final FileEntity file = xFile.toFileEntity();
 
                 if (_files.every((exist) => file.path != exist.path)) {
                   setState(() {

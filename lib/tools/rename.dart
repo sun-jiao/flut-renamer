@@ -9,8 +9,8 @@ import '../tools/ex_file.dart';
 import '../widget/custom_dialog.dart';
 import '../tools/platform_channel.dart';
 
-Future<FileSystemEntity?> rename(
-  FileSystemEntity file, {
+Future<FileEntity?> rename(
+  FileEntity file, {
   BuildContext? context,
 }) async {
   if (file.error != null) {
@@ -26,12 +26,13 @@ Future<FileSystemEntity?> rename(
     if (Platform.isAndroid && file.path.startsWith('content://')) {
       final newUriString = await PlatformFilePicker.rename(file.path, file.newName);
       if (newUriString != null) {
-        return File(newUriString);
+        return FileEntity(File(newUriString));
       } else {
         throw const FileSystemException("SAF rename returned null");
       }
     } else {
-      return await file.rename(file.newPath);
+      final renamedEntity = await file.entity.rename(file.newPath);
+      return FileEntity(renamedEntity);
     }
   } catch (e, s) {
     debugPrint(e.toString());
