@@ -6,11 +6,11 @@ import 'package:audio_metadata_reader/audio_metadata_reader.dart';
 import 'package:audio_metadata_reader/src/metadata/base.dart';
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:exif/exif.dart';
-import 'package:flut_renamer/tools/platform_channel.dart';
 import 'package:intl/intl.dart';
 
-import '../tools/ex_file.dart';
 import 'audio_metadata.dart';
+import 'ex_file.dart';
+import 'platform_channel.dart';
 
 final metadataTagRegex = RegExp(r'\{([A-Za-z]+:[A-Za-z]+)\}');
 
