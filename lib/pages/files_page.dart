@@ -86,7 +86,7 @@ class FilesPageState extends State<FilesPage> {
 
       entities = files.skipWhile((e) => e == null).map((e) => e.toString()).map((e) => e.toFileSystemEntity());
     } else {
-      FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true);
+      FilePickerResult? result = await FilePicker.pickFiles(allowMultiple: true);
       if (result != null) {
         entities = result.files
             .where((e1) => e1.path != null && _files.every((e2) => e1.path != e2.path))
