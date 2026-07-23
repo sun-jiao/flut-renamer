@@ -17,7 +17,6 @@ import '../entity/sharedpref.dart';
 import '../l10n/l10n.dart';
 import '../rules/rule.dart';
 import '../tools/rule_persistence.dart';
-import '../widget/custom_drop.dart';
 
 class RulesPage extends StatefulWidget {
   const RulesPage({super.key, required this.onRuleChanged});
@@ -134,14 +133,16 @@ class RulesPageState extends State<RulesPage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              CustomDrop<String>(
-                value: Shared.ruleName,
-                onChanged: (String? newValue) {
+              PopupMenuButton<String>(
+                icon: const Icon(Icons.add),
+                tooltip: L10n.current.addRule,
+                onSelected: (newValue) {
                   setState(() {
-                    Shared.ruleName = newValue!;
+                    Shared.ruleName = newValue;
                   });
+                  showRuleDialog();
                 },
-                items: const <String>[
+                itemBuilder: (BuildContext context) => <String>[
                   'Replace',
                   'Remove',
                   'Insert',
@@ -149,23 +150,33 @@ class RulesPageState extends State<RulesPage> {
                   'Rearrange',
                   'Transliterate',
                   'Truncate',
-                ],
-                tToStr: (obj) => {
-                  'Replace': L10n.current.replace,
-                  'Remove': L10n.current.remove,
-                  'Insert': L10n.current.insert,
-                  'Increment': L10n.current.increment,
-                  'Rearrange': L10n.current.rearrange,
-                  'Transliterate': L10n.current.transliterate,
-                  'Truncate': L10n.current.truncate,
-                }[obj]!,
-                semanticsAppendix: L10n.current.semanticsRuleDropdownButton,
+                ].map((String value) {
+                  return PopupMenuItem<String>(
+                    value: value,
+                    child: Text({
+                      'Replace': L10n.current.replace,
+                      'Remove': L10n.current.remove,
+                      'Insert': L10n.current.insert,
+                      'Increment': L10n.current.increment,
+                      'Rearrange': L10n.current.rearrange,
+                      'Transliterate': L10n.current.transliterate,
+                      'Truncate': L10n.current.truncate,
+                    }[value]!),
+                  );
+                }).toList(),
               ),
-              TextButton(
-                onPressed: showRuleDialog,
-                child: Text(L10n.current.addRule),
+              IconButton(
+                onPressed: _manualSaveRules,
+                icon: const Icon(Icons.save),
+                tooltip: L10n.current.saveRules,
               ),
-              TextButton(
+              IconButton(
+                onPressed: _manualLoadRules,
+                icon: const Icon(Icons.file_open),
+                tooltip: L10n.current.loadRules,
+              ),
+              const Spacer(),
+              IconButton(
                 onPressed: () {
                   setState(() {
                     _rules.clear();
@@ -173,27 +184,8 @@ class RulesPageState extends State<RulesPage> {
                   widget.onRuleChanged.call();
                   _saveTempRules();
                 },
-                child: Text(L10n.current.removeAll),
-              ),
-              PopupMenuButton<String>(
-                onSelected: (value) {
-                  if (value == 'save') {
-                    _manualSaveRules();
-                  } else if (value == 'load') {
-                    _manualLoadRules();
-                  }
-                },
-                itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                  PopupMenuItem<String>(
-                    value: 'save',
-                    child: Text(L10n.current.saveRules),
-                  ),
-                  PopupMenuItem<String>(
-                    value: 'load',
-                    child: Text(L10n.current.loadRules),
-                  ),
-                ],
-                icon: const Icon(Icons.more_vert),
+                icon: const Icon(Icons.delete),
+                tooltip: L10n.current.removeAll,
               ),
             ],
           ),
@@ -243,7 +235,7 @@ class RulesPageState extends State<RulesPage> {
                       widget.onRuleChanged.call();
                       _saveTempRules();
                     },
-                    icon: const Icon(Icons.clear),
+                    icon: const Icon(Icons.delete),
                   ),
                   onTap: () {
                     item.openDialog(

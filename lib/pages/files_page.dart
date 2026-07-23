@@ -267,7 +267,7 @@ class FilesPageState extends State<FilesPage> {
                   );
                 });
               },
-              icon: const Icon(Icons.clear),
+              icon: const Icon(Icons.delete),
             ),
           ),
         ],
@@ -323,7 +323,7 @@ class FilesPageState extends State<FilesPage> {
                   _files.clear();
                 });
               },
-              icon: const Icon(Icons.clear),
+              icon: const Icon(Icons.delete),
             ),
           ),
         ),
@@ -380,9 +380,10 @@ class FilesPageState extends State<FilesPage> {
                 ),
               ),
               box,
-              TextButton(
+              IconButton(
                 onPressed: addFileFromPicker,
-                child: Text(L10n.current.addFile),
+                icon: const Icon(Icons.add),
+                tooltip: L10n.current.addFile,
               ),
             ],
           ),
