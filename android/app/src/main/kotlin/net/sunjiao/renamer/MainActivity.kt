@@ -131,6 +131,8 @@ class MainActivity: FlutterActivity() {
             val uri = Uri.parse(uriString)
             val newUri = DocumentsContract.renameDocument(contentResolver, uri, newName)
             if (newUri != null) {
+                contentResolver.takePersistableUriPermission(newUri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
                 result.success(newUri.toString())
             } else {
                 result.error("RENAME_FAILED", "DocumentsContract returned null", null)
@@ -146,8 +148,7 @@ class MainActivity: FlutterActivity() {
         var name: String? = null
 
         try {
-            val proj = arrayOf(MediaStore.Images.Media.DATA)
-            contentResolver.query(uri, proj, null, null, null)?.use { cursor ->
+            contentResolver.query(uri, null, null, null, null)?.use { cursor ->
                 if (cursor.moveToFirst()) {
                     val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
                     if (nameIndex != -1) {
