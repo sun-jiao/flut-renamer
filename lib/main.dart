@@ -86,7 +86,7 @@ class RenamerApp extends StatelessWidget {
       ],
       theme: ThemeData(
         // fixed Chinese font rendering error on Windows
-        fontFamily: Platform.isWindows ? "微软雅黑" : null,
+        fontFamily: (Platform.isWindows && _appLocale.languageCode == "zh") ? "微软雅黑" : null,
         colorScheme: ColorScheme.fromSeed(
           brightness: Brightness.light,
           seedColor: const Color(0xff9cdce8),
@@ -102,7 +102,7 @@ class RenamerApp extends StatelessWidget {
       ),
       darkTheme: ThemeData(
         // fixed Chinese font rendering error on Windows
-        fontFamily: Platform.isWindows ? "微软雅黑" : null,
+        fontFamily: (Platform.isWindows && _appLocale.languageCode == "zh") ? "微软雅黑" : null,
         colorScheme: ColorScheme.fromSeed(
           brightness: Brightness.dark,
           seedColor: const Color(0xff26546e),

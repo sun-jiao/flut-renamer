@@ -52,6 +52,8 @@
   "filter": "Filter",
   "addFile": "Datei hinzufügen",
   "addFiles": "Bitte fügen Sie Dateien hinzu.",
+  "addFilesAndroid": "Aufgrund von Systemeinschränkungen können Dateien, die aus den meisten Tabs der Auswahl ausgewählte wurden, nicht umbenannt werden.\nDateien, die aus [Device Name] ausgewählt wurden, können im Allgemeinen umbenannt werden, die Ergebnisse können jedoch je nach Gerät variieren.",
+  "addedFilesCannotRename": "Einige Dateien können nicht umbenannt werden und wurden ignoriert.",
   "dragToAdd": "Ziehen Sie Dateien hierhin, um sie hinzuzufügen.",
   "dropToAdd": "Legen Sie Dateien hier ab, um sie hinzuzufügen.",
   "dragNotSupported": "Aufgrund von Systemsicherheitsbeschränkungen wird das Ziehen und Ablegen von Dateien aus dieser App nicht unterstützt.",

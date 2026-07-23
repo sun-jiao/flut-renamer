@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:toastification/toastification.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../l10n/l10n.dart';
 import 'file_metadata.dart';
 
 extension ExTextEditingController on TextEditingController {
@@ -14,13 +15,13 @@ extension ExTextEditingController on TextEditingController {
     for (final match in matches) {
       if (cursorPos > match.start && cursorPos < match.end) {
         if (Platform.isAndroid) {
-          Fluttertoast.showToast(msg: 'Do not insert a tag inside another tag.');
+          Fluttertoast.showToast(msg: L10n.current.insertTagInsideAnother);
         } else {
           toastification.show(
             context: context,
             backgroundColor: Theme.of(context).primaryColor,
             foregroundColor: Colors.white,
-            title: const Text('Do not insert a tag inside another tag.'),
+            title: Text(L10n.current.insertTagInsideAnother),
             autoCloseDuration: const Duration(seconds: 5),
           );
         }

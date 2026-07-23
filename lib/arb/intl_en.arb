@@ -52,6 +52,8 @@
   "filter": "Filter",
   "addFile": "Add file",
   "addFiles": "Add files",
+  "addFilesAndroid": "Due to system restrictions, files selected from most tabs in the picker cannot be renamed. \nFiles selected from [Device Name] can generally be renamed, though results may vary depending on the device.",
+  "addedFilesCannotRename": "Some files cannot be renamed and were ignored.",
   "dragToAdd": "Drag and drop to add files.",
   "dropToAdd": "Drop to add files.",
   "dragNotSupported": "Due to system security restriction, drag-drop files from this app is not supported.",

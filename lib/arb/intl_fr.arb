@@ -52,6 +52,8 @@
   "filter": "Filtrer",
   "addFile": "Ajouter un fichier",
   "addFiles": "Veuillez ajouter des fichiers.",
+  "addFilesAndroid": "En raison de restrictions système, les fichiers sélectionnés depuis la plupart des onglets du sélecteur ne peuvent pas être renommés.\nLes fichiers sélectionnés depuis [Device Name] peuvent généralement être renommés, bien que les résultats puissent varier selon l'appareil.",
+  "addedFilesCannotRename": "Certains fichiers ne peuvent pas être renommés et ont été ignorés.",
   "dragToAdd": "Glissez et déposez des fichiers pour les ajouter.",
   "dropToAdd": "Déposez des fichiers ici.",
   "dragNotSupported": "En raison des restrictions de sécurité du système, le glisser-déposer de fichiers depuis cette application n'est pas pris en charge.",

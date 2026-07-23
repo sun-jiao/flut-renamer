@@ -52,6 +52,8 @@
   "filter": "筛选",
   "addFile": "添加文件",
   "addFiles": "请添加文件。",
+  "addFilesAndroid": "由于新版Android系统的限制，从文件选择器中大多数标签页选择的文件无法被重命名。从[设备名称]中选择的文件一般而言可以被正确地重命名，但亦可能存在设备差异。",
+  "addedFilesCannotRename": "部分文件无法重命名，已忽略。",
   "dragToAdd": "拖放文件进行添加。",
   "dropToAdd": "在此处释放文件。",
   "dragNotSupported": "由于系统安全限制，我们无法重命名从该应用拖放的文件。",

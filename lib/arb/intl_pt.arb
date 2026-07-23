@@ -52,6 +52,8 @@
   "filter": "Filtrar",
   "addFile": "Adicionar arquivo",
   "addFiles": "Por favor, adicione arquivos.",
+  "addFilesAndroid": "Devido a restrições do sistema, os arquivos selecionados na maioria das abas do seletor não podem ser renomeados.\nOs arquivos selecionados de [Device Name] geralmente podem ser renomeados, embora os resultados possam variar dependendo do dispositivo.",
+  "addedFilesCannotRename": "Alguns arquivos não podem ser renomeados e foram ignorados.",
   "dragToAdd": "Arraste e solte arquivos para adicionar.",
   "dropToAdd": "Solte os arquivos aqui para adicionar.",
   "dragNotSupported": "Devido a restrições de segurança do sistema, não é suportado arrastar e soltar arquivos desta aplicação.",

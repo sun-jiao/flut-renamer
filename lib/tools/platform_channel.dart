@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flut_renamer/l10n/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -35,13 +36,13 @@ class PlatformFilePicker {
 
       if (hasUnsupportedFiles && context.mounted) {
         if (Platform.isAndroid) {
-          Fluttertoast.showToast(msg: 'Some files cannot be renamed and were ignored.');
+          Fluttertoast.showToast(msg: L10n.current.addedFilesCannotRename);
         } else {
           toastification.show(
             context: context,
             backgroundColor: Theme.of(context).primaryColor,
             foregroundColor: Colors.white,
-            title: const Text('Some files cannot be renamed and were ignored.'),
+            title: Text(L10n.current.addedFilesCannotRename),
             autoCloseDuration: const Duration(seconds: 5),
           );
         }

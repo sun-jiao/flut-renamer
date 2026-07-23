@@ -391,7 +391,7 @@ class FilesPageState extends State<FilesPage> {
         _table(_headerRow()),
         Expanded(
           child: DropTarget(
-            enable: !Platform.isIOS,
+            enable: !(Platform.isIOS || Platform.isAndroid),
             onDragDone: (detail) async {
               for (var xFile in detail.files) {
                 final FileEntity file = xFile.toFileEntity();
@@ -428,7 +428,7 @@ class FilesPageState extends State<FilesPage> {
                     )
                   else if (!_dragging)
                     Center(
-                      child: Text(Platform.isIOS ? L10n.current.addFiles : L10n.current.dragToAdd),
+                      child: Text(Platform.isIOS ? L10n.current.addFiles : (Platform.isAndroid ? L10n.current.addFilesAndroid: L10n.current.dragToAdd)),
                     ),
                   if (_dragging)
                     Container(
