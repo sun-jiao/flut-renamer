@@ -165,6 +165,16 @@ class RulesPageState extends State<RulesPage> {
                 onPressed: showRuleDialog,
                 child: Text(L10n.current.addRule),
               ),
+              TextButton(
+                onPressed: () {
+                  setState(() {
+                    _rules.clear();
+                  });
+                  widget.onRuleChanged.call();
+                  _saveTempRules();
+                },
+                child: Text(L10n.current.removeAll),
+              ),
               PopupMenuButton<String>(
                 onSelected: (value) {
                   if (value == 'save') {
@@ -184,16 +194,6 @@ class RulesPageState extends State<RulesPage> {
                   ),
                 ],
                 icon: const Icon(Icons.more_vert),
-              ),
-              TextButton(
-                onPressed: () {
-                  setState(() {
-                    _rules.clear();
-                  });
-                  widget.onRuleChanged.call();
-                  _saveTempRules();
-                },
-                child: Text(L10n.current.removeAll),
               ),
             ],
           ),
