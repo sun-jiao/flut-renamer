@@ -129,6 +129,25 @@ class MainActivity: FlutterActivity() {
     private fun renameDocument(uriString: String, newName: String, result: MethodChannel.Result) {
         try {
             val uri = Uri.parse(uriString)
+            
+            // Check if document supports renaming
+            var supportsRename = false
+            try {
+                contentResolver.query(uri, arrayOf(DocumentsContract.Document.COLUMN_FLAGS), null, null, null)?.use { cursor ->
+                    if (cursor.moveToFirst()) {
+                        val flags = cursor.getInt(0)
+                        supportsRename = (flags and DocumentsContract.Document.FLAG_SUPPORTS_RENAME) != 0
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("Renamer", "Failed to check rename support for $uriString", e)
+            }
+
+            if (!supportsRename) {
+                // Fallback: try renaming anyway, some providers might not set the flag correctly
+                Log.w("Renamer", "Document might not support renaming: $uriString")
+            }
+
             val newUri = DocumentsContract.renameDocument(contentResolver, uri, newName)
             if (newUri != null) {
                 contentResolver.takePersistableUriPermission(newUri,
@@ -138,7 +157,8 @@ class MainActivity: FlutterActivity() {
                 result.error("RENAME_FAILED", "DocumentsContract returned null", null)
             }
         } catch (e: Exception) {
-            result.error("RENAME_ERROR", e.localizedMessage, null)
+            Log.e("Renamer", "Rename error for $uriString", e)
+            result.error("RENAME_ERROR", "${e.javaClass.simpleName}: ${e.localizedMessage}", null)
         }
     }
 
