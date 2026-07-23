@@ -8,6 +8,7 @@ import '../l10n/l10n.dart';
 import '../tools/ex_file.dart';
 import '../widget/custom_dialog.dart';
 import '../tools/platform_channel.dart';
+import '../tools/logger.dart';
 
 Future<FileEntity?> rename(
     FileEntity file, {
@@ -21,6 +22,9 @@ Future<FileEntity?> rename(
     return file;
   }
 
+  final oldPath = file.path;
+  final newPath = file.newPath;
+
   try {
     file.newName = replaceSpecialCharacters(file.newName);
     if (Platform.isAndroid && file.path.startsWith('content://')) {
@@ -28,12 +32,14 @@ Future<FileEntity?> rename(
       if (newUriString != null) {
         final newFileEntity = FileEntity(File(newUriString));
         newFileEntity.selected = file.selected;
+        Logger().logRename(oldPath, newUriString);
         return newFileEntity;
       } else {
         throw FileSystemException("SAF rename returned null for ${file.path}");
       }
     } else {
       final renamedEntity = await file.entity.rename(file.newPath);
+      Logger().logRename(oldPath, newPath);
       return FileEntity(renamedEntity);
     }
   } catch (e, s) {

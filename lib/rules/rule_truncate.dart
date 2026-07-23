@@ -63,5 +63,29 @@ class RuleTruncate implements Rule {
   }
 
   @override
+  Map<String, dynamic> toMap() {
+    return {
+      'type': 'Truncate',
+      'index1': index1,
+      'index2': index2,
+      'i1toEnd': i1toEnd,
+      'i2toEnd': i2toEnd,
+      'ignoreExtension': ignoreExtension,
+      'keepBetween': keepBetween,
+    };
+  }
+
+  factory RuleTruncate.fromMap(Map<dynamic, dynamic> map) {
+    return RuleTruncate(
+      map['index1'] as int,
+      map['index2'] as int,
+      map['i1toEnd'] as bool,
+      map['i2toEnd'] as bool,
+      map['ignoreExtension'] as bool,
+      map['keepBetween'] as bool,
+    );
+  }
+
+  @override
   void openDialog(BuildContext context, Function(Rule rule) onSave) => showTruncateDialog(context, onSave, this);
 }

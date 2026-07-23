@@ -168,6 +168,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "keepCharacters": MessageLookupByLibrary.simpleMessage("保留二者之间的字符"),
     "language": MessageLookupByLibrary.simpleMessage("语言："),
     "limit": MessageLookupByLibrary.simpleMessage("次数"),
+    "loadRules": MessageLookupByLibrary.simpleMessage("加载规则"),
+    "logEmpty": MessageLookupByLibrary.simpleMessage("日志为空。"),
     "lowercaseAppName": MessageLookupByLibrary.simpleMessage("flut renamer"),
     "me": MessageLookupByLibrary.simpleMessage("黑山语"),
     "metadataParserNotProvided": MessageLookupByLibrary.simpleMessage(
@@ -244,6 +246,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "规则是按顺序执行的，点击规则可以重新编辑，按住左侧的“=”按钮并拖动即可对规则进行排序。",
     ),
     "save": MessageLookupByLibrary.simpleMessage("保存"),
+    "saveRules": MessageLookupByLibrary.simpleMessage("保存规则"),
     "select": MessageLookupByLibrary.simpleMessage("选择"),
     "selectAll": MessageLookupByLibrary.simpleMessage("全选"),
     "semanticSwitchNumberToStartAndToEnd": m5,
@@ -290,5 +293,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "truncate": MessageLookupByLibrary.simpleMessage("截取"),
     "truncateToString": m12,
     "ua": MessageLookupByLibrary.simpleMessage("乌克兰语"),
+    "viewLog": MessageLookupByLibrary.simpleMessage("查看日志"),
   };
 }

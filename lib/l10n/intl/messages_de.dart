@@ -222,6 +222,8 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "language": MessageLookupByLibrary.simpleMessage("Sprache:"),
     "limit": MessageLookupByLibrary.simpleMessage("Limit"),
+    "loadRules": MessageLookupByLibrary.simpleMessage("Regeln laden"),
+    "logEmpty": MessageLookupByLibrary.simpleMessage("Protokoll ist leer."),
     "lowercaseAppName": MessageLookupByLibrary.simpleMessage("flut renamer"),
     "me": MessageLookupByLibrary.simpleMessage("Montenegrinisch"),
     "metadataParserNotProvided": MessageLookupByLibrary.simpleMessage(
@@ -352,6 +354,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Regeln werden nacheinander ausgeführt. Klicken Sie auf eine Regel, um sie zu bearbeiten. Halten Sie die \'=\'-Taste auf der linken Seite gedrückt und ziehen Sie sie, um die Regeln zu sortieren.",
     ),
     "save": MessageLookupByLibrary.simpleMessage("Speichern"),
+    "saveRules": MessageLookupByLibrary.simpleMessage("Regeln speichern"),
     "select": MessageLookupByLibrary.simpleMessage("Auswählen"),
     "selectAll": MessageLookupByLibrary.simpleMessage("Alle auswählen"),
     "semanticSwitchNumberToStartAndToEnd": m5,
@@ -410,5 +413,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "truncate": MessageLookupByLibrary.simpleMessage("Kürzen"),
     "truncateToString": m12,
     "ua": MessageLookupByLibrary.simpleMessage("Ukrainisch"),
+    "viewLog": MessageLookupByLibrary.simpleMessage("Protokoll anzeigen"),
   };
 }

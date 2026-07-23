@@ -213,6 +213,8 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "language": MessageLookupByLibrary.simpleMessage("Dil:"),
     "limit": MessageLookupByLibrary.simpleMessage("Sınır"),
+    "loadRules": MessageLookupByLibrary.simpleMessage("Kuralları Yükle"),
+    "logEmpty": MessageLookupByLibrary.simpleMessage("Günlük boş."),
     "lowercaseAppName": MessageLookupByLibrary.simpleMessage("flut renamer"),
     "me": MessageLookupByLibrary.simpleMessage("Karadağca"),
     "metadataParserNotProvided": MessageLookupByLibrary.simpleMessage(
@@ -337,6 +339,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Kurallar sırayla uygulanır. Bir kuralı düzenlemek için tıklayın. Kuralları sıralamak için sol taraftaki \'=\' düğmesini basılı tutun ve sürükleyin.",
     ),
     "save": MessageLookupByLibrary.simpleMessage("Kaydet"),
+    "saveRules": MessageLookupByLibrary.simpleMessage("Kuralları Kaydet"),
     "select": MessageLookupByLibrary.simpleMessage("Seç"),
     "selectAll": MessageLookupByLibrary.simpleMessage("Tümünü Seç"),
     "semanticSwitchNumberToStartAndToEnd": m5,
@@ -394,5 +397,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "truncate": MessageLookupByLibrary.simpleMessage("Kırp"),
     "truncateToString": m12,
     "ua": MessageLookupByLibrary.simpleMessage("Ukraynaca"),
+    "viewLog": MessageLookupByLibrary.simpleMessage("Günlüğü Görüntüle"),
   };
 }

@@ -82,5 +82,31 @@ class RuleReplace implements Rule {
   }
 
   @override
+  Map<String, dynamic> toMap() {
+    return {
+      'type': 'Replace',
+      'targetString': targetString,
+      'replacementString': replacementString,
+      'replaceLimit': replaceLimit,
+      'withMetadata': withMetadata,
+      'caseSensitive': caseSensitive,
+      'isRegex': isRegex,
+      'ignoreExtension': ignoreExtension,
+    };
+  }
+
+  factory RuleReplace.fromMap(Map<dynamic, dynamic> map) {
+    return RuleReplace(
+      map['targetString'] as String,
+      map['replacementString'] as String,
+      map['replaceLimit'] as int,
+      map['withMetadata'] as bool,
+      map['caseSensitive'] as bool,
+      map['isRegex'] as bool,
+      map['ignoreExtension'] as bool,
+    );
+  }
+
+  @override
   void openDialog(BuildContext context, Function(Rule rule) onSave) => showReplaceDialog(context, onSave, this);
 }

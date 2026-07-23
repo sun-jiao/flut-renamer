@@ -1,4 +1,10 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:yaml_writer/yaml_writer.dart';
 
 import '../dialogs/transliterate_dialog.dart';
 import '../dialogs/increment_dialog.dart';
@@ -10,6 +16,7 @@ import '../dialogs/insert_dialog.dart';
 import '../entity/sharedpref.dart';
 import '../l10n/l10n.dart';
 import '../rules/rule.dart';
+import '../tools/rule_persistence.dart';
 import '../widget/custom_drop.dart';
 
 class RulesPage extends StatefulWidget {
@@ -26,11 +33,33 @@ final List<Rule> _rules = [];
 class RulesPageState extends State<RulesPage> {
   List<Rule> get rules => _rules;
 
+  @override
+  void initState() {
+    super.initState();
+    _loadTempRules();
+  }
+
+  Future<void> _loadTempRules() async {
+    final rules = await RulePersistence.loadRules();
+    if (rules.isNotEmpty) {
+      setState(() {
+        _rules.clear();
+        _rules.addAll(rules);
+      });
+      widget.onRuleChanged.call();
+    }
+  }
+
+  Future<void> _saveTempRules() async {
+    await RulePersistence.saveRules(_rules);
+  }
+
   void clearRule() {
     if (Shared.removeRules) {
       setState(() {
         _rules.clear();
       });
+      _saveTempRules();
     }
   }
 
@@ -39,6 +68,42 @@ class RulesPageState extends State<RulesPage> {
       _rules.add(rule);
     });
     widget.onRuleChanged.call();
+    _saveTempRules();
+  }
+
+  void _manualSaveRules() async {
+    final List<Map<String, dynamic>> ruleMaps = _rules.map((r) => r.toMap()).toList();
+    final yamlWriter = YamlWriter();
+    final yamlString = yamlWriter.write(ruleMaps);
+    List<int> bomBytes = [0xEF, 0xBB, 0xBF];  // UTF-8 byte-order mark
+    List<int> contentBytes = utf8.encode(yamlString);
+
+    Uint8List bytes = Uint8List.fromList(bomBytes + contentBytes);
+
+    await FilePicker.saveFile(
+      dialogTitle: L10n.current.saveRules,
+      fileName: 'rules.yaml',
+      type: FileType.custom,
+      allowedExtensions: ['yaml', 'yml'],
+      bytes: bytes,
+    );
+  }
+
+  void _manualLoadRules() async {
+    FilePickerResult? result = await FilePicker.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['yaml', 'yml'],
+    );
+
+    if (result != null && result.files.single.path != null) {
+      final rules = await RulePersistence.loadRules(sourceFile: File(result.files.single.path!));
+      setState(() {
+        _rules.clear();
+        _rules.addAll(rules);
+      });
+      widget.onRuleChanged.call();
+      _saveTempRules();
+    }
   }
 
   void showRuleDialog() {
@@ -106,8 +171,29 @@ class RulesPageState extends State<RulesPage> {
                     _rules.clear();
                   });
                   widget.onRuleChanged.call();
+                  _saveTempRules();
                 },
                 child: Text(L10n.current.removeAll),
+              ),
+              PopupMenuButton<String>(
+                onSelected: (value) {
+                  if (value == 'save') {
+                    _manualSaveRules();
+                  } else if (value == 'load') {
+                    _manualLoadRules();
+                  }
+                },
+                itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                  PopupMenuItem<String>(
+                    value: 'save',
+                    child: Text(L10n.current.saveRules),
+                  ),
+                  PopupMenuItem<String>(
+                    value: 'load',
+                    child: Text(L10n.current.loadRules),
+                  ),
+                ],
+                icon: const Icon(Icons.more_vert),
               ),
             ],
           ),
@@ -137,6 +223,7 @@ class RulesPageState extends State<RulesPage> {
                   _rules.insert(newIndex, item);
                 });
                 widget.onRuleChanged.call();
+                _saveTempRules();
               },
               buildDefaultDragHandles: false,
               itemBuilder: (context, index) {
@@ -154,6 +241,7 @@ class RulesPageState extends State<RulesPage> {
                         _rules.removeAt(index);
                       });
                       widget.onRuleChanged.call();
+                      _saveTempRules();
                     },
                     icon: const Icon(Icons.clear),
                   ),
@@ -165,6 +253,7 @@ class RulesPageState extends State<RulesPage> {
                           _rules[index] = rule;
                         });
                         widget.onRuleChanged.call();
+                        _saveTempRules();
                       },
                     );
                   },

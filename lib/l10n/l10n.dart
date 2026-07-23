@@ -315,6 +315,26 @@ class L10n {
     );
   }
 
+  /// `View Log`
+  String get viewLog {
+    return Intl.message('View Log', name: 'viewLog', desc: '', args: []);
+  }
+
+  /// `Log is empty.`
+  String get logEmpty {
+    return Intl.message('Log is empty.', name: 'logEmpty', desc: '', args: []);
+  }
+
+  /// `Save Rules`
+  String get saveRules {
+    return Intl.message('Save Rules', name: 'saveRules', desc: '', args: []);
+  }
+
+  /// `Load Rules`
+  String get loadRules {
+    return Intl.message('Load Rules', name: 'loadRules', desc: '', args: []);
+  }
+
   /// `Add Rule`
   String get addRule {
     return Intl.message('Add Rule', name: 'addRule', desc: '', args: []);

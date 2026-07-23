@@ -9,6 +9,7 @@ import '../entity/sharedpref.dart';
 import '../l10n/l10n.dart';
 import '../rules/rule.dart';
 import '../tools/file_metadata.dart';
+import '../tools/logger.dart';
 import '../tools/responsive.dart';
 import '../widget/custom_dialog.dart';
 import 'rules_page.dart';
@@ -189,6 +190,37 @@ class _HomeToolBarState extends State<HomeToolBar> {
           tooltip: L10n.current.rating,
           icon: const Icon(Icons.star_rate_rounded),
           onPressed: ratingMyApp,
+        ),
+        IconButton(
+          tooltip: L10n.current.viewLog,
+          icon: const Icon(Icons.history_rounded),
+          onPressed: () async {
+            final logs = await Logger().readLogs();
+            if (!context.mounted) return;
+            showDialog(
+              context: context,
+              builder: (context) => CustomDialog(
+                  title: Text(L10n.current.viewLog),
+                  content: SizedBox(
+                    width: double.maxFinite,
+                    child: SelectionArea(
+                      child: SingleChildScrollView(
+                        child: Text(
+                          logs.isEmpty ? L10n.current.logEmpty : logs,
+                          style: const TextStyle(fontFamily: 'monospace', fontSize: 12),
+                        ),
+                      ),
+                    ),
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text(L10n.current.ok),
+                    ),
+                  ],
+                ),
+            );
+          },
         ),
         IconButton(
           tooltip: L10n.current.sourceCode,

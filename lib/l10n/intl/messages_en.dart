@@ -203,6 +203,8 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "language": MessageLookupByLibrary.simpleMessage("Language: "),
     "limit": MessageLookupByLibrary.simpleMessage("limit"),
+    "loadRules": MessageLookupByLibrary.simpleMessage("Load Rules"),
+    "logEmpty": MessageLookupByLibrary.simpleMessage("Log is empty."),
     "lowercaseAppName": MessageLookupByLibrary.simpleMessage("flut renamer"),
     "me": MessageLookupByLibrary.simpleMessage("Montenegrin"),
     "metadataParserNotProvided": MessageLookupByLibrary.simpleMessage(
@@ -333,6 +335,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Rules are executed sequentially. Click a rule to edit it. Hold the \'=\' button on the left and drag it to sort rules.",
     ),
     "save": MessageLookupByLibrary.simpleMessage("Save"),
+    "saveRules": MessageLookupByLibrary.simpleMessage("Save Rules"),
     "select": MessageLookupByLibrary.simpleMessage("Select"),
     "selectAll": MessageLookupByLibrary.simpleMessage("Select All"),
     "semanticNumberWithDirection": MessageLookupByLibrary.simpleMessage(
@@ -394,5 +397,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "truncate": MessageLookupByLibrary.simpleMessage("Truncate"),
     "truncateToString": m12,
     "ua": MessageLookupByLibrary.simpleMessage("Ukrainian"),
+    "viewLog": MessageLookupByLibrary.simpleMessage("View Log"),
   };
 }
