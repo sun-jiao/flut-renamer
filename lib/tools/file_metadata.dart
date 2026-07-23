@@ -42,7 +42,7 @@ class FileMetadata {
         } else {
           _bytes = await (file as File).readAsBytes();
           _exif = await readExifFromBytes(_bytes);
-          _audioMetadata = readAllMetadata(file as File, getImage: false);
+          _audioMetadata = _tryReadAudioMetadata(file as File);
         }
       }
       inited = true;
@@ -274,16 +274,20 @@ class FileMetadata {
 
     _exif = await readExifFromBytes(_bytes);
 
+    final tempDir = Directory.systemTemp;
+    final tempFile = File('${tempDir.path}/temp_${DateTime.now().millisecondsSinceEpoch}');
+    await tempFile.writeAsBytes(_bytes);
+
+    _audioMetadata = _tryReadAudioMetadata(tempFile);
+
+    await tempFile.delete();
+  }
+
+  ParserTag? _tryReadAudioMetadata(File file) {
     try {
-      final tempDir = Directory.systemTemp;
-      final tempFile = File('${tempDir.path}/temp_${DateTime.now().millisecondsSinceEpoch}');
-      await tempFile.writeAsBytes(_bytes);
-
-      _audioMetadata = readAllMetadata(tempFile, getImage: false);
-
-      await tempFile.delete();
-    } catch (e) {
-      _audioMetadata = null;
+      return readAllMetadata(file, getImage: false);
+    } catch (_) {
+      return null;
     }
   }
 }

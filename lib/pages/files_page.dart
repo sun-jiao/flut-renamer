@@ -145,7 +145,8 @@ class FilesPageState extends State<FilesPage> {
 
     try {
       file.newName = await widget.getNewName(filename, file.metadata!);
-      if (file.newName != filename && ((await File(file.newPath).exists()) || file.isNewNameDuplicate(_files..remove(file)))) {
+      if (file.newName != filename &&
+          ((await File(file.newPath).exists()) || file.isNewNameDuplicate(_files))) {
         file.error = L10n.current.fileAlreadyExists;
         return;
       }
