@@ -203,10 +203,12 @@ class _HomeToolBarState extends State<HomeToolBar> {
                   title: Text(L10n.current.viewLog),
                   content: SizedBox(
                     width: double.maxFinite,
-                    child: SingleChildScrollView(
-                      child: Text(
-                        logs.isEmpty ? L10n.current.logEmpty : logs,
-                        style: const TextStyle(fontFamily: 'monospace', fontSize: 12),
+                    child: SelectionArea(
+                      child: SingleChildScrollView(
+                        child: Text(
+                          logs.isEmpty ? L10n.current.logEmpty : logs,
+                          style: const TextStyle(fontFamily: 'monospace', fontSize: 12),
+                        ),
                       ),
                     ),
                   ),

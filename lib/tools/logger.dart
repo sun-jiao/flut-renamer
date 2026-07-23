@@ -7,6 +7,8 @@ class Logger {
   factory Logger() => _instance;
   Logger._internal();
 
+  Future<void>? _writeTask;
+
   Future<File> _getLogFile() async {
     final directory = await getApplicationDocumentsDirectory();
     final logDir = Directory('${directory.path}/logs');
@@ -17,10 +19,14 @@ class Logger {
   }
 
   Future<void> logRename(String oldPath, String newPath) async {
-    final file = await _getLogFile();
-    final timestamp = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
-    final logEntry = '[$timestamp] RENAME: "$oldPath" -> "$newPath"\n';
-    await file.writeAsString(logEntry, mode: FileMode.append);
+    final task = (_writeTask ?? Future.value()).then((_) async {
+      final file = await _getLogFile();
+      final timestamp = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+      final logEntry = '[$timestamp] RENAME: "$oldPath" -> "$newPath"\n';
+      await file.writeAsString(logEntry, mode: FileMode.append, flush: true);
+    });
+    _writeTask = task;
+    return task;
   }
 
   Future<String> getLogPath() async {
