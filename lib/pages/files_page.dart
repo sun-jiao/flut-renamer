@@ -57,7 +57,7 @@ class FilesPageState extends State<FilesPage> {
       if (Shared.fileOrDir == 'Directories') {
         paths = await PlatformFilePicker.dirAccess();
       } else {
-        paths = await PlatformFilePicker.fileAccess('');
+        paths = await PlatformFilePicker.fileAccess(context, '');
       }
 
       if (paths == null || paths.isEmpty) return;
@@ -79,7 +79,7 @@ class FilesPageState extends State<FilesPage> {
         await PlatformFilePicker.changeScopedAccess(dirs.first.toString(), true);
       }
 
-      final files = await PlatformFilePicker.fileAccess(dirs.first.toString());
+      final files = await PlatformFilePicker.fileAccess(context, dirs.first.toString());
       if (files == null) {
         return;
       }
@@ -462,20 +462,33 @@ class FilesPageState extends State<FilesPage> {
           ).then((value) {
             if (value == null) {
               noError = false;
-              setState(() {
-                file.error = L10n.current.renameFailed;
-              });
+              if (mounted) {
+                setState(() {
+                  file.error = L10n.current.renameFailed;
+                });
+              }
             } else if (remove) {
-              setState(() {
-                _files.remove(file);
-              });
+              if (mounted) {
+                setState(() {
+                  _files.remove(file);
+                });
+              }
 
               if (Platform.isIOS && !_files.any((e) => e.parent.path == file.parent.path)) {
                 PlatformFilePicker.changeScopedAccess(file.parent.path, false);
               }
             } else {
+              if (mounted) {
+                setState(() {
+                  _files[index] = value;
+                });
+              }
+            }
+          }).catchError((e) {
+            noError = false;
+            if (mounted) {
               setState(() {
-                _files[index] = value;
+                file.error = e.toString();
               });
             }
           }),

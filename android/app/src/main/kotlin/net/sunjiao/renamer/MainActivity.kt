@@ -14,6 +14,8 @@ import io.flutter.plugin.common.MethodChannel
 import java.io.File
 import android.provider.OpenableColumns
 import java.io.ByteArrayOutputStream
+import android.os.Handler
+import android.os.Looper
 
 class MainActivity: FlutterActivity() {
     private val CHANNEL = "net.sunjiao.renamer/picker"
@@ -31,6 +33,7 @@ class MainActivity: FlutterActivity() {
                         addCategory(Intent.CATEGORY_OPENABLE)
                         type = "*/*"
                         putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+                        addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
                     }
                     startActivityForResult(intent, REQUEST_CODE_OPEN_DOC, result)
                 }
@@ -97,47 +100,129 @@ class MainActivity: FlutterActivity() {
         }
 
         val resultList = mutableListOf<String>()
+        var hasUnsupportedFiles = false
 
         if (requestCode == REQUEST_CODE_OPEN_DOC) {
+            // get all selected URI
+            val uris = mutableListOf<Uri>()
             if (data.clipData != null) {
                 val count = data.clipData!!.itemCount
                 for (i in 0 until count) {
-                    val uri = data.clipData!!.getItemAt(i).uri
-                    contentResolver.takePersistableUriPermission(uri,
-                        Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-                    resultList.add(uri.toString())
+                    uris.add(data.clipData!!.getItemAt(i).uri)
                 }
             } else if (data.data != null) {
-                val uri = data.data!!
-                contentResolver.takePersistableUriPermission(uri,
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-                resultList.add(uri.toString())
+                uris.add(data.data!!)
+            }
+
+            // check all URIs
+            for (uri in uris) {
+                if (checkSupportsRename(uri)) {
+                    try {
+                        contentResolver.takePersistableUriPermission(
+                            uri,
+                            Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                        )
+                        resultList.add(uri.toString())
+                    } catch (e: Exception) {
+                        Log.e("Renamer", "Failed to take permission for $uri", e)
+                    }
+                } else {
+                    Log.w("Renamer", "Filtered unsupported document: $uri")
+                    hasUnsupportedFiles = true
+                }
             }
         } else if (requestCode == REQUEST_CODE_OPEN_TREE) {
             val treeUri = data.data
             if (treeUri != null) {
-                contentResolver.takePersistableUriPermission(treeUri,
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-                resultList.add(treeUri.toString())
+                if (checkSupportsRename(treeUri)) {
+                    try {
+                        contentResolver.takePersistableUriPermission(
+                            treeUri,
+                            Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                        )
+                        resultList.add(treeUri.toString())
+                    } catch (e: Exception) {
+                        Log.e("Renamer", "Failed to take permission for $treeUri", e)
+                    }
+                } else {
+                    Log.w("Renamer", "Filtered unsupported tree: $treeUri")
+                    hasUnsupportedFiles = true
+                }
             }
         }
 
-        pendingResult?.success(resultList)
+        val resultMap = mapOf(
+            "paths" to resultList,
+            "hasUnsupportedFiles" to hasUnsupportedFiles
+        )
+        pendingResult?.success(resultMap)
         pendingResult = null
     }
 
-    private fun renameDocument(uriString: String, newName: String, result: MethodChannel.Result) {
+    private fun checkSupportsRename(uri: Uri): Boolean {
+        var supportsRename = false
         try {
-            val uri = Uri.parse(uriString)
-            val newUri = DocumentsContract.renameDocument(contentResolver, uri, newName)
-            if (newUri != null) {
-                result.success(newUri.toString())
+            val docUri = if (DocumentsContract.isTreeUri(uri)) {
+                DocumentsContract.buildDocumentUriUsingTree(uri, DocumentsContract.getTreeDocumentId(uri))
             } else {
-                result.error("RENAME_FAILED", "DocumentsContract returned null", null)
+                uri
+            }
+
+            contentResolver.query(docUri, arrayOf(DocumentsContract.Document.COLUMN_FLAGS), null, null, null)?.use { cursor ->
+                if (cursor.moveToFirst()) {
+                    val flags = cursor.getInt(0)
+                    supportsRename = (flags and DocumentsContract.Document.FLAG_SUPPORTS_RENAME) != 0
+                }
             }
         } catch (e: Exception) {
-            result.error("RENAME_ERROR", e.localizedMessage, null)
+            Log.e("Renamer", "Failed to check rename support for $uri", e)
         }
+
+        return supportsRename
+    }
+
+    private fun renameDocument(uriString: String, newName: String, result: MethodChannel.Result) {
+        Log.d("Renamer", "renameDocument called for: $uriString to: $newName")
+
+        Thread {
+            try {
+                val originalUri = Uri.parse(uriString)
+
+                val documentUri = if (DocumentsContract.isTreeUri(originalUri)) {
+                    DocumentsContract.buildDocumentUriUsingTree(
+                        originalUri,
+                        DocumentsContract.getTreeDocumentId(originalUri)
+                    )
+                } else {
+                    originalUri
+                }
+
+                // Do renaming
+                val newUri = DocumentsContract.renameDocument(contentResolver, documentUri, newName)
+
+                // go back to main thread and return values
+                Handler(Looper.getMainLooper()).post {
+                    if (newUri != null) {
+                        Log.d("Renamer", "Rename success: $newUri")
+                        try {
+                            contentResolver.takePersistableUriPermission(newUri,
+                                Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                        } catch (e: Exception) {
+                            Log.e("Renamer", "Failed to take persistable permission for new URI", e)
+                        }
+                        result.success(newUri.toString())
+                    } else {
+                        Log.e("Renamer", "DocumentsContract.renameDocument returned null")
+                        result.error("RENAME_FAILED", "Provider returned null (May not support renaming, or name is invalid)", null)
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("Renamer", "Rename error for $uriString", e)
+                Handler(Looper.getMainLooper()).post {
+                    result.error("RENAME_ERROR", "${e.javaClass.simpleName}: ${e.localizedMessage}", null)
+                }
+            }
+        }.start()
     }
 
     private fun getMetaData(uriString: String, result: MethodChannel.Result) {
@@ -146,8 +231,7 @@ class MainActivity: FlutterActivity() {
         var name: String? = null
 
         try {
-            val proj = arrayOf(MediaStore.Images.Media.DATA)
-            contentResolver.query(uri, proj, null, null, null)?.use { cursor ->
+            contentResolver.query(uri, null, null, null, null)?.use { cursor ->
                 if (cursor.moveToFirst()) {
                     val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
                     if (nameIndex != -1) {

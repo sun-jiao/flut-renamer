@@ -10,15 +10,15 @@ import '../widget/custom_dialog.dart';
 import '../tools/platform_channel.dart';
 
 Future<FileEntity?> rename(
-  FileEntity file, {
-  BuildContext? context,
-}) async {
+    FileEntity file, {
+      BuildContext? context,
+    }) async {
   if (file.error != null) {
-    return null;
+    return file;
   }
 
   if (file.name == file.newName) {
-    return null;
+    return file;
   }
 
   try {
@@ -26,9 +26,11 @@ Future<FileEntity?> rename(
     if (Platform.isAndroid && file.path.startsWith('content://')) {
       final newUriString = await PlatformFilePicker.rename(file.path, file.newName);
       if (newUriString != null) {
-        return FileEntity(File(newUriString));
+        final newFileEntity = FileEntity(File(newUriString));
+        newFileEntity.selected = file.selected;
+        return newFileEntity;
       } else {
-        throw const FileSystemException("SAF rename returned null");
+        throw FileSystemException("SAF rename returned null for ${file.path}");
       }
     } else {
       final renamedEntity = await file.entity.rename(file.newPath);
@@ -75,9 +77,8 @@ Future<FileEntity?> rename(
         ),
       );
     }
+    return null;
   }
-
-  return null;
 }
 
 String replaceSpecialCharacters(String input) {
