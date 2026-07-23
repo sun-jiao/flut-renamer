@@ -1,4 +1,10 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:toastification/toastification.dart';
 
 class PlatformFilePicker {
   static const MethodChannel _channel =
@@ -13,14 +19,35 @@ class PlatformFilePicker {
     }
   }
 
-  static Future<List<Object?>?> fileAccess(String startPath) async {
+  static Future<List<String>?> fileAccess(BuildContext context, String startPath) async {
     try {
-      return await _channel.invokeMethod(
+      final Map<dynamic, dynamic>? result = await _channel.invokeMethod(
         'fileAccess',
         {
           'startPath': startPath,
         },
       );
+
+      if (result == null) return null;
+
+      final paths = (result['paths'] as List?)?.cast<String>() ?? [];
+      final hasUnsupportedFiles = result['hasUnsupportedFiles'] as bool? ?? false;
+
+      if (hasUnsupportedFiles && context.mounted) {
+        if (Platform.isAndroid) {
+          Fluttertoast.showToast(msg: 'Some files cannot be renamed and were ignored.');
+        } else {
+          toastification.show(
+            context: context,
+            backgroundColor: Theme.of(context).primaryColor,
+            foregroundColor: Colors.white,
+            title: const Text('Some files cannot be renamed and were ignored.'),
+            autoCloseDuration: const Duration(seconds: 5),
+          );
+        }
+      }
+
+      return paths;
     } on PlatformException {
       // TODO: show error message dialog
       rethrow;

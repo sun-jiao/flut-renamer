@@ -57,7 +57,7 @@ class FilesPageState extends State<FilesPage> {
       if (Shared.fileOrDir == 'Directories') {
         paths = await PlatformFilePicker.dirAccess();
       } else {
-        paths = await PlatformFilePicker.fileAccess('');
+        paths = await PlatformFilePicker.fileAccess(context, '');
       }
 
       if (paths == null || paths.isEmpty) return;
@@ -79,7 +79,7 @@ class FilesPageState extends State<FilesPage> {
         await PlatformFilePicker.changeScopedAccess(dirs.first.toString(), true);
       }
 
-      final files = await PlatformFilePicker.fileAccess(dirs.first.toString());
+      final files = await PlatformFilePicker.fileAccess(context, dirs.first.toString());
       if (files == null) {
         return;
       }

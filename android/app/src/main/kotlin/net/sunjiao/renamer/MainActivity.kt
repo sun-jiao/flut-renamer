@@ -33,6 +33,7 @@ class MainActivity: FlutterActivity() {
                         addCategory(Intent.CATEGORY_OPENABLE)
                         type = "*/*"
                         putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+                        addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
                     }
                     startActivityForResult(intent, REQUEST_CODE_OPEN_DOC, result)
                 }
@@ -99,33 +100,85 @@ class MainActivity: FlutterActivity() {
         }
 
         val resultList = mutableListOf<String>()
+        var hasUnsupportedFiles = false
 
         if (requestCode == REQUEST_CODE_OPEN_DOC) {
+            // get all selected URI
+            val uris = mutableListOf<Uri>()
             if (data.clipData != null) {
                 val count = data.clipData!!.itemCount
                 for (i in 0 until count) {
-                    val uri = data.clipData!!.getItemAt(i).uri
-                    contentResolver.takePersistableUriPermission(uri,
-                        Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-                    resultList.add(uri.toString())
+                    uris.add(data.clipData!!.getItemAt(i).uri)
                 }
             } else if (data.data != null) {
-                val uri = data.data!!
-                contentResolver.takePersistableUriPermission(uri,
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-                resultList.add(uri.toString())
+                uris.add(data.data!!)
+            }
+
+            // check all URIs
+            for (uri in uris) {
+                if (checkSupportsRename(uri)) {
+                    try {
+                        contentResolver.takePersistableUriPermission(
+                            uri,
+                            Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                        )
+                        resultList.add(uri.toString())
+                    } catch (e: Exception) {
+                        Log.e("Renamer", "Failed to take permission for $uri", e)
+                    }
+                } else {
+                    Log.w("Renamer", "Filtered unsupported document: $uri")
+                    hasUnsupportedFiles = true
+                }
             }
         } else if (requestCode == REQUEST_CODE_OPEN_TREE) {
             val treeUri = data.data
             if (treeUri != null) {
-                contentResolver.takePersistableUriPermission(treeUri,
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-                resultList.add(treeUri.toString())
+                if (checkSupportsRename(treeUri)) {
+                    try {
+                        contentResolver.takePersistableUriPermission(
+                            treeUri,
+                            Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                        )
+                        resultList.add(treeUri.toString())
+                    } catch (e: Exception) {
+                        Log.e("Renamer", "Failed to take permission for $treeUri", e)
+                    }
+                } else {
+                    Log.w("Renamer", "Filtered unsupported tree: $treeUri")
+                    hasUnsupportedFiles = true
+                }
             }
         }
 
-        pendingResult?.success(resultList)
+        val resultMap = mapOf(
+            "paths" to resultList,
+            "hasUnsupportedFiles" to hasUnsupportedFiles
+        )
+        pendingResult?.success(resultMap)
         pendingResult = null
+    }
+
+    private fun checkSupportsRename(uri: Uri): Boolean {
+        var supportsRename = false
+        try {
+            val docUri = if (DocumentsContract.isTreeUri(uri)) {
+                DocumentsContract.buildDocumentUriUsingTree(uri, DocumentsContract.getTreeDocumentId(uri))
+            } else {
+                uri
+            }
+
+            contentResolver.query(docUri, arrayOf(DocumentsContract.Document.COLUMN_FLAGS), null, null, null)?.use { cursor ->
+                if (cursor.moveToFirst()) {
+                    val flags = cursor.getInt(0)
+                    supportsRename = (flags and DocumentsContract.Document.FLAG_SUPPORTS_RENAME) != 0
+                }
+            }
+        } catch (e: Exception) {
+            Log.e("Renamer", "Failed to check rename support for $uri", e)
+        }
+
+        return supportsRename
     }
 
     private fun renameDocument(uriString: String, newName: String, result: MethodChannel.Result) {
@@ -142,22 +195,6 @@ class MainActivity: FlutterActivity() {
                     )
                 } else {
                     originalUri
-                }
-
-                var supportsRename = false
-                try {
-                    contentResolver.query(documentUri, arrayOf(DocumentsContract.Document.COLUMN_FLAGS), null, null, null)?.use { cursor ->
-                        if (cursor.moveToFirst()) {
-                            val flags = cursor.getInt(0)
-                            supportsRename = (flags and DocumentsContract.Document.FLAG_SUPPORTS_RENAME) != 0
-                        }
-                    }
-                } catch (e: Exception) {
-                    Log.e("Renamer", "Failed to check rename support", e)
-                }
-
-                if (!supportsRename) {
-                    Log.w("Renamer", "Document might not support renaming (flag not set): $uriString")
                 }
 
                 // Do renaming
