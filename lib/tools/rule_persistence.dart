@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:yaml/yaml.dart';
@@ -15,14 +16,14 @@ class RulePersistence {
     final List<Map<String, dynamic>> ruleMaps = rules.map((r) => r.toMap()).toList();
     final yamlWriter = YamlWriter();
     final yamlString = yamlWriter.write(ruleMaps);
-    await file.writeAsString(yamlString);
+    await file.writeAsString(yamlString, encoding: utf8);
   }
 
   static Future<List<Rule>> loadRules({File? sourceFile}) async {
     final file = sourceFile ?? await _getTempFile();
     if (!await file.exists()) return [];
 
-    final content = await file.readAsString();
+    final content = await file.readAsString(encoding: utf8);
     if (content.isEmpty) return [];
 
     final yamlData = loadYaml(content);

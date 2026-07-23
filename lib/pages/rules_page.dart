@@ -1,7 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:yaml_writer/yaml_writer.dart';
 
 import '../dialogs/transliterate_dialog.dart';
 import '../dialogs/increment_dialog.dart';
@@ -69,20 +72,25 @@ class RulesPageState extends State<RulesPage> {
   }
 
   void _manualSaveRules() async {
-    String? outputFile = await FilePicker.platform.saveFile(
+    final List<Map<String, dynamic>> ruleMaps = _rules.map((r) => r.toMap()).toList();
+    final yamlWriter = YamlWriter();
+    final yamlString = yamlWriter.write(ruleMaps);
+    List<int> bomBytes = [0xEF, 0xBB, 0xBF];  // UTF-8 byte-order mark
+    List<int> contentBytes = utf8.encode(yamlString);
+
+    Uint8List bytes = Uint8List.fromList(bomBytes + contentBytes);
+
+    await FilePicker.saveFile(
       dialogTitle: L10n.current.saveRules,
       fileName: 'rules.yaml',
       type: FileType.custom,
       allowedExtensions: ['yaml', 'yml'],
+      bytes: bytes,
     );
-
-    if (outputFile != null) {
-      await RulePersistence.saveRules(_rules, targetFile: File(outputFile));
-    }
   }
 
   void _manualLoadRules() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
+    FilePickerResult? result = await FilePicker.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['yaml', 'yml'],
     );
