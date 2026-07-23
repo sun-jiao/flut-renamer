@@ -427,8 +427,12 @@ class FilesPageState extends State<FilesPage> {
                       child: _table(_tableRows()),
                     )
                   else if (!_dragging)
-                    Center(
-                      child: Text(Platform.isIOS ? L10n.current.addFiles : (Platform.isAndroid ? L10n.current.addFilesAndroid: L10n.current.dragToAdd)),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Center(
+                        child: Text(Platform.isIOS ? L10n.current.addFiles :
+                        (Platform.isAndroid ? L10n.current.addFilesAndroid: L10n.current.dragToAdd)),
+                      ),
                     ),
                   if (_dragging)
                     Container(
