@@ -203,6 +203,8 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "language": MessageLookupByLibrary.simpleMessage("ภาษา:"),
     "limit": MessageLookupByLibrary.simpleMessage("จำกัด"),
+    "loadRules": MessageLookupByLibrary.simpleMessage("โหลดกฎ"),
+    "logEmpty": MessageLookupByLibrary.simpleMessage("บันทึกว่างเปล่า."),
     "lowercaseAppName": MessageLookupByLibrary.simpleMessage("flut renamer"),
     "me": MessageLookupByLibrary.simpleMessage("เมอร์เซเดีย"),
     "metadataParserNotProvided": MessageLookupByLibrary.simpleMessage(
@@ -323,6 +325,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "กฏถูกดำเนินการต่อเนื่องกัน. คลิกที่กฏเพื่อแก้ไข. กดปุ่ม \'=\' ทางซ้ายและลากเพื่อเรียงลำดับกฏ.",
     ),
     "save": MessageLookupByLibrary.simpleMessage("บันทึก"),
+    "saveRules": MessageLookupByLibrary.simpleMessage("บันทึกกฎ"),
     "select": MessageLookupByLibrary.simpleMessage("เลือก"),
     "selectAll": MessageLookupByLibrary.simpleMessage("เลือกทั้งหมด"),
     "semanticSwitchNumberToStartAndToEnd": m5,
@@ -381,5 +384,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "truncate": MessageLookupByLibrary.simpleMessage("ตัด"),
     "truncateToString": m12,
     "ua": MessageLookupByLibrary.simpleMessage("ยูเครน"),
+    "viewLog": MessageLookupByLibrary.simpleMessage("ดูบันทึก"),
   };
 }

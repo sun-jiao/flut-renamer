@@ -202,6 +202,8 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "language": MessageLookupByLibrary.simpleMessage("اللغة:"),
     "limit": MessageLookupByLibrary.simpleMessage("الحد"),
+    "loadRules": MessageLookupByLibrary.simpleMessage("تحميل القواعد"),
+    "logEmpty": MessageLookupByLibrary.simpleMessage("السجل فارغ."),
     "lowercaseAppName": MessageLookupByLibrary.simpleMessage("flut renamer"),
     "me": MessageLookupByLibrary.simpleMessage("المونتينيغرين"),
     "metadataParserNotProvided": MessageLookupByLibrary.simpleMessage(
@@ -330,6 +332,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "تُنفذ القواعد بترتيب متسلسل. انقر على قاعدة لتحريرها. اسحب زر \"=\" على اليسار واسحبه لترتيب القواعد.",
     ),
     "save": MessageLookupByLibrary.simpleMessage("حفظ"),
+    "saveRules": MessageLookupByLibrary.simpleMessage("حفظ القواعد"),
     "select": MessageLookupByLibrary.simpleMessage("تحديد"),
     "selectAll": MessageLookupByLibrary.simpleMessage("تحديد الكل"),
     "semanticSwitchNumberToStartAndToEnd": m5,
@@ -388,5 +391,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "truncate": MessageLookupByLibrary.simpleMessage("اقتصاص"),
     "truncateToString": m12,
     "ua": MessageLookupByLibrary.simpleMessage("الأوكرانية"),
+    "viewLog": MessageLookupByLibrary.simpleMessage("عرض السجل"),
   };
 }

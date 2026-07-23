@@ -179,6 +179,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "keepCharacters": MessageLookupByLibrary.simpleMessage("両方の文字を保持"),
     "language": MessageLookupByLibrary.simpleMessage("言語："),
     "limit": MessageLookupByLibrary.simpleMessage("回数制限"),
+    "loadRules": MessageLookupByLibrary.simpleMessage("ルールを読み込む"),
+    "logEmpty": MessageLookupByLibrary.simpleMessage("ログは空です。"),
     "lowercaseAppName": MessageLookupByLibrary.simpleMessage("flut renamer"),
     "me": MessageLookupByLibrary.simpleMessage("モンテネグロ語"),
     "metadataParserNotProvided": MessageLookupByLibrary.simpleMessage(
@@ -257,6 +259,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "ルールは順次実行されます。ルールを編集するにはクリックします。左側の「=」ボタンを押しながらドラッグしてルールを並べ替えることができます。",
     ),
     "save": MessageLookupByLibrary.simpleMessage("保存"),
+    "saveRules": MessageLookupByLibrary.simpleMessage("ルールを保存"),
     "select": MessageLookupByLibrary.simpleMessage("選択"),
     "selectAll": MessageLookupByLibrary.simpleMessage("すべて選択"),
     "semanticSwitchNumberToStartAndToEnd": m5,
@@ -303,5 +306,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "truncate": MessageLookupByLibrary.simpleMessage("切り詰め"),
     "truncateToString": m12,
     "ua": MessageLookupByLibrary.simpleMessage("ウクライナ語"),
+    "viewLog": MessageLookupByLibrary.simpleMessage("ログを表示"),
   };
 }

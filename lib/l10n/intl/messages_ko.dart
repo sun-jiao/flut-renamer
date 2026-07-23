@@ -175,6 +175,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "keepCharacters": MessageLookupByLibrary.simpleMessage("두 문자 사이의 문자 유지"),
     "language": MessageLookupByLibrary.simpleMessage("언어:"),
     "limit": MessageLookupByLibrary.simpleMessage("제한"),
+    "loadRules": MessageLookupByLibrary.simpleMessage("규칙 불러오기"),
+    "logEmpty": MessageLookupByLibrary.simpleMessage("로그가 비어 있습니다."),
     "lowercaseAppName": MessageLookupByLibrary.simpleMessage("flut renamer"),
     "me": MessageLookupByLibrary.simpleMessage("몬테네그로어"),
     "metadataParserNotProvided": MessageLookupByLibrary.simpleMessage(
@@ -265,6 +267,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "규칙은 순차적으로 실행됩니다. 규칙을 편집하려면 클릭하십시오. 왼쪽에있는 \'=\' 버튼을 누른 상태에서 드래그하여 규칙을 정렬하십시오.",
     ),
     "save": MessageLookupByLibrary.simpleMessage("저장"),
+    "saveRules": MessageLookupByLibrary.simpleMessage("규칙 저장"),
     "select": MessageLookupByLibrary.simpleMessage("선택"),
     "selectAll": MessageLookupByLibrary.simpleMessage("모두 선택"),
     "semanticSwitchNumberToStartAndToEnd": m5,
@@ -315,5 +318,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "truncate": MessageLookupByLibrary.simpleMessage("줄이기"),
     "truncateToString": m12,
     "ua": MessageLookupByLibrary.simpleMessage("우크라이나어"),
+    "viewLog": MessageLookupByLibrary.simpleMessage("로그 보기"),
   };
 }
