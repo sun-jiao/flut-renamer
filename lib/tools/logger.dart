@@ -27,4 +27,12 @@ class Logger {
     final file = await _getLogFile();
     return file.path;
   }
+
+  Future<String> readLogs() async {
+    final file = await _getLogFile();
+    if (await file.exists()) {
+      return await file.readAsString();
+    }
+    return '';
+  }
 }

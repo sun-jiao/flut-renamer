@@ -1,7 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import 'intl/messages_all.dart';
 
 // **************************************************************************
@@ -313,6 +312,16 @@ class L10n {
       desc: '',
       args: [],
     );
+  }
+
+  /// `View Log`
+  String get viewLog {
+    return Intl.message('View Log', name: 'viewLog', desc: '', args: []);
+  }
+
+  /// `Log is empty.`
+  String get logEmpty {
+    return Intl.message('Log is empty.', name: 'logEmpty', desc: '', args: []);
   }
 
   /// `Save Rules`

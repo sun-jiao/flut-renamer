@@ -169,6 +169,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "language": MessageLookupByLibrary.simpleMessage("语言："),
     "limit": MessageLookupByLibrary.simpleMessage("次数"),
     "loadRules": MessageLookupByLibrary.simpleMessage("加载规则"),
+    "logEmpty": MessageLookupByLibrary.simpleMessage("日志为空。"),
     "lowercaseAppName": MessageLookupByLibrary.simpleMessage("flut renamer"),
     "me": MessageLookupByLibrary.simpleMessage("黑山语"),
     "metadataParserNotProvided": MessageLookupByLibrary.simpleMessage(
@@ -292,5 +293,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "truncate": MessageLookupByLibrary.simpleMessage("截取"),
     "truncateToString": m12,
     "ua": MessageLookupByLibrary.simpleMessage("乌克兰语"),
+    "viewLog": MessageLookupByLibrary.simpleMessage("查看日志"),
   };
 }

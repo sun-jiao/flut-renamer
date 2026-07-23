@@ -204,6 +204,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "language": MessageLookupByLibrary.simpleMessage("Language: "),
     "limit": MessageLookupByLibrary.simpleMessage("limit"),
     "loadRules": MessageLookupByLibrary.simpleMessage("Load Rules"),
+    "logEmpty": MessageLookupByLibrary.simpleMessage("Log is empty."),
     "lowercaseAppName": MessageLookupByLibrary.simpleMessage("flut renamer"),
     "me": MessageLookupByLibrary.simpleMessage("Montenegrin"),
     "metadataParserNotProvided": MessageLookupByLibrary.simpleMessage(
@@ -396,5 +397,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "truncate": MessageLookupByLibrary.simpleMessage("Truncate"),
     "truncateToString": m12,
     "ua": MessageLookupByLibrary.simpleMessage("Ukrainian"),
+    "viewLog": MessageLookupByLibrary.simpleMessage("View Log"),
   };
 }
