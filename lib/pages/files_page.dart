@@ -462,20 +462,33 @@ class FilesPageState extends State<FilesPage> {
           ).then((value) {
             if (value == null) {
               noError = false;
-              setState(() {
-                file.error = L10n.current.renameFailed;
-              });
+              if (mounted) {
+                setState(() {
+                  file.error = L10n.current.renameFailed;
+                });
+              }
             } else if (remove) {
-              setState(() {
-                _files.remove(file);
-              });
+              if (mounted) {
+                setState(() {
+                  _files.remove(file);
+                });
+              }
 
               if (Platform.isIOS && !_files.any((e) => e.parent.path == file.parent.path)) {
                 PlatformFilePicker.changeScopedAccess(file.parent.path, false);
               }
             } else {
+              if (mounted) {
+                setState(() {
+                  _files[index] = value;
+                });
+              }
+            }
+          }).catchError((e) {
+            noError = false;
+            if (mounted) {
               setState(() {
-                _files[index] = value;
+                file.error = e.toString();
               });
             }
           }),

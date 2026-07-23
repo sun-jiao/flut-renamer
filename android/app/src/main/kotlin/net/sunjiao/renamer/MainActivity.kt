@@ -14,6 +14,8 @@ import io.flutter.plugin.common.MethodChannel
 import java.io.File
 import android.provider.OpenableColumns
 import java.io.ByteArrayOutputStream
+import android.os.Handler
+import android.os.Looper
 
 class MainActivity: FlutterActivity() {
     private val CHANNEL = "net.sunjiao.renamer/picker"
@@ -127,39 +129,63 @@ class MainActivity: FlutterActivity() {
     }
 
     private fun renameDocument(uriString: String, newName: String, result: MethodChannel.Result) {
-        try {
-            val uri = Uri.parse(uriString)
-            
-            // Check if document supports renaming
-            var supportsRename = false
+        Log.d("Renamer", "renameDocument called for: $uriString to: $newName")
+
+        Thread {
             try {
-                contentResolver.query(uri, arrayOf(DocumentsContract.Document.COLUMN_FLAGS), null, null, null)?.use { cursor ->
-                    if (cursor.moveToFirst()) {
-                        val flags = cursor.getInt(0)
-                        supportsRename = (flags and DocumentsContract.Document.FLAG_SUPPORTS_RENAME) != 0
+                val originalUri = Uri.parse(uriString)
+
+                val documentUri = if (DocumentsContract.isTreeUri(originalUri)) {
+                    DocumentsContract.buildDocumentUriUsingTree(
+                        originalUri,
+                        DocumentsContract.getTreeDocumentId(originalUri)
+                    )
+                } else {
+                    originalUri
+                }
+
+                var supportsRename = false
+                try {
+                    contentResolver.query(documentUri, arrayOf(DocumentsContract.Document.COLUMN_FLAGS), null, null, null)?.use { cursor ->
+                        if (cursor.moveToFirst()) {
+                            val flags = cursor.getInt(0)
+                            supportsRename = (flags and DocumentsContract.Document.FLAG_SUPPORTS_RENAME) != 0
+                        }
+                    }
+                } catch (e: Exception) {
+                    Log.e("Renamer", "Failed to check rename support", e)
+                }
+
+                if (!supportsRename) {
+                    Log.w("Renamer", "Document might not support renaming (flag not set): $uriString")
+                }
+
+                // Do renaming
+                val newUri = DocumentsContract.renameDocument(contentResolver, documentUri, newName)
+
+                // go back to main thread and return values
+                Handler(Looper.getMainLooper()).post {
+                    if (newUri != null) {
+                        Log.d("Renamer", "Rename success: $newUri")
+                        try {
+                            contentResolver.takePersistableUriPermission(newUri,
+                                Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                        } catch (e: Exception) {
+                            Log.e("Renamer", "Failed to take persistable permission for new URI", e)
+                        }
+                        result.success(newUri.toString())
+                    } else {
+                        Log.e("Renamer", "DocumentsContract.renameDocument returned null")
+                        result.error("RENAME_FAILED", "Provider returned null (May not support renaming, or name is invalid)", null)
                     }
                 }
             } catch (e: Exception) {
-                Log.e("Renamer", "Failed to check rename support for $uriString", e)
+                Log.e("Renamer", "Rename error for $uriString", e)
+                Handler(Looper.getMainLooper()).post {
+                    result.error("RENAME_ERROR", "${e.javaClass.simpleName}: ${e.localizedMessage}", null)
+                }
             }
-
-            if (!supportsRename) {
-                // Fallback: try renaming anyway, some providers might not set the flag correctly
-                Log.w("Renamer", "Document might not support renaming: $uriString")
-            }
-
-            val newUri = DocumentsContract.renameDocument(contentResolver, uri, newName)
-            if (newUri != null) {
-                contentResolver.takePersistableUriPermission(newUri,
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-                result.success(newUri.toString())
-            } else {
-                result.error("RENAME_FAILED", "DocumentsContract returned null", null)
-            }
-        } catch (e: Exception) {
-            Log.e("Renamer", "Rename error for $uriString", e)
-            result.error("RENAME_ERROR", "${e.javaClass.simpleName}: ${e.localizedMessage}", null)
-        }
+        }.start()
     }
 
     private fun getMetaData(uriString: String, result: MethodChannel.Result) {
