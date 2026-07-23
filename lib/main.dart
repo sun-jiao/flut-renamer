@@ -36,7 +36,7 @@ void main([List<String> arguments = const []]) async {
 
   final results = ArgParser().parse(arguments);
 
-  final initFiles = results.rest.map((e) => e.toFileSystemEntity().absolute);
+  final initFiles = results.rest.map((e) => e.toFileEntity().absolute);
   FilesPage.addFiles(initFiles);
 
   while (!Shared.initialed) {
