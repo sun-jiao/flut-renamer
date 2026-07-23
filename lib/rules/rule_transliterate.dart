@@ -62,5 +62,21 @@ class RuleTransliterate implements Rule {
   }
 
   @override
+  Map<String, dynamic> toMap() {
+    return {
+      'type': 'Transliterate',
+      'transliterateType': type.value,
+      'langCode': langCode,
+    };
+  }
+
+  factory RuleTransliterate.fromMap(Map<dynamic, dynamic> map) {
+    return RuleTransliterate(
+      Transliterate.values.firstWhere((e) => e.value == map['transliterateType']),
+      langCode: map['langCode'] as String?,
+    );
+  }
+
+  @override
   void openDialog(BuildContext context, Function(Rule rule) onSave) => showTransliterateDialog(context, onSave, this);
 }

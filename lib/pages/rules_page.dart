@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
 import '../dialogs/transliterate_dialog.dart';
@@ -10,6 +13,7 @@ import '../dialogs/insert_dialog.dart';
 import '../entity/sharedpref.dart';
 import '../l10n/l10n.dart';
 import '../rules/rule.dart';
+import '../tools/rule_persistence.dart';
 import '../widget/custom_drop.dart';
 
 class RulesPage extends StatefulWidget {
@@ -26,11 +30,33 @@ final List<Rule> _rules = [];
 class RulesPageState extends State<RulesPage> {
   List<Rule> get rules => _rules;
 
+  @override
+  void initState() {
+    super.initState();
+    _loadTempRules();
+  }
+
+  Future<void> _loadTempRules() async {
+    final rules = await RulePersistence.loadRules();
+    if (rules.isNotEmpty) {
+      setState(() {
+        _rules.clear();
+        _rules.addAll(rules);
+      });
+      widget.onRuleChanged.call();
+    }
+  }
+
+  Future<void> _saveTempRules() async {
+    await RulePersistence.saveRules(_rules);
+  }
+
   void clearRule() {
     if (Shared.removeRules) {
       setState(() {
         _rules.clear();
       });
+      _saveTempRules();
     }
   }
 
@@ -39,6 +65,37 @@ class RulesPageState extends State<RulesPage> {
       _rules.add(rule);
     });
     widget.onRuleChanged.call();
+    _saveTempRules();
+  }
+
+  void _manualSaveRules() async {
+    String? outputFile = await FilePicker.platform.saveFile(
+      dialogTitle: L10n.current.saveRules,
+      fileName: 'rules.yaml',
+      type: FileType.custom,
+      allowedExtensions: ['yaml', 'yml'],
+    );
+
+    if (outputFile != null) {
+      await RulePersistence.saveRules(_rules, targetFile: File(outputFile));
+    }
+  }
+
+  void _manualLoadRules() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['yaml', 'yml'],
+    );
+
+    if (result != null && result.files.single.path != null) {
+      final rules = await RulePersistence.loadRules(sourceFile: File(result.files.single.path!));
+      setState(() {
+        _rules.clear();
+        _rules.addAll(rules);
+      });
+      widget.onRuleChanged.call();
+      _saveTempRules();
+    }
   }
 
   void showRuleDialog() {
@@ -100,12 +157,33 @@ class RulesPageState extends State<RulesPage> {
                 onPressed: showRuleDialog,
                 child: Text(L10n.current.addRule),
               ),
+              PopupMenuButton<String>(
+                onSelected: (value) {
+                  if (value == 'save') {
+                    _manualSaveRules();
+                  } else if (value == 'load') {
+                    _manualLoadRules();
+                  }
+                },
+                itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                  PopupMenuItem<String>(
+                    value: 'save',
+                    child: Text(L10n.current.saveRules),
+                  ),
+                  PopupMenuItem<String>(
+                    value: 'load',
+                    child: Text(L10n.current.loadRules),
+                  ),
+                ],
+                icon: const Icon(Icons.more_vert),
+              ),
               TextButton(
                 onPressed: () {
                   setState(() {
                     _rules.clear();
                   });
                   widget.onRuleChanged.call();
+                  _saveTempRules();
                 },
                 child: Text(L10n.current.removeAll),
               ),
@@ -137,6 +215,7 @@ class RulesPageState extends State<RulesPage> {
                   _rules.insert(newIndex, item);
                 });
                 widget.onRuleChanged.call();
+                _saveTempRules();
               },
               buildDefaultDragHandles: false,
               itemBuilder: (context, index) {
@@ -154,6 +233,7 @@ class RulesPageState extends State<RulesPage> {
                         _rules.removeAt(index);
                       });
                       widget.onRuleChanged.call();
+                      _saveTempRules();
                     },
                     icon: const Icon(Icons.clear),
                   ),
@@ -165,6 +245,7 @@ class RulesPageState extends State<RulesPage> {
                           _rules[index] = rule;
                         });
                         widget.onRuleChanged.call();
+                        _saveTempRules();
                       },
                     );
                   },

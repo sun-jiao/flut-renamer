@@ -25,3 +25,27 @@ part 'rule_remove.dart';
 part 'rule_replace.dart';
 part 'rule_transliterate.dart';
 part 'rule_truncate.dart';
+
+class RuleFactory {
+  static Rule? fromMap(Map<dynamic, dynamic> map) {
+    final type = map['type'] as String?;
+    switch (type) {
+      case 'Replace':
+        return RuleReplace.fromMap(map);
+      case 'Remove':
+        return RuleRemove.fromMap(map);
+      case 'Insert':
+        return RuleInsert.fromMap(map);
+      case 'Increment':
+        return RuleIncrement.fromMap(map);
+      case 'Rearrange':
+        return RuleRearrange.fromMap(map);
+      case 'Transliterate':
+        return RuleTransliterate.fromMap(map);
+      case 'Truncate':
+        return RuleTruncate.fromMap(map);
+      default:
+        return null;
+    }
+  }
+}

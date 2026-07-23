@@ -31,6 +31,8 @@
   "removeRenamed": "移除已重命名文件",
   "removeRule": "移除该规则",
   "removeRules": "重命名后移除所有规则",
+  "saveRules": "保存规则",
+  "loadRules": "加载规则",
   "addRule": "添加规则",
   "removeAll": "移除全部",
   "replace": "替换",

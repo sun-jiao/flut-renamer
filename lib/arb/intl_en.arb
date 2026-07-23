@@ -31,6 +31,8 @@
   "removeRenamed": "Remove renamed files",
   "removeRule": "Remove this rule",
   "removeRules": "Remove rules after renaming",
+  "saveRules": "Save Rules",
+  "loadRules": "Load Rules",
   "addRule": "Add Rule",
   "removeAll": "Remove all",
   "replace": "Replace",

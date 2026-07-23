@@ -56,5 +56,27 @@ class RuleInsert implements Rule {
   }
 
   @override
+  Map<String, dynamic> toMap() {
+    return {
+      'type': 'Insert',
+      'insert': insert,
+      'insertIndex': insertIndex,
+      'toEnd': toEnd,
+      'withMetadata': withMetadata,
+      'ignoreExtension': ignoreExtension,
+    };
+  }
+
+  factory RuleInsert.fromMap(Map<dynamic, dynamic> map) {
+    return RuleInsert(
+      map['insert'] as String,
+      map['insertIndex'] as int,
+      map['toEnd'] as bool,
+      map['withMetadata'] as bool,
+      map['ignoreExtension'] as bool,
+    );
+  }
+
+  @override
   void openDialog(BuildContext context, Function(Rule rule) onSave) => showInsertDialog(context, onSave, this);
 }

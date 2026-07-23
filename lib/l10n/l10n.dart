@@ -315,6 +315,16 @@ class L10n {
     );
   }
 
+  /// `Save Rules`
+  String get saveRules {
+    return Intl.message('Save Rules', name: 'saveRules', desc: '', args: []);
+  }
+
+  /// `Load Rules`
+  String get loadRules {
+    return Intl.message('Load Rules', name: 'loadRules', desc: '', args: []);
+  }
+
   /// `Add Rule`
   String get addRule {
     return Intl.message('Add Rule', name: 'addRule', desc: '', args: []);

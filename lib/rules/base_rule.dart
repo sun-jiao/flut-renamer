@@ -5,6 +5,8 @@ abstract interface class Rule {
 
   void openDialog(BuildContext context, Function(Rule rule) onSave);
 
+  Map<String, dynamic> toMap();
+
   @override
   String toString();
 }

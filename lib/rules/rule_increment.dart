@@ -39,6 +39,28 @@ class RuleIncrement implements Rule {
     return L10n.current.incrementToString(prefix);
   }
 
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'type': 'Increment',
+      'prefix': prefix,
+      'startIndex': startIndex,
+      'step': step,
+      'omitDash': omitDash,
+      'ignoreExtension': ignoreExtension,
+    };
+  }
+
+  factory RuleIncrement.fromMap(Map<dynamic, dynamic> map) {
+    return RuleIncrement(
+      map['prefix'] as String,
+      map['startIndex'] as int,
+      map['step'] as int,
+      map['omitDash'] as bool,
+      map['ignoreExtension'] as bool,
+    );
+  }
+
   void indexReset() {
     index = startIndex;
   }
