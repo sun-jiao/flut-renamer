@@ -28,11 +28,13 @@ Future<FileEntity?> rename(
   try {
     file.newName = replaceSpecialCharacters(file.newName);
     if (Platform.isAndroid && file.path.startsWith('content://')) {
+      final oldPathResolved = await PlatformFilePicker.getRealPathFromURI(file.path);
       final newUriString = await PlatformFilePicker.rename(file.path, file.newName);
       if (newUriString != null) {
         final newFileEntity = FileEntity(File(newUriString));
         newFileEntity.selected = file.selected;
-        Logger().logRename(oldPath, newUriString);
+        final newPathResolved = await PlatformFilePicker.getRealPathFromURI(newUriString);
+        Logger().logRename(oldPathResolved, newPathResolved);
         return newFileEntity;
       } else {
         throw FileSystemException("SAF rename returned null for ${file.path}");
