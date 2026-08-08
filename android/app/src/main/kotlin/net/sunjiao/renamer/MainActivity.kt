@@ -69,6 +69,14 @@ class MainActivity: FlutterActivity() {
                         result.error("ARGS_ERROR", "Uri is null", null)
                     }
                 }
+                "getRealPathFromURI" -> {
+                    val uriString = call.argument<String>("uri")
+                    if (uriString != null) {
+                        getRealPathFromURI(this, Uri.parse(uriString), result)
+                    } else {
+                        result.error("ARGS_ERROR", "Uri is null", null)
+                    }
+                }
                 else -> result.notImplemented()
             }
         }
@@ -300,23 +308,23 @@ class MainActivity: FlutterActivity() {
         try {
             val proj = arrayOf(MediaStore.Images.Media.DATA)
             cursor = context.contentResolver.query(contentUri, proj, null, null, null)
-            val columnIndex: Int? = cursor?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-            if (columnIndex == null) {
-                result.error("Cannot get column index", null, null)
-                return
+            val columnIndex: Int = cursor?.getColumnIndex(MediaStore.Images.Media.DATA) ?: -1
+            
+            if (columnIndex != -1) {
+                cursor?.moveToFirst()
+                val absolute = cursor?.getString(columnIndex)
+                if (!absolute.isNullOrEmpty()) {
+                    result.success(absolute)
+                    return
+                }
             }
-
-            cursor?.moveToFirst()
-            val absolute = cursor?.getString(columnIndex)
-            if (!absolute.isNullOrEmpty()) {
-                result.success(absolute)
-                return
-            }
-
-            result.error("Cannot get absolute path", null, null)
+            
+            // Fallback: If we can't get a real path, return the URI string itself.
+            // This prevents the app from crashing during logging or rename confirmation.
+            result.success(contentUri.toString())
         } catch (e: Exception) {
-            Log.e("net.sunjiao.renamer", "getRealPathFromURI Exception : $e")
-            result.error(e.message.toString(), e.localizedMessage, null)
+            Log.w("Renamer", "getRealPathFromURI failed, returning URI as fallback: $e")
+            result.success(contentUri.toString())
         } finally {
             cursor?.close()
         }
