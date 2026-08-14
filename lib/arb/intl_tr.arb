@@ -56,7 +56,7 @@
   "filter": "Filtrele",
   "addFile": "Dosya Ekle",
   "addFiles": "Lütfen dosyalar ekleyin.",
-  "addFilesAndroid": "Sistem kısıtlamaları nedeniyle, seçicideki çoğu sekmeden seçilen dosyalar yeniden adlandırılamaz.\n[Device Name] üzerinden seçilen dosyalar genellikle yeniden adlandırılabilir, ancak sonuçlar cihaza bağlı olarak değişebilir.",
+  "addFilesAndroid": "Yeniden adlandırmak için bir veya daha fazla dosya seçin. Android, medya dosyalarında değişiklik izni vermenizi isteyebilir.",
   "addedFilesCannotRename": "Bazı dosyalar yeniden adlandırılamadı ve yok sayıldı.",
   "dragToAdd": "Eklemek için dosyaları sürükleyin.",
   "dropToAdd": "Dosyaları buraya bırakın.",

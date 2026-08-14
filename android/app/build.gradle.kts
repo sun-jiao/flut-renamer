@@ -107,4 +107,5 @@ flutter {
 
 dependencies {
     implementation(kotlin("stdlib-jdk7"))
+    implementation("androidx.documentfile:documentfile:1.0.1")
 }

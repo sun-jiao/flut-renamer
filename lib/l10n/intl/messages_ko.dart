@@ -69,7 +69,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "addFile": MessageLookupByLibrary.simpleMessage("파일 추가"),
     "addFiles": MessageLookupByLibrary.simpleMessage("파일을 추가하세요."),
     "addFilesAndroid": MessageLookupByLibrary.simpleMessage(
-      "시스템 제한으로 인해 선택기의 대부분 탭에서 선택한 파일의 이름을 변경할 수 없습니다.\n[Device Name]에서 선택한 파일은 일반적으로 이름을 변경할 수 있지만, 기기에 따라 결과가 다를 수 있습니다.",
+      "이름을 바꿀 파일을 하나 이상 선택하세요. 미디어 파일의 경우 Android에서 변경 허용을 확인할 수 있습니다.",
     ),
     "addRule": MessageLookupByLibrary.simpleMessage("규칙 추가"),
     "addedFilesCannotRename": MessageLookupByLibrary.simpleMessage(

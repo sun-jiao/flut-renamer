@@ -71,7 +71,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "addFile": MessageLookupByLibrary.simpleMessage("เพิ่มไฟล์"),
     "addFiles": MessageLookupByLibrary.simpleMessage("โปรดเพิ่มไฟล์"),
     "addFilesAndroid": MessageLookupByLibrary.simpleMessage(
-      "เนื่องจากข้อจำกัดของระบบ ไฟล์ที่เลือกจากแท็บส่วนใหญ่ในตัวเลือกจะไม่สามารถเปลี่ยนชื่อได้\nโดยทั่วไปไฟล์ที่เลือกจาก [Device Name] จะสามารถเปลี่ยนชื่อได้ แต่อาจแตกต่างกันไปขึ้นอยู่กับอุปกรณ์",
+      "เลือกไฟล์อย่างน้อยหนึ่งไฟล์เพื่อเปลี่ยนชื่อ Android อาจขอให้คุณยืนยันการอนุญาตให้แก้ไขไฟล์สื่อ",
     ),
     "addRule": MessageLookupByLibrary.simpleMessage("เพิ่มกฏ"),
     "addedFilesCannotRename": MessageLookupByLibrary.simpleMessage(

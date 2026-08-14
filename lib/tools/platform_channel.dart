@@ -20,7 +20,8 @@ class PlatformFilePicker {
     }
   }
 
-  static Future<List<String>?> fileAccess(BuildContext context, String startPath) async {
+  static Future<List<String>?> fileAccess(
+      BuildContext context, String startPath) async {
     try {
       final Map<dynamic, dynamic>? result = await _channel.invokeMethod(
         'fileAccess',
@@ -32,7 +33,8 @@ class PlatformFilePicker {
       if (result == null) return null;
 
       final paths = (result['paths'] as List?)?.cast<String>() ?? [];
-      final hasUnsupportedFiles = result['hasUnsupportedFiles'] as bool? ?? false;
+      final hasUnsupportedFiles =
+          result['hasUnsupportedFiles'] as bool? ?? false;
 
       if (hasUnsupportedFiles && context.mounted) {
         if (Platform.isAndroid) {
@@ -55,27 +57,14 @@ class PlatformFilePicker {
     }
   }
 
-  static Future<bool> changeScopedAccess(String targetPath, bool startOrEnd) async {
+  static Future<bool> changeScopedAccess(
+      String targetPath, bool startOrEnd) async {
     try {
       return await _channel.invokeMethod(
         'changeScopedAccess',
         {
           'targetPath': targetPath,
           'startOrEnd': startOrEnd,
-        },
-      );
-    } on PlatformException {
-      // TODO: show error message dialog
-      rethrow;
-    }
-  }
-
-  static Future<String> getRealPathFromURI(String uriPath) async {
-    try {
-      return await _channel.invokeMethod(
-        'getRealPathFromURI',
-        {
-          'uri': uriPath,
         },
       );
     } on PlatformException {
@@ -99,6 +88,23 @@ class PlatformFilePicker {
     }
   }
 
+  /// Requests Android's one-time write confirmation for the selected media
+  /// documents. Documents that support SAF rename are deliberately excluded by
+  /// the Android implementation and don't show a confirmation dialog.
+  static Future<MediaWritePermission> requestMediaWritePermission(
+    Iterable<String> uris,
+  ) async {
+    try {
+      final result = await _channel.invokeMethod<Map<dynamic, dynamic>>(
+        'requestMediaWritePermission',
+        {'uris': uris.toList()},
+      );
+      return MediaWritePermission.fromMap(result);
+    } on PlatformException {
+      return const MediaWritePermission.empty();
+    }
+  }
+
   static Future<Map<dynamic, dynamic>?> getMetaData(String uri) async {
     try {
       return await _channel.invokeMethod<Map<dynamic, dynamic>>(
@@ -119,5 +125,29 @@ class PlatformFilePicker {
     } on PlatformException {
       return null;
     }
+  }
+}
+
+class MediaWritePermission {
+  const MediaWritePermission({
+    required this.candidates,
+    required this.approved,
+  });
+
+  const MediaWritePermission.empty()
+      : candidates = const <String>{},
+        approved = const <String>{};
+
+  final Set<String> candidates;
+  final Set<String> approved;
+
+  factory MediaWritePermission.fromMap(Map<dynamic, dynamic>? map) {
+    Set<String> valuesFor(String key) =>
+        (map?[key] as List? ?? const []).whereType<String>().toSet();
+
+    return MediaWritePermission(
+      candidates: valuesFor('candidates'),
+      approved: valuesFor('approved'),
+    );
   }
 }

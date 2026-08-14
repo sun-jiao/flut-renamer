@@ -70,7 +70,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "addFile": MessageLookupByLibrary.simpleMessage("إضافة ملف"),
     "addFiles": MessageLookupByLibrary.simpleMessage("الرجاء إضافة ملفات."),
     "addFilesAndroid": MessageLookupByLibrary.simpleMessage(
-      "بسبب قيود النظام، لا يمكن إعادة تسمية الملفات المحددة من معظم علامات التبويب في أداة الاختيار.\nيمكن عادةً إعادة تسمية الملفات المحددة من [Device Name]، ولكن قد تختلف النتائج حسب الجهاز.",
+      "اختر ملفًا واحدًا أو أكثر لإعادة التسمية. قد يطلب منك Android تأكيد السماح بتعديل ملفات الوسائط.",
     ),
     "addRule": MessageLookupByLibrary.simpleMessage("إضافة قاعدة"),
     "addedFilesCannotRename": MessageLookupByLibrary.simpleMessage(

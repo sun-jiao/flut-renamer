@@ -68,7 +68,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "addFile": MessageLookupByLibrary.simpleMessage("添加文件"),
     "addFiles": MessageLookupByLibrary.simpleMessage("请添加文件。"),
     "addFilesAndroid": MessageLookupByLibrary.simpleMessage(
-      "由于新版Android系统的限制，从文件选择器中大多数标签页选择的文件无法被重命名。从[设备名称]中选择的文件一般而言可以被正确地重命名，但亦可能存在设备差异。",
+      "请选择需要重命名的一个或多个文件。对于媒体文件，Android 可能会要求您确认允许修改。",
     ),
     "addRule": MessageLookupByLibrary.simpleMessage("添加规则"),
     "addedFilesCannotRename": MessageLookupByLibrary.simpleMessage(

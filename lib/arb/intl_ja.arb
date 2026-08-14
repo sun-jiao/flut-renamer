@@ -56,7 +56,7 @@
   "filter": "フィルター",
   "addFile": "ファイルを追加",
   "addFiles": "ファイルを追加してください。",
-  "addFilesAndroid": "システムの制限により、ピッカーのほとんどのタブから選択したファイルの名前は変更できません。\n[Device Name] から選択したファイルは通常名前を変更できますが、端末によって結果が異なる場合があります。",
+  "addFilesAndroid": "名前を変更するファイルを1つ以上選択してください。メディアファイルでは、Android が変更の許可を確認することがあります。",
   "addedFilesCannotRename": "一部のファイルは名前を変更できないため、無視されました。",
   "dragToAdd": "追加するためにファイルをドラッグ＆ドロップしてください。",
   "dropToAdd": "ここにファイルをドロップして追加してください。",
@@ -179,4 +179,3 @@
   "semanticsMultipleActionsHint": "上下にスワイプして他の操作に移動します。",
   "semanticSwitchNumberToStartAndToEnd": "開始から終わりまでの数え方を切り替え、現在は{toEnd, select, true{終わり} false{始まり} other{}}から数えています"
 }
-

@@ -56,7 +56,7 @@
   "filter": "Filtrar",
   "addFile": "Adicionar arquivo",
   "addFiles": "Por favor, adicione arquivos.",
-  "addFilesAndroid": "Devido a restrições do sistema, os arquivos selecionados na maioria das abas do seletor não podem ser renomeados.\nOs arquivos selecionados de [Device Name] geralmente podem ser renomeados, embora os resultados possam variar dependendo do dispositivo.",
+  "addFilesAndroid": "Selecione um ou mais arquivos para renomear. O Android pode pedir que você confirme a permissão para alterar arquivos de mídia.",
   "addedFilesCannotRename": "Alguns arquivos não podem ser renomeados e foram ignorados.",
   "dragToAdd": "Arraste e solte arquivos para adicionar.",
   "dropToAdd": "Solte os arquivos aqui para adicionar.",

@@ -56,7 +56,7 @@
   "filter": "Filter",
   "addFile": "Add file",
   "addFiles": "Add files",
-  "addFilesAndroid": "Due to system restrictions, files selected from most tabs in the picker cannot be renamed. \nFiles selected from [Device Name] can generally be renamed, though results may vary depending on the device.",
+  "addFilesAndroid": "Choose one or more files to rename. Android may ask you to confirm changes to media files.",
   "addedFilesCannotRename": "Some files cannot be renamed and were ignored.",
   "dragToAdd": "Drag and drop to add files.",
   "dropToAdd": "Drop to add files.",

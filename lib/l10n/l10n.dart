@@ -1,7 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import 'intl/messages_all.dart';
 
 // **************************************************************************
@@ -455,10 +454,10 @@ class L10n {
     return Intl.message('Add files', name: 'addFiles', desc: '', args: []);
   }
 
-  /// `Due to system restrictions, files selected from most tabs in the picker cannot be renamed. \nFiles selected from [Device Name] can generally be renamed, though results may vary depending on the device.`
+  /// `Choose one or more files to rename. Android may ask you to confirm changes to media files.`
   String get addFilesAndroid {
     return Intl.message(
-      'Due to system restrictions, files selected from most tabs in the picker cannot be renamed. \nFiles selected from [Device Name] can generally be renamed, though results may vary depending on the device.',
+      'Choose one or more files to rename. Android may ask you to confirm changes to media files.',
       name: 'addFilesAndroid',
       desc: '',
       args: [],

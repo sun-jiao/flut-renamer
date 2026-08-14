@@ -71,7 +71,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Lütfen dosyalar ekleyin.",
     ),
     "addFilesAndroid": MessageLookupByLibrary.simpleMessage(
-      "Sistem kısıtlamaları nedeniyle, seçicideki çoğu sekmeden seçilen dosyalar yeniden adlandırılamaz.\n[Device Name] üzerinden seçilen dosyalar genellikle yeniden adlandırılabilir, ancak sonuçlar cihaza bağlı olarak değişebilir.",
+      "Yeniden adlandırmak için bir veya daha fazla dosya seçin. Android, medya dosyalarında değişiklik izni vermenizi isteyebilir.",
     ),
     "addRule": MessageLookupByLibrary.simpleMessage("Kural Ekle"),
     "addedFilesCannotRename": MessageLookupByLibrary.simpleMessage(

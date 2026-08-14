@@ -56,7 +56,7 @@
   "filter": "Filter",
   "addFile": "Datei hinzufügen",
   "addFiles": "Bitte fügen Sie Dateien hinzu.",
-  "addFilesAndroid": "Aufgrund von Systemeinschränkungen können Dateien, die aus den meisten Tabs der Auswahl ausgewählte wurden, nicht umbenannt werden.\nDateien, die aus [Device Name] ausgewählt wurden, können im Allgemeinen umbenannt werden, die Ergebnisse können jedoch je nach Gerät variieren.",
+  "addFilesAndroid": "Wählen Sie eine oder mehrere Dateien zum Umbenennen aus. Bei Mediendateien kann Android Sie bitten, Änderungen zu bestätigen.",
   "addedFilesCannotRename": "Einige Dateien können nicht umbenannt werden und wurden ignoriert.",
   "dragToAdd": "Ziehen Sie Dateien hierhin, um sie hinzuzufügen.",
   "dropToAdd": "Legen Sie Dateien hier ab, um sie hinzuzufügen.",

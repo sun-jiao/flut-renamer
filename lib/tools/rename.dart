@@ -11,37 +11,39 @@ import '../tools/platform_channel.dart';
 import '../tools/logger.dart';
 
 Future<FileEntity?> rename(
-    FileEntity file, {
-      BuildContext? context,
-    }) async {
+  FileEntity file, {
+  BuildContext? context,
+}) async {
   if (file.error != null) {
     return file;
   }
 
-  if (file.name == file.newName) {
+  final isAndroidUri = Platform.isAndroid && file.path.startsWith('content://');
+  if (isAndroidUri) {
+    await file.initMetadata();
+    if (file.metadata!.androidRealName == file.newName) {
+      return file;
+    }
+  } else if (file.name == file.newName) {
     return file;
   }
 
-  final oldPath = file.path;
-  final newPath = file.newPath;
-
   try {
     file.newName = replaceSpecialCharacters(file.newName);
-    if (Platform.isAndroid && file.path.startsWith('content://')) {
-      final oldPathResolved = await PlatformFilePicker.getRealPathFromURI(file.path);
-      final newUriString = await PlatformFilePicker.rename(file.path, file.newName);
+    if (isAndroidUri) {
+      final newUriString =
+          await PlatformFilePicker.rename(file.path, file.newName);
       if (newUriString != null) {
         final newFileEntity = FileEntity(File(newUriString));
         newFileEntity.selected = file.selected;
-        final newPathResolved = await PlatformFilePicker.getRealPathFromURI(newUriString);
-        Logger().logRename(oldPathResolved, newPathResolved);
+        Logger().logRename(file.path, newUriString);
         return newFileEntity;
       } else {
         throw FileSystemException("SAF rename returned null for ${file.path}");
       }
     } else {
       final renamedEntity = await file.entity.rename(file.newPath);
-      Logger().logRename(oldPath, newPath);
+      Logger().logRename(file.path, renamedEntity.path);
       return FileEntity(renamedEntity);
     }
   } catch (e, s) {

@@ -74,7 +74,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Bitte fügen Sie Dateien hinzu.",
     ),
     "addFilesAndroid": MessageLookupByLibrary.simpleMessage(
-      "Aufgrund von Systemeinschränkungen können Dateien, die aus den meisten Tabs der Auswahl ausgewählte wurden, nicht umbenannt werden.\nDateien, die aus [Device Name] ausgewählt wurden, können im Allgemeinen umbenannt werden, die Ergebnisse können jedoch je nach Gerät variieren.",
+      "Wählen Sie eine oder mehrere Dateien zum Umbenennen aus. Bei Mediendateien kann Android Sie bitten, Änderungen zu bestätigen.",
     ),
     "addRule": MessageLookupByLibrary.simpleMessage("Regel hinzufügen"),
     "addedFilesCannotRename": MessageLookupByLibrary.simpleMessage(

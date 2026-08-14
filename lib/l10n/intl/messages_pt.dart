@@ -74,7 +74,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Por favor, adicione arquivos.",
     ),
     "addFilesAndroid": MessageLookupByLibrary.simpleMessage(
-      "Devido a restrições do sistema, os arquivos selecionados na maioria das abas do seletor não podem ser renomeados.\nOs arquivos selecionados de [Device Name] geralmente podem ser renomeados, embora os resultados possam variar dependendo do dispositivo.",
+      "Selecione um ou mais arquivos para renomear. O Android pode pedir que você confirme a permissão para alterar arquivos de mídia.",
     ),
     "addRule": MessageLookupByLibrary.simpleMessage("Adicionar regra"),
     "addedFilesCannotRename": MessageLookupByLibrary.simpleMessage(

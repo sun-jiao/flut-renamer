@@ -1,10 +1,10 @@
 package net.sunjiao.renamer
 
 import android.app.Activity
-import android.content.Context
-import android.database.Cursor
+import android.content.ContentValues
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.provider.MediaStore
 import android.util.Log
 import android.provider.DocumentsContract
@@ -13,7 +13,6 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import java.io.File
 import android.provider.OpenableColumns
-import java.io.ByteArrayOutputStream
 import android.os.Handler
 import android.os.Looper
 
@@ -21,8 +20,19 @@ class MainActivity: FlutterActivity() {
     private val CHANNEL = "net.sunjiao.renamer/picker"
     private val REQUEST_CODE_OPEN_DOC = 1
     private val REQUEST_CODE_OPEN_TREE = 2
+    private val REQUEST_CODE_MEDIA_WRITE = 3
+    private val MEDIA_WRITE_BATCH_SIZE = 2_000
 
     private var pendingResult: MethodChannel.Result? = null
+    private var pendingMediaWriteResult: MethodChannel.Result? = null
+    private val pendingMediaWriteBatches = ArrayDeque<List<MediaWriteCandidate>>()
+    private var activeMediaWriteBatch: List<MediaWriteCandidate> = emptyList()
+    private val approvedMediaWriteUris = mutableListOf<String>()
+
+    private data class MediaWriteCandidate(
+        val documentUri: String,
+        val mediaUri: Uri,
+    )
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -33,7 +43,11 @@ class MainActivity: FlutterActivity() {
                         addCategory(Intent.CATEGORY_OPENABLE)
                         type = "*/*"
                         putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-                        addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
+                        addFlags(
+                            Intent.FLAG_GRANT_READ_URI_PERMISSION or
+                                Intent.FLAG_GRANT_WRITE_URI_PERMISSION or
+                                Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
+                        )
                     }
                     startActivityForResult(intent, REQUEST_CODE_OPEN_DOC, result)
                 }
@@ -48,6 +62,14 @@ class MainActivity: FlutterActivity() {
                         renameDocument(uriString, newName, result)
                     } else {
                         result.error("ARGS_ERROR", "Uri or newName is null", null)
+                    }
+                }
+                "requestMediaWritePermission" -> {
+                    val uriStrings = call.argument<List<String>>("uris")
+                    if (uriStrings != null) {
+                        requestMediaWritePermission(uriStrings, result)
+                    } else {
+                        result.error("ARGS_ERROR", "Uris is null", null)
                     }
                 }
                 "changeScopedAccess" -> {
@@ -65,14 +87,6 @@ class MainActivity: FlutterActivity() {
                     val uriString = call.argument<String>("uri")
                     if (uriString != null) {
                         readFile(uriString, result)
-                    } else {
-                        result.error("ARGS_ERROR", "Uri is null", null)
-                    }
-                }
-                "getRealPathFromURI" -> {
-                    val uriString = call.argument<String>("uri")
-                    if (uriString != null) {
-                        getRealPathFromURI(this, Uri.parse(uriString), result)
                     } else {
                         result.error("ARGS_ERROR", "Uri is null", null)
                     }
@@ -99,6 +113,11 @@ class MainActivity: FlutterActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
+        if (requestCode == REQUEST_CODE_MEDIA_WRITE) {
+            handleMediaWritePermissionResult(resultCode)
+            return
+        }
+
         if (pendingResult == null) return
 
         if (resultCode != Activity.RESULT_OK || data == null) {
@@ -122,18 +141,15 @@ class MainActivity: FlutterActivity() {
                 uris.add(data.data!!)
             }
 
-            // check all URIs
+            val takeFlags = data.flags and
+                (Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+
+            // Keep documents that can be renamed through SAF and media documents
+            // that can be renamed through MediaStore after an explicit user grant.
             for (uri in uris) {
-                if (checkSupportsRename(uri)) {
-                    try {
-                        contentResolver.takePersistableUriPermission(
-                            uri,
-                            Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                        )
-                        resultList.add(uri.toString())
-                    } catch (e: Exception) {
-                        Log.e("Renamer", "Failed to take permission for $uri", e)
-                    }
+                if (checkSupportsRename(uri) || mediaUriFor(uri) != null) {
+                    persistUriPermission(uri, takeFlags)
+                    resultList.add(uri.toString())
                 } else {
                     Log.w("Renamer", "Filtered unsupported document: $uri")
                     hasUnsupportedFiles = true
@@ -143,15 +159,10 @@ class MainActivity: FlutterActivity() {
             val treeUri = data.data
             if (treeUri != null) {
                 if (checkSupportsRename(treeUri)) {
-                    try {
-                        contentResolver.takePersistableUriPermission(
-                            treeUri,
-                            Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                        )
-                        resultList.add(treeUri.toString())
-                    } catch (e: Exception) {
-                        Log.e("Renamer", "Failed to take permission for $treeUri", e)
-                    }
+                    val takeFlags = data.flags and
+                        (Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                    persistUriPermission(treeUri, takeFlags)
+                    resultList.add(treeUri.toString())
                 } else {
                     Log.w("Renamer", "Filtered unsupported tree: $treeUri")
                     hasUnsupportedFiles = true
@@ -165,6 +176,18 @@ class MainActivity: FlutterActivity() {
         )
         pendingResult?.success(resultMap)
         pendingResult = null
+    }
+
+    private fun persistUriPermission(uri: Uri, flags: Int) {
+        if (flags == 0) return
+
+        try {
+            contentResolver.takePersistableUriPermission(uri, flags)
+        } catch (e: Exception) {
+            // The temporary grant remains usable for the current process. Some
+            // third-party providers do not offer persistent grants.
+            Log.w("Renamer", "Failed to persist permission for $uri", e)
+        }
     }
 
     private fun checkSupportsRename(uri: Uri): Boolean {
@@ -205,8 +228,11 @@ class MainActivity: FlutterActivity() {
                     originalUri
                 }
 
-                // Do renaming
-                val newUri = DocumentsContract.renameDocument(contentResolver, documentUri, newName)
+                val newUri = if (checkSupportsRename(documentUri)) {
+                    DocumentsContract.renameDocument(contentResolver, documentUri, newName)
+                } else {
+                    renameMediaDocument(documentUri, newName)
+                }
 
                 // go back to main thread and return values
                 Handler(Looper.getMainLooper()).post {
@@ -231,6 +257,123 @@ class MainActivity: FlutterActivity() {
                 }
             }
         }.start()
+    }
+
+    /**
+     * Requests a user-approved MediaStore write grant for documents whose
+     * provider does not expose FLAG_SUPPORTS_RENAME. This covers media selected
+     * from collection views such as Images, Videos, and Recent on Android 12+.
+     */
+    private fun requestMediaWritePermission(uriStrings: List<String>, result: MethodChannel.Result) {
+        if (pendingMediaWriteResult != null) {
+            result.error("PENDING_MEDIA_WRITE", "A media write request is already pending", null)
+            return
+        }
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+            result.success(mapOf("candidates" to emptyList<String>(), "approved" to emptyList<String>()))
+            return
+        }
+
+        val candidates = uriStrings.distinct().mapNotNull { uriString ->
+            val documentUri = Uri.parse(uriString)
+            if (checkSupportsRename(documentUri)) {
+                null
+            } else {
+                mediaUriFor(documentUri)?.let { mediaUri ->
+                    MediaWriteCandidate(uriString, mediaUri)
+                }
+            }
+        }.distinctBy { it.mediaUri }
+
+        if (candidates.isEmpty()) {
+            result.success(mapOf("candidates" to emptyList<String>(), "approved" to emptyList<String>()))
+            return
+        }
+
+        pendingMediaWriteResult = result
+        approvedMediaWriteUris.clear()
+        pendingMediaWriteBatches.clear()
+        candidates.chunked(MEDIA_WRITE_BATCH_SIZE).forEach(pendingMediaWriteBatches::addLast)
+        startNextMediaWriteRequest()
+    }
+
+    private fun startNextMediaWriteRequest() {
+        if (pendingMediaWriteBatches.isEmpty()) {
+            finishMediaWriteRequest()
+            return
+        }
+
+        activeMediaWriteBatch = pendingMediaWriteBatches.removeFirst()
+        try {
+            val request = MediaStore.createWriteRequest(
+                contentResolver,
+                activeMediaWriteBatch.map { it.mediaUri }
+            )
+            startIntentSenderForResult(
+                request.intentSender,
+                REQUEST_CODE_MEDIA_WRITE,
+                null,
+                0,
+                0,
+                0
+            )
+        } catch (e: Exception) {
+            Log.e("Renamer", "Failed to request MediaStore write access", e)
+            finishMediaWriteRequest()
+        }
+    }
+
+    private fun handleMediaWritePermissionResult(resultCode: Int) {
+        if (pendingMediaWriteResult == null) return
+
+        if (resultCode == Activity.RESULT_OK) {
+            approvedMediaWriteUris.addAll(activeMediaWriteBatch.map { it.documentUri })
+            startNextMediaWriteRequest()
+        } else {
+            finishMediaWriteRequest()
+        }
+    }
+
+    private fun finishMediaWriteRequest() {
+        val allCandidates = activeMediaWriteBatch.map { it.documentUri } +
+            pendingMediaWriteBatches.flatten().map { it.documentUri } +
+            approvedMediaWriteUris
+        val response = mapOf(
+            "candidates" to allCandidates.distinct(),
+            "approved" to approvedMediaWriteUris.distinct()
+        )
+
+        pendingMediaWriteResult?.success(response)
+        pendingMediaWriteResult = null
+        activeMediaWriteBatch = emptyList()
+        pendingMediaWriteBatches.clear()
+        approvedMediaWriteUris.clear()
+    }
+
+    private fun mediaUriFor(documentUri: Uri): Uri? {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) return null
+
+        return try {
+            MediaStore.getMediaUri(this, documentUri)
+        } catch (e: Exception) {
+            Log.w("Renamer", "No MediaStore URI for $documentUri", e)
+            null
+        }
+    }
+
+    private fun renameMediaDocument(documentUri: Uri, newName: String): Uri? {
+        val mediaUri = mediaUriFor(documentUri) ?: return null
+        val changed = contentResolver.update(
+            mediaUri,
+            ContentValues().apply {
+                put(MediaStore.MediaColumns.DISPLAY_NAME, newName)
+            },
+            null,
+            null
+        )
+
+        return if (changed > 0) documentUri else null
     }
 
     private fun getMetaData(uriString: String, result: MethodChannel.Result) {
@@ -303,30 +446,4 @@ class MainActivity: FlutterActivity() {
         }.start()
     }
 
-    private fun getRealPathFromURI(context: Context, contentUri: Uri, result: MethodChannel.Result) {
-        var cursor: Cursor? = null
-        try {
-            val proj = arrayOf(MediaStore.Images.Media.DATA)
-            cursor = context.contentResolver.query(contentUri, proj, null, null, null)
-            val columnIndex: Int = cursor?.getColumnIndex(MediaStore.Images.Media.DATA) ?: -1
-            
-            if (columnIndex != -1) {
-                cursor?.moveToFirst()
-                val absolute = cursor?.getString(columnIndex)
-                if (!absolute.isNullOrEmpty()) {
-                    result.success(absolute)
-                    return
-                }
-            }
-            
-            // Fallback: If we can't get a real path, return the URI string itself.
-            // This prevents the app from crashing during logging or rename confirmation.
-            result.success(contentUri.toString())
-        } catch (e: Exception) {
-            Log.w("Renamer", "getRealPathFromURI failed, returning URI as fallback: $e")
-            result.success(contentUri.toString())
-        } finally {
-            cursor?.close()
-        }
-    }
 }

@@ -24,7 +24,8 @@ class FilesPage extends StatefulWidget {
     required this.resetRules,
   });
 
-  final FutureOr<String> Function(String name, FileMetadata metadata) getNewName;
+  final FutureOr<String> Function(String name, FileMetadata metadata)
+      getNewName;
   final VoidCallback clearRules;
   final VoidCallback resetRules;
 
@@ -76,55 +77,66 @@ class FilesPageState extends State<FilesPage> {
       }
 
       if (!_files.any((e) => e.parent.path == dirs.first.toString())) {
-        await PlatformFilePicker.changeScopedAccess(dirs.first.toString(), true);
+        await PlatformFilePicker.changeScopedAccess(
+            dirs.first.toString(), true);
       }
 
-      final files = await PlatformFilePicker.fileAccess(context, dirs.first.toString());
+      final files =
+          await PlatformFilePicker.fileAccess(context, dirs.first.toString());
       if (files == null) {
         return;
       }
 
-      entities = files.skipWhile((e) => e == null).map((e) => e.toString()).map((e) => e.toFileEntity());
+      entities = files
+          .skipWhile((e) => e == null)
+          .map((e) => e.toString())
+          .map((e) => e.toFileEntity());
     } else {
       FilePickerResult? result = await FilePicker.pickFiles();
       if (result != null) {
         entities = result.files
-            .where((e1) => e1.path != null && _files.every((e2) => e1.path != e2.path))
+            .where((e1) =>
+                e1.path != null && _files.every((e2) => e1.path != e2.path))
             .map((e) => e.toFileEntity());
       } else {
         return;
       }
     }
     setState(() {
-      _files.addAll(entities.skipWhile((eNew) => _files.any((eOld) => eNew.path == eOld.path)));
+      _files.addAll(entities
+          .skipWhile((eNew) => _files.any((eOld) => eNew.path == eOld.path)));
     });
   }
 
   Future<bool?> _remindDialog(BuildContext contextD) => showDialog<bool>(
-    context: contextD,
-    builder: (contextD) => CustomDialog(
-      title: Text(Platform.isIOS ? L10n.current.iosRemindTitle : L10n.current.androidRemindTitle),
-      content: Text(Platform.isIOS ? L10n.current.iosRemindContent : L10n.current.androidRemindContent),
-      actions: [
-        if (Platform.isIOS) TextButton(
-          onPressed: () => Navigator.pop(contextD, false),
-          child: Text(L10n.current.cancel),
+        context: contextD,
+        builder: (contextD) => CustomDialog(
+          title: Text(Platform.isIOS
+              ? L10n.current.iosRemindTitle
+              : L10n.current.androidRemindTitle),
+          content: Text(Platform.isIOS
+              ? L10n.current.iosRemindContent
+              : L10n.current.androidRemindContent),
+          actions: [
+            if (Platform.isIOS)
+              TextButton(
+                onPressed: () => Navigator.pop(contextD, false),
+                child: Text(L10n.current.cancel),
+              ),
+            TextButton(
+              onPressed: () => Navigator.pop(contextD, true),
+              child: Text(L10n.current.ok),
+            ),
+            TextButton(
+              onPressed: () {
+                Shared.doNotRemindAgain = true;
+                Navigator.pop(contextD, true);
+              },
+              child: Text(L10n.current.doNotRemindAgain),
+            ),
+          ],
         ),
-        TextButton(
-          onPressed: () => Navigator.pop(contextD, true),
-          child: Text(L10n.current.ok),
-        ),
-        TextButton(
-          onPressed: () {
-            Shared.doNotRemindAgain = true;
-            Navigator.pop(contextD, true);
-          },
-          child: Text(L10n.current.doNotRemindAgain),
-        ),
-      ],
-    ),
-  );
-
+      );
 
   void update() => setState(() {});
 
@@ -145,8 +157,11 @@ class FilesPageState extends State<FilesPage> {
 
     try {
       file.newName = await widget.getNewName(filename, file.metadata!);
+      final isAndroidUri =
+          Platform.isAndroid && file.path.startsWith('content://');
       if (file.newName != filename &&
-          ((await File(file.newPath).exists()) || file.isNewNameDuplicate(_files))) {
+          ((!isAndroidUri && await File(file.newPath).exists()) ||
+              file.isNewNameDuplicate(_files))) {
         file.error = L10n.current.fileAlreadyExists;
         return;
       }
@@ -164,14 +179,18 @@ class FilesPageState extends State<FilesPage> {
     return _files
         .where(
           (element) =>
-      element.name.toString().toLowerCase().contains(_filter.toLowerCase()) &&
-          Shared.fileOrDir.contains(element.fileOrDir()),
-    )
+              element.name
+                  .toString()
+                  .toLowerCase()
+                  .contains(_filter.toLowerCase()) &&
+              Shared.fileOrDir.contains(element.fileOrDir()),
+        )
         .toList();
   }
 
   TableCell _rowTextCell(FileEntity file, {bool isNew = false}) {
-    if (!(Platform.isAndroid && file.path.startsWith('content://')) && !file.existsSync()) {
+    if (!(Platform.isAndroid && file.path.startsWith('content://')) &&
+        !file.existsSync()) {
       return TableCell(
         child: getRowText(L10n.current.fileNotExist, null),
       );
@@ -184,7 +203,7 @@ class FilesPageState extends State<FilesPage> {
         future: getNewName(file),
         builder: (context, snap) {
           if ((snap.connectionState == ConnectionState.active ||
-              snap.connectionState == ConnectionState.done) &&
+                  snap.connectionState == ConnectionState.done) &&
               (!snap.hasError)) {
             return getRowText(file.newName, file.error);
           }
@@ -196,7 +215,7 @@ class FilesPageState extends State<FilesPage> {
         future: file.initMetadata(),
         builder: (context, snap) {
           if ((snap.connectionState == ConnectionState.active ||
-              snap.connectionState == ConnectionState.done) &&
+                  snap.connectionState == ConnectionState.done) &&
               (!snap.hasError)) {
             return getRowText(file.metadata!.androidRealName, file.error);
           }
@@ -239,9 +258,11 @@ class FilesPageState extends State<FilesPage> {
     final fileListColors = Theme.of(context).extension<FileListColors>()!;
     return List.generate(
       filteredList.length,
-          (index) => TableRow(
+      (index) => TableRow(
         decoration: BoxDecoration(
-          color: index % 2 == 0 ? fileListColors.primaryColor : fileListColors.secondaryColor,
+          color: index % 2 == 0
+              ? fileListColors.primaryColor
+              : fileListColors.secondaryColor,
         ),
         children: [
           TableCell(
@@ -263,7 +284,7 @@ class FilesPageState extends State<FilesPage> {
               onPressed: () {
                 setState(() {
                   _files.removeWhere(
-                        (element) => element.path == filteredList[index].path,
+                    (element) => element.path == filteredList[index].path,
                   );
                 });
               },
@@ -276,72 +297,74 @@ class FilesPageState extends State<FilesPage> {
   }
 
   List<TableRow> _headerRow() => [
-    TableRow(
-      decoration: BoxDecoration(
-        color: Theme.of(context).scaffoldBackgroundColor,
-      ),
-      children: [
-        TableCell(
-          child: Tooltip(
-            message: _files.isNotEmpty && _files.every((element) => element.selected)
-                ? L10n.current.cancelAll
-                : L10n.current.selectAll,
-            child: Checkbox(
-              value: _files.isNotEmpty && _files.every((element) => element.selected),
-              onChanged: (_) {
-                setState(() {
-                  if (_files.every((element) => element.selected)) {
-                    for (var element in _files) {
-                      element.selected = false;
-                    }
-                  } else {
-                    for (var element in _files) {
-                      element.selected = true;
-                    }
-                  }
-                });
-              },
+        TableRow(
+          decoration: BoxDecoration(
+            color: Theme.of(context).scaffoldBackgroundColor,
+          ),
+          children: [
+            TableCell(
+              child: Tooltip(
+                message: _files.isNotEmpty &&
+                        _files.every((element) => element.selected)
+                    ? L10n.current.cancelAll
+                    : L10n.current.selectAll,
+                child: Checkbox(
+                  value: _files.isNotEmpty &&
+                      _files.every((element) => element.selected),
+                  onChanged: (_) {
+                    setState(() {
+                      if (_files.every((element) => element.selected)) {
+                        for (var element in _files) {
+                          element.selected = false;
+                        }
+                      } else {
+                        for (var element in _files) {
+                          element.selected = true;
+                        }
+                      }
+                    });
+                  },
+                ),
+              ),
             ),
-          ),
-        ),
-        TableCell(
-          child: Center(
-            child: Text(L10n.current.currentName),
-          ),
-        ),
-        TableCell(
-          child: Center(
-            child: Text(L10n.current.newName),
-          ),
-        ),
-        TableCell(
-          child: Tooltip(
-            message: L10n.current.removeAll,
-            child: IconButton(
-              onPressed: () {
-                setState(() {
-                  _files.clear();
-                });
-              },
-              icon: const Icon(Icons.delete),
+            TableCell(
+              child: Center(
+                child: Text(L10n.current.currentName),
+              ),
             ),
-          ),
+            TableCell(
+              child: Center(
+                child: Text(L10n.current.newName),
+              ),
+            ),
+            TableCell(
+              child: Tooltip(
+                message: L10n.current.removeAll,
+                child: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      _files.clear();
+                    });
+                  },
+                  icon: const Icon(Icons.delete),
+                ),
+              ),
+            ),
+          ],
         ),
-      ],
-    ),
-  ];
+      ];
 
   Widget _table(List<TableRow> children) => Table(
-    columnWidths: const <int, TableColumnWidth>{
-      0: IntrinsicColumnWidth(),
-      1: FlexColumnWidth(1.2),
-      2: FlexColumnWidth(1.5),
-      3: IntrinsicColumnWidth(),
-    },
-    defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-    border: TableBorder.all(width: 24, color: Colors.transparent),
-    children: children,
-  );
+        columnWidths: const <int, TableColumnWidth>{
+          0: IntrinsicColumnWidth(),
+          1: FlexColumnWidth(1.2),
+          2: FlexColumnWidth(1.5),
+          3: IntrinsicColumnWidth(),
+        },
+        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+        border: TableBorder.all(width: 24, color: Colors.transparent),
+        children: children,
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -420,7 +443,8 @@ class FilesPageState extends State<FilesPage> {
             },
             onDragUpdated: (detail) {},
             child: Container(
-              color: Theme.of(context).extension<FileListColors>()!.primaryColor,
+              color:
+                  Theme.of(context).extension<FileListColors>()!.primaryColor,
               child: Stack(
                 children: [
                   if (_files.isNotEmpty)
@@ -431,8 +455,11 @@ class FilesPageState extends State<FilesPage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Center(
-                        child: Text(Platform.isIOS ? L10n.current.addFiles :
-                        (Platform.isAndroid ? L10n.current.addFilesAndroid: L10n.current.dragToAdd)),
+                        child: Text(Platform.isIOS
+                            ? L10n.current.addFiles
+                            : (Platform.isAndroid
+                                ? L10n.current.addFilesAndroid
+                                : L10n.current.dragToAdd)),
                       ),
                     ),
                   if (_dragging)
@@ -455,51 +482,82 @@ class FilesPageState extends State<FilesPage> {
     bool remove = true,
     bool onlySelected = false,
   }) async {
+    final filesToRename = _files
+        .where((file) => file.selected || !onlySelected)
+        .toList(growable: false);
+    final mediaUris = <String>[];
+    if (Platform.isAndroid) {
+      for (final file in filesToRename) {
+        if (file.error == null && file.path.startsWith('content://')) {
+          await file.initMetadata();
+          if (file.metadata!.androidRealName != file.newName) {
+            mediaUris.add(file.path);
+          }
+        }
+      }
+    }
+    final mediaPermission = Platform.isAndroid
+        ? await PlatformFilePicker.requestMediaWritePermission(mediaUris)
+        : const MediaWritePermission.empty();
+    if (!mounted) return;
+
     final List<Future> futures = [];
     bool noError = true;
-    _files.asMap().forEach((index, file) {
-      // if file is selected or onlySelected = false (all files should be renamed)
-      if (file.selected || !onlySelected) {
-        futures.add(
-          rename(
-            file,
-            context: context,
-          ).then((value) {
-            if (value == null) {
-              noError = false;
-              if (mounted) {
-                setState(() {
-                  file.error = L10n.current.renameFailed;
-                });
-              }
-            } else if (remove) {
-              if (mounted) {
-                setState(() {
-                  _files.remove(file);
-                });
-              }
+    for (final file in filesToRename) {
+      final index = _files.indexOf(file);
+      final deniedMediaWrite = mediaPermission.candidates.contains(file.path) &&
+          !mediaPermission.approved.contains(file.path);
 
-              if (Platform.isIOS && !_files.any((e) => e.parent.path == file.parent.path)) {
-                PlatformFilePicker.changeScopedAccess(file.parent.path, false);
-              }
-            } else {
-              if (mounted) {
-                setState(() {
-                  _files[index] = value;
-                });
-              }
-            }
-          }).catchError((e) {
+      if (deniedMediaWrite) {
+        noError = false;
+        if (mounted) {
+          setState(() {
+            file.error = L10n.current.renameFailed;
+          });
+        }
+        continue;
+      }
+
+      futures.add(
+        rename(
+          file,
+          context: context,
+        ).then((value) {
+          if (value == null) {
             noError = false;
             if (mounted) {
               setState(() {
-                file.error = e.toString();
+                file.error = L10n.current.renameFailed;
               });
             }
-          }),
-        );
-      }
-    });
+          } else if (remove) {
+            if (mounted) {
+              setState(() {
+                _files.remove(file);
+              });
+            }
+
+            if (Platform.isIOS &&
+                !_files.any((e) => e.parent.path == file.parent.path)) {
+              PlatformFilePicker.changeScopedAccess(file.parent.path, false);
+            }
+          } else {
+            if (mounted) {
+              setState(() {
+                _files[index] = value;
+              });
+            }
+          }
+        }).catchError((e) {
+          noError = false;
+          if (mounted) {
+            setState(() {
+              file.error = e.toString();
+            });
+          }
+        }),
+      );
+    }
 
     await Future.wait(futures);
 
