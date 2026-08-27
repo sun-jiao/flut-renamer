@@ -54,7 +54,7 @@ class FilesPageState extends State<FilesPage> {
         return;
       }
 
-      List<Object?>? paths;
+      List<String>? paths;
       if (Shared.fileOrDir == 'Directories') {
         paths = await PlatformFilePicker.dirAccess();
       } else {
@@ -62,7 +62,14 @@ class FilesPageState extends State<FilesPage> {
       }
 
       if (paths == null || paths.isEmpty) return;
-      entities = paths.map((e) => e.toString()).map((e) => FileEntity(File(e)));
+      entities = paths.map((path) {
+        // A tree URI is still a `content://` URI, so it cannot be identified
+        // from its path.  Preserve the picker mode in the entity type; the
+        // list filter and the rename result both rely on it.
+        final entity =
+            Shared.fileOrDir == 'Directories' ? Directory(path) : File(path);
+        return FileEntity(entity);
+      });
     } else if (Platform.isIOS) {
       if (!Shared.doNotRemindAgain) {
         final iosOK = await _remindDialog(context);
@@ -72,7 +79,7 @@ class FilesPageState extends State<FilesPage> {
       }
 
       final dirs = await PlatformFilePicker.dirAccess();
-      if (dirs == null || dirs.first == null) {
+      if (dirs == null || dirs.isEmpty) {
         return;
       }
 

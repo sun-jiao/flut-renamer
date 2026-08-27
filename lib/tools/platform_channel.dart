@@ -11,9 +11,24 @@ class PlatformFilePicker {
   static const MethodChannel _channel =
       MethodChannel('net.sunjiao.renamer/picker');
 
-  static Future<List<Object?>?> dirAccess() async {
+  static Future<List<String>?> dirAccess() async {
     try {
-      return await _channel.invokeMethod('dirAccess');
+      final result = await _channel.invokeMethod<dynamic>('dirAccess');
+      if (result == null) return null;
+
+      // Android returns the same `{paths, hasUnsupportedFiles}` map as the
+      // document picker, while iOS returns its selected paths directly.
+      if (result is Map) {
+        return (result['paths'] as List?)?.whereType<String>().toList() ?? [];
+      }
+      if (result is List) {
+        return result.whereType<String>().toList();
+      }
+
+      throw PlatformException(
+        code: 'INVALID_DIRECTORY_RESULT',
+        message: 'Unsupported directory picker result: ${result.runtimeType}',
+      );
     } on PlatformException {
       // TODO: show error message dialog
       rethrow;

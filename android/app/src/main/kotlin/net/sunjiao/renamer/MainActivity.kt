@@ -377,7 +377,15 @@ class MainActivity: FlutterActivity() {
     }
 
     private fun getMetaData(uriString: String, result: MethodChannel.Result) {
-        val uri = Uri.parse(uriString)
+        val originalUri = Uri.parse(uriString)
+        val uri = if (DocumentsContract.isTreeUri(originalUri)) {
+            DocumentsContract.buildDocumentUriUsingTree(
+                originalUri,
+                DocumentsContract.getTreeDocumentId(originalUri)
+            )
+        } else {
+            originalUri
+        }
         val metadata = HashMap<String, Any?>()
         var name: String? = null
 

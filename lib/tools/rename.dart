@@ -34,7 +34,13 @@ Future<FileEntity?> rename(
       final newUriString =
           await PlatformFilePicker.rename(file.path, file.newName);
       if (newUriString != null) {
-        final newFileEntity = FileEntity(File(newUriString));
+        // SAF URIs do not encode whether the selected document is a file or
+        // directory. Keep the original entity type so directory rows remain
+        // visible when the active filter is "Directories" after a rename.
+        final renamedEntity = file.entity is Directory
+            ? Directory(newUriString)
+            : File(newUriString);
+        final newFileEntity = FileEntity(renamedEntity);
         newFileEntity.selected = file.selected;
         Logger().logRename(file.path, newUriString);
         return newFileEntity;

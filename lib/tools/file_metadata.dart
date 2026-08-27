@@ -264,6 +264,14 @@ class FileMetadata {
       size: metaMap != null && metaMap['size'] != null ? metaMap['size'] as int : 0,
     );
 
+    // A directory tree URI has no readable file content. Its display name and
+    // stat fields above are enough for directory renaming rules.
+    if (file is Directory) {
+      _bytes = Uint8List(0);
+      _exif = {};
+      return;
+    }
+
     final fetchedBytes = await PlatformFilePicker.readFile(file.path);
     if (fetchedBytes == null) {
       _bytes = Uint8List(0);
