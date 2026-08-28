@@ -3,15 +3,16 @@ package net.sunjiao.renamer
 import android.app.Activity
 import android.content.ContentValues
 import android.content.Intent
+import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import android.util.Log
 import android.provider.DocumentsContract
+import androidx.exifinterface.media.ExifInterface
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
-import java.io.File
 import android.provider.OpenableColumns
 import android.os.Handler
 import android.os.Looper
@@ -87,6 +88,14 @@ class MainActivity: FlutterActivity() {
                     val uriString = call.argument<String>("uri")
                     if (uriString != null) {
                         readFile(uriString, result)
+                    } else {
+                        result.error("ARGS_ERROR", "Uri is null", null)
+                    }
+                }
+                "getEmbeddedMetadata" -> {
+                    val uriString = call.argument<String>("uri")
+                    if (uriString != null) {
+                        getEmbeddedMetadata(uriString, result)
                     } else {
                         result.error("ARGS_ERROR", "Uri is null", null)
                     }
@@ -453,5 +462,137 @@ class MainActivity: FlutterActivity() {
             }
         }.start()
     }
+
+    private fun getEmbeddedMetadata(uriString: String, result: MethodChannel.Result) {
+        Thread {
+            try {
+                val uri = Uri.parse(uriString)
+                val metadata = linkedMapOf<String, String>()
+                readExifMetadata(uri, metadata)
+                readAudioMetadata(uri, metadata)
+                runOnUiThread {
+                    result.success(metadata)
+                }
+            } catch (e: Exception) {
+                Log.w("Renamer", "Failed to read embedded metadata for $uriString", e)
+                runOnUiThread {
+                    result.success(emptyMap<String, String>())
+                }
+            }
+        }.start()
+    }
+
+    private fun readExifMetadata(uri: Uri, metadata: MutableMap<String, String>) {
+        try {
+            contentResolver.openFileDescriptor(uri, "r")?.use { descriptor ->
+                addExifMetadata(ExifInterface(descriptor.fileDescriptor), metadata)
+                return
+            }
+        } catch (e: Exception) {
+            Log.d("Renamer", "File descriptor EXIF read failed; trying stream", e)
+        }
+
+        try {
+            contentResolver.openInputStream(uri)?.use { inputStream ->
+                addExifMetadata(ExifInterface(inputStream), metadata)
+            }
+        } catch (e: Exception) {
+            Log.d("Renamer", "EXIF is unavailable for $uri", e)
+        }
+    }
+
+    private fun addExifMetadata(exif: ExifInterface, metadata: MutableMap<String, String>) {
+        val dateTime = exif.getAttribute(ExifInterface.TAG_DATETIME_ORIGINAL)
+            ?: exif.getAttribute(ExifInterface.TAG_DATETIME)
+            ?: exif.getAttribute(ExifInterface.TAG_DATETIME_DIGITIZED)
+        if (dateTime != null) {
+            metadata["Photo:Date"] = dateTime.substringBefore(' ')
+            metadata["Photo:Time"] = dateTime
+        }
+
+        val make = exif.getAttribute(ExifInterface.TAG_MAKE).orEmpty()
+        val model = exif.getAttribute(ExifInterface.TAG_MODEL).orEmpty()
+        if (make.isNotEmpty() || model.isNotEmpty()) {
+            metadata["Photo:CamName"] = if (model.contains(make)) model else "$make $model"
+        }
+        putAttribute(metadata, "Photo:LensName", exif, ExifInterface.TAG_LENS_MODEL)
+        putDoubleAttribute(metadata, "Photo:FocalLength", exif, ExifInterface.TAG_FOCAL_LENGTH)
+        exif.getAttributeDouble(ExifInterface.TAG_F_NUMBER, Double.NaN).takeIf { !it.isNaN() }?.let {
+            metadata["Photo:Aperture"] = "f/$it"
+        }
+        putAttribute(metadata, "Photo:Shutter", exif, ExifInterface.TAG_EXPOSURE_TIME)
+        putAttribute(metadata, "Photo:ISO", exif, ExifInterface.TAG_PHOTOGRAPHIC_SENSITIVITY)
+        if (!metadata.containsKey("Photo:ISO")) {
+            putAttribute(metadata, "Photo:ISO", exif, ExifInterface.TAG_ISO_SPEED_RATINGS)
+        }
+
+        exif.getLatLong()?.let { coordinates ->
+            metadata["Photo:Latitude"] = formatCoordinate(coordinates[0], 'N', 'S')
+            metadata["Photo:Longitude"] = formatCoordinate(coordinates[1], 'E', 'W')
+        }
+        exif.getAltitude(Double.NaN).takeIf { !it.isNaN() }?.let {
+            metadata["Photo:Altitude"] = it.toString()
+        }
+        putAttribute(metadata, "Photo:Photographer", exif, ExifInterface.TAG_ARTIST)
+        putAttribute(metadata, "Photo:Copyright", exif, ExifInterface.TAG_COPYRIGHT)
+    }
+
+    private fun putAttribute(metadata: MutableMap<String, String>, key: String, exif: ExifInterface, tag: String) {
+        exif.getAttribute(tag)?.let { metadata[key] = it }
+    }
+
+    private fun putDoubleAttribute(metadata: MutableMap<String, String>, key: String, exif: ExifInterface, tag: String) {
+        exif.getAttributeDouble(tag, Double.NaN).takeIf { !it.isNaN() }?.let { metadata[key] = it.toString() }
+    }
+
+    private fun formatCoordinate(value: Double, positiveRef: Char, negativeRef: Char): String {
+        val absolute = kotlin.math.abs(value)
+        val degrees = absolute.toInt()
+        val minutesWithFraction = (absolute - degrees) * 60
+        val minutes = minutesWithFraction.toInt()
+        val seconds = (minutesWithFraction - minutes) * 60
+        val reference = if (value >= 0) positiveRef else negativeRef
+        return "$degrees°$minutes′$seconds″$reference"
+    }
+
+    private fun readAudioMetadata(uri: Uri, metadata: MutableMap<String, String>) {
+        val retriever = MediaMetadataRetriever()
+        try {
+            retriever.setDataSource(this, uri)
+            putMediaMetadata(metadata, "Music:AlbumName", retriever, MediaMetadataRetriever.METADATA_KEY_ALBUM)
+            putMediaMetadata(metadata, "Music:Year", retriever, MediaMetadataRetriever.METADATA_KEY_YEAR)
+            putMediaMetadata(metadata, "Music:TrackName", retriever, MediaMetadataRetriever.METADATA_KEY_TITLE)
+            putMediaMetadata(metadata, "Music:TrackNumber", retriever, MediaMetadataRetriever.METADATA_KEY_CD_TRACK_NUMBER)
+            putMediaMetadata(metadata, "Music:DiscNumber", retriever, MediaMetadataRetriever.METADATA_KEY_DISC_NUMBER)
+            putMediaMetadata(metadata, "Music:Genres", retriever, MediaMetadataRetriever.METADATA_KEY_GENRE)
+            putMediaMetadata(metadata, "Music:Author", retriever, MediaMetadataRetriever.METADATA_KEY_ARTIST)
+            retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)?.toLongOrNull()?.let {
+                metadata["Music:TrackDuration"] = formatDuration(it)
+            }
+        } catch (e: Exception) {
+            Log.d("Renamer", "Audio metadata is unavailable for $uri", e)
+        } finally {
+            retriever.release()
+        }
+    }
+
+    private fun putMediaMetadata(metadata: MutableMap<String, String>, key: String, retriever: MediaMetadataRetriever, metadataKey: Int) {
+        retriever.extractMetadata(metadataKey)?.let { metadata[key] = it }
+    }
+
+    private fun formatDuration(milliseconds: Long): String {
+        val centiseconds = milliseconds / 10
+        val seconds = milliseconds / 1_000
+        val minutes = milliseconds / 60_000
+        val hours = milliseconds / 3_600_000
+        return when {
+            hours > 0 -> "$hours:${twoDigits(minutes)}:${twoDigits(seconds)}.${twoDigits(centiseconds)}"
+            minutes > 0 -> "${twoDigits(minutes)}:${twoDigits(seconds)}.${twoDigits(centiseconds)}"
+            seconds > 0 -> "${twoDigits(seconds)}.${twoDigits(centiseconds)}sec"
+            else -> "${milliseconds}ms"
+        }
+    }
+
+    private fun twoDigits(value: Long): String = if (value >= 10) "$value" else "0$value"
 
 }

@@ -37,11 +37,10 @@ class FileMetadata {
         _stat = await file.stat();
 
         if (file is Directory) {
-          _bytes = Uint8List(0);
-          _exif = {};
+          _clearContentMetadata();
         } else {
-          _bytes = await (file as File).readAsBytes();
-          _exif = await readExifFromBytes(_bytes);
+          _clearContentMetadata();
+          _exif = await readExifFromFile(file as File);
           _audioMetadata = _tryReadAudioMetadata(file as File);
         }
       }
@@ -54,6 +53,7 @@ class FileMetadata {
   late Uint8List _bytes;
   late Map<String, IfdTag> _exif;
   late ParserTag? _audioMetadata;
+  Map<String, String> _androidEmbeddedMetadata = const {};
   bool inited = false;
   late String androidRealName;
 
@@ -62,6 +62,13 @@ class FileMetadata {
   static final _time = DateFormat('y-MM-d HH-mm-ss');
 
   String getByName(String name) {
+    if (Platform.isAndroid && file.path.startsWith('content://')) {
+      final value = _androidEmbeddedMetadata[name];
+      if (value != null) {
+        return value;
+      }
+    }
+
     switch (name) {
       case 'OS:TodayDate':
         return _date.format(DateTime.now().toLocal());
@@ -110,9 +117,11 @@ class FileMetadata {
       case 'Photo:ISO':
         return (_exif['EXIF ISOSpeedRatings'] ?? '').toString();
       case 'Photo:Longitude':
-        return _getLatLng(_exif['GPS GPSLongitude'], _exif['GPS GPSLongitudeRef']);
+        return _getLatLng(
+            _exif['GPS GPSLongitude'], _exif['GPS GPSLongitudeRef']);
       case 'Photo:Latitude':
-        return _getLatLng(_exif['GPS GPSLatitude'], _exif['GPS GPSLatitudeRef']);
+        return _getLatLng(
+            _exif['GPS GPSLatitude'], _exif['GPS GPSLatitudeRef']);
       case 'Photo:Altitude':
         return (_exif['GPS GPSAltitude'] ?? 0).toString();
       case 'Photo:Photographer':
@@ -168,8 +177,10 @@ class FileMetadata {
       final List<Ratio> coordinate = (tag.values as IfdRatios).ratios;
       if (coordinate.isNotEmpty) {
         int degrees = _parseRatio(coordinate[0]).toInt();
-        int minutes = coordinate.length > 1 ? _parseRatio(coordinate[1]).toInt() : 0;
-        double seconds = coordinate.length > 2 ? _parseRatio(coordinate[2]) : 0.0;
+        int minutes =
+            coordinate.length > 1 ? _parseRatio(coordinate[1]).toInt() : 0;
+        double seconds =
+            coordinate.length > 2 ? _parseRatio(coordinate[2]) : 0.0;
         return '$degrees°$minutes′$seconds″';
       }
     }
@@ -189,10 +200,12 @@ class FileMetadata {
   }
 
   Future<String> get md5 async {
-    var hash = crypto.Hmac(crypto.md5, _key); // HMAC-SHA256
-    var digest = hash.convert(_bytes);
-
-    return digest.toString();
+    final hash = crypto.Hmac(crypto.md5, _key);
+    if (file is! File ||
+        (Platform.isAndroid && file.path.startsWith('content://'))) {
+      return hash.convert(_bytes).toString();
+    }
+    return (await hash.bind((file as File).openRead()).first).toString();
   }
 
   static const List<String> _sizeUnits = [
@@ -236,11 +249,11 @@ class FileMetadata {
     int minutes = dur.inMinutes;
     int hours = dur.inHours;
 
-    if (hours > 0){
+    if (hours > 0) {
       return '$hours:${twoDigits(minutes)}:${twoDigits(seconds)}.${twoDigits(centiseconds)}';
-    } else if(minutes > 0){
+    } else if (minutes > 0) {
       return '${twoDigits(minutes)}:${twoDigits(seconds)}.${twoDigits(centiseconds)}';
-    } else if (seconds > 0){
+    } else if (seconds > 0) {
       return '${twoDigits(seconds)}.${twoDigits(centiseconds)}sec';
     } else {
       return '${dur.inMilliseconds}ms';
@@ -250,7 +263,7 @@ class FileMetadata {
   Future<void> _initFromSaf() async {
     final metaMap = await PlatformFilePicker.getMetaData(file.path);
     androidRealName = (metaMap?['name'] as String?) ?? "unknown";
-    
+
     final now = DateTime.now();
 
     final modified = metaMap != null && metaMap['modified'] != null
@@ -261,34 +274,24 @@ class FileMetadata {
       modified: modified,
       changed: modified,
       accessed: now,
-      size: metaMap != null && metaMap['size'] != null ? metaMap['size'] as int : 0,
+      size: metaMap != null && metaMap['size'] != null
+          ? metaMap['size'] as int
+          : 0,
     );
 
-    // A directory tree URI has no readable file content. Its display name and
-    // stat fields above are enough for directory renaming rules.
-    if (file is Directory) {
-      _bytes = Uint8List(0);
-      _exif = {};
-      return;
+    _clearContentMetadata();
+    // AndroidX ExifInterface and MediaMetadataRetriever read directly from
+    // the content URI, avoiding a full file copy into Dart memory.
+    if (file is! Directory) {
+      _androidEmbeddedMetadata =
+          await PlatformFilePicker.getEmbeddedMetadata(file.path);
     }
+  }
 
-    final fetchedBytes = await PlatformFilePicker.readFile(file.path);
-    if (fetchedBytes == null) {
-      _bytes = Uint8List(0);
-      _exif = {};
-      return;
-    }
-    _bytes = fetchedBytes;
-
-    _exif = await readExifFromBytes(_bytes);
-
-    final tempDir = Directory.systemTemp;
-    final tempFile = File('${tempDir.path}/temp_${DateTime.now().millisecondsSinceEpoch}');
-    await tempFile.writeAsBytes(_bytes);
-
-    _audioMetadata = _tryReadAudioMetadata(tempFile);
-
-    await tempFile.delete();
+  void _clearContentMetadata() {
+    _bytes = Uint8List(0);
+    _exif = {};
+    _audioMetadata = null;
   }
 
   ParserTag? _tryReadAudioMetadata(File file) {

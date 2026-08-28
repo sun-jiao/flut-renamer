@@ -141,6 +141,21 @@ class PlatformFilePicker {
       return null;
     }
   }
+
+  static Future<Map<String, String>> getEmbeddedMetadata(String uri) async {
+    try {
+      final metadata = await _channel.invokeMethod<Map<dynamic, dynamic>>(
+        'getEmbeddedMetadata',
+        {'uri': uri},
+      );
+      return metadata?.map(
+            (key, value) => MapEntry(key.toString(), value.toString()),
+      ) ??
+          const {};
+    } on PlatformException {
+      return const {};
+    }
+  }
 }
 
 class MediaWritePermission {
