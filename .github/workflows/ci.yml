@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  FLUTTER_VERSION: 3.44.0
+
+jobs:
+  analyze-and-test:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
+        with:
+          channel: stable
+          architecture: x64
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+      - name: Install project dependencies
+        run: flutter pub get --enforce-lockfile
+      - name: Analyze
+        run: flutter analyze
+      - name: Test
+        run: flutter test
