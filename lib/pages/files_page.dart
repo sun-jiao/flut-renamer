@@ -41,6 +41,7 @@ final List<FileEntity> _files = [];
 
 class FilesPageState extends State<FilesPage> {
   bool _dragging = false;
+  bool _renaming = false;
   String _filter = '';
 
   Future<void> addFileFromPicker() async {
@@ -163,7 +164,9 @@ class FilesPageState extends State<FilesPage> {
     }
 
     try {
-      file.newName = await widget.getNewName(filename, file.metadata!);
+      file.newName = replaceSpecialCharacters(
+        await widget.getNewName(filename, file.metadata!),
+      );
       final isAndroidUri =
           Platform.isAndroid && file.path.startsWith('content://');
       if (file.newName != filename &&
@@ -489,87 +492,178 @@ class FilesPageState extends State<FilesPage> {
     bool remove = true,
     bool onlySelected = false,
   }) async {
-    final filesToRename = _files
-        .where((file) => file.selected || !onlySelected)
-        .toList(growable: false);
-    final mediaUris = <String>[];
-    if (Platform.isAndroid) {
-      for (final file in filesToRename) {
-        if (file.error == null && file.path.startsWith('content://')) {
-          await file.initMetadata();
-          if (file.metadata!.androidRealName != file.newName) {
-            mediaUris.add(file.path);
+    if (_renaming) return;
+    _renaming = true;
+
+    try {
+      final requestedFiles = _files
+          .where((file) => file.selected || !onlySelected)
+          .toList(growable: false);
+      final filesToRename = await _buildRenamePlan(requestedFiles);
+      var noError = filesToRename.length == requestedFiles.length;
+
+      if (mounted) {
+        setState(() {});
+      }
+
+      final mediaUris = <String>[];
+      if (Platform.isAndroid) {
+        for (final file in filesToRename) {
+          if (file.path.startsWith('content://')) {
+            await file.initMetadata();
+            if (file.metadata!.androidRealName != file.newName) {
+              mediaUris.add(file.path);
+            }
           }
         }
       }
-    }
-    final mediaPermission = Platform.isAndroid
-        ? await PlatformFilePicker.requestMediaWritePermission(mediaUris)
-        : const MediaWritePermission.empty();
-    if (!mounted) return;
+      final mediaPermission = Platform.isAndroid
+          ? await PlatformFilePicker.requestMediaWritePermission(mediaUris)
+          : const MediaWritePermission.empty();
+      if (!mounted) return;
 
-    final List<Future> futures = [];
-    bool noError = true;
-    for (final file in filesToRename) {
-      final index = _files.indexOf(file);
-      final deniedMediaWrite = mediaPermission.candidates.contains(file.path) &&
-          !mediaPermission.approved.contains(file.path);
+      for (final file in filesToRename) {
+        final index = _files.indexOf(file);
+        final deniedMediaWrite =
+            mediaPermission.candidates.contains(file.path) &&
+                !mediaPermission.approved.contains(file.path);
 
-      if (deniedMediaWrite) {
-        noError = false;
-        if (mounted) {
+        if (deniedMediaWrite) {
+          noError = false;
           setState(() {
             file.error = L10n.current.renameFailed;
           });
+          continue;
         }
-        continue;
-      }
 
-      futures.add(
-        rename(
+        final value = await rename(
           file,
           context: context,
-        ).then((value) {
-          if (value == null) {
-            noError = false;
-            if (mounted) {
-              setState(() {
-                file.error = L10n.current.renameFailed;
-              });
-            }
-          } else if (remove) {
-            if (mounted) {
-              setState(() {
-                _files.remove(file);
-              });
-            }
-
-            if (Platform.isIOS &&
-                !_files.any((e) => e.parent.path == file.parent.path)) {
-              PlatformFilePicker.changeScopedAccess(file.parent.path, false);
-            }
-          } else {
-            if (mounted) {
-              setState(() {
-                _files[index] = value;
-              });
-            }
-          }
-        }).catchError((e) {
+        );
+        if (value == null) {
           noError = false;
           if (mounted) {
             setState(() {
-              file.error = e.toString();
+              file.error = L10n.current.renameFailed;
             });
           }
-        }),
-      );
+        } else if (remove) {
+          if (mounted) {
+            setState(() {
+              _files.remove(file);
+            });
+          }
+
+          if (Platform.isIOS &&
+              !_files.any((e) => e.parent.path == file.parent.path)) {
+            PlatformFilePicker.changeScopedAccess(file.parent.path, false);
+          }
+        } else if (mounted && index >= 0) {
+          setState(() {
+            _files[index] = value;
+          });
+        }
+      }
+
+      if (noError && remove) {
+        widget.clearRules.call();
+      }
+    } finally {
+      _renaming = false;
+    }
+  }
+
+  Future<List<FileEntity>> _buildRenamePlan(
+    List<FileEntity> requestedFiles,
+  ) async {
+    final localFiles = <FileEntity>[];
+    final safFiles = <FileEntity>[];
+    for (final file in requestedFiles) {
+      file.newName = replaceSpecialCharacters(file.newName);
+      if (file.error != null) continue;
+      if (Platform.isAndroid && file.path.startsWith('content://')) {
+        safFiles.add(file);
+      } else {
+        localFiles.add(file);
+      }
     }
 
-    await Future.wait(futures);
-
-    if (noError && remove) {
-      widget.clearRules.call();
+    final targetGroups = <String, List<FileEntity>>{};
+    for (final file in localFiles) {
+      targetGroups.putIfAbsent(_targetPathKey(file), () => []).add(file);
     }
+    for (final group in targetGroups.values) {
+      if (group.length > 1) {
+        for (final file in group) {
+          file.error = L10n.current.fileAlreadyExists;
+        }
+      }
+    }
+
+    // Repeat this check after every newly blocked move. A destination can only
+    // be considered free when its selected source will actually move away.
+    var foundBlockedMove = true;
+    while (foundBlockedMove) {
+      foundBlockedMove = false;
+      final plannedMoves = localFiles
+          .where(
+            (file) =>
+                file.error == null &&
+                _sourcePathKey(file) != _targetPathKey(file),
+          )
+          .toList();
+      final movingSources = plannedMoves.map(_sourcePathKey).toSet();
+      for (final file in plannedMoves) {
+        final target = _targetPathKey(file);
+        if (!movingSources.contains(target) &&
+            await FileSystemEntity.type(
+                  file.newPath,
+                ) !=
+                FileSystemEntityType.notFound) {
+          file.error = L10n.current.fileAlreadyExists;
+          foundBlockedMove = true;
+        }
+      }
+    }
+
+    final orderedLocalMoves = <FileEntity>[];
+    final pendingMoves = localFiles
+        .where(
+          (file) =>
+              file.error == null &&
+              _sourcePathKey(file) != _targetPathKey(file),
+        )
+        .toList();
+    while (pendingMoves.isNotEmpty) {
+      final ready = pendingMoves.where((file) {
+        final target = _targetPathKey(file);
+        return pendingMoves.every(
+          (other) => identical(file, other) || _sourcePathKey(other) != target,
+        );
+      }).toList();
+      if (ready.isEmpty) {
+        for (final file in pendingMoves) {
+          file.error = L10n.current.renameFailed;
+        }
+        break;
+      }
+      orderedLocalMoves.addAll(ready);
+      pendingMoves.removeWhere(ready.contains);
+    }
+
+    final localNoOps = localFiles.where(
+      (file) =>
+          file.error == null && _sourcePathKey(file) == _targetPathKey(file),
+    );
+    return [...orderedLocalMoves, ...localNoOps, ...safFiles];
+  }
+
+  String _sourcePathKey(FileEntity file) => _normalisedPath(file.path);
+
+  String _targetPathKey(FileEntity file) => _normalisedPath(file.newPath);
+
+  String _normalisedPath(String path) {
+    final absolutePath = File(path).absolute.path;
+    return Platform.isWindows ? absolutePath.toLowerCase() : absolutePath;
   }
 }
