@@ -36,9 +36,7 @@ class RuleTransliterate implements Rule {
         return cyrtranslit.cyr2Lat(newName, langCode: langCode) + extension;
       case Transliterate.latin2Cyrillic:
         return cyrtranslit.lat2Cyr(newName, langCode: langCode) + extension;
-      default:
-        return oldName;
-    }
+      }
   }
 
   static final Map<String, String> langCodeMap = {

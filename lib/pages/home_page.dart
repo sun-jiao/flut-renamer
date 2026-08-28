@@ -196,7 +196,7 @@ class _HomeToolBarState extends State<HomeToolBar> {
           icon: const Icon(Icons.history_rounded),
           onPressed: () async {
             final logs = await Logger().readLogs();
-            if (!context.mounted) return;
+            if (!mounted) return;
             showDialog(
               context: context,
               builder: (context) => CustomDialog(

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:xml/xml.dart';
 
 void main() {
@@ -20,8 +21,8 @@ void main() {
     try {
       e.copySync(windowsBuildDir.path + r'\' + e.name);
     } catch (e, s) {
-      print(e);
-      print(s);
+      debugPrint(e.toString());
+      debugPrint(s.toString());
     }
   }
 

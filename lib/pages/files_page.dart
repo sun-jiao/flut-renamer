@@ -86,25 +86,29 @@ class FilesPageState extends State<FilesPage> {
 
       if (!_files.any((e) => e.parent.path == dirs.first.toString())) {
         await PlatformFilePicker.changeScopedAccess(
-            dirs.first.toString(), true);
+            dirs.first.toString(), true,);
       }
 
-      final files =
+      if (mounted) {
+        final files =
           await PlatformFilePicker.fileAccess(context, dirs.first.toString());
-      if (files == null) {
+
+        if (files == null) {
+          return;
+        }
+
+        entities = files
+            .map((e) => e.toString())
+            .map((e) => e.toFileEntity());
+      } else {
         return;
       }
-
-      entities = files
-          .skipWhile((e) => e == null)
-          .map((e) => e.toString())
-          .map((e) => e.toFileEntity());
     } else {
       FilePickerResult? result = await FilePicker.pickFiles();
       if (result != null) {
         entities = result.files
             .where((e1) =>
-                e1.path != null && _files.every((e2) => e1.path != e2.path))
+                e1.path != null && _files.every((e2) => e1.path != e2.path),)
             .map((e) => e.toFileEntity());
       } else {
         return;
@@ -112,7 +116,7 @@ class FilesPageState extends State<FilesPage> {
     }
     setState(() {
       _files.addAll(entities
-          .skipWhile((eNew) => _files.any((eOld) => eNew.path == eOld.path)));
+          .skipWhile((eNew) => _files.any((eOld) => eNew.path == eOld.path)),);
     });
   }
 
@@ -121,10 +125,10 @@ class FilesPageState extends State<FilesPage> {
         builder: (contextD) => CustomDialog(
           title: Text(Platform.isIOS
               ? L10n.current.iosRemindTitle
-              : L10n.current.androidRemindTitle),
+              : L10n.current.androidRemindTitle,),
           content: Text(Platform.isIOS
               ? L10n.current.iosRemindContent
-              : L10n.current.androidRemindContent),
+              : L10n.current.androidRemindContent,),
           actions: [
             if (Platform.isIOS)
               TextButton(
@@ -469,7 +473,7 @@ class FilesPageState extends State<FilesPage> {
                             ? L10n.current.addFiles
                             : (Platform.isAndroid
                                 ? L10n.current.addFilesAndroid
-                                : L10n.current.dragToAdd)),
+                                : L10n.current.dragToAdd),),
                       ),
                     ),
                   if (_dragging)

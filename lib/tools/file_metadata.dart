@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:audio_metadata_reader/audio_metadata_reader.dart';
+// ignore: implementation_imports
 import 'package:audio_metadata_reader/src/metadata/base.dart';
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:exif/exif.dart';
@@ -118,10 +119,10 @@ class FileMetadata {
         return (_exif['EXIF ISOSpeedRatings'] ?? '').toString();
       case 'Photo:Longitude':
         return _getLatLng(
-            _exif['GPS GPSLongitude'], _exif['GPS GPSLongitudeRef']);
+            _exif['GPS GPSLongitude'], _exif['GPS GPSLongitudeRef'],);
       case 'Photo:Latitude':
         return _getLatLng(
-            _exif['GPS GPSLatitude'], _exif['GPS GPSLatitudeRef']);
+            _exif['GPS GPSLatitude'], _exif['GPS GPSLatitudeRef'],);
       case 'Photo:Altitude':
         return (_exif['GPS GPSAltitude'] ?? 0).toString();
       case 'Photo:Photographer':

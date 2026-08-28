@@ -1,4 +1,5 @@
 import 'package:audio_metadata_reader/audio_metadata_reader.dart';
+// ignore: implementation_imports
 import 'package:audio_metadata_reader/src/metadata/base.dart';
 
 extension UniversalMetadata on ParserTag {

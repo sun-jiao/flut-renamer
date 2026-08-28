@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flut_renamer/l10n/l10n.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -36,7 +35,7 @@ class PlatformFilePicker {
   }
 
   static Future<List<String>?> fileAccess(
-      BuildContext context, String startPath) async {
+      BuildContext context, String startPath,) async {
     try {
       final Map<dynamic, dynamic>? result = await _channel.invokeMethod(
         'fileAccess',
@@ -73,7 +72,7 @@ class PlatformFilePicker {
   }
 
   static Future<bool> changeScopedAccess(
-      String targetPath, bool startOrEnd) async {
+      String targetPath, bool startOrEnd,) async {
     try {
       return await _channel.invokeMethod(
         'changeScopedAccess',

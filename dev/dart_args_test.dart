@@ -1,4 +1,5 @@
 import 'package:args/args.dart';
+import 'package:flutter/cupertino.dart';
 
 void main([List<String> arguments = const []]) async {
   var parser = ArgParser();
@@ -8,9 +9,9 @@ void main([List<String> arguments = const []]) async {
 
   final results = parser.parse(arguments);
 
-  print(results.options.toList());
-  print(results.arguments);
-  print(results.rest);
+  debugPrint(results.options.toList().toString());
+  debugPrint(results.arguments.toString());
+  debugPrint(results.rest.toString());
 
-  print(arguments);
+  debugPrint(arguments.toString());
 }

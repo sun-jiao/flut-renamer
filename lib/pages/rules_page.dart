@@ -161,7 +161,7 @@ class RulesPageState extends State<RulesPage> {
                       'Rearrange': L10n.current.rearrange,
                       'Transliterate': L10n.current.transliterate,
                       'Truncate': L10n.current.truncate,
-                    }[value]!),
+                    }[value]!,),
                   );
                 }).toList(),
               ),
@@ -206,7 +206,7 @@ class RulesPageState extends State<RulesPage> {
         else
           Expanded(
             child: ReorderableListView.builder(
-              onReorder: (oldIndex, newIndex) {
+              onReorderItem: (oldIndex, newIndex) {
                 setState(() {
                   if (newIndex > oldIndex) {
                     newIndex -= 1;
