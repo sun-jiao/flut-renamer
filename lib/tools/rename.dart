@@ -42,14 +42,14 @@ Future<FileEntity?> rename(
             : File(newUriString);
         final newFileEntity = FileEntity(renamedEntity);
         newFileEntity.selected = file.selected;
-        Logger().logRename(file.path, newUriString);
+        await Logger().logRename(file.path, newUriString);
         return newFileEntity;
       } else {
         throw FileSystemException("SAF rename returned null for ${file.path}");
       }
     } else {
       final renamedEntity = await file.entity.rename(file.newPath);
-      Logger().logRename(file.path, renamedEntity.path);
+      await Logger().logRename(file.path, renamedEntity.path);
       return FileEntity(renamedEntity);
     }
   } catch (e, s) {

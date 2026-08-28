@@ -10,9 +10,15 @@ import 'package:flutter_test/flutter_test.dart';
 import 'rule/replace.dart' as replace_test;
 import 'rule/insert.dart' as insert_test;
 import 'rule/rearrange.dart' as rearrange_test;
+import 'rule/rule_serialization_test.dart' as rule_serialization_test;
+import 'tools/rename_test.dart' as rename_test;
+import 'widget/custom_drop_test.dart' as custom_drop_test;
 
 void main() {
   group('rule replace', replace_test.main);
   group('rule insert', insert_test.main);
   group('rule rearrange', rearrange_test.main);
+  group('rule replace serialization', rule_serialization_test.main);
+  group('rename test', rename_test.main);
+  group('custom drop test', custom_drop_test.main);
 }
