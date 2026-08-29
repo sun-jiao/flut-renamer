@@ -136,6 +136,11 @@ class FileMetadata {
             _exif['GPS GPSLatitude'], _exif['GPS GPSLatitudeRef'],);
       case 'Photo:Altitude':
         return (_exif['GPS GPSAltitude'] ?? 0).toString();
+      case 'Photo:Direction':
+        return _getDirection(
+          _exif['GPS GPSImgDirection'],
+          _exif['GPS GPSImgDirectionRef'],
+        );
       case 'Photo:Photographer':
         return (_exif['Image Artist'] ?? '').toString();
       case 'Photo:Copyright':
@@ -231,6 +236,15 @@ class FileMetadata {
       }
     }
     return '0°0′0″';
+  }
+
+  String _getDirection(IfdTag? directionTag, IfdTag? referenceTag) {
+    final direction = _parseRatioTag(directionTag);
+    if (direction.isEmpty) {
+      return '';
+    }
+
+    return '$direction°${(referenceTag ?? '').toString()}';
   }
 
   double _parseRatio(Ratio ratio) => ratio.numerator / ratio.denominator;

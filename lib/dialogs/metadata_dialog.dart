@@ -34,6 +34,7 @@ class MetadataDialog extends StatelessWidget {
     MapEntry('Photo:Longitude', L10n.current.photoLongitude),
     MapEntry('Photo:Latitude', L10n.current.photoLatitude),
     MapEntry('Photo:Altitude', L10n.current.photoAltitude),
+    MapEntry('Photo:Direction', L10n.current.photoDirection),
     MapEntry('Photo:Photographer', L10n.current.photoPhotographer),
     MapEntry('Photo:Copyright', L10n.current.photoCopyright),
     MapEntry('Music:AlbumName', L10n.current.musicAlbumName),

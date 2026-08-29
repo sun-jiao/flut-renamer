@@ -272,6 +272,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "photoDate": MessageLookupByLibrary.simpleMessage(
       "Fotoğraf Çekim Tarihi (EXIF\'ten)",
     ),
+    "photoDirection": MessageLookupByLibrary.simpleMessage(
+      "Fotoğraf Çekim Yönü (EXIF\'ten)",
+    ),
     "photoFocalLength": MessageLookupByLibrary.simpleMessage(
       "Odak Uzunluğu (EXIF\'ten)",
     ),

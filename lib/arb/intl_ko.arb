@@ -100,6 +100,7 @@
   "photoLongitude": "사진 GPS 경도 (EXIF에서 가져옴)",
   "photoLatitude": "사진 GPS 위도 (EXIF에서 가져옴)",
   "photoAltitude": "사진 GPS 고도 (EXIF에서 가져옴)",
+  "photoDirection": "사진 촬영 방향 (EXIF에서 가져옴)",
   "photoPhotographer": "사진작가 이름 (EXIF에서 가져옴)",
   "photoCopyright": "저작권 소유자 이름 (EXIF에서 가져옴)",
   "musicAlbumName": "앨범 이름",

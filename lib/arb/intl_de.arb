@@ -100,6 +100,7 @@
   "photoLongitude": "Längengrad des Fotos (EXIF)",
   "photoLatitude": "Breitengrad des Fotos (EXIF)",
   "photoAltitude": "Höhe des Fotos (EXIF)",
+  "photoDirection": "Aufnahmerichtung des Fotos (EXIF)",
   "photoPhotographer": "Name des Fotografen (EXIF)",
   "photoCopyright": "Name des Urheberrechtsinhabers (EXIF)",
   "musicAlbumName": "Albumname",

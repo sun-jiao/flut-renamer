@@ -264,6 +264,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "photoDate": MessageLookupByLibrary.simpleMessage(
       "วันที่ถ่ายภาพ (จาก exif)",
     ),
+    "photoDirection": MessageLookupByLibrary.simpleMessage(
+      "ทิศทางการถ่ายภาพ (จาก exif)",
+    ),
     "photoFocalLength": MessageLookupByLibrary.simpleMessage(
       "ระยะโฟกัส (จาก exif)",
     ),

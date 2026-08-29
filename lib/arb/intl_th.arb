@@ -100,6 +100,7 @@
   "photoLongitude": "ลองจิจูดของรูปภาพ (จาก exif)",
   "photoLatitude": "ละติจูดของรูปภาพ (จาก exif)",
   "photoAltitude": "ความสูงจากระดับน้ำทะเลของรูปภาพ (จาก exif)",
+  "photoDirection": "ทิศทางการถ่ายภาพ (จาก exif)",
   "photoPhotographer": "ชื่อช่างภาพ (จาก exif)",
   "photoCopyright": "ชื่อเจ้าของลิขสิทธิ์ (จาก exif)",
   "musicAlbumName": "ชื่ออัลบั้ม",

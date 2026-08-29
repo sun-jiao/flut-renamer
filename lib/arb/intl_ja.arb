@@ -100,6 +100,7 @@
   "photoLongitude": "写真のGPS経度（Exifから）",
   "photoLatitude": "写真のGPS緯度（Exifから）",
   "photoAltitude": "写真のGPS高度（Exifから）",
+  "photoDirection": "写真の撮影方向（Exifから）",
   "photoPhotographer": "写真家の名前（Exifから）",
   "photoCopyright": "著作権者の名前（Exifから）",
   "musicAlbumName": "アルバム名",

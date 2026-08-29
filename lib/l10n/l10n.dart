@@ -859,6 +859,16 @@ class L10n {
     );
   }
 
+  /// `Photo direction from exif`
+  String get photoDirection {
+    return Intl.message(
+      'Photo direction from exif',
+      name: 'photoDirection',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Photographer name from exif`
   String get photoPhotographer {
     return Intl.message(

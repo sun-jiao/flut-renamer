@@ -100,6 +100,7 @@
   "photoLongitude": "Fotoğraf GPS Boylamı (EXIF'ten)",
   "photoLatitude": "Fotoğraf GPS Enlemi (EXIF'ten)",
   "photoAltitude": "Fotoğraf GPS Yüksekliği (EXIF'ten)",
+  "photoDirection": "Fotoğraf Çekim Yönü (EXIF'ten)",
   "photoPhotographer": "Fotoğrafçı Adı (EXIF'ten)",
   "photoCopyright": "Telif Hakkı Sahibi Adı (EXIF'ten)",
   "musicAlbumName": "Albüm Adı",

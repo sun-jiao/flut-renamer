@@ -207,6 +207,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "photoCamName": MessageLookupByLibrary.simpleMessage("相机名称（来自exif）"),
     "photoCopyright": MessageLookupByLibrary.simpleMessage("版权所有者姓名（来自exif）"),
     "photoDate": MessageLookupByLibrary.simpleMessage("照片拍摄日期（来自exif）"),
+    "photoDirection": MessageLookupByLibrary.simpleMessage("照片拍摄方向（来自exif）"),
     "photoFocalLength": MessageLookupByLibrary.simpleMessage("焦距（来自exif）"),
     "photoISO": MessageLookupByLibrary.simpleMessage("ISO数值（来自exif）"),
     "photoLatitude": MessageLookupByLibrary.simpleMessage("照片GPS纬度（来自exif）"),

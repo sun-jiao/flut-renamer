@@ -220,6 +220,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "photoCamName": MessageLookupByLibrary.simpleMessage("カメラ名（Exifから）"),
     "photoCopyright": MessageLookupByLibrary.simpleMessage("著作権者の名前（Exifから）"),
     "photoDate": MessageLookupByLibrary.simpleMessage("写真撮影日（Exifから）"),
+    "photoDirection": MessageLookupByLibrary.simpleMessage("写真の撮影方向（Exifから）"),
     "photoFocalLength": MessageLookupByLibrary.simpleMessage("焦点距離（Exifから）"),
     "photoISO": MessageLookupByLibrary.simpleMessage("ISO値（Exifから）"),
     "photoLatitude": MessageLookupByLibrary.simpleMessage("写真のGPS緯度（Exifから）"),

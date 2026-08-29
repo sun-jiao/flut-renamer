@@ -533,6 +533,12 @@ class MainActivity: FlutterActivity() {
         exif.getAltitude(Double.NaN).takeIf { !it.isNaN() }?.let {
             metadata["Photo:Altitude"] = it.toString()
         }
+        exif.getAttributeDouble(ExifInterface.TAG_GPS_IMG_DIRECTION, Double.NaN)
+            .takeIf { !it.isNaN() }
+            ?.let { direction ->
+                val reference = exif.getAttribute(ExifInterface.TAG_GPS_IMG_DIRECTION_REF).orEmpty()
+                metadata["Photo:Direction"] = "$direction°$reference"
+            }
         putAttribute(metadata, "Photo:Photographer", exif, ExifInterface.TAG_ARTIST)
         putAttribute(metadata, "Photo:Copyright", exif, ExifInterface.TAG_COPYRIGHT)
     }

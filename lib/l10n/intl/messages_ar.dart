@@ -267,6 +267,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "photoDate": MessageLookupByLibrary.simpleMessage(
       "تاريخ التقاط الصورة (من exif)",
     ),
+    "photoDirection": MessageLookupByLibrary.simpleMessage(
+      "اتجاه التقاط الصورة (من exif)",
+    ),
     "photoFocalLength": MessageLookupByLibrary.simpleMessage(
       "البعد البؤري (من exif)",
     ),

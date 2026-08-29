@@ -220,6 +220,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "저작권 소유자 이름 (EXIF에서 가져옴)",
     ),
     "photoDate": MessageLookupByLibrary.simpleMessage("사진 촬영 날짜 (EXIF에서 가져옴)"),
+    "photoDirection": MessageLookupByLibrary.simpleMessage(
+      "사진 촬영 방향 (EXIF에서 가져옴)",
+    ),
     "photoFocalLength": MessageLookupByLibrary.simpleMessage(
       "초점 거리 (EXIF에서 가져옴)",
     ),

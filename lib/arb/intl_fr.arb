@@ -100,6 +100,7 @@
   "photoLongitude": "Longitude GPS de la photo (EXIF)",
   "photoLatitude": "Latitude GPS de la photo (EXIF)",
   "photoAltitude": "Altitude GPS de la photo (EXIF)",
+  "photoDirection": "Direction de prise de vue de la photo (EXIF)",
   "photoPhotographer": "Nom du photographe (EXIF)",
   "photoCopyright": "Nom du propriétaire des droits d'auteur (EXIF)",
   "musicAlbumName": "Nom de l'album",
