@@ -116,6 +116,7 @@
   "musicWriter": "Compositeur de la piste",
   "prefix": "Préfixe",
   "startIndex": "Index de départ",
+  "numberOfDigits": "Nombre de chiffres",
   "indexIncrementalStep": "Pas d'incrémentation d'index",
   "omitDash": "Omettre le tiret",
   "ignoreExtension": "Ignorer l'extension",

@@ -239,6 +239,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "noSysDir": MessageLookupByLibrary.simpleMessage(
       "يرجى عدم إعادة تسمية الدلائل المحجوزة للنظام.",
     ),
+    "numberOfDigits": MessageLookupByLibrary.simpleMessage("عدد الأرقام"),
     "ok": MessageLookupByLibrary.simpleMessage("موافق"),
     "omitDash": MessageLookupByLibrary.simpleMessage("تجاهل الشرطة"),
     "onlySelected": MessageLookupByLibrary.simpleMessage(

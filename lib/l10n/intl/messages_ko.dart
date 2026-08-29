@@ -202,6 +202,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "noSysDir": MessageLookupByLibrary.simpleMessage(
       "시스템 예약 디렉터리를 이름을 변경하지 마십시오.",
     ),
+    "numberOfDigits": MessageLookupByLibrary.simpleMessage("자릿수"),
     "ok": MessageLookupByLibrary.simpleMessage("확인"),
     "omitDash": MessageLookupByLibrary.simpleMessage("대시 생략"),
     "onlySelected": MessageLookupByLibrary.simpleMessage("선택한 파일만 이름 변경"),

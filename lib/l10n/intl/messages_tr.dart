@@ -244,6 +244,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "noSysDir": MessageLookupByLibrary.simpleMessage(
       "Lütfen sistem korumalı klasörleri yeniden adlandırmayın.",
     ),
+    "numberOfDigits": MessageLookupByLibrary.simpleMessage("Basamak sayısı"),
     "ok": MessageLookupByLibrary.simpleMessage("Tamam"),
     "omitDash": MessageLookupByLibrary.simpleMessage("Tireyi Atla"),
     "onlySelected": MessageLookupByLibrary.simpleMessage(

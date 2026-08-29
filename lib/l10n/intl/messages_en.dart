@@ -244,6 +244,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "noSysDir": MessageLookupByLibrary.simpleMessage(
       "Do not rename a system reserved directory.",
     ),
+    "numberOfDigits": MessageLookupByLibrary.simpleMessage("Number of digits"),
     "ok": MessageLookupByLibrary.simpleMessage("OK"),
     "omitDash": MessageLookupByLibrary.simpleMessage("Omit dash"),
     "onlySelected": MessageLookupByLibrary.simpleMessage("Only selected"),

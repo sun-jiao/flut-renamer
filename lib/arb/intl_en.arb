@@ -116,6 +116,7 @@
   "musicWriter": "Writer of the track",
   "prefix": "Prefix",
   "startIndex": "Start index",
+  "numberOfDigits": "Number of digits",
   "indexIncrementalStep": "Index incremental step",
   "omitDash": "Omit dash",
   "ignoreExtension": "Ignore Extension",

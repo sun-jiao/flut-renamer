@@ -255,6 +255,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "noSysDir": MessageLookupByLibrary.simpleMessage(
       "Não renomeie diretórios protegidos pelo sistema.",
     ),
+    "numberOfDigits": MessageLookupByLibrary.simpleMessage("Número de dígitos"),
     "ok": MessageLookupByLibrary.simpleMessage("OK"),
     "omitDash": MessageLookupByLibrary.simpleMessage("Omitir hífen"),
     "onlySelected": MessageLookupByLibrary.simpleMessage(

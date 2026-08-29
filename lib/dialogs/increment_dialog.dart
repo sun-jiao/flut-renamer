@@ -7,7 +7,9 @@ import '../rules/rule.dart';
 import '../widget/checkbox_tile.dart';
 import '../widget/custom_dialog.dart';
 
-void showIncrementDialog(BuildContext context, Function(Rule) onSave, [RuleIncrement? rule]) => showDialog(
+void showIncrementDialog(BuildContext context, Function(Rule) onSave,
+        [RuleIncrement? rule]) =>
+    showDialog(
       context: context,
       builder: (context) => IncrementDialog(
         onSave: onSave,
@@ -33,6 +35,9 @@ class _IncrementDialogState extends State<IncrementDialog> {
   TextEditingController stepController = TextEditingController(
     text: '1',
   );
+  TextEditingController digitsController = TextEditingController(
+    text: '1',
+  );
   bool omitDash = false;
   bool ignoreExtension = true;
 
@@ -40,8 +45,9 @@ class _IncrementDialogState extends State<IncrementDialog> {
   void initState() {
     if (widget.rule != null) {
       prefixController.text = widget.rule!.prefix;
-      indexController.text = widget.rule!.index.toString();
+      indexController.text = widget.rule!.startIndex.toString();
       stepController.text = widget.rule!.step.toString();
+      digitsController.text = widget.rule!.minimumDigits.toString();
       omitDash = widget.rule!.omitDash;
       ignoreExtension = widget.rule!.ignoreExtension;
     }
@@ -73,12 +79,23 @@ class _IncrementDialogState extends State<IncrementDialog> {
             ),
             box,
             TextFormField(
+              controller: digitsController,
+              keyboardType: TextInputType.number,
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.allow(RegExp('[0-9]')), // 只允许数字
+              ],
+              decoration:
+                  InputDecoration(labelText: L10n.current.numberOfDigits),
+            ),
+            box,
+            TextFormField(
               controller: stepController,
               keyboardType: TextInputType.number,
               inputFormatters: <TextInputFormatter>[
                 FilteringTextInputFormatter.allow(RegExp('[0-9]')), // 只允许数字
               ],
-              decoration: InputDecoration(labelText: L10n.current.indexIncrementalStep),
+              decoration:
+                  InputDecoration(labelText: L10n.current.indexIncrementalStep),
             ),
             CheckboxTile(
               title: Text(L10n.current.omitDash),
@@ -113,6 +130,7 @@ class _IncrementDialogState extends State<IncrementDialog> {
             String prefix = prefixController.text;
             int startIndex = int.tryParse(indexController.text) ?? 0;
             int step = int.tryParse(stepController.text) ?? 0;
+            int minimumDigits = int.tryParse(digitsController.text) ?? 0;
 
             final Rule rule = RuleIncrement(
               prefix,
@@ -120,6 +138,7 @@ class _IncrementDialogState extends State<IncrementDialog> {
               step,
               omitDash,
               ignoreExtension,
+              minimumDigits: minimumDigits,
             );
 
             widget.onSave.call(rule);

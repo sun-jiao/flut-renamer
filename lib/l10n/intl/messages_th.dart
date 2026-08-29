@@ -236,6 +236,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "noSysDir": MessageLookupByLibrary.simpleMessage(
       "อย่าเปลี่ยนชื่อโฟลเดอร์ที่ระบบสงวนไว้",
     ),
+    "numberOfDigits": MessageLookupByLibrary.simpleMessage("จำนวนหลัก"),
     "ok": MessageLookupByLibrary.simpleMessage("ตกลง"),
     "omitDash": MessageLookupByLibrary.simpleMessage("ละเว้นขีด"),
     "onlySelected": MessageLookupByLibrary.simpleMessage(

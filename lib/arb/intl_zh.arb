@@ -116,6 +116,7 @@
   "musicWriter": "曲目的作家（Writer）",
   "prefix": "前缀",
   "startIndex": "起始索引",
+  "numberOfDigits": "编号位数",
   "indexIncrementalStep": "索引递增量",
   "omitDash": "省略短横线",
   "ignoreExtension": "忽略扩展名",

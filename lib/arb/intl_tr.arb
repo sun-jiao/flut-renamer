@@ -116,6 +116,7 @@
   "musicWriter": "Yazar",
   "prefix": "Ön Ek",
   "startIndex": "Başlangıç İndeksi",
+  "numberOfDigits": "Basamak sayısı",
   "indexIncrementalStep": "İndeks Artış Adımı",
   "omitDash": "Tireyi Atla",
   "ignoreExtension": "Uzantıyı Yoksay",

@@ -116,6 +116,7 @@
   "musicWriter": "Verfasser des Titels",
   "prefix": "Präfix",
   "startIndex": "Startindex",
+  "numberOfDigits": "Anzahl der Ziffern",
   "indexIncrementalStep": "Inkrementalschritt",
   "omitDash": "Bindestrich auslassen",
   "ignoreExtension": "Dateierweiterung ignorieren",

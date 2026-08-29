@@ -116,6 +116,7 @@
   "musicWriter": "곡 작사가",
   "prefix": "접두사",
   "startIndex": "시작 인덱스",
+  "numberOfDigits": "자릿수",
   "indexIncrementalStep": "인덱스 증가 단계",
   "omitDash": "대시 생략",
   "ignoreExtension": "확장자 무시",

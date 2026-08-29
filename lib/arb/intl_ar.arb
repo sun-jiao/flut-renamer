@@ -116,6 +116,7 @@
   "musicWriter": "كاتب الأغنية",
   "prefix": "بادئة",
   "startIndex": "الفهرس البدئي",
+  "numberOfDigits": "عدد الأرقام",
   "indexIncrementalStep": "الزيادة في الفهرس",
   "omitDash": "تجاهل الشرطة",
   "ignoreExtension": "تجاهل الامتداد",

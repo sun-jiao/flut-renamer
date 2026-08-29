@@ -269,6 +269,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "noSysDir": MessageLookupByLibrary.simpleMessage(
       "Ne pas renommer les répertoires système réservés.",
     ),
+    "numberOfDigits": MessageLookupByLibrary.simpleMessage(
+      "Nombre de chiffres",
+    ),
     "ok": MessageLookupByLibrary.simpleMessage("OK"),
     "omitDash": MessageLookupByLibrary.simpleMessage("Omettre le tiret"),
     "onlySelected": MessageLookupByLibrary.simpleMessage(

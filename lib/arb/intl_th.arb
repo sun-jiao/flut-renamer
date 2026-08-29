@@ -116,6 +116,7 @@
   "musicWriter": "ผู้แต่งเนื้อเพลง",
   "prefix": "คำนำหน้า",
   "startIndex": "ดัชนีเริ่มต้น",
+  "numberOfDigits": "จำนวนหลัก",
   "indexIncrementalStep": "ขั้นตอนการเพิ่มดัชนี",
   "omitDash": "ละเว้นขีด",
   "ignoreExtension": "ละเว้นนามสกุล",

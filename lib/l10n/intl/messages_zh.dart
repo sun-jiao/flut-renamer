@@ -193,6 +193,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "musicYear": MessageLookupByLibrary.simpleMessage("曲目的出版年份"),
     "newName": MessageLookupByLibrary.simpleMessage("新文件名"),
     "noSysDir": MessageLookupByLibrary.simpleMessage("请勿重命名系统保留目录。"),
+    "numberOfDigits": MessageLookupByLibrary.simpleMessage("编号位数"),
     "ok": MessageLookupByLibrary.simpleMessage("确定"),
     "omitDash": MessageLookupByLibrary.simpleMessage("省略短横线"),
     "onlySelected": MessageLookupByLibrary.simpleMessage("仅重命名选中的文件"),

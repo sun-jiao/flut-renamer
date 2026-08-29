@@ -206,6 +206,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "noSysDir": MessageLookupByLibrary.simpleMessage(
       "システム予約ディレクトリはリネームしないでください。",
     ),
+    "numberOfDigits": MessageLookupByLibrary.simpleMessage("桁数"),
     "ok": MessageLookupByLibrary.simpleMessage("OK"),
     "omitDash": MessageLookupByLibrary.simpleMessage("ダッシュを省略"),
     "onlySelected": MessageLookupByLibrary.simpleMessage("選択したファイルのみリネーム"),

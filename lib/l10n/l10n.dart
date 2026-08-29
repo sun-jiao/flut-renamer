@@ -1,6 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 import 'intl/messages_all.dart';
 
 // **************************************************************************
@@ -1007,6 +1008,16 @@ class L10n {
   /// `Start index`
   String get startIndex {
     return Intl.message('Start index', name: 'startIndex', desc: '', args: []);
+  }
+
+  /// `Number of digits`
+  String get numberOfDigits {
+    return Intl.message(
+      'Number of digits',
+      name: 'numberOfDigits',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Index incremental step`

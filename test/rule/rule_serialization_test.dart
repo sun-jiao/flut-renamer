@@ -89,7 +89,7 @@ void main() {
   });
 
   test('RuleIncrement serialization', () {
-    final rule = RuleIncrement('P', 1, 1, false, true);
+    final rule = RuleIncrement('P', 1, 1, false, true, minimumDigits: 4);
     final map = rule.toMap();
     final restored = RuleFactory.fromMap(map) as RuleIncrement;
 
@@ -98,6 +98,21 @@ void main() {
     expect(restored.step, 1);
     expect(restored.omitDash, false);
     expect(restored.ignoreExtension, true);
+    expect(restored.minimumDigits, 4);
+  });
+
+  test('RuleIncrement accepts persisted rules without a minimum digit count',
+      () {
+    final restored = RuleFactory.fromMap({
+      'type': 'Increment',
+      'prefix': 'P',
+      'startIndex': 1,
+      'step': 1,
+      'omitDash': false,
+      'ignoreExtension': true,
+    }) as RuleIncrement;
+
+    expect(restored.minimumDigits, 0);
   });
 
   test('RuleRearrange serialization', () {

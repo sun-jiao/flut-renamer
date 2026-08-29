@@ -116,6 +116,7 @@
   "musicWriter": "曲の作詞者",
   "prefix": "接頭辞",
   "startIndex": "開始インデックス",
+  "numberOfDigits": "桁数",
   "indexIncrementalStep": "インデックスの増分ステップ",
   "omitDash": "ダッシュを省略",
   "ignoreExtension": "拡張子を無視",
