@@ -94,6 +94,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "collapseOptions": MessageLookupByLibrary.simpleMessage("ยุบตัวเลือก"),
     "currentName": MessageLookupByLibrary.simpleMessage("ชื่อไฟล์ปัจจุบัน"),
+    "dateFormat": MessageLookupByLibrary.simpleMessage("รูปแบบวันที่"),
     "descriptionIncrement": MessageLookupByLibrary.simpleMessage(
       "เพิ่มเลขดัชนีในชื่อไฟล์ (เช่น รูปภาพ-1, รูปภาพ-2, รูปภาพ-3)",
     ),

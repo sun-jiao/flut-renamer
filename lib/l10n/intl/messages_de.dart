@@ -99,6 +99,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Optionen ausblenden",
     ),
     "currentName": MessageLookupByLibrary.simpleMessage("Aktueller Dateiname"),
+    "dateFormat": MessageLookupByLibrary.simpleMessage("Datumsformat"),
     "descriptionIncrement": MessageLookupByLibrary.simpleMessage(
       "Inkrementieren Sie den Dateinamen, z. B. Foto-1, Foto-2, Foto-3.",
     ),

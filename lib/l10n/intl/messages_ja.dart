@@ -88,6 +88,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "caseSensitive": MessageLookupByLibrary.simpleMessage("大文字と小文字を区別する"),
     "collapseOptions": MessageLookupByLibrary.simpleMessage("オプションを折りたたむ"),
     "currentName": MessageLookupByLibrary.simpleMessage("現在のファイル名"),
+    "dateFormat": MessageLookupByLibrary.simpleMessage("日付形式"),
     "descriptionIncrement": MessageLookupByLibrary.simpleMessage(
       "ファイル名を増分します。例：写真-1、写真-2、写真-3。",
     ),

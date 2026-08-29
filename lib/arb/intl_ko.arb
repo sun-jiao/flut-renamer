@@ -81,6 +81,7 @@
   "errorDetails": "오류 세부 정보",
   "ifFileNotShown": "파일 목록에 파일이 표시되지 않으면 모든 내용을 지우고 계속 진행하십시오.",
   "metadataTags": "메타 데이터 태그",
+  "dateFormat": "날짜 형식",
   "osTodayDate": "현재 날짜",
   "osNowTime": "현재 시간",
   "fileSize": "파일 크기",

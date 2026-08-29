@@ -1,7 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import 'intl/messages_all.dart';
 
 // **************************************************************************
@@ -683,6 +682,11 @@ class L10n {
       desc: '',
       args: [],
     );
+  }
+
+  /// `Date format`
+  String get dateFormat {
+    return Intl.message('Date format', name: 'dateFormat', desc: '', args: []);
   }
 
   /// `Date of today`

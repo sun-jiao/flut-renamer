@@ -96,6 +96,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Seçenekleri Daralt",
     ),
     "currentName": MessageLookupByLibrary.simpleMessage("Mevcut Dosya Adı"),
+    "dateFormat": MessageLookupByLibrary.simpleMessage("Tarih biçimi"),
     "descriptionIncrement": MessageLookupByLibrary.simpleMessage(
       "Dosya adını artırın, örneğin Fotoğraf-1, Fotoğraf-2, Fotoğraf-3.",
     ),

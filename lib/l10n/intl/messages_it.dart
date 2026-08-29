@@ -98,6 +98,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "collapseOptions": MessageLookupByLibrary.simpleMessage("Nascondi opzioni"),
     "currentName": MessageLookupByLibrary.simpleMessage("Nome attuale"),
+    "dateFormat": MessageLookupByLibrary.simpleMessage("Formato data"),
     "descriptionIncrement": MessageLookupByLibrary.simpleMessage(
       "Incrementa il nome del file, ad esempio Foto-1, Foto-2, Foto-3.",
     ),

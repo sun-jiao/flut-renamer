@@ -92,6 +92,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "caseSensitive": MessageLookupByLibrary.simpleMessage("Case sensitive"),
     "collapseOptions": MessageLookupByLibrary.simpleMessage("Collapse options"),
     "currentName": MessageLookupByLibrary.simpleMessage("Current name"),
+    "dateFormat": MessageLookupByLibrary.simpleMessage("Date format"),
     "descriptionIncrement": MessageLookupByLibrary.simpleMessage(
       "Increment the filename, e.g., Photo-1, Photo-2, Photo-3.",
     ),

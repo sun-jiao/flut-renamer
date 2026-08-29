@@ -81,6 +81,7 @@
   "errorDetails": "错误详情",
   "ifFileNotShown": "如果文件列表中未显示文件，请清除所有内容并继续。",
   "metadataTags": "元数据标签",
+  "dateFormat": "日期格式",
   "osTodayDate": "当前日期",
   "osNowTime": "当前时间",
   "fileSize": "文件大小",

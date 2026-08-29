@@ -81,6 +81,7 @@
   "errorDetails": "Hata Detayları",
   "ifFileNotShown": "Dosya listesinde dosyalar görüntülenmiyorsa, tüm içeriği temizleyin ve devam edin.",
   "metadataTags": "Meta Veri Etiketleri",
+  "dateFormat": "Tarih biçimi",
   "osTodayDate": "Bugünün Tarihi",
   "osNowTime": "Şu Anki Zaman",
   "fileSize": "Dosya Boyutu",

@@ -8,7 +8,9 @@ class RuleReplace implements Rule {
     this.withMetadata,
     this.caseSensitive,
     this.isRegex,
-    this.ignoreExtension,
+    this.ignoreExtension, {
+    this.dateFormat = FileMetadata.defaultDateFormat,
+  }
   );
 
   final String targetString; // target to be matched and replaced.
@@ -19,6 +21,7 @@ class RuleReplace implements Rule {
   final bool caseSensitive;
   final bool isRegex;
   final bool ignoreExtension;
+  final String dateFormat;
 
   @override
   Future<String> newName(String oldName, {FileMetadata? metadata}) async {
@@ -37,7 +40,10 @@ class RuleReplace implements Rule {
 
     if (withMetadata) {
       await metadata!.init();
-      replacementString = metadata.parse(replacementString);
+      replacementString = metadata.parse(
+        replacementString,
+        dateFormat: dateFormat,
+      );
     }
 
     Pattern target;
@@ -92,6 +98,7 @@ class RuleReplace implements Rule {
       'caseSensitive': caseSensitive,
       'isRegex': isRegex,
       'ignoreExtension': ignoreExtension,
+      'dateFormat': dateFormat,
     };
   }
 
@@ -104,6 +111,7 @@ class RuleReplace implements Rule {
       map['caseSensitive'] as bool,
       map['isRegex'] as bool,
       map['ignoreExtension'] as bool,
+      dateFormat: map['dateFormat'] as String? ?? FileMetadata.defaultDateFormat,
     );
   }
 

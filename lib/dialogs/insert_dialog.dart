@@ -6,7 +6,9 @@ import '../l10n/l10n.dart';
 import '../rules/rule.dart';
 import '../widget/checkbox_tile.dart';
 import '../widget/custom_dialog.dart';
+import '../widget/date_format_dropdown.dart';
 import '../widget/text_field_with_direction.dart';
+import '../tools/file_metadata.dart';
 
 void showInsertDialog(BuildContext context, Function(Rule) onSave, [RuleInsert? rule]) => showDialog(
       context: context,
@@ -34,6 +36,7 @@ class _InsertDialogState extends State<InsertDialog> {
   ValueNotifier<bool> withMetadata = ValueNotifier(false);
   ValueNotifier<bool> toEnd = ValueNotifier(false);
   bool ignoreExtension = true;
+  String dateFormat = FileMetadata.defaultDateFormat;
 
   @override
   void initState() {
@@ -42,6 +45,7 @@ class _InsertDialogState extends State<InsertDialog> {
       indexController.text = widget.rule!.insertIndex.toString();
       withMetadata.value = widget.rule!.withMetadata;
       toEnd.value = widget.rule!.toEnd;
+      dateFormat = widget.rule!.dateFormat;
     }
 
     super.initState();
@@ -65,6 +69,15 @@ class _InsertDialogState extends State<InsertDialog> {
             DirectionTextField(con: indexController, toEnd: toEnd, labelText: L10n.current.insertIndex),
             // Text(L10n.current.insertBeforeIndex, style: const TextStyle(fontSize: 13),),
             MetadataTile(textController: textController, withMetadata: withMetadata),
+            ValueListenableBuilder<bool>(
+              valueListenable: withMetadata,
+              builder: (context, usesMetadata, child) => usesMetadata
+                  ? DateFormatDropdown(
+                      value: dateFormat,
+                      onChanged: (value) => setState(() => dateFormat = value),
+                    )
+                  : const SizedBox.shrink(),
+            ),
             CheckboxTile(
               title: Text(L10n.current.ignoreExtension),
               value: ignoreExtension,
@@ -95,6 +108,7 @@ class _InsertDialogState extends State<InsertDialog> {
               toEnd.value,
               withMetadata.value,
               ignoreExtension,
+              dateFormat: dateFormat,
             );
 
             widget.onSave.call(rule);

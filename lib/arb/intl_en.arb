@@ -81,6 +81,7 @@
   "errorDetails": "Error details",
   "ifFileNotShown": "If files does not shown in file list, please clear all and continue.",
   "metadataTags": "Metadata tags",
+  "dateFormat": "Date format",
   "osTodayDate": "Date of today",
   "osNowTime": "Time of now",
   "fileSize": "Size of file",

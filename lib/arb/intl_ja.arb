@@ -81,6 +81,7 @@
   "errorDetails": "エラーの詳細",
   "ifFileNotShown": "ファイルがリストに表示されない場合は、すべてクリアして続行してください。",
   "metadataTags": "メタデータタグ",
+  "dateFormat": "日付形式",
   "osTodayDate": "今日の日付",
   "osNowTime": "現在の時刻",
   "fileSize": "ファイルサイズ",

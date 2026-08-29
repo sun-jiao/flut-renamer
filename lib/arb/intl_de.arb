@@ -81,6 +81,7 @@
   "errorDetails": "Fehlerdetails",
   "ifFileNotShown": "Wenn keine Dateien in der Liste angezeigt werden, löschen Sie bitte alles und fahren Sie fort.",
   "metadataTags": "Metadaten-Tags",
+  "dateFormat": "Datumsformat",
   "osTodayDate": "Aktuelles Datum",
   "osNowTime": "Aktuelle Uhrzeit",
   "fileSize": "Dateigröße",

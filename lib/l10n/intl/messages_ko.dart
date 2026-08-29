@@ -88,6 +88,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "caseSensitive": MessageLookupByLibrary.simpleMessage("대소문자 구분"),
     "collapseOptions": MessageLookupByLibrary.simpleMessage("옵션 축소"),
     "currentName": MessageLookupByLibrary.simpleMessage("현재 파일 이름"),
+    "dateFormat": MessageLookupByLibrary.simpleMessage("날짜 형식"),
     "descriptionIncrement": MessageLookupByLibrary.simpleMessage(
       "파일 이름을 증가시킵니다. 예: 사진-1, 사진-2, 사진-3.",
     ),

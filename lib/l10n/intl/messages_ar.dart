@@ -93,6 +93,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "collapseOptions": MessageLookupByLibrary.simpleMessage("طي الخيارات"),
     "currentName": MessageLookupByLibrary.simpleMessage("الاسم الحالي"),
+    "dateFormat": MessageLookupByLibrary.simpleMessage("تنسيق التاريخ"),
     "descriptionIncrement": MessageLookupByLibrary.simpleMessage(
       "زيادة في تسمية الملفات، على سبيل المثال: ملف-1، ملف-2، ملف-3.",
     ),

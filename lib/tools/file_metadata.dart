@@ -59,46 +59,57 @@ class FileMetadata {
   late String androidRealName;
 
   static final _key = utf8.encode('renamer');
-  static final _date = DateFormat('y-MM-d');
-  static final _time = DateFormat('y-MM-d HH-mm-ss');
+  static const defaultDateFormat = 'yyyy-MM-dd';
+  static const dateFormats = <String>[
+    defaultDateFormat,
+    'yyyy-MM-dd',
+    'yyyy_MM_dd',
+    'yyyyMMdd',
+    'yyyy-MMM-dd',
+    'yyyy_MMM_dd',
+    'yyyyMMMdd',
+    'dd-MM-yyyy',
+    'dd_MM_yyyy',
+    'dd-MMM-yyyy',
+    'dd_MMM_yyyy',
+    'MM-dd-yyyy',
+    'MM_dd_yyyy',
+    'MMM-dd-yyyy',
+    'MMM_dd_yyyy',
+  ];
 
-  String getByName(String name) {
+  String getByName(
+    String name, {
+    String dateFormat = defaultDateFormat,
+  }) {
     if (Platform.isAndroid && file.path.startsWith('content://')) {
       final value = _androidEmbeddedMetadata[name];
-      if (value != null) {
+      if (value != null && name != 'Photo:Date' && name != 'Photo:Time') {
         return value;
       }
     }
 
     switch (name) {
       case 'OS:TodayDate':
-        return _date.format(DateTime.now().toLocal());
+        return _formatDate(DateTime.now().toLocal(), dateFormat);
       case 'OS:NowTime':
-        return _time.format(DateTime.now().toLocal());
+        return _formatTime(DateTime.now().toLocal(), dateFormat);
       case 'File:Size':
         return _formatFileSize(_stat.size);
       case 'File:CreateDate':
-        return _date.format(_stat.changed.toLocal());
+        return _formatDate(_stat.changed.toLocal(), dateFormat);
       case 'File:CreateTime':
-        return _time.format(_stat.changed.toLocal());
+        return _formatTime(_stat.changed.toLocal(), dateFormat);
       case 'File:ModifyDate':
-        return _date.format(_stat.modified.toLocal());
+        return _formatDate(_stat.modified.toLocal(), dateFormat);
       case 'File:ModifyTime':
-        return _time.format(_stat.modified.toLocal());
+        return _formatTime(_stat.modified.toLocal(), dateFormat);
       case 'Photo:Date':
-        return (_exif['EXIF DateTime'] ??
-                _exif['EXIF DateTimeOriginal'] ??
-                _exif['EXIF DateTimeDigitized'] ??
-                '')
-            .toString()
-            .split(' ')
-            .first;
+        final value = _parsePhotoDate();
+        return value == null ? _photoDateValue() : _formatDate(value, dateFormat);
       case 'Photo:Time':
-        return (_exif['EXIF DateTime'] ??
-                _exif['EXIF DateTimeOriginal'] ??
-                _exif['EXIF DateTimeDigitized'] ??
-                '')
-            .toString();
+        final value = _parsePhotoDate();
+        return value == null ? _photoTimeValue() : _formatTime(value, dateFormat);
       case 'Photo:CamName':
         final oem = (_exif['Image Make'] ?? '').toString();
         final model = (_exif['Image Model'] ?? '').toString();
@@ -158,10 +169,44 @@ class FileMetadata {
     }
   }
 
-  String parse(String target) => target.replaceAllMapped(
+  String parse(
+    String target, {
+    String dateFormat = defaultDateFormat,
+  }) => target.replaceAllMapped(
         metadataTagRegex,
-        (match) => getByName(match.group(1).toString()),
+        (match) => getByName(match.group(1).toString(), dateFormat: dateFormat),
       );
+
+  String _formatDate(DateTime value, String format) =>
+      DateFormat(_validDateFormat(format)).format(value);
+
+  String _formatTime(DateTime value, String format) =>
+      DateFormat('${_validDateFormat(format)} HH-mm-ss').format(value);
+
+  String _validDateFormat(String format) =>
+      dateFormats.contains(format) ? format : defaultDateFormat;
+
+  String _photoDateValue() => _photoTimeValue().split(' ').first;
+
+  String _photoTimeValue() {
+    if (Platform.isAndroid && file.path.startsWith('content://')) {
+      return _androidEmbeddedMetadata['Photo:Time'] ??
+          _androidEmbeddedMetadata['Photo:Date'] ??
+          '';
+    }
+    return (_exif['EXIF DateTime'] ??
+            _exif['EXIF DateTimeOriginal'] ??
+            _exif['EXIF DateTimeDigitized'] ??
+            '')
+        .toString();
+  }
+
+  DateTime? _parsePhotoDate() {
+    final value = _photoDateValue();
+    return DateFormat('yyyy:MM:dd').tryParseStrict(value) ??
+        DateFormat('yyyy-MM-dd').tryParseStrict(value) ??
+        DateFormat('yyyy/MM/dd').tryParseStrict(value);
+  }
 
   String _getLatLng(IfdTag? coordTag, IfdTag? refTag) {
     if (coordTag == null) {

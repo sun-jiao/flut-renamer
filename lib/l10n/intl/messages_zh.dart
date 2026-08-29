@@ -87,6 +87,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "caseSensitive": MessageLookupByLibrary.simpleMessage("区分大小写"),
     "collapseOptions": MessageLookupByLibrary.simpleMessage("收起选项"),
     "currentName": MessageLookupByLibrary.simpleMessage("当前文件名"),
+    "dateFormat": MessageLookupByLibrary.simpleMessage("日期格式"),
     "descriptionIncrement": MessageLookupByLibrary.simpleMessage(
       "递增文件名，例如 照片-1、照片-2、照片-3。",
     ),
