@@ -29,6 +29,8 @@ jobs:
           flutter-version: ${{ env.FLUTTER_VERSION }}
       - name: Install project dependencies
         run: flutter pub get --enforce-lockfile
+      - name: Fix libdartjni build ID
+        run: sed -i -e 's/-Wl,/-Wl,--build-id=none,/' "${PUB_CACHE}"/hosted/*/jni-*/src/CMakeLists.txt
       - name: Verify Flutter version
         run: flutter --version
       - name: Install Linux build dependencies
