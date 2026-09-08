@@ -10,6 +10,7 @@ import '../l10n/l10n.dart';
 import '../tools/platform_channel.dart';
 import '../entity/constants.dart';
 import '../tools/ex_file.dart';
+import '../tools/file_sort.dart';
 import '../tools/file_metadata.dart';
 import '../entity/sharedpref.dart';
 import '../tools/rename.dart';
@@ -43,6 +44,8 @@ class FilesPageState extends State<FilesPage> {
   bool _dragging = false;
   bool _renaming = false;
   String _filter = '';
+  FileSortField? _sortField;
+  bool _sortAscending = true;
 
   Future<void> addFileFromPicker() async {
     late Iterable<FileEntity> entities;
@@ -202,6 +205,40 @@ class FilesPageState extends State<FilesPage> {
         .toList();
   }
 
+  void _sortFiles(FileSortField field) {
+    setState(() {
+      if (_sortField == field) {
+        _sortAscending = !_sortAscending;
+      } else {
+        _sortField = field;
+        _sortAscending = true;
+      }
+      _files.sort((left, right) {
+        final comparison = compareFiles(left, right, _sortField!);
+        return _sortAscending ? comparison : -comparison;
+      });
+    });
+  }
+
+  void _reorderFiles(int oldIndex, int newIndex) {
+    final visibleFiles = _filteredList();
+    final movedFile = visibleFiles.removeAt(oldIndex);
+
+    setState(() {
+      _files.remove(movedFile);
+      if (newIndex == visibleFiles.length) {
+        final lastVisibleFile = visibleFiles.lastOrNull;
+        if (lastVisibleFile == null) {
+          _files.add(movedFile);
+        } else {
+          _files.insert(_files.indexOf(lastVisibleFile) + 1, movedFile);
+        }
+      } else {
+        _files.insert(_files.indexOf(visibleFiles[newIndex]), movedFile);
+      }
+    });
+  }
+
   TableCell _rowTextCell(FileEntity file, {bool isNew = false}) {
     if (!(Platform.isAndroid && file.path.startsWith('content://')) &&
         !file.existsSync()) {
@@ -267,46 +304,46 @@ class FilesPageState extends State<FilesPage> {
     );
   }
 
-  List<TableRow> _tableRows() {
-    final filteredList = _filteredList();
+  TableRow _tableRow(FileEntity file, int index) {
     final fileListColors = Theme.of(context).extension<FileListColors>()!;
-    return List.generate(
-      filteredList.length,
-      (index) => TableRow(
-        decoration: BoxDecoration(
-          color: index % 2 == 0
-              ? fileListColors.primaryColor
-              : fileListColors.secondaryColor,
-        ),
-        children: [
-          TableCell(
-            child: Checkbox(
-              value: filteredList[index].selected,
-              onChanged: (val) {
-                if (val != null) {
-                  setState(() {
-                    filteredList[index].selected = val;
-                  });
-                }
-              },
-            ),
-          ),
-          _rowTextCell(filteredList[index]),
-          _rowTextCell(filteredList[index], isNew: true),
-          TableCell(
-            child: IconButton(
-              onPressed: () {
-                setState(() {
-                  _files.removeWhere(
-                    (element) => element.path == filteredList[index].path,
-                  );
-                });
-              },
-              icon: const Icon(Icons.delete),
-            ),
-          ),
-        ],
+    return TableRow(
+      decoration: BoxDecoration(
+        color: index % 2 == 0
+            ? fileListColors.primaryColor
+            : fileListColors.secondaryColor,
       ),
+      children: [
+        TableCell(
+          child: ReorderableDragStartListener(
+            index: index,
+            child: const Icon(Icons.drag_handle),
+          ),
+        ),
+        TableCell(
+          child: Checkbox(
+            value: file.selected,
+            onChanged: (val) {
+              if (val != null) {
+                setState(() {
+                  file.selected = val;
+                });
+              }
+            },
+          ),
+        ),
+        _rowTextCell(file),
+        _rowTextCell(file, isNew: true),
+        TableCell(
+          child: IconButton(
+            onPressed: () {
+              setState(() {
+                _files.remove(file);
+              });
+            },
+            icon: const Icon(Icons.delete),
+          ),
+        ),
+      ],
     );
   }
 
@@ -316,6 +353,7 @@ class FilesPageState extends State<FilesPage> {
             color: Theme.of(context).scaffoldBackgroundColor,
           ),
           children: [
+            const TableCell(child: SizedBox()),
             TableCell(
               child: Tooltip(
                 message: _files.isNotEmpty &&
@@ -368,12 +406,14 @@ class FilesPageState extends State<FilesPage> {
         ),
       ];
 
-  Widget _table(List<TableRow> children) => Table(
+  Widget _table(List<TableRow> children, {Key? key}) => Table(
+        key: key,
         columnWidths: const <int, TableColumnWidth>{
           0: IntrinsicColumnWidth(),
-          1: FlexColumnWidth(1.2),
-          2: FlexColumnWidth(1.5),
-          3: IntrinsicColumnWidth(),
+          1: IntrinsicColumnWidth(),
+          2: FlexColumnWidth(1.2),
+          3: FlexColumnWidth(1.5),
+          4: IntrinsicColumnWidth(),
         },
         defaultVerticalAlignment: TableCellVerticalAlignment.middle,
         border: TableBorder.all(width: 24, color: Colors.transparent),
@@ -417,6 +457,36 @@ class FilesPageState extends State<FilesPage> {
                 ),
               ),
               box,
+              PopupMenuButton<FileSortField>(
+                icon: const Icon(Icons.sort_by_alpha),
+                tooltip: L10n.current.fileManagerSortButton,
+                onSelected: _sortFiles,
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    value: FileSortField.name,
+                    child: Text(L10n.current.fileSortName),
+                  ),
+                  PopupMenuItem(
+                    value: FileSortField.size,
+                    child: Text(L10n.current.fileSortSize),
+                  ),
+                  PopupMenuItem(
+                    value: FileSortField.date,
+                    child: Text(L10n.current.fileSortDate),
+                  ),
+                  PopupMenuItem(
+                    value: FileSortField.type,
+                    child: Text(L10n.current.fileSortType),
+                  ),
+                ],
+              ),
+              IconButton(
+                onPressed: () => _sortFiles(_sortField ?? FileSortField.name),
+                icon: Icon(
+                  _sortAscending ? Icons.arrow_upward : Icons.arrow_downward,
+                ),
+                tooltip: L10n.current.fileManagerSortButton,
+              ),
               IconButton(
                 onPressed: addFileFromPicker,
                 icon: const Icon(Icons.add),
@@ -462,8 +532,19 @@ class FilesPageState extends State<FilesPage> {
               child: Stack(
                 children: [
                   if (_files.isNotEmpty)
-                    SingleChildScrollView(
-                      child: _table(_tableRows()),
+                    ReorderableListView.builder(
+                      buildDefaultDragHandles: false,
+                      onReorderItem: _reorderFiles,
+                      itemCount: _filteredList().length,
+                      itemBuilder: (context, index) {
+                        final file = _filteredList()[index];
+                        return _table(
+                          [
+                            _tableRow(file, index),
+                          ],
+                          key: ValueKey(file),
+                        );
+                      },
                     )
                   else if (!_dragging)
                     Padding(
