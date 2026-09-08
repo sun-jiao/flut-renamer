@@ -8,7 +8,7 @@ import '../widget/checkbox_tile.dart';
 import '../widget/custom_dialog.dart';
 
 void showIncrementDialog(BuildContext context, Function(Rule) onSave,
-        [RuleIncrement? rule]) =>
+        [RuleIncrement? rule,]) =>
     showDialog(
       context: context,
       builder: (context) => IncrementDialog(

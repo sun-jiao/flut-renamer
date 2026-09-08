@@ -3,7 +3,7 @@ part of 'rule.dart';
 class RuleIncrement implements Rule {
   RuleIncrement(this.prefix, this.startIndex, this.step, this.omitDash,
       this.ignoreExtension,
-      {this.minimumDigits = 0})
+      {this.minimumDigits = 0,})
       : index = startIndex;
 
   int index;
