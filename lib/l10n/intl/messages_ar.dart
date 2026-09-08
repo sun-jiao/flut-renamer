@@ -74,17 +74,17 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "addRule": MessageLookupByLibrary.simpleMessage("إضافة قاعدة"),
     "addedFilesCannotRename": MessageLookupByLibrary.simpleMessage(
-      "تعذر إعادة تسمية بعض الملفات وتمت تجاهلها.",
+      "بعض الملفات لا يمكن إعادة تسميتها وتم تجاهلها.",
     ),
     "androidRemindContent": MessageLookupByLibrary.simpleMessage(
-      "باستخدام Flut Renamer ، يمكنك إعادة تسمية الملفات والمجلدات. اضغط مع الاستمرار على مجلد لتحديده ، ثم حدد \'الملفات والمجلدات\' من الزر المنسدل في الزاوية اليسرى العليا لتمكين إعادة تسمية المجلد. لأسباب أمنية ، بعض المجلدات المحجوزة للنظام غير قابلة للتحديد.",
+      "باستخدام Flut Renamer، يمكنك إعادة تسمية الملفات والمجلدات. اضغط مع الاستمرار على مجلد لتحديده، ثم اختر \'الملفات والمجلدات\' من الزر المنسدل في الزاوية اليمنى العليا لتمكين إعادة تسمية المجلدات. لأسباب أمنية، بعض المجلدات المحجوزة للنظام لا يمكن تحديدها.",
     ),
     "androidRemindTitle": MessageLookupByLibrary.simpleMessage(
       "إعادة تسمية الدلائل",
     ),
     "appError": MessageLookupByLibrary.simpleMessage("خطأ في التطبيق"),
     "appInfo": MessageLookupByLibrary.simpleMessage("معلومات التطبيق"),
-    "appName": MessageLookupByLibrary.simpleMessage("Flut Renamer"),
+    "appName": MessageLookupByLibrary.simpleMessage("مُعيد التسمية"),
     "bg": MessageLookupByLibrary.simpleMessage("البلغارية"),
     "cancel": MessageLookupByLibrary.simpleMessage("إلغاء"),
     "cancelAll": MessageLookupByLibrary.simpleMessage("إلغاء الكل"),
@@ -117,7 +117,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "directories": MessageLookupByLibrary.simpleMessage("الدلائل"),
     "doNotRemindAgain": MessageLookupByLibrary.simpleMessage(
-      "لا تذكر مرة أخرى",
+      "حسناً، لا تُذكّرني مرة أخرى.",
     ),
     "dragNotSupported": MessageLookupByLibrary.simpleMessage(
       "بسبب قيود أمان النظام، لا يُدعم سحب وإسقاط الملفات من هذا التطبيق.",
@@ -138,7 +138,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "expandOptions": MessageLookupByLibrary.simpleMessage("توسيع الخيارات"),
     "fileAlreadyExists": MessageLookupByLibrary.simpleMessage(
-      "اسم الملف موجود بالفعل",
+      "اسم الملف مستخدم بالفعل من قِبل ملف آخر",
     ),
     "fileCreateDate": MessageLookupByLibrary.simpleMessage("تاريخ إنشاء الملف"),
     "fileCreateTime": MessageLookupByLibrary.simpleMessage("وقت إنشاء الملف"),
@@ -169,7 +169,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "إخفاء الملفات المخفية",
     ),
     "ifFileNotShown": MessageLookupByLibrary.simpleMessage(
-      "إذا لم يتم عرض الملفات في القائمة، يرجى مسح كل المحتوى والمحاولة مرة أخرى.",
+      "إذا لم تظهر الملفات في القائمة، يُرجى مسح الكل والمحاولة مجدداً.",
     ),
     "ignoreExtension": MessageLookupByLibrary.simpleMessage("تجاهل الامتداد"),
     "increment": MessageLookupByLibrary.simpleMessage("زيادة"),
@@ -237,7 +237,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "musicYear": MessageLookupByLibrary.simpleMessage("سنة الإصدار"),
     "newName": MessageLookupByLibrary.simpleMessage("الاسم الجديد"),
     "noSysDir": MessageLookupByLibrary.simpleMessage(
-      "يرجى عدم إعادة تسمية الدلائل المحجوزة للنظام.",
+      "يُرجى عدم إعادة تسمية المجلدات المحجوزة للنظام.",
     ),
     "numberOfDigits": MessageLookupByLibrary.simpleMessage("عدد الأرقام"),
     "ok": MessageLookupByLibrary.simpleMessage("موافق"),
@@ -331,12 +331,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "replacement": MessageLookupByLibrary.simpleMessage("البديل"),
     "ru": MessageLookupByLibrary.simpleMessage("الروسية"),
     "rulesSequentially": MessageLookupByLibrary.simpleMessage(
-      "تُنفذ القواعد بترتيب متسلسل. انقر على قاعدة لتحريرها. اسحب زر \"=\" على اليسار واسحبه لترتيب القواعد.",
+      "تُنفذ القواعد بترتيب متسلسل. انقر على قاعدة لتحريرها. اسحب زر \"=\" على اليمين لترتيب القواعد.",
     ),
     "save": MessageLookupByLibrary.simpleMessage("حفظ"),
     "saveRules": MessageLookupByLibrary.simpleMessage("حفظ القواعد"),
     "select": MessageLookupByLibrary.simpleMessage("تحديد"),
     "selectAll": MessageLookupByLibrary.simpleMessage("تحديد الكل"),
+    "semanticNumberWithDirection": MessageLookupByLibrary.simpleMessage(
+      "تبديل اتجاه العد بين البداية والنهاية",
+    ),
     "semanticSwitchNumberToStartAndToEnd": m5,
     "semanticsDropdownButton": m6,
     "semanticsFileManagerDirSubtitle": m7,
