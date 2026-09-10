@@ -201,4 +201,18 @@ void main() {
 
     expect(newFileName, "example_data_name.txt");
   });
+
+  test('does not parse metadata tags when metadata is disabled', () async {
+    final newFileName = await RuleReplace(
+      'file',
+      '{File:Size}',
+      0,
+      false,
+      false,
+      false,
+      true,
+    ).newName('file.txt');
+
+    expect(newFileName, '{File:Size}.txt');
+  });
 }

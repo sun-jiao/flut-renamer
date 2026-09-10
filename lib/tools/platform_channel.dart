@@ -27,7 +27,8 @@ class PlatformFilePicker {
     }
   }
 
-  static Future<bool> changeScopedAccess(String targetPath, bool startOrEnd) async {
+  static Future<bool> changeScopedAccess(
+      String targetPath, bool startOrEnd) async {
     try {
       return await _channel.invokeMethod(
         'changeScopedAccess',
@@ -53,16 +54,6 @@ class PlatformFilePicker {
     } on PlatformException {
       // TODO: show error message dialog
       rethrow;
-    }
-  }
-
-  static Future<List<String>> getSharedFiles() async {
-    try {
-      final result = await _channel.invokeMethod<List<dynamic>>('getSharedFiles');
-      return result?.map((e) => e as String).toList() ?? [];
-    } on PlatformException {
-      // TODO: show error message dialog
-      return [];
     }
   }
 }

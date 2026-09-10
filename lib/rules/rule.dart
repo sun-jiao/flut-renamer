@@ -16,7 +16,6 @@ import '../l10n/l10n.dart';
 import '../entity/transliterate.dart';
 import '../tools/file_metadata.dart';
 import '../tools/ex_string.dart';
-import '../tools/logger.dart';
 
 part 'base_rule.dart';
 

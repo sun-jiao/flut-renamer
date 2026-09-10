@@ -14,7 +14,6 @@ import 'l10n/l10n.dart';
 import 'pages/home_page.dart';
 import 'pages/files_page.dart';
 import 'tools/ex_file.dart';
-import 'tools/platform_channel.dart';
 import 'widget/custom_dialog.dart';
 
 late Locale _appLocale;
@@ -42,15 +41,6 @@ void main([List<String> arguments = const []]) async {
 
   final initFiles = results.rest.map((e) => e.toFileSystemEntity().absolute);
   FilesPage.addFiles(initFiles);
-
-  // 处理分享的文件
-  if (Platform.isAndroid) {
-    final sharedFiles = await PlatformFilePicker.getSharedFiles();
-    if (sharedFiles.isNotEmpty) {
-      final fileEntities = sharedFiles.map((path) => path.toFileSystemEntity().absolute);
-      FilesPage.addFiles(fileEntities);
-    }
-  }
 
   while (!Shared.initialed) {
     await Shared.init();
@@ -166,7 +156,8 @@ class AppPage extends StatelessWidget {
     }
   }
 
-  void _permissionRequest(BuildContext context, Permission permission) => showDialog(
+  void _permissionRequest(BuildContext context, Permission permission) =>
+      showDialog(
         context: context,
         builder: (contextD) => CustomDialog(
           title: Text(L10n.current.permissionTitle),
@@ -178,9 +169,7 @@ class AppPage extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
-                permission.request()
-                    .isGranted
-                    .then((value) {
+                permission.request().isGranted.then((value) {
                   if (value) {
                     Navigator.pop(contextD);
                   }

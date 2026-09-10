@@ -1,6 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 import 'intl/messages_all.dart';
 
 // **************************************************************************
@@ -18,8 +19,10 @@ class L10n {
   static L10n? _current;
 
   static L10n get current {
-    assert(_current != null,
-        'No instance of L10n was loaded. Try to initialize the L10n delegate before accessing L10n.current.');
+    assert(
+      _current != null,
+      'No instance of L10n was loaded. Try to initialize the L10n delegate before accessing L10n.current.',
+    );
     return _current!;
   }
 
@@ -41,8 +44,10 @@ class L10n {
 
   static L10n of(BuildContext context) {
     final instance = L10n.maybeOf(context);
-    assert(instance != null,
-        'No instance of L10n present in the widget tree. Did you add L10n.delegate in localizationsDelegates?');
+    assert(
+      instance != null,
+      'No instance of L10n present in the widget tree. Did you add L10n.delegate in localizationsDelegates?',
+    );
     return instance!;
   }
 
@@ -52,12 +57,7 @@ class L10n {
 
   /// `Flut Renamer`
   String get appName {
-    return Intl.message(
-      'Flut Renamer',
-      name: 'appName',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Flut Renamer', name: 'appName', desc: '', args: []);
   }
 
   /// `flut renamer`
@@ -72,52 +72,27 @@ class L10n {
 
   /// `OK`
   String get ok {
-    return Intl.message(
-      'OK',
-      name: 'ok',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('OK', name: 'ok', desc: '', args: []);
   }
 
   /// `Cancel`
   String get cancel {
-    return Intl.message(
-      'Cancel',
-      name: 'cancel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Cancel', name: 'cancel', desc: '', args: []);
   }
 
   /// `Exit`
   String get exit {
-    return Intl.message(
-      'Exit',
-      name: 'exit',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Exit', name: 'exit', desc: '', args: []);
   }
 
   /// `Save`
   String get save {
-    return Intl.message(
-      'Save',
-      name: 'save',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Save', name: 'save', desc: '', args: []);
   }
 
   /// `Add`
   String get add {
-    return Intl.message(
-      'Add',
-      name: 'add',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Add', name: 'add', desc: '', args: []);
   }
 
   /// `Permission for external storage`
@@ -212,22 +187,12 @@ class L10n {
 
   /// `Rename`
   String get rename {
-    return Intl.message(
-      'Rename',
-      name: 'rename',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Rename', name: 'rename', desc: '', args: []);
   }
 
   /// `App info`
   String get appInfo {
-    return Intl.message(
-      'App info',
-      name: 'appInfo',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('App info', name: 'appInfo', desc: '', args: []);
   }
 
   /// `This application is designed to help users rename their files. It is built with Flutter - a multi-platform application framework, and therefore it is also available on other operating systems. It is totally open source and can be reviewed or contributed to.`
@@ -242,12 +207,7 @@ class L10n {
 
   /// `Rating the app`
   String get rating {
-    return Intl.message(
-      'Rating the app',
-      name: 'rating',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Rating the app', name: 'rating', desc: '', args: []);
   }
 
   /// `Rate Our App`
@@ -292,12 +252,7 @@ class L10n {
 
   /// `Source code`
   String get sourceCode {
-    return Intl.message(
-      'Source code',
-      name: 'sourceCode',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Source code', name: 'sourceCode', desc: '', args: []);
   }
 
   /// `Collapse options`
@@ -362,72 +317,37 @@ class L10n {
 
   /// `Add Rule`
   String get addRule {
-    return Intl.message(
-      'Add Rule',
-      name: 'addRule',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Add Rule', name: 'addRule', desc: '', args: []);
   }
 
   /// `Remove all`
   String get removeAll {
-    return Intl.message(
-      'Remove all',
-      name: 'removeAll',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Remove all', name: 'removeAll', desc: '', args: []);
   }
 
   /// `Replace`
   String get replace {
-    return Intl.message(
-      'Replace',
-      name: 'replace',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Replace', name: 'replace', desc: '', args: []);
   }
 
   /// `Remove`
   String get remove {
-    return Intl.message(
-      'Remove',
-      name: 'remove',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Remove', name: 'remove', desc: '', args: []);
   }
 
   /// `Insert`
   String get insert {
-    return Intl.message(
-      'Insert',
-      name: 'insert',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Insert', name: 'insert', desc: '', args: []);
   }
 
   /// `Increment`
   String get increment {
-    return Intl.message(
-      'Increment',
-      name: 'increment',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Increment', name: 'increment', desc: '', args: []);
   }
 
   /// `Rearrange`
   String get rearrange {
-    return Intl.message(
-      'Rearrange',
-      name: 'rearrange',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Rearrange', name: 'rearrange', desc: '', args: []);
   }
 
   /// `Transliterate`
@@ -442,42 +362,22 @@ class L10n {
 
   /// `Truncate`
   String get truncate {
-    return Intl.message(
-      'Truncate',
-      name: 'truncate',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Truncate', name: 'truncate', desc: '', args: []);
   }
 
   /// `Cancel All`
   String get cancelAll {
-    return Intl.message(
-      'Cancel All',
-      name: 'cancelAll',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Cancel All', name: 'cancelAll', desc: '', args: []);
   }
 
   /// `Select`
   String get select {
-    return Intl.message(
-      'Select',
-      name: 'select',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Select', name: 'select', desc: '', args: []);
   }
 
   /// `Select All`
   String get selectAll {
-    return Intl.message(
-      'Select All',
-      name: 'selectAll',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Select All', name: 'selectAll', desc: '', args: []);
   }
 
   /// `Current name`
@@ -492,12 +392,7 @@ class L10n {
 
   /// `New name`
   String get newName {
-    return Intl.message(
-      'New name',
-      name: 'newName',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('New name', name: 'newName', desc: '', args: []);
   }
 
   /// `File not exist`
@@ -512,62 +407,32 @@ class L10n {
 
   /// `Files`
   String get files {
-    return Intl.message(
-      'Files',
-      name: 'files',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Files', name: 'files', desc: '', args: []);
   }
 
   /// `Directories`
   String get directories {
-    return Intl.message(
-      'Directories',
-      name: 'directories',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Directories', name: 'directories', desc: '', args: []);
   }
 
   /// `Files & Dirs`
   String get filesDirs {
-    return Intl.message(
-      'Files & Dirs',
-      name: 'filesDirs',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Files & Dirs', name: 'filesDirs', desc: '', args: []);
   }
 
   /// `Filter`
   String get filter {
-    return Intl.message(
-      'Filter',
-      name: 'filter',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Filter', name: 'filter', desc: '', args: []);
   }
 
   /// `Add file`
   String get addFile {
-    return Intl.message(
-      'Add file',
-      name: 'addFile',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Add file', name: 'addFile', desc: '', args: []);
   }
 
   /// `Add files`
   String get addFiles {
-    return Intl.message(
-      'Add files',
-      name: 'addFiles',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Add files', name: 'addFiles', desc: '', args: []);
   }
 
   /// `Drag and drop to add files.`
@@ -642,42 +507,22 @@ class L10n {
 
   /// `Name`
   String get fileSortName {
-    return Intl.message(
-      'Name',
-      name: 'fileSortName',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Name', name: 'fileSortName', desc: '', args: []);
   }
 
   /// `Size`
   String get fileSortSize {
-    return Intl.message(
-      'Size',
-      name: 'fileSortSize',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Size', name: 'fileSortSize', desc: '', args: []);
   }
 
   /// `Date`
   String get fileSortDate {
-    return Intl.message(
-      'Date',
-      name: 'fileSortDate',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Date', name: 'fileSortDate', desc: '', args: []);
   }
 
   /// `Type`
   String get fileSortType {
-    return Intl.message(
-      'Type',
-      name: 'fileSortType',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Type', name: 'fileSortType', desc: '', args: []);
   }
 
   /// `Latin characters to upper case`
@@ -812,22 +657,12 @@ class L10n {
 
   /// `Time of now`
   String get osNowTime {
-    return Intl.message(
-      'Time of now',
-      name: 'osNowTime',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Time of now', name: 'osNowTime', desc: '', args: []);
   }
 
   /// `Size of file`
   String get fileSize {
-    return Intl.message(
-      'Size of file',
-      name: 'fileSize',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Size of file', name: 'fileSize', desc: '', args: []);
   }
 
   /// `Create date of file`
@@ -1122,22 +957,12 @@ class L10n {
 
   /// `Prefix`
   String get prefix {
-    return Intl.message(
-      'Prefix',
-      name: 'prefix',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Prefix', name: 'prefix', desc: '', args: []);
   }
 
   /// `Start index`
   String get startIndex {
-    return Intl.message(
-      'Start index',
-      name: 'startIndex',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Start index', name: 'startIndex', desc: '', args: []);
   }
 
   /// `Index incremental step`
@@ -1152,12 +977,7 @@ class L10n {
 
   /// `Omit dash`
   String get omitDash {
-    return Intl.message(
-      'Omit dash',
-      name: 'omitDash',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Omit dash', name: 'omitDash', desc: '', args: []);
   }
 
   /// `Ignore Extension`
@@ -1192,12 +1012,7 @@ class L10n {
 
   /// `From start`
   String get fromStart {
-    return Intl.message(
-      'From start',
-      name: 'fromStart',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('From start', name: 'fromStart', desc: '', args: []);
   }
 
   /// `Insert before index`
@@ -1242,72 +1057,17 @@ class L10n {
 
   /// `target`
   String get target {
-    return Intl.message(
-      'target',
-      name: 'target',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('target', name: 'target', desc: '', args: []);
   }
 
   /// `Replacement`
   String get replacement {
-    return Intl.message(
-      'Replacement',
-      name: 'replacement',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Insert random string`
-  String get insertRandomString {
-    return Intl.message(
-      'Insert random string',
-      name: 'insertRandomString',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Random string length`
-  String get randomStringLength {
-    return Intl.message(
-      'Random string length',
-      name: 'randomStringLength',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `8`
-  String get randomStringLengthHint {
-    return Intl.message(
-      '8',
-      name: 'randomStringLengthHint',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Length should be between 1 and 32`
-  String get randomStringLengthError {
-    return Intl.message(
-      'Length should be between 1 and 32',
-      name: 'randomStringLengthError',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Replacement', name: 'replacement', desc: '', args: []);
   }
 
   /// `limit`
   String get limit {
-    return Intl.message(
-      'limit',
-      name: 'limit',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('limit', name: 'limit', desc: '', args: []);
   }
 
   /// `Case sensitive`
@@ -1322,22 +1082,12 @@ class L10n {
 
   /// `Is regex`
   String get isRegex {
-    return Intl.message(
-      'Is regex',
-      name: 'isRegex',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Is regex', name: 'isRegex', desc: '', args: []);
   }
 
   /// `Language: `
   String get language {
-    return Intl.message(
-      'Language: ',
-      name: 'language',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Language: ', name: 'language', desc: '', args: []);
   }
 
   /// `First character index`
@@ -1362,12 +1112,7 @@ class L10n {
 
   /// `-to-last`
   String get toLast {
-    return Intl.message(
-      '-to-last',
-      name: 'toLast',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('-to-last', name: 'toLast', desc: '', args: []);
   }
 
   /// `Going forward`
@@ -1432,18 +1177,13 @@ class L10n {
 
   /// `Insert "{insert}" at the {insertIndex}{ordinal, select, o1{st} o2{nd} o3{rd} other{th}}{toEnd, select, true{-to-end} false{} other{}} character.`
   String insertToString(
-      String toEnd, String ordinal, String insert, num insertIndex) {
+    String toEnd,
+    String ordinal,
+    String insert,
+    num insertIndex,
+  ) {
     return Intl.message(
-      'Insert "$insert" at the $insertIndex${Intl.select(ordinal, {
-            'o1': 'st',
-            'o2': 'nd',
-            'o3': 'rd',
-            'other': 'th'
-          })}${Intl.select(toEnd, {
-            'true': '-to-end',
-            'false': '',
-            'other': ''
-          })} character.',
+      'Insert "$insert" at the $insertIndex${Intl.select(ordinal, {'o1': 'st', 'o2': 'nd', 'o3': 'rd', 'other': 'th'})}${Intl.select(toEnd, {'true': '-to-end', 'false': '', 'other': ''})} character.',
       name: 'insertToString',
       desc: '',
       args: [toEnd, ordinal, insert, insertIndex],
@@ -1492,37 +1232,16 @@ class L10n {
 
   /// `Truncate: {keepType, select, true{keep only} false{remove} other{}} characters between the {iOne}{iTwoOrdinal, select, o1{st} o2{nd} o3{rd} other{th}}{iOneToEnd, select, true{-to-end} false{} other{}} character and the {iTwo}{iOneOrdinal, select, o1{st} o2{nd} o3{rd} other{th}}{iTwoToEnd, select, true{-to-end} false{} other{}}.`
   String truncateToString(
-      String iTwoToEnd,
-      String iOneOrdinal,
-      String iOneToEnd,
-      String iTwoOrdinal,
-      String keepType,
-      num iOne,
-      num iTwo) {
+    String iTwoToEnd,
+    String iOneOrdinal,
+    String iOneToEnd,
+    String iTwoOrdinal,
+    String keepType,
+    num iOne,
+    num iTwo,
+  ) {
     return Intl.message(
-      'Truncate: ${Intl.select(keepType, {
-            'true': 'keep only',
-            'false': 'remove',
-            'other': ''
-          })} characters between the $iOne${Intl.select(iTwoOrdinal, {
-            'o1': 'st',
-            'o2': 'nd',
-            'o3': 'rd',
-            'other': 'th'
-          })}${Intl.select(iOneToEnd, {
-            'true': '-to-end',
-            'false': '',
-            'other': ''
-          })} character and the $iTwo${Intl.select(iOneOrdinal, {
-            'o1': 'st',
-            'o2': 'nd',
-            'o3': 'rd',
-            'other': 'th'
-          })}${Intl.select(iTwoToEnd, {
-            'true': '-to-end',
-            'false': '',
-            'other': ''
-          })}.',
+      'Truncate: ${Intl.select(keepType, {'true': 'keep only', 'false': 'remove', 'other': ''})} characters between the $iOne${Intl.select(iTwoOrdinal, {'o1': 'st', 'o2': 'nd', 'o3': 'rd', 'other': 'th'})}${Intl.select(iOneToEnd, {'true': '-to-end', 'false': '', 'other': ''})} character and the $iTwo${Intl.select(iOneOrdinal, {'o1': 'st', 'o2': 'nd', 'o3': 'rd', 'other': 'th'})}${Intl.select(iTwoToEnd, {'true': '-to-end', 'false': '', 'other': ''})}.',
       name: 'truncateToString',
       desc: '',
       args: [
@@ -1532,7 +1251,7 @@ class L10n {
         iTwoOrdinal,
         keepType,
         iOne,
-        iTwo
+        iTwo,
       ],
     );
   }
@@ -1609,82 +1328,42 @@ class L10n {
 
   /// `Bulgarian`
   String get bg {
-    return Intl.message(
-      'Bulgarian',
-      name: 'bg',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Bulgarian', name: 'bg', desc: '', args: []);
   }
 
   /// `Montenegrin`
   String get me {
-    return Intl.message(
-      'Montenegrin',
-      name: 'me',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Montenegrin', name: 'me', desc: '', args: []);
   }
 
   /// `Macedonian`
   String get mk {
-    return Intl.message(
-      'Macedonian',
-      name: 'mk',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Macedonian', name: 'mk', desc: '', args: []);
   }
 
   /// `Mongolian`
   String get mn {
-    return Intl.message(
-      'Mongolian',
-      name: 'mn',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Mongolian', name: 'mn', desc: '', args: []);
   }
 
   /// `Russian`
   String get ru {
-    return Intl.message(
-      'Russian',
-      name: 'ru',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Russian', name: 'ru', desc: '', args: []);
   }
 
   /// `Serbian`
   String get sr {
-    return Intl.message(
-      'Serbian',
-      name: 'sr',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Serbian', name: 'sr', desc: '', args: []);
   }
 
   /// `Tajik`
   String get tj {
-    return Intl.message(
-      'Tajik',
-      name: 'tj',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Tajik', name: 'tj', desc: '', args: []);
   }
 
   /// `Ukrainian`
   String get ua {
-    return Intl.message(
-      'Ukrainian',
-      name: 'ua',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Ukrainian', name: 'ua', desc: '', args: []);
   }
 
   /// `Sort by`
@@ -1749,18 +1428,12 @@ class L10n {
 
   /// `{selectStatus, select, true{Selected} false{Unselected} other{}} {entityType, select, File{File} Directory{Folder} Link{Link} other{File system entity}}, filename is {filename}, `
   String semanticsFileManagerTitle(
-      String entityType, String selectStatus, String filename) {
+    String entityType,
+    String selectStatus,
+    String filename,
+  ) {
     return Intl.message(
-      '${Intl.select(selectStatus, {
-            'true': 'Selected',
-            'false': 'Unselected',
-            'other': ''
-          })} ${Intl.select(entityType, {
-            'File': 'File',
-            'Directory': 'Folder',
-            'Link': 'Link',
-            'other': 'File system entity'
-          })}, filename is $filename, ',
+      '${Intl.select(selectStatus, {'true': 'Selected', 'false': 'Unselected', 'other': ''})} ${Intl.select(entityType, {'File': 'File', 'Directory': 'Folder', 'Link': 'Link', 'other': 'File system entity'})}, filename is $filename, ',
       name: 'semanticsFileManagerTitle',
       desc: '',
       args: [entityType, selectStatus, filename],
@@ -1860,14 +1533,50 @@ class L10n {
   /// `Switching counting direction between from the beginning and from the end, currently counting from {toEnd, select, true{the end} false{the beginning} other{}}`
   String semanticSwitchNumberToStartAndToEnd(String toEnd) {
     return Intl.message(
-      'Switching counting direction between from the beginning and from the end, currently counting from ${Intl.select(toEnd, {
-            'true': 'the end',
-            'false': 'the beginning',
-            'other': ''
-          })}',
+      'Switching counting direction between from the beginning and from the end, currently counting from ${Intl.select(toEnd, {'true': 'the end', 'false': 'the beginning', 'other': ''})}',
       name: 'semanticSwitchNumberToStartAndToEnd',
       desc: '',
       args: [toEnd],
+    );
+  }
+
+  /// `Insert random string`
+  String get insertRandomString {
+    return Intl.message(
+      'Insert random string',
+      name: 'insertRandomString',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Random string length`
+  String get randomStringLength {
+    return Intl.message(
+      'Random string length',
+      name: 'randomStringLength',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `8`
+  String get randomStringLengthHint {
+    return Intl.message(
+      '8',
+      name: 'randomStringLengthHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Length should be between 1 and 32`
+  String get randomStringLengthError {
+    return Intl.message(
+      'Length should be between 1 and 32',
+      name: 'randomStringLengthError',
+      desc: '',
+      args: [],
     );
   }
 }

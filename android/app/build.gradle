@@ -73,18 +73,12 @@ android {
         }
 
         release {
-            // 如果没有找到签名配置，使用 debug 签名作为默认，这样可以成功打包
             if (_storeFile && _storePassword && _keyAlias && _keyPassword) {
                 keyAlias _keyAlias
                 keyPassword _keyPassword
                 storeFile file(_storeFile)
                 storePassword _storePassword
-            } else {
-                keyAlias 'androiddebugkey'
-                keyPassword 'android'
-                storeFile file("${System.getProperty('user.home')}/.android/debug.keystore")
-                storePassword 'android'
-            }
+            } else null
         }
     }
 
