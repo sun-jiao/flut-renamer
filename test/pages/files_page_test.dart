@@ -39,6 +39,7 @@ void main() {
             getNewName: (name, FileMetadata _) => name,
             clearRules: () {},
             resetRules: () {},
+            dependsOnFileOrder: () => false,
           ),
         ),
       ),
@@ -91,6 +92,7 @@ void main() {
                 'generated-${++generationCount}',
             clearRules: () {},
             resetRules: () {},
+            dependsOnFileOrder: () => false,
           ),
         ),
       ),
@@ -114,5 +116,58 @@ void main() {
 
     await tester.tap(find.byTooltip(L10n.current.removeAll));
     await tester.pump();
+  });
+
+  testWidgets('only recalculates generated names after sorting when required',
+      (tester) async {
+    Future<int> sortAndCount({required bool dependsOnFileOrder}) async {
+      var generationCount = 0;
+      final files = [
+        FileEntity(File('assets/icon.png')),
+      ];
+      FilesPage.addFiles(files);
+      await tester.runAsync(() async {
+        for (final file in files) {
+          await file.initMetadata();
+        }
+      });
+
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: ThemeData(
+            extensions: <ThemeExtension<dynamic>>[
+              FileListColors(
+                primaryColor: Colors.white,
+                secondaryColor: Colors.grey.shade100,
+              ),
+            ],
+          ),
+          home: Scaffold(
+            body: FilesPage(
+              getNewName: (name, FileMetadata _) =>
+                  'generated-${++generationCount}',
+              clearRules: () {},
+              resetRules: () {},
+              dependsOnFileOrder: () => dependsOnFileOrder,
+            ),
+          ),
+        ),
+      );
+      await tester.pump();
+      await tester.pump();
+      expect(generationCount, 1);
+
+      await tester.tap(find.byIcon(Icons.arrow_upward));
+      await tester.pump();
+      await tester.pump();
+      await tester.pump();
+
+      await tester.tap(find.byTooltip(L10n.current.removeAll));
+      await tester.pump();
+      return generationCount;
+    }
+
+    expect(await sortAndCount(dependsOnFileOrder: false), 1);
+    expect(await sortAndCount(dependsOnFileOrder: true), 2);
   });
 }

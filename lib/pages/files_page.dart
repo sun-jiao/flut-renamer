@@ -24,12 +24,17 @@ class FilesPage extends StatefulWidget {
     required this.getNewName,
     required this.clearRules,
     required this.resetRules,
+    required this.dependsOnFileOrder,
   });
 
   final FutureOr<String> Function(String name, FileMetadata metadata)
       getNewName;
   final VoidCallback clearRules;
   final VoidCallback resetRules;
+
+  /// Whether changing the list order changes generated names.  Increment is
+  /// currently the only rule with this property.
+  final bool Function() dependsOnFileOrder;
 
   @override
   State<FilesPage> createState() => FilesPageState();
@@ -49,6 +54,7 @@ class FilesPageState extends State<FilesPage> {
   bool _sortAscending = true;
   final Map<FileEntity, Future<void>> _newNameFutures = {};
   int _newNameGeneration = 0;
+  int? _collisionValidationGeneration;
 
   Future<void> addFileFromPicker() async {
     late Iterable<FileEntity> entities;
@@ -172,20 +178,73 @@ class FilesPageState extends State<FilesPage> {
   void _invalidateNewNames() {
     _newNameGeneration++;
     _newNameFutures.clear();
+    _collisionValidationGeneration = null;
+    for (final file in _files) {
+      file.newName = null;
+      file.error = null;
+    }
   }
 
-  Future<void> _newNameFuture(FileEntity file) => _newNameFutures.putIfAbsent(
+  Future<void> _newNameFuture(FileEntity file) {
+    final generation = _newNameGeneration;
+    if (!widget.dependsOnFileOrder()) {
+      return _newNameFutures.putIfAbsent(
         file,
-        () => getNewName(file, generation: _newNameGeneration),
+        () => getNewName(file, generation: generation),
       );
+    }
 
-  Future<void> getNewName(FileEntity file, {int? generation}) async {
+    // A sequential rule such as Increment must run in the current file-list
+    // order, rather than in the order asynchronous metadata reads complete.
+    Future<void> preceding = Future.value();
+    late final Future<void> requestedFuture;
+    for (final precedingFile in _files) {
+      final previous = preceding;
+      final future = _newNameFutures.putIfAbsent(
+        precedingFile,
+        () => previous.then(
+          (_) => getNewName(
+            precedingFile,
+            generation: generation,
+            validateCollisions: false,
+          ),
+        ),
+      );
+      if (identical(precedingFile, file)) {
+        requestedFuture = future;
+      }
+      preceding = future;
+    }
+
+    if (_collisionValidationGeneration != generation) {
+      _collisionValidationGeneration = generation;
+      preceding.then((_) => _validateNewNameCollisions(generation));
+    }
+
+    if (_files.contains(file)) {
+      return requestedFuture;
+    }
+
+    // The file may have been removed between scheduling a build and running
+    // its FutureBuilder. Its cached value can still be calculated directly.
+    return _newNameFutures.putIfAbsent(
+      file,
+      () => getNewName(file, generation: generation),
+    );
+  }
+
+  Future<void> getNewName(
+    FileEntity file, {
+    int? generation,
+    bool validateCollisions = true,
+  }) async {
     final requestedGeneration = generation ?? _newNameGeneration;
-    if (file == _files.first) {
+    if (_files.isNotEmpty && identical(file, _files.first)) {
       widget.resetRules.call();
     }
 
     await file.initMetadata();
+    if (requestedGeneration != _newNameGeneration) return;
 
     late final String filename;
 
@@ -202,15 +261,17 @@ class FilesPageState extends State<FilesPage> {
       final newPath = p.join(file.directory, newName);
       final isAndroidUri =
           Platform.isAndroid && file.path.startsWith('content://');
-      final targetExists = !isAndroidUri && await File(newPath).exists();
-      final isDuplicate = _files.any(
-        (other) => other != file && other.newPath == newPath,
-      );
+      final targetExists =
+          validateCollisions && !isAndroidUri && await File(newPath).exists();
+      final isDuplicate = validateCollisions &&
+          _files.any((other) => other != file && other.newPath == newPath);
 
       if (requestedGeneration != _newNameGeneration) return;
 
       file.newName = newName;
-      if (newName != filename && (targetExists || isDuplicate)) {
+      if (validateCollisions &&
+          newName != filename &&
+          (targetExists || isDuplicate)) {
         file.error = L10n.current.fileAlreadyExists;
         return;
       }
@@ -223,6 +284,40 @@ class FilesPageState extends State<FilesPage> {
     }
 
     file.error = null;
+  }
+
+  Future<void> _validateNewNameCollisions(int generation) async {
+    if (generation != _newNameGeneration) return;
+
+    final sources = _files.map(_sourcePathKey).toSet();
+    final targets = <String, List<FileEntity>>{};
+    for (final file in _files.where((file) => file.error == null)) {
+      targets.putIfAbsent(_targetPathKey(file), () => []).add(file);
+    }
+
+    for (final group in targets.values) {
+      if (group.length > 1) {
+        for (final file in group) {
+          file.error = L10n.current.fileAlreadyExists;
+        }
+      }
+    }
+
+    for (final file in _files.where((file) => file.error == null)) {
+      final target = _targetPathKey(file);
+      final isAndroidUri =
+          Platform.isAndroid && file.path.startsWith('content://');
+      if (!isAndroidUri &&
+          target != _sourcePathKey(file) &&
+          !sources.contains(target) &&
+          await File(file.newPath).exists()) {
+        file.error = L10n.current.fileAlreadyExists;
+      }
+    }
+
+    if (mounted && generation == _newNameGeneration) {
+      setState(() {});
+    }
   }
 
   List<FileEntity> _filteredList() {
@@ -240,7 +335,7 @@ class FilesPageState extends State<FilesPage> {
 
   void _sortFiles(FileSortField field) {
     setState(() {
-      _invalidateNewNames();
+      _invalidateNewNamesForOrderChange();
       if (_sortField == field) {
         _sortAscending = !_sortAscending;
       } else {
@@ -259,7 +354,7 @@ class FilesPageState extends State<FilesPage> {
     final movedFile = visibleFiles.removeAt(oldIndex);
 
     setState(() {
-      _invalidateNewNames();
+      _invalidateNewNamesForOrderChange();
       _files.remove(movedFile);
       if (newIndex == visibleFiles.length) {
         final lastVisibleFile = visibleFiles.lastOrNull;
@@ -272,6 +367,12 @@ class FilesPageState extends State<FilesPage> {
         _files.insert(_files.indexOf(visibleFiles[newIndex]), movedFile);
       }
     });
+  }
+
+  void _invalidateNewNamesForOrderChange() {
+    if (widget.dependsOnFileOrder()) {
+      _invalidateNewNames();
+    }
   }
 
   TableCell _rowTextCell(FileEntity file, {bool isNew = false}) {

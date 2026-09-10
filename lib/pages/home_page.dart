@@ -38,6 +38,8 @@ class HomePage extends StatelessWidget {
           }
         }
       },
+      dependsOnFileOrder: () => (rulesKey.currentState?.rules ?? [])
+          .any((rule) => rule is RuleIncrement),
       clearRules: () {
         rulesKey.currentState?.clearRule();
       },
