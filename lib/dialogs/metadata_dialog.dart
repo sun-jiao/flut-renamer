@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../l10n/l10n.dart';
 import '../widget/custom_dialog.dart';
 
-void showMetadataDialog(BuildContext context, Function(String tag) onInsert) => showDialog(
+void showMetadataDialog(
+  BuildContext context,
+  Function(String tag) onInsert,
+) =>
+    showDialog(
       context: context,
       builder: (context) => MetadataDialog(
         onInsert: onInsert,
@@ -11,11 +16,15 @@ void showMetadataDialog(BuildContext context, Function(String tag) onInsert) => 
     );
 
 class MetadataDialog extends StatelessWidget {
-  const MetadataDialog({super.key, required this.onInsert});
+  const MetadataDialog({
+    super.key,
+    required this.onInsert,
+  });
 
   final Function(String tag) onInsert;
 
-  static final List<MapEntry> _list = [
+  static final List<MapEntry<String, String>> _list = [
+    MapEntry('RandomString', L10n.current.insertRandomString),
     MapEntry('OS:TodayDate', L10n.current.osTodayDate),
     MapEntry('OS:NowTime', L10n.current.osNowTime),
     MapEntry('File:Size', L10n.current.fileSize),
@@ -50,6 +59,54 @@ class MetadataDialog extends StatelessWidget {
     // MapEntry('Music:Writer', L10n.current.musicWriter),
   ];
 
+  Future<int?> _selectRandomStringLength(BuildContext context) async {
+    final formKey = GlobalKey<FormState>();
+    final controller = TextEditingController(text: '8');
+    final length = await showDialog<int>(
+      context: context,
+      builder: (context) => CustomDialog(
+        title: Text(L10n.current.insertRandomString),
+        content: Form(
+          key: formKey,
+          child: TextFormField(
+            controller: controller,
+            autofocus: true,
+            keyboardType: TextInputType.number,
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            decoration: InputDecoration(
+              labelText: L10n.current.randomStringLength,
+              hintText: L10n.current.randomStringLengthHint,
+            ),
+            validator: (value) {
+              final parsedLength = int.tryParse(value ?? '');
+              return parsedLength == null ||
+                      parsedLength < 1 ||
+                      parsedLength > 32
+                  ? L10n.current.randomStringLengthError
+                  : null;
+            },
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(L10n.current.cancel),
+          ),
+          TextButton(
+            onPressed: () {
+              if (formKey.currentState!.validate()) {
+                Navigator.pop(context, int.parse(controller.text));
+              }
+            },
+            child: Text(L10n.current.add),
+          ),
+        ],
+      ),
+    );
+    controller.dispose();
+    return length;
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomDialog(
@@ -63,9 +120,17 @@ class MetadataDialog extends StatelessWidget {
                   subtitle: Text(e.value),
                   trailing: IconButton(
                     icon: const Icon(Icons.add),
-                    onPressed: () {
-                      onInsert.call('{${e.key}}');
-                      Navigator.pop(context);
+                    onPressed: () async {
+                      if (e.key == 'RandomString') {
+                        final length = await _selectRandomStringLength(context);
+                        if (length == null || !context.mounted) return;
+                        onInsert.call('{RandomString:$length}');
+                      } else {
+                        onInsert.call('{${e.key}}');
+                      }
+                      if (context.mounted) {
+                        Navigator.pop(context);
+                      }
                     },
                   ),
                 ),

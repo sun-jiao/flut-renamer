@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:pinyin/pinyin.dart';
 import 'package:cyrtranslit/cyrtranslit.dart' as cyrtranslit;
+import 'package:uuid/uuid.dart';
 
 import '../dialogs/increment_dialog.dart';
 import '../dialogs/insert_dialog.dart';

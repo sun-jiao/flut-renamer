@@ -10,8 +10,7 @@ class RuleReplace implements Rule {
     this.isRegex,
     this.ignoreExtension, {
     this.dateFormat = FileMetadata.defaultDateFormat,
-  }
-  );
+  });
 
   final String targetString; // target to be matched and replaced.
   final String replacementString; // `targetString` will be replaced to this.
@@ -38,6 +37,18 @@ class RuleReplace implements Rule {
 
     String replacementString = this.replacementString;
 
+    final randomStringRegex = RegExp(r'\{RandomString(?::(\d+))?\}');
+    if (randomStringRegex.hasMatch(replacementString)) {
+      replacementString = replacementString.replaceAllMapped(
+        randomStringRegex,
+        (match) {
+          final parsedLength = int.tryParse(match.group(1) ?? '') ?? 8;
+          final length = parsedLength.clamp(1, 32);
+          return Uuid().v4().replaceAll('-', '').substring(0, length);
+        },
+      );
+    }
+
     if (withMetadata) {
       await metadata!.init();
       replacementString = metadata.parse(
@@ -52,8 +63,8 @@ class RuleReplace implements Rule {
     if (isRegex) {
       target = RegExp(targetString, caseSensitive: caseSensitive);
       replacer = (match) {
-        List<String?> groups =
-            match.groups(List<int>.generate(match.groupCount + 1, (index) => index));
+        List<String?> groups = match
+            .groups(List<int>.generate(match.groupCount + 1, (index) => index));
 
         String replacedString = replacementString;
         for (int i = 0; i <= match.groupCount; i++) {
@@ -63,7 +74,8 @@ class RuleReplace implements Rule {
         return replacedString;
       };
     } else {
-      target = RegExp(RegExp.escape(targetString), caseSensitive: caseSensitive);
+      target =
+          RegExp(RegExp.escape(targetString), caseSensitive: caseSensitive);
       replacer = (match) => replacementString;
     }
 
@@ -111,10 +123,12 @@ class RuleReplace implements Rule {
       map['caseSensitive'] as bool,
       map['isRegex'] as bool,
       map['ignoreExtension'] as bool,
-      dateFormat: map['dateFormat'] as String? ?? FileMetadata.defaultDateFormat,
+      dateFormat:
+          map['dateFormat'] as String? ?? FileMetadata.defaultDateFormat,
     );
   }
 
   @override
-  void openDialog(BuildContext context, Function(Rule rule) onSave) => showReplaceDialog(context, onSave, this);
+  void openDialog(BuildContext context, Function(Rule rule) onSave) =>
+      showReplaceDialog(context, onSave, this);
 }

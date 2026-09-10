@@ -10,7 +10,12 @@ import '../widget/date_format_dropdown.dart';
 import '../widget/text_field_with_direction.dart';
 import '../tools/file_metadata.dart';
 
-void showInsertDialog(BuildContext context, Function(Rule) onSave, [RuleInsert? rule]) => showDialog(
+void showInsertDialog(
+  BuildContext context,
+  Function(Rule) onSave, [
+  RuleInsert? rule,
+]) =>
+    showDialog(
       context: context,
       builder: (context) => InsertDialog(
         onSave: onSave,
@@ -45,6 +50,7 @@ class _InsertDialogState extends State<InsertDialog> {
       indexController.text = widget.rule!.insertIndex.toString();
       withMetadata.value = widget.rule!.withMetadata;
       toEnd.value = widget.rule!.toEnd;
+      ignoreExtension = widget.rule!.ignoreExtension;
       dateFormat = widget.rule!.dateFormat;
     }
 
@@ -66,9 +72,16 @@ class _InsertDialogState extends State<InsertDialog> {
               decoration: InputDecoration(labelText: L10n.current.insertedText),
             ),
             box,
-            DirectionTextField(con: indexController, toEnd: toEnd, labelText: L10n.current.insertIndex),
+            DirectionTextField(
+              con: indexController,
+              toEnd: toEnd,
+              labelText: L10n.current.insertIndex,
+            ),
             // Text(L10n.current.insertBeforeIndex, style: const TextStyle(fontSize: 13),),
-            MetadataTile(textController: textController, withMetadata: withMetadata),
+            MetadataTile(
+              textController: textController,
+              withMetadata: withMetadata,
+            ),
             ValueListenableBuilder<bool>(
               valueListenable: withMetadata,
               builder: (context, usesMetadata, child) => usesMetadata

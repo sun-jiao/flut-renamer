@@ -187,6 +187,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Insert before index",
     ),
     "insertIndex": MessageLookupByLibrary.simpleMessage("Insert index"),
+    "insertRandomString": MessageLookupByLibrary.simpleMessage(
+      "Insert random string",
+    ),
     "insertTagInsideAnother": MessageLookupByLibrary.simpleMessage(
       "Do not insert a tag inside another tag.",
     ),
@@ -294,6 +297,13 @@ class MessageLookup extends MessageLookupByLibrary {
       "Photographing time from exif",
     ),
     "prefix": MessageLookupByLibrary.simpleMessage("Prefix"),
+    "randomStringLength": MessageLookupByLibrary.simpleMessage(
+      "Random string length",
+    ),
+    "randomStringLengthError": MessageLookupByLibrary.simpleMessage(
+      "Length should be between 1 and 32",
+    ),
+    "randomStringLengthHint": MessageLookupByLibrary.simpleMessage("8"),
     "rating": MessageLookupByLibrary.simpleMessage("Rating the app"),
     "ratingContent": MessageLookupByLibrary.simpleMessage(
       "Enjoying our app? Help us grow by giving it a quick rating on the store or GitHub. Your feedback means the world to us! Thanks for your support.",

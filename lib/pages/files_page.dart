@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:desktop_drop/desktop_drop.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:path/path.dart' as p;
 
 import '../entity/theme_extension.dart';
 import '../l10n/l10n.dart';
@@ -46,6 +47,8 @@ class FilesPageState extends State<FilesPage> {
   String _filter = '';
   FileSortField? _sortField;
   bool _sortAscending = true;
+  final Map<FileEntity, Future<void>> _newNameFutures = {};
+  int _newNameGeneration = 0;
 
   Future<void> addFileFromPicker() async {
     late Iterable<FileEntity> entities;
@@ -161,9 +164,23 @@ class FilesPageState extends State<FilesPage> {
         ),
       );
 
-  void update() => setState(() {});
+  void update() {
+    _invalidateNewNames();
+    setState(() {});
+  }
 
-  Future<void> getNewName(FileEntity file) async {
+  void _invalidateNewNames() {
+    _newNameGeneration++;
+    _newNameFutures.clear();
+  }
+
+  Future<void> _newNameFuture(FileEntity file) => _newNameFutures.putIfAbsent(
+        file,
+        () => getNewName(file, generation: _newNameGeneration),
+      );
+
+  Future<void> getNewName(FileEntity file, {int? generation}) async {
+    final requestedGeneration = generation ?? _newNameGeneration;
     if (file == _files.first) {
       widget.resetRules.call();
     }
@@ -179,19 +196,27 @@ class FilesPageState extends State<FilesPage> {
     }
 
     try {
-      file.newName = replaceSpecialCharacters(
+      final newName = replaceSpecialCharacters(
         await widget.getNewName(filename, file.metadata!),
       );
+      final newPath = p.join(file.directory, newName);
       final isAndroidUri =
           Platform.isAndroid && file.path.startsWith('content://');
-      if (file.newName != filename &&
-          ((!isAndroidUri && await File(file.newPath).exists()) ||
-              file.isNewNameDuplicate(_files))) {
+      final targetExists = !isAndroidUri && await File(newPath).exists();
+      final isDuplicate = _files.any(
+        (other) => other != file && other.newPath == newPath,
+      );
+
+      if (requestedGeneration != _newNameGeneration) return;
+
+      file.newName = newName;
+      if (newName != filename && (targetExists || isDuplicate)) {
         file.error = L10n.current.fileAlreadyExists;
         return;
       }
     } catch (e, s) {
       debugPrintStack(stackTrace: s);
+      if (requestedGeneration != _newNameGeneration) return;
       file.newName = filename;
       file.error = e.toString();
       return;
@@ -215,6 +240,7 @@ class FilesPageState extends State<FilesPage> {
 
   void _sortFiles(FileSortField field) {
     setState(() {
+      _invalidateNewNames();
       if (_sortField == field) {
         _sortAscending = !_sortAscending;
       } else {
@@ -233,6 +259,7 @@ class FilesPageState extends State<FilesPage> {
     final movedFile = visibleFiles.removeAt(oldIndex);
 
     setState(() {
+      _invalidateNewNames();
       _files.remove(movedFile);
       if (newIndex == visibleFiles.length) {
         final lastVisibleFile = visibleFiles.lastOrNull;
@@ -259,7 +286,7 @@ class FilesPageState extends State<FilesPage> {
 
     if (isNew) {
       content = FutureBuilder(
-        future: getNewName(file),
+        future: _newNameFuture(file),
         builder: (context, snap) {
           if ((snap.connectionState == ConnectionState.active ||
                   snap.connectionState == ConnectionState.done) &&
@@ -345,6 +372,7 @@ class FilesPageState extends State<FilesPage> {
           child: IconButton(
             onPressed: () {
               setState(() {
+                _invalidateNewNames();
                 _files.remove(file);
               });
             },
@@ -403,6 +431,7 @@ class FilesPageState extends State<FilesPage> {
                 child: IconButton(
                   onPressed: () {
                     setState(() {
+                      _invalidateNewNames();
                       _files.clear();
                     });
                   },
@@ -594,6 +623,9 @@ class FilesPageState extends State<FilesPage> {
       final requestedFiles = _files
           .where((file) => file.selected || !onlySelected)
           .toList(growable: false);
+      for (final file in requestedFiles) {
+        await _newNameFuture(file);
+      }
       final filesToRename = await _buildRenamePlan(requestedFiles);
       var noError = filesToRename.length == requestedFiles.length;
 

@@ -156,6 +156,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "insert": MessageLookupByLibrary.simpleMessage("插入"),
     "insertBeforeIndex": MessageLookupByLibrary.simpleMessage("在插入位置前侧插入"),
     "insertIndex": MessageLookupByLibrary.simpleMessage("插入位置"),
+    "insertRandomString": MessageLookupByLibrary.simpleMessage("插入随机字符串"),
     "insertTagInsideAnother": MessageLookupByLibrary.simpleMessage(
       "请勿在一个标签内插入另一个标签。",
     ),
@@ -217,6 +218,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "photoShutter": MessageLookupByLibrary.simpleMessage("快门速度（来自exif）"),
     "photoTime": MessageLookupByLibrary.simpleMessage("照片拍摄时间（来自exif）"),
     "prefix": MessageLookupByLibrary.simpleMessage("前缀"),
+    "randomStringLength": MessageLookupByLibrary.simpleMessage("随机字符串长度"),
+    "randomStringLengthError": MessageLookupByLibrary.simpleMessage(
+      "长度应在1-32之间",
+    ),
+    "randomStringLengthHint": MessageLookupByLibrary.simpleMessage("8"),
     "rating": MessageLookupByLibrary.simpleMessage("应用评分"),
     "ratingContent": MessageLookupByLibrary.simpleMessage(
       "喜欢我们的应用吗？在应用商店给个好评或在GitHub上点赞来帮助我们成长。您的反馈对我们非常重要！感谢您的支持。",

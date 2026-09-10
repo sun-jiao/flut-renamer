@@ -201,4 +201,46 @@ void main() {
 
     expect(newFileName, "example_data_name.txt");
   });
+
+  test('does not parse metadata tags when metadata is disabled', () async {
+    final newFileName = await RuleReplace(
+      'file',
+      '{File:Size}',
+      0,
+      false,
+      false,
+      false,
+      true,
+    ).newName('file.txt');
+
+    expect(newFileName, '{File:Size}.txt');
+  });
+
+  test('replace with a random string', () async {
+    final newFileName = await RuleReplace(
+      'file',
+      '{RandomString}',
+      0,
+      false,
+      false,
+      false,
+      true,
+    ).newName('file.txt');
+
+    expect(newFileName, matches(RegExp(r'^[a-f0-9]{8}\.txt$')));
+  });
+
+  test('replace with a custom-length random string', () async {
+    final newFileName = await RuleReplace(
+      'file',
+      '{RandomString:12}',
+      0,
+      false,
+      false,
+      false,
+      true,
+    ).newName('file.txt');
+
+    expect(newFileName, matches(RegExp(r'^[a-f0-9]{12}\.txt$')));
+  });
 }

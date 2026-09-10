@@ -65,4 +65,54 @@ void main() {
     await tester.pump();
     expect(find.text(L10n.current.dragToAdd), findsOneWidget);
   });
+
+  testWidgets('keeps generated names stable across unrelated rebuilds',
+      (tester) async {
+    final key = GlobalKey<FilesPageState>();
+    var generationCount = 0;
+    final entity = FileEntity(File('assets/icon.png'));
+    FilesPage.addFiles([entity]);
+    await tester.runAsync(entity.initMetadata);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: ThemeData(
+          extensions: <ThemeExtension<dynamic>>[
+            FileListColors(
+              primaryColor: Colors.white,
+              secondaryColor: Colors.grey.shade100,
+            ),
+          ],
+        ),
+        home: Scaffold(
+          body: FilesPage(
+            key: key,
+            getNewName: (name, FileMetadata _) =>
+                'generated-${++generationCount}',
+            clearRules: () {},
+            resetRules: () {},
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+    expect(entity.existsSync(), isTrue);
+    expect(entity.fileOrDir(), 'File');
+    expect(find.text('icon.png'), findsOneWidget);
+
+    expect(generationCount, 1);
+
+    await tester.tap(find.byType(Checkbox).last);
+    await tester.pump();
+
+    expect(generationCount, 1);
+
+    key.currentState!.update();
+    await tester.pump();
+
+    expect(generationCount, 2);
+
+    await tester.tap(find.byTooltip(L10n.current.removeAll));
+    await tester.pump();
+  });
 }

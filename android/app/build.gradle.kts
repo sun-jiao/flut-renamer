@@ -12,8 +12,8 @@ plugins {
 val localProperties = Properties()
 val localPropertiesFile = rootProject.file("local.properties")
 if (localPropertiesFile.exists()) {
-    localPropertiesFile.inputStream().use { 
-        localProperties.load(it) 
+    localPropertiesFile.inputStream().use {
+        localProperties.load(it)
     }
 }
 
@@ -27,8 +27,8 @@ val keystorePropertiesFile = File(
 
 val keystoreProperties = Properties()
 if (keystorePropertiesFile.exists()) {
-    keystorePropertiesFile.inputStream().use { 
-        keystoreProperties.load(it) 
+    keystorePropertiesFile.inputStream().use {
+        keystoreProperties.load(it)
     }
 }
 
