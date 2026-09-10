@@ -68,7 +68,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "add": MessageLookupByLibrary.simpleMessage("追加"),
     "addFile": MessageLookupByLibrary.simpleMessage("ファイルを追加"),
     "addFiles": MessageLookupByLibrary.simpleMessage("ファイルを追加してください。"),
+    "addFilesAndroid": MessageLookupByLibrary.simpleMessage(
+      "名前を変更するファイルを1つ以上選択してください。メディアファイルでは、Android が変更の許可を確認することがあります。",
+    ),
     "addRule": MessageLookupByLibrary.simpleMessage("ルールを追加"),
+    "addedFilesCannotRename": MessageLookupByLibrary.simpleMessage(
+      "一部のファイルは名前を変更できないため、無視されました。",
+    ),
     "androidRemindContent": MessageLookupByLibrary.simpleMessage(
       "Flut Renamerを使用すると、ファイルだけでなくディレクトリも名前を変更できます。ディレクトリを長押しして選択し、左上隅のドロップダウンボタンから「ファイルとディレクトリ」を選択してディレクトリの名前を変更できます。セキュリティ上の理由から、一部のシステム予約ディレクトリは選択できません。",
     ),
@@ -82,6 +88,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "caseSensitive": MessageLookupByLibrary.simpleMessage("大文字と小文字を区別する"),
     "collapseOptions": MessageLookupByLibrary.simpleMessage("オプションを折りたたむ"),
     "currentName": MessageLookupByLibrary.simpleMessage("現在のファイル名"),
+    "dateFormat": MessageLookupByLibrary.simpleMessage("日付形式"),
     "descriptionIncrement": MessageLookupByLibrary.simpleMessage(
       "ファイル名を増分します。例：写真-1、写真-2、写真-3。",
     ),
@@ -173,6 +180,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "keepCharacters": MessageLookupByLibrary.simpleMessage("両方の文字を保持"),
     "language": MessageLookupByLibrary.simpleMessage("言語："),
     "limit": MessageLookupByLibrary.simpleMessage("回数制限"),
+    "loadRules": MessageLookupByLibrary.simpleMessage("ルールを読み込む"),
+    "logEmpty": MessageLookupByLibrary.simpleMessage("ログは空です。"),
     "lowercaseAppName": MessageLookupByLibrary.simpleMessage("flut renamer"),
     "me": MessageLookupByLibrary.simpleMessage("モンテネグロ語"),
     "metadataParserNotProvided": MessageLookupByLibrary.simpleMessage(
@@ -197,6 +206,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "noSysDir": MessageLookupByLibrary.simpleMessage(
       "システム予約ディレクトリはリネームしないでください。",
     ),
+    "numberOfDigits": MessageLookupByLibrary.simpleMessage("桁数"),
     "ok": MessageLookupByLibrary.simpleMessage("OK"),
     "omitDash": MessageLookupByLibrary.simpleMessage("ダッシュを省略"),
     "onlySelected": MessageLookupByLibrary.simpleMessage("選択したファイルのみリネーム"),
@@ -251,6 +261,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "ルールは順次実行されます。ルールを編集するにはクリックします。左側の「=」ボタンを押しながらドラッグしてルールを並べ替えることができます。",
     ),
     "save": MessageLookupByLibrary.simpleMessage("保存"),
+    "saveRules": MessageLookupByLibrary.simpleMessage("ルールを保存"),
     "select": MessageLookupByLibrary.simpleMessage("選択"),
     "selectAll": MessageLookupByLibrary.simpleMessage("すべて選択"),
     "semanticSwitchNumberToStartAndToEnd": m5,
@@ -297,5 +308,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "truncate": MessageLookupByLibrary.simpleMessage("切り詰め"),
     "truncateToString": m12,
     "ua": MessageLookupByLibrary.simpleMessage("ウクライナ語"),
+    "viewLog": MessageLookupByLibrary.simpleMessage("ログを表示"),
   };
 }

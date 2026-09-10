@@ -30,8 +30,6 @@ enum Transliterate {
         return L10n.current.transliterateCyrillic2Latin;
       case Transliterate.latin2Cyrillic:
         return L10n.current.transliterateLatin2Cyrillic;
-      default:
-        return '?';
-    }
+      }
   }
 }

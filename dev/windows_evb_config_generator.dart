@@ -20,8 +20,8 @@ void main() {
     try {
       e.copySync(windowsBuildDir.path + r'\' + e.name);
     } catch (e, s) {
-      print(e);
-      print(s);
+      stderr.writeln(e);
+      stderr.writeln(s);
     }
   }
 

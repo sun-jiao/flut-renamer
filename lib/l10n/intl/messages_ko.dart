@@ -68,7 +68,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "add": MessageLookupByLibrary.simpleMessage("추가"),
     "addFile": MessageLookupByLibrary.simpleMessage("파일 추가"),
     "addFiles": MessageLookupByLibrary.simpleMessage("파일을 추가하세요."),
+    "addFilesAndroid": MessageLookupByLibrary.simpleMessage(
+      "이름을 바꿀 파일을 하나 이상 선택하세요. 미디어 파일의 경우 Android에서 변경 허용을 확인할 수 있습니다.",
+    ),
     "addRule": MessageLookupByLibrary.simpleMessage("규칙 추가"),
+    "addedFilesCannotRename": MessageLookupByLibrary.simpleMessage(
+      "일부 파일은 이름을 변경할 수 없어 무시되었습니다.",
+    ),
     "androidRemindContent": MessageLookupByLibrary.simpleMessage(
       "Flut Renamer를 사용하면 파일뿐만 아니라 디렉토리 이름도 바꿀 수 있습니다. 디렉토리를 길게 눌러 선택한 다음 왼쪽 상단의 드롭다운 버튼에서 \'파일 및 디렉토리\'를 선택하여 디렉토리 이름을 바꿀 수 있습니다. 보안상의 이유로 일부 시스템 예약 디렉토리는 선택할 수 없습니다.",
     ),
@@ -82,6 +88,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "caseSensitive": MessageLookupByLibrary.simpleMessage("대소문자 구분"),
     "collapseOptions": MessageLookupByLibrary.simpleMessage("옵션 축소"),
     "currentName": MessageLookupByLibrary.simpleMessage("현재 파일 이름"),
+    "dateFormat": MessageLookupByLibrary.simpleMessage("날짜 형식"),
     "descriptionIncrement": MessageLookupByLibrary.simpleMessage(
       "파일 이름을 증가시킵니다. 예: 사진-1, 사진-2, 사진-3.",
     ),
@@ -169,6 +176,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "keepCharacters": MessageLookupByLibrary.simpleMessage("두 문자 사이의 문자 유지"),
     "language": MessageLookupByLibrary.simpleMessage("언어:"),
     "limit": MessageLookupByLibrary.simpleMessage("제한"),
+    "loadRules": MessageLookupByLibrary.simpleMessage("규칙 불러오기"),
+    "logEmpty": MessageLookupByLibrary.simpleMessage("로그가 비어 있습니다."),
     "lowercaseAppName": MessageLookupByLibrary.simpleMessage("flut renamer"),
     "me": MessageLookupByLibrary.simpleMessage("몬테네그로어"),
     "metadataParserNotProvided": MessageLookupByLibrary.simpleMessage(
@@ -193,6 +202,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "noSysDir": MessageLookupByLibrary.simpleMessage(
       "시스템 예약 디렉터리를 이름을 변경하지 마십시오.",
     ),
+    "numberOfDigits": MessageLookupByLibrary.simpleMessage("자릿수"),
     "ok": MessageLookupByLibrary.simpleMessage("확인"),
     "omitDash": MessageLookupByLibrary.simpleMessage("대시 생략"),
     "onlySelected": MessageLookupByLibrary.simpleMessage("선택한 파일만 이름 변경"),
@@ -259,6 +269,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "규칙은 순차적으로 실행됩니다. 규칙을 편집하려면 클릭하십시오. 왼쪽에있는 \'=\' 버튼을 누른 상태에서 드래그하여 규칙을 정렬하십시오.",
     ),
     "save": MessageLookupByLibrary.simpleMessage("저장"),
+    "saveRules": MessageLookupByLibrary.simpleMessage("규칙 저장"),
     "select": MessageLookupByLibrary.simpleMessage("선택"),
     "selectAll": MessageLookupByLibrary.simpleMessage("모두 선택"),
     "semanticSwitchNumberToStartAndToEnd": m5,
@@ -309,5 +320,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "truncate": MessageLookupByLibrary.simpleMessage("줄이기"),
     "truncateToString": m12,
     "ua": MessageLookupByLibrary.simpleMessage("우크라이나어"),
+    "viewLog": MessageLookupByLibrary.simpleMessage("로그 보기"),
   };
 }

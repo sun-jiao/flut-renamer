@@ -4,14 +4,13 @@ import 'dart:io';
 import 'package:desktop_drop/desktop_drop.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import '../entity/theme_extension.dart';
 import '../l10n/l10n.dart';
-import '../pages/android_file_picker_page.dart';
 import '../tools/platform_channel.dart';
 import '../entity/constants.dart';
 import '../tools/ex_file.dart';
+import '../tools/file_sort.dart';
 import '../tools/file_metadata.dart';
 import '../entity/sharedpref.dart';
 import '../tools/rename.dart';
@@ -26,26 +25,30 @@ class FilesPage extends StatefulWidget {
     required this.resetRules,
   });
 
-  final FutureOr<String> Function(String name, FileMetadata metadata) getNewName;
+  final FutureOr<String> Function(String name, FileMetadata metadata)
+      getNewName;
   final VoidCallback clearRules;
   final VoidCallback resetRules;
 
   @override
   State<FilesPage> createState() => FilesPageState();
 
-  static void addFiles(Iterable<FileSystemEntity> files) {
+  static void addFiles(Iterable<FileEntity> files) {
     _files.addAll(files);
   }
 }
 
-final List<FileSystemEntity> _files = [];
+final List<FileEntity> _files = [];
 
 class FilesPageState extends State<FilesPage> {
   bool _dragging = false;
+  bool _renaming = false;
   String _filter = '';
+  FileSortField? _sortField;
+  bool _sortAscending = true;
 
   Future<void> addFileFromPicker() async {
-    late Iterable<FileSystemEntity> entities;
+    late Iterable<FileEntity> entities;
     if (Platform.isAndroid) {
       if (!Shared.doNotRemindAgain) {
         await _remindDialog(context);
@@ -54,17 +57,23 @@ class FilesPageState extends State<FilesPage> {
       if (!mounted) {
         return;
       }
-      
-      final result = await Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const AndroidFilePicker()),
-      );
 
-      if (result != null && result is List<FileSystemEntity>) {
-        entities = result;
+      List<String>? paths;
+      if (Shared.fileOrDir == 'Directories') {
+        paths = await PlatformFilePicker.dirAccess();
       } else {
-        return;
+        paths = await PlatformFilePicker.fileAccess(context, '');
       }
+
+      if (paths == null || paths.isEmpty) return;
+      entities = paths.map((path) {
+        // A tree URI is still a `content://` URI, so it cannot be identified
+        // from its path.  Preserve the picker mode in the entity type; the
+        // list filter and the rename result both rely on it.
+        final entity =
+            Shared.fileOrDir == 'Directories' ? Directory(path) : File(path);
+        return FileEntity(entity);
+      });
     } else if (Platform.isIOS) {
       if (!Shared.doNotRemindAgain) {
         final iosOK = await _remindDialog(context);
@@ -74,77 +83,116 @@ class FilesPageState extends State<FilesPage> {
       }
 
       final dirs = await PlatformFilePicker.dirAccess();
-      if (dirs == null || dirs.first == null) {
+      if (dirs == null || dirs.isEmpty) {
         return;
       }
 
       if (!_files.any((e) => e.parent.path == dirs.first.toString())) {
-        await PlatformFilePicker.changeScopedAccess(dirs.first.toString(), true);
+        await PlatformFilePicker.changeScopedAccess(
+          dirs.first.toString(),
+          true,
+        );
       }
 
-      final files = await PlatformFilePicker.fileAccess(dirs.first.toString());
-      if (files == null) {
+      if (mounted) {
+        final files =
+            await PlatformFilePicker.fileAccess(context, dirs.first.toString());
+
+        if (files == null) {
+          return;
+        }
+
+        entities = files.map((e) => e.toString()).map((e) => e.toFileEntity());
+      } else {
         return;
       }
-
-      entities = files.skipWhile((e) => e == null).map((e) => e.toString()).map((e) => e.toFileSystemEntity());
     } else {
-      FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true);
-      if (result != null) {
-        entities = result.files
-            .where((e1) => e1.path != null && _files.every((e2) => e1.path != e2.path))
-            .map((e) => e.toFileSystemEntity());
+      final result = await FilePicker.pickFiles();
+      if (result.isNotEmpty) {
+        entities = result
+            .where(
+              (e1) =>
+                  e1.path != null && _files.every((e2) => e1.path != e2.path),
+            )
+            .map((e) => e.toFileEntity());
       } else {
         return;
       }
     }
     setState(() {
-      _files.addAll(entities.skipWhile((eNew) => _files.any((eOld) => eNew.path == eOld.path)));
+      _files.addAll(
+        entities
+            .skipWhile((eNew) => _files.any((eOld) => eNew.path == eOld.path)),
+      );
     });
   }
 
   Future<bool?> _remindDialog(BuildContext contextD) => showDialog<bool>(
-    context: contextD,
-    builder: (contextD) => CustomDialog(
-      title: Text(Platform.isIOS ? L10n.current.iosRemindTitle : L10n.current.androidRemindTitle),
-      content: Text(Platform.isIOS ? L10n.current.iosRemindContent : L10n.current.androidRemindContent),
-      actions: [
-        if (Platform.isIOS) TextButton(
-          onPressed: () => Navigator.pop(contextD, false),
-          child: Text(L10n.current.cancel),
+        context: contextD,
+        builder: (contextD) => CustomDialog(
+          title: Text(
+            Platform.isIOS
+                ? L10n.current.iosRemindTitle
+                : L10n.current.androidRemindTitle,
+          ),
+          content: Text(
+            Platform.isIOS
+                ? L10n.current.iosRemindContent
+                : L10n.current.androidRemindContent,
+          ),
+          actions: [
+            if (Platform.isIOS)
+              TextButton(
+                onPressed: () => Navigator.pop(contextD, false),
+                child: Text(L10n.current.cancel),
+              ),
+            TextButton(
+              onPressed: () => Navigator.pop(contextD, true),
+              child: Text(L10n.current.ok),
+            ),
+            TextButton(
+              onPressed: () {
+                Shared.doNotRemindAgain = true;
+                Navigator.pop(contextD, true);
+              },
+              child: Text(L10n.current.doNotRemindAgain),
+            ),
+          ],
         ),
-        TextButton(
-          onPressed: () => Navigator.pop(contextD, true),
-          child: Text(L10n.current.ok),
-        ),
-        TextButton(
-          onPressed: () {
-            Shared.doNotRemindAgain = true;
-            Navigator.pop(contextD, true);
-          },
-          child: Text(L10n.current.doNotRemindAgain),
-        ),
-      ],
-    ),
-  );
-
+      );
 
   void update() => setState(() {});
 
-  Future<void> getNewName(FileSystemEntity file, FileMetadata metadata) async {
+  Future<void> getNewName(FileEntity file) async {
     if (file == _files.first) {
       widget.resetRules.call();
     }
 
+    await file.initMetadata();
+
+    late final String filename;
+
+    if (Platform.isAndroid && file.path.startsWith('content://')) {
+      filename = file.metadata!.androidRealName;
+    } else {
+      filename = file.name;
+    }
+
     try {
-      file.newName = await widget.getNewName(file.name, metadata);
-      if (file.newName != file.name && ((await File(file.newPath).exists()) || file.newNameDuplicate)) {
+      file.newName = replaceSpecialCharacters(
+        await widget.getNewName(filename, file.metadata!),
+      );
+      final isAndroidUri =
+          Platform.isAndroid && file.path.startsWith('content://');
+      if (file.newName != filename &&
+          ((!isAndroidUri && await File(file.newPath).exists()) ||
+              file.isNewNameDuplicate(_files))) {
         file.error = L10n.current.fileAlreadyExists;
         return;
       }
     } catch (e, s) {
       debugPrintStack(stackTrace: s);
-      file.newName = file.name;
+      file.newName = filename;
       file.error = e.toString();
       return;
     }
@@ -152,35 +200,93 @@ class FilesPageState extends State<FilesPage> {
     file.error = null;
   }
 
-  List<FileSystemEntity> _filteredList() {
+  List<FileEntity> _filteredList() {
     return _files
         .where(
           (element) =>
-              element.name.toString().toLowerCase().contains(_filter.toLowerCase()) &&
+              element.name
+                  .toString()
+                  .toLowerCase()
+                  .contains(_filter.toLowerCase()) &&
               Shared.fileOrDir.contains(element.fileOrDir()),
         )
         .toList();
   }
 
-  TableCell _rowTextCell(FileSystemEntity file, {bool isNew = false}) {
-    if (!file.existsSync()) {
+  void _sortFiles(FileSortField field) {
+    setState(() {
+      if (_sortField == field) {
+        _sortAscending = !_sortAscending;
+      } else {
+        _sortField = field;
+        _sortAscending = true;
+      }
+      _files.sort((left, right) {
+        final comparison = compareFiles(left, right, _sortField!);
+        return _sortAscending ? comparison : -comparison;
+      });
+    });
+  }
+
+  void _reorderFiles(int oldIndex, int newIndex) {
+    final visibleFiles = _filteredList();
+    final movedFile = visibleFiles.removeAt(oldIndex);
+
+    setState(() {
+      _files.remove(movedFile);
+      if (newIndex == visibleFiles.length) {
+        final lastVisibleFile = visibleFiles.lastOrNull;
+        if (lastVisibleFile == null) {
+          _files.add(movedFile);
+        } else {
+          _files.insert(_files.indexOf(lastVisibleFile) + 1, movedFile);
+        }
+      } else {
+        _files.insert(_files.indexOf(visibleFiles[newIndex]), movedFile);
+      }
+    });
+  }
+
+  TableCell _rowTextCell(FileEntity file, {bool isNew = false}) {
+    if (!(Platform.isAndroid && file.path.startsWith('content://')) &&
+        !file.existsSync()) {
       return TableCell(
         child: getRowText(L10n.current.fileNotExist, null),
       );
     }
 
-    return TableCell(
-      child: isNew ? FutureBuilder(
-        future: getNewName(file, FileMetadata(file)),
+    late final Widget content;
+
+    if (isNew) {
+      content = FutureBuilder(
+        future: getNewName(file),
         builder: (context, snap) {
           if ((snap.connectionState == ConnectionState.active ||
-              snap.connectionState == ConnectionState.done) &&
+                  snap.connectionState == ConnectionState.done) &&
               (!snap.hasError)) {
             return getRowText(file.newName, file.error);
           }
           return const LinearProgressIndicator();
         },
-      ) : getRowText(file.name, null),
+      );
+    } else if (Platform.isAndroid && file.path.startsWith('content://')) {
+      content = FutureBuilder(
+        future: file.initMetadata(),
+        builder: (context, snap) {
+          if ((snap.connectionState == ConnectionState.active ||
+                  snap.connectionState == ConnectionState.done) &&
+              (!snap.hasError)) {
+            return getRowText(file.metadata!.androidRealName, file.error);
+          }
+          return const LinearProgressIndicator();
+        },
+      );
+    } else {
+      content = getRowText(file.name, null);
+    }
+    file.initMetadata();
+    return TableCell(
+      child: content,
     );
   }
 
@@ -206,44 +312,46 @@ class FilesPageState extends State<FilesPage> {
     );
   }
 
-  List<TableRow> _tableRows() {
-    final filteredList = _filteredList();
+  TableRow _tableRow(FileEntity file, int index) {
     final fileListColors = Theme.of(context).extension<FileListColors>()!;
-    return List.generate(
-      filteredList.length,
-      (index) => TableRow(
-        decoration: BoxDecoration(
-          color: index % 2 == 0 ? fileListColors.primaryColor : fileListColors.secondaryColor,
-        ),
-        children: [
-          TableCell(
-            child: Checkbox(
-              value: filteredList[index].selected,
-              onChanged: (val) {
-                if (val != null) {
-                  setState(() {
-                    filteredList[index].selected = val;
-                  });
-                }
-              },
-            ),
-          ),
-          _rowTextCell(filteredList[index]),
-          _rowTextCell(filteredList[index], isNew: true),
-          TableCell(
-            child: IconButton(
-              onPressed: () {
-                setState(() {
-                  _files.removeWhere(
-                    (element) => element.path == filteredList[index].path,
-                  );
-                });
-              },
-              icon: const Icon(Icons.clear),
-            ),
-          ),
-        ],
+    return TableRow(
+      decoration: BoxDecoration(
+        color: index % 2 == 0
+            ? fileListColors.primaryColor
+            : fileListColors.secondaryColor,
       ),
+      children: [
+        TableCell(
+          child: ReorderableDragStartListener(
+            index: index,
+            child: const Icon(Icons.drag_handle),
+          ),
+        ),
+        TableCell(
+          child: Checkbox(
+            value: file.selected,
+            onChanged: (val) {
+              if (val != null) {
+                setState(() {
+                  file.selected = val;
+                });
+              }
+            },
+          ),
+        ),
+        _rowTextCell(file),
+        _rowTextCell(file, isNew: true),
+        TableCell(
+          child: IconButton(
+            onPressed: () {
+              setState(() {
+                _files.remove(file);
+              });
+            },
+            icon: const Icon(Icons.delete),
+          ),
+        ),
+      ],
     );
   }
 
@@ -253,17 +361,22 @@ class FilesPageState extends State<FilesPage> {
             color: Theme.of(context).scaffoldBackgroundColor,
           ),
           children: [
+            const TableCell(child: SizedBox()),
             TableCell(
               child: Tooltip(
-                message: _files.isNotEmpty && _files.every((element) => element.selected)
+                message: _files.isNotEmpty &&
+                        _files.every((element) => element.selected)
                     ? L10n.current.cancelAll
                     : L10n.current.selectAll,
                 child: Checkbox(
-                  value: _files.isNotEmpty && _files.every((element) => element.selected),
+                  value: _files.isNotEmpty &&
+                      _files.every((element) => element.selected),
                   onChanged: (_) {
                     setState(() {
                       if (_files.every((element) => element.selected)) {
-                        ExFile.clearSelections();
+                        for (var element in _files) {
+                          element.selected = false;
+                        }
                       } else {
                         for (var element in _files) {
                           element.selected = true;
@@ -293,7 +406,7 @@ class FilesPageState extends State<FilesPage> {
                       _files.clear();
                     });
                   },
-                  icon: const Icon(Icons.clear),
+                  icon: const Icon(Icons.delete),
                 ),
               ),
             ),
@@ -301,12 +414,14 @@ class FilesPageState extends State<FilesPage> {
         ),
       ];
 
-  Widget _table(List<TableRow> children) => Table(
+  Widget _table(List<TableRow> children, {Key? key}) => Table(
+        key: key,
         columnWidths: const <int, TableColumnWidth>{
           0: IntrinsicColumnWidth(),
-          1: FlexColumnWidth(1.2),
-          2: FlexColumnWidth(1.5),
-          3: IntrinsicColumnWidth(),
+          1: IntrinsicColumnWidth(),
+          2: FlexColumnWidth(1.2),
+          3: FlexColumnWidth(1.5),
+          4: IntrinsicColumnWidth(),
         },
         defaultVerticalAlignment: TableCellVerticalAlignment.middle,
         border: TableBorder.all(width: 24, color: Colors.transparent),
@@ -350,9 +465,40 @@ class FilesPageState extends State<FilesPage> {
                 ),
               ),
               box,
-              ElevatedButton(
+              PopupMenuButton<FileSortField>(
+                icon: const Icon(Icons.sort_by_alpha),
+                tooltip: L10n.current.fileManagerSortButton,
+                onSelected: _sortFiles,
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    value: FileSortField.name,
+                    child: Text(L10n.current.fileSortName),
+                  ),
+                  PopupMenuItem(
+                    value: FileSortField.size,
+                    child: Text(L10n.current.fileSortSize),
+                  ),
+                  PopupMenuItem(
+                    value: FileSortField.date,
+                    child: Text(L10n.current.fileSortDate),
+                  ),
+                  PopupMenuItem(
+                    value: FileSortField.type,
+                    child: Text(L10n.current.fileSortType),
+                  ),
+                ],
+              ),
+              IconButton(
+                onPressed: () => _sortFiles(_sortField ?? FileSortField.name),
+                icon: Icon(
+                  _sortAscending ? Icons.arrow_upward : Icons.arrow_downward,
+                ),
+                tooltip: L10n.current.fileManagerSortButton,
+              ),
+              IconButton(
                 onPressed: addFileFromPicker,
-                child: Text(L10n.current.addFile),
+                icon: const Icon(Icons.add),
+                tooltip: L10n.current.addFile,
               ),
             ],
           ),
@@ -361,20 +507,10 @@ class FilesPageState extends State<FilesPage> {
         _table(_headerRow()),
         Expanded(
           child: DropTarget(
-            enable: !Platform.isIOS,
+            enable: !(Platform.isIOS || Platform.isAndroid),
             onDragDone: (detail) async {
               for (var xFile in detail.files) {
-                late final FileSystemEntity file;
-                if (Platform.isAndroid && xFile.path.startsWith('content://')) {
-                  try {
-                    file = (await PlatformFilePicker.getRealPathFromURI(xFile.path)).toFileSystemEntity();
-                  } catch (e) {
-                    Fluttertoast.showToast(msg: L10n.current.dragNotSupported);
-                    return;
-                  }
-                } else {
-                  file = xFile.toFileSystemEntity();
-                }
+                final FileEntity file = xFile.toFileEntity();
 
                 if (_files.every((exist) => file.path != exist.path)) {
                   setState(() {
@@ -399,20 +535,41 @@ class FilesPageState extends State<FilesPage> {
             },
             onDragUpdated: (detail) {},
             child: Container(
-              color: Theme.of(context).extension<FileListColors>()!.primaryColor,
+              color:
+                  Theme.of(context).extension<FileListColors>()!.primaryColor,
               child: Stack(
                 children: [
                   if (_files.isNotEmpty)
-                    SingleChildScrollView(
-                      child: _table(_tableRows()),
+                    ReorderableListView.builder(
+                      buildDefaultDragHandles: false,
+                      onReorderItem: _reorderFiles,
+                      itemCount: _filteredList().length,
+                      itemBuilder: (context, index) {
+                        final file = _filteredList()[index];
+                        return _table(
+                          [
+                            _tableRow(file, index),
+                          ],
+                          key: ValueKey(file),
+                        );
+                      },
                     )
                   else if (!_dragging)
-                    Center(
-                      child: Text(Platform.isIOS ? L10n.current.addFiles : L10n.current.dragToAdd),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Center(
+                        child: Text(
+                          Platform.isIOS
+                              ? L10n.current.addFiles
+                              : (Platform.isAndroid
+                                  ? L10n.current.addFilesAndroid
+                                  : L10n.current.dragToAdd),
+                        ),
+                      ),
                     ),
                   if (_dragging)
                     Container(
-                      color: Colors.blue.withOpacity(0.2),
+                      color: Colors.blue.withValues(alpha: 0.2),
                       child: Center(
                         child: Text(L10n.current.dropToAdd),
                       ),
@@ -430,43 +587,178 @@ class FilesPageState extends State<FilesPage> {
     bool remove = true,
     bool onlySelected = false,
   }) async {
-    final List<Future> futures = [];
-    bool noError = true;
-    _files.asMap().forEach((index, file) {
-      // if file is selected or onlySelected = false (all files should be renamed)
-      if (file.selected || !onlySelected) {
-        futures.add(
-          rename(
-            file,
-            context: context,
-          ).then((value) {
-            if (value == null) {
-              noError = false;
-              setState(() {
-                file.error = L10n.current.renameFailed;
-              });
-            } else if (remove) {
-              setState(() {
-                _files.remove(file);
-              });
+    if (_renaming) return;
+    _renaming = true;
 
-              if (Platform.isIOS && !_files.any((e) => e.parent.path == file.parent.path)) {
-                PlatformFilePicker.changeScopedAccess(file.parent.path, false);
-              }
-            } else {
-              setState(() {
-                _files[index] = value;
-              });
-            }
-          }),
-        );
+    try {
+      final requestedFiles = _files
+          .where((file) => file.selected || !onlySelected)
+          .toList(growable: false);
+      final filesToRename = await _buildRenamePlan(requestedFiles);
+      var noError = filesToRename.length == requestedFiles.length;
+
+      if (mounted) {
+        setState(() {});
       }
-    });
 
-    await Future.wait(futures);
+      final mediaUris = <String>[];
+      if (Platform.isAndroid) {
+        for (final file in filesToRename) {
+          if (file.path.startsWith('content://')) {
+            await file.initMetadata();
+            if (file.metadata!.androidRealName != file.newName) {
+              mediaUris.add(file.path);
+            }
+          }
+        }
+      }
+      final mediaPermission = Platform.isAndroid
+          ? await PlatformFilePicker.requestMediaWritePermission(mediaUris)
+          : const MediaWritePermission.empty();
+      if (!mounted) return;
 
-    if (noError && remove) {
-      widget.clearRules.call();
+      for (final file in filesToRename) {
+        final index = _files.indexOf(file);
+        final deniedMediaWrite =
+            mediaPermission.candidates.contains(file.path) &&
+                !mediaPermission.approved.contains(file.path);
+
+        if (deniedMediaWrite) {
+          noError = false;
+          setState(() {
+            file.error = L10n.current.renameFailed;
+          });
+          continue;
+        }
+
+        final value = await rename(
+          file,
+          context: context,
+        );
+        if (value == null) {
+          noError = false;
+          if (mounted) {
+            setState(() {
+              file.error = L10n.current.renameFailed;
+            });
+          }
+        } else if (remove) {
+          if (mounted) {
+            setState(() {
+              _files.remove(file);
+            });
+          }
+
+          if (Platform.isIOS &&
+              !_files.any((e) => e.parent.path == file.parent.path)) {
+            PlatformFilePicker.changeScopedAccess(file.parent.path, false);
+          }
+        } else if (mounted && index >= 0) {
+          setState(() {
+            _files[index] = value;
+          });
+        }
+      }
+
+      if (noError && remove) {
+        widget.clearRules.call();
+      }
+    } finally {
+      _renaming = false;
     }
+  }
+
+  Future<List<FileEntity>> _buildRenamePlan(
+    List<FileEntity> requestedFiles,
+  ) async {
+    final localFiles = <FileEntity>[];
+    final safFiles = <FileEntity>[];
+    for (final file in requestedFiles) {
+      file.newName = replaceSpecialCharacters(file.newName);
+      if (file.error != null) continue;
+      if (Platform.isAndroid && file.path.startsWith('content://')) {
+        safFiles.add(file);
+      } else {
+        localFiles.add(file);
+      }
+    }
+
+    final targetGroups = <String, List<FileEntity>>{};
+    for (final file in localFiles) {
+      targetGroups.putIfAbsent(_targetPathKey(file), () => []).add(file);
+    }
+    for (final group in targetGroups.values) {
+      if (group.length > 1) {
+        for (final file in group) {
+          file.error = L10n.current.fileAlreadyExists;
+        }
+      }
+    }
+
+    // Repeat this check after every newly blocked move. A destination can only
+    // be considered free when its selected source will actually move away.
+    var foundBlockedMove = true;
+    while (foundBlockedMove) {
+      foundBlockedMove = false;
+      final plannedMoves = localFiles
+          .where(
+            (file) =>
+                file.error == null &&
+                _sourcePathKey(file) != _targetPathKey(file),
+          )
+          .toList();
+      final movingSources = plannedMoves.map(_sourcePathKey).toSet();
+      for (final file in plannedMoves) {
+        final target = _targetPathKey(file);
+        if (!movingSources.contains(target) &&
+            await FileSystemEntity.type(
+                  file.newPath,
+                ) !=
+                FileSystemEntityType.notFound) {
+          file.error = L10n.current.fileAlreadyExists;
+          foundBlockedMove = true;
+        }
+      }
+    }
+
+    final orderedLocalMoves = <FileEntity>[];
+    final pendingMoves = localFiles
+        .where(
+          (file) =>
+              file.error == null &&
+              _sourcePathKey(file) != _targetPathKey(file),
+        )
+        .toList();
+    while (pendingMoves.isNotEmpty) {
+      final ready = pendingMoves.where((file) {
+        final target = _targetPathKey(file);
+        return pendingMoves.every(
+          (other) => identical(file, other) || _sourcePathKey(other) != target,
+        );
+      }).toList();
+      if (ready.isEmpty) {
+        for (final file in pendingMoves) {
+          file.error = L10n.current.renameFailed;
+        }
+        break;
+      }
+      orderedLocalMoves.addAll(ready);
+      pendingMoves.removeWhere(ready.contains);
+    }
+
+    final localNoOps = localFiles.where(
+      (file) =>
+          file.error == null && _sourcePathKey(file) == _targetPathKey(file),
+    );
+    return [...orderedLocalMoves, ...localNoOps, ...safFiles];
+  }
+
+  String _sourcePathKey(FileEntity file) => _normalisedPath(file.path);
+
+  String _targetPathKey(FileEntity file) => _normalisedPath(file.newPath);
+
+  String _normalisedPath(String path) {
+    final absolutePath = File(path).absolute.path;
+    return Platform.isWindows ? absolutePath.toLowerCase() : absolutePath;
   }
 }

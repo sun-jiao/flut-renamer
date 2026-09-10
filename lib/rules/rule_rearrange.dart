@@ -37,5 +37,23 @@ class RuleRearrange implements Rule {
   }
 
   @override
+  Map<String, dynamic> toMap() {
+    return {
+      'type': 'Rearrange',
+      'delimiter': delimiter,
+      'order': order,
+      'ignoreExtension': ignoreExtension,
+    };
+  }
+
+  factory RuleRearrange.fromMap(Map<dynamic, dynamic> map) {
+    return RuleRearrange(
+      map['delimiter'] as String,
+      (map['order'] as List).cast<int>(),
+      map['ignoreExtension'] as bool,
+    );
+  }
+
+  @override
   void openDialog(BuildContext context, Function(Rule rule) onSave) => showRearrangeDialog(context, onSave, this);
 }

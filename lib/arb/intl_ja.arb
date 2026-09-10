@@ -31,6 +31,10 @@
   "removeRenamed": "リネーム済みファイルを削除",
   "removeRule": "このルールを削除",
   "removeRules": "リネーム後にすべてのルールを削除",
+  "saveRules": "ルールを保存",
+  "loadRules": "ルールを読み込む",
+  "viewLog": "ログを表示",
+  "logEmpty": "ログは空です。",
   "addRule": "ルールを追加",
   "removeAll": "すべて削除",
   "replace": "置換",
@@ -52,6 +56,8 @@
   "filter": "フィルター",
   "addFile": "ファイルを追加",
   "addFiles": "ファイルを追加してください。",
+  "addFilesAndroid": "名前を変更するファイルを1つ以上選択してください。メディアファイルでは、Android が変更の許可を確認することがあります。",
+  "addedFilesCannotRename": "一部のファイルは名前を変更できないため、無視されました。",
   "dragToAdd": "追加するためにファイルをドラッグ＆ドロップしてください。",
   "dropToAdd": "ここにファイルをドロップして追加してください。",
   "dragNotSupported": "システムのセキュリティ制限により、このアプリからのファイルのドラッグ＆ドロップはサポートされていません。",
@@ -75,6 +81,7 @@
   "errorDetails": "エラーの詳細",
   "ifFileNotShown": "ファイルがリストに表示されない場合は、すべてクリアして続行してください。",
   "metadataTags": "メタデータタグ",
+  "dateFormat": "日付形式",
   "osTodayDate": "今日の日付",
   "osNowTime": "現在の時刻",
   "fileSize": "ファイルサイズ",
@@ -109,6 +116,7 @@
   "musicWriter": "曲の作詞者",
   "prefix": "接頭辞",
   "startIndex": "開始インデックス",
+  "numberOfDigits": "桁数",
   "indexIncrementalStep": "インデックスの増分ステップ",
   "omitDash": "ダッシュを省略",
   "ignoreExtension": "拡張子を無視",
@@ -173,4 +181,3 @@
   "semanticsMultipleActionsHint": "上下にスワイプして他の操作に移動します。",
   "semanticSwitchNumberToStartAndToEnd": "開始から終わりまでの数え方を切り替え、現在は{toEnd, select, true{終わり} false{始まり} other{}}から数えています"
 }
-

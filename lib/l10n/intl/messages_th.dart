@@ -70,7 +70,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "add": MessageLookupByLibrary.simpleMessage("เพิ่ม"),
     "addFile": MessageLookupByLibrary.simpleMessage("เพิ่มไฟล์"),
     "addFiles": MessageLookupByLibrary.simpleMessage("โปรดเพิ่มไฟล์"),
+    "addFilesAndroid": MessageLookupByLibrary.simpleMessage(
+      "เลือกไฟล์อย่างน้อยหนึ่งไฟล์เพื่อเปลี่ยนชื่อ Android อาจขอให้คุณยืนยันการอนุญาตให้แก้ไขไฟล์สื่อ",
+    ),
     "addRule": MessageLookupByLibrary.simpleMessage("เพิ่มกฏ"),
+    "addedFilesCannotRename": MessageLookupByLibrary.simpleMessage(
+      "ไม่สามารถเปลี่ยนชื่อบางไฟล์ได้และไฟล์เหล่านั้นถูกข้ามไป",
+    ),
     "androidRemindContent": MessageLookupByLibrary.simpleMessage(
       "การใช้ Flut Renamer คุณสามารถเปลี่ยนชื่อไฟล์และไดเรกทอรีได้ กดค้างไดเรกทอรีเพื่อเลือก จากนั้นเลือก \'ไฟล์และไดเรกทอรี\' จากปุ่มแบบเลื่อนลงที่มุมบนซ้ายเพื่อเปิดใช้งานการเปลี่ยนชื่อไดเรกทอรี เนื่องจากเหตุผลด้านความปลอดภัย บางไดเรกทอรีที่สงวนไว้สำหรับระบบจะไม่สามารถเลือกได้",
     ),
@@ -88,6 +94,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "collapseOptions": MessageLookupByLibrary.simpleMessage("ยุบตัวเลือก"),
     "currentName": MessageLookupByLibrary.simpleMessage("ชื่อไฟล์ปัจจุบัน"),
+    "dateFormat": MessageLookupByLibrary.simpleMessage("รูปแบบวันที่"),
     "descriptionIncrement": MessageLookupByLibrary.simpleMessage(
       "เพิ่มเลขดัชนีในชื่อไฟล์ (เช่น รูปภาพ-1, รูปภาพ-2, รูปภาพ-3)",
     ),
@@ -197,6 +204,8 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "language": MessageLookupByLibrary.simpleMessage("ภาษา:"),
     "limit": MessageLookupByLibrary.simpleMessage("จำกัด"),
+    "loadRules": MessageLookupByLibrary.simpleMessage("โหลดกฎ"),
+    "logEmpty": MessageLookupByLibrary.simpleMessage("บันทึกว่างเปล่า."),
     "lowercaseAppName": MessageLookupByLibrary.simpleMessage("flut renamer"),
     "me": MessageLookupByLibrary.simpleMessage("เมอร์เซเดีย"),
     "metadataParserNotProvided": MessageLookupByLibrary.simpleMessage(
@@ -227,6 +236,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "noSysDir": MessageLookupByLibrary.simpleMessage(
       "อย่าเปลี่ยนชื่อโฟลเดอร์ที่ระบบสงวนไว้",
     ),
+    "numberOfDigits": MessageLookupByLibrary.simpleMessage("จำนวนหลัก"),
     "ok": MessageLookupByLibrary.simpleMessage("ตกลง"),
     "omitDash": MessageLookupByLibrary.simpleMessage("ละเว้นขีด"),
     "onlySelected": MessageLookupByLibrary.simpleMessage(
@@ -317,6 +327,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "กฏถูกดำเนินการต่อเนื่องกัน. คลิกที่กฏเพื่อแก้ไข. กดปุ่ม \'=\' ทางซ้ายและลากเพื่อเรียงลำดับกฏ.",
     ),
     "save": MessageLookupByLibrary.simpleMessage("บันทึก"),
+    "saveRules": MessageLookupByLibrary.simpleMessage("บันทึกกฎ"),
     "select": MessageLookupByLibrary.simpleMessage("เลือก"),
     "selectAll": MessageLookupByLibrary.simpleMessage("เลือกทั้งหมด"),
     "semanticSwitchNumberToStartAndToEnd": m5,
@@ -375,5 +386,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "truncate": MessageLookupByLibrary.simpleMessage("ตัด"),
     "truncateToString": m12,
     "ua": MessageLookupByLibrary.simpleMessage("ยูเครน"),
+    "viewLog": MessageLookupByLibrary.simpleMessage("ดูบันทึก"),
   };
 }

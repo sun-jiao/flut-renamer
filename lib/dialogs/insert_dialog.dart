@@ -6,10 +6,15 @@ import '../l10n/l10n.dart';
 import '../rules/rule.dart';
 import '../widget/checkbox_tile.dart';
 import '../widget/custom_dialog.dart';
+import '../widget/date_format_dropdown.dart';
 import '../widget/text_field_with_direction.dart';
+import '../tools/file_metadata.dart';
 
-void showInsertDialog(BuildContext context, Function(Rule) onSave,
-        [RuleInsert? rule]) =>
+void showInsertDialog(
+  BuildContext context,
+  Function(Rule) onSave, [
+  RuleInsert? rule,
+]) =>
     showDialog(
       context: context,
       builder: (context) => InsertDialog(
@@ -40,6 +45,7 @@ class _InsertDialogState extends State<InsertDialog> {
   ValueNotifier<bool> toEnd = ValueNotifier(false);
   ValueNotifier<bool> useRandomString = ValueNotifier(false);
   bool ignoreExtension = true;
+  String dateFormat = FileMetadata.defaultDateFormat;
 
   @override
   void initState() {
@@ -48,16 +54,16 @@ class _InsertDialogState extends State<InsertDialog> {
       indexController.text = widget.rule!.insertIndex.toString();
       withMetadata.value = widget.rule!.withMetadata;
       toEnd.value = widget.rule!.toEnd;
-      // Only use the dedicated editor for a token-only rule. Templates may
-      // contain a random token alongside literal text and must remain editable.
-      final RegExp randomStringToken = RegExp(r'^\{RandomString(?::(\d+))?\}$');
-      useRandomString.value = randomStringToken.hasMatch(widget.rule!.insert);
-      // If this is a token-only random string, extract its length.
+      ignoreExtension = widget.rule!.ignoreExtension;
+      dateFormat = widget.rule!.dateFormat;
+      final randomStringToken = RegExp(r'^\{RandomString(?::(\d+))?\}$');
+      final match = randomStringToken.firstMatch(widget.rule!.insert);
+      useRandomString.value = match != null;
+      if (match?.group(1) case final length?) {
+        randomLengthController.text = length;
+      }
       if (useRandomString.value) {
-        final match = randomStringToken.firstMatch(widget.rule!.insert);
-        if (match != null && match.group(1) != null) {
-          randomLengthController.text = match.group(1)!;
-        }
+        withMetadata.value = false;
       }
     }
 
@@ -76,58 +82,61 @@ class _InsertDialogState extends State<InsertDialog> {
             Text(L10n.current.descriptionInsert),
             ValueListenableBuilder<bool>(
               valueListenable: useRandomString,
-              builder: (context, useRandom, child) {
-                return Column(
-                  children: [
-                    CheckboxTile(
-                      title: Text(L10n.current.insertRandomString),
-                      value: useRandom,
-                      onChanged: (value) {
-                        setState(() {
-                          useRandomString.value = value ?? useRandom;
-                          if (value == true) {
-                            textController.text = '';
-                            withMetadata.value = false;
-                          }
-                        });
-                      },
+              builder: (context, useRandom, child) => Column(
+                children: [
+                  CheckboxTile(
+                    title: Text(L10n.current.insertRandomString),
+                    value: useRandom,
+                    onChanged: (value) {
+                      setState(() {
+                        useRandomString.value = value ?? useRandom;
+                        if (value == true) {
+                          textController.clear();
+                          withMetadata.value = false;
+                        }
+                      });
+                    },
+                  ),
+                  if (useRandom)
+                    TextFormField(
+                      controller: randomLengthController,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        labelText: L10n.current.randomStringLength,
+                        hintText: L10n.current.randomStringLengthHint,
+                      ),
+                    )
+                  else
+                    TextFormField(
+                      controller: textController,
+                      decoration:
+                          InputDecoration(labelText: L10n.current.insertedText),
                     ),
-                    if (useRandom) ...[
-                      TextFormField(
-                        controller: randomLengthController,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          labelText: L10n.current.randomStringLength,
-                          hintText: L10n.current.randomStringLengthHint,
-                        ),
-                        validator: (value) {
-                          final int? length = int.tryParse(value ?? '');
-                          if (length == null || length < 1 || length > 32) {
-                            return L10n.current.randomStringLengthError;
-                          }
-                          return null;
-                        },
-                      ),
-                    ] else ...[
-                      TextFormField(
-                        controller: textController,
-                        decoration: InputDecoration(
-                            labelText: L10n.current.insertedText),
-                      ),
-                    ],
-                  ],
-                );
-              },
+                ],
+              ),
             ),
             box,
             DirectionTextField(
-                con: indexController,
-                toEnd: toEnd,
-                labelText: L10n.current.insertIndex),
+              con: indexController,
+              toEnd: toEnd,
+              labelText: L10n.current.insertIndex,
+            ),
             // Text(L10n.current.insertBeforeIndex, style: const TextStyle(fontSize: 13),),
             if (!useRandomString.value) ...[
               MetadataTile(
-                  textController: textController, withMetadata: withMetadata),
+                textController: textController,
+                withMetadata: withMetadata,
+              ),
+              ValueListenableBuilder<bool>(
+                valueListenable: withMetadata,
+                builder: (context, usesMetadata, child) => usesMetadata
+                    ? DateFormatDropdown(
+                        value: dateFormat,
+                        onChanged: (value) =>
+                            setState(() => dateFormat = value),
+                      )
+                    : const SizedBox.shrink(),
+              ),
             ],
             CheckboxTile(
               title: Text(L10n.current.ignoreExtension),
@@ -152,14 +161,13 @@ class _InsertDialogState extends State<InsertDialog> {
           onPressed: () {
             String insertText;
             if (useRandomString.value) {
-              int length = int.tryParse(randomLengthController.text) ?? 8;
-              // 确保长度在合理范围内
-              length = length.clamp(1, 32);
+              final parsedLength =
+                  int.tryParse(randomLengthController.text) ?? 8;
+              final length = parsedLength.clamp(1, 32);
               insertText = '{RandomString:$length}';
             } else {
               insertText = textController.text;
             }
-
             int insertIndex = int.tryParse(indexController.text) ?? 0;
 
             final Rule rule = RuleInsert(
@@ -168,6 +176,7 @@ class _InsertDialogState extends State<InsertDialog> {
               toEnd.value,
               withMetadata.value,
               ignoreExtension,
+              dateFormat: dateFormat,
             );
 
             widget.onSave.call(rule);

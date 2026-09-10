@@ -67,7 +67,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "add": MessageLookupByLibrary.simpleMessage("添加"),
     "addFile": MessageLookupByLibrary.simpleMessage("添加文件"),
     "addFiles": MessageLookupByLibrary.simpleMessage("请添加文件。"),
+    "addFilesAndroid": MessageLookupByLibrary.simpleMessage(
+      "请选择需要重命名的一个或多个文件。对于媒体文件，Android 可能会要求您确认允许修改。",
+    ),
     "addRule": MessageLookupByLibrary.simpleMessage("添加规则"),
+    "addedFilesCannotRename": MessageLookupByLibrary.simpleMessage(
+      "部分文件无法重命名，已忽略。",
+    ),
     "androidRemindContent": MessageLookupByLibrary.simpleMessage(
       "使用Flut Renamer，您不仅可以重命名文件，还可以重命名目录。长按目录将其选中，然后在左上角下拉按钮中选择“文件和目录”即可启用目录重命名功能。出于安全考虑，某些系统保留目录不可选。",
     ),
@@ -81,6 +87,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "caseSensitive": MessageLookupByLibrary.simpleMessage("区分大小写"),
     "collapseOptions": MessageLookupByLibrary.simpleMessage("收起选项"),
     "currentName": MessageLookupByLibrary.simpleMessage("当前文件名"),
+    "dateFormat": MessageLookupByLibrary.simpleMessage("日期格式"),
     "descriptionIncrement": MessageLookupByLibrary.simpleMessage(
       "递增文件名，例如 照片-1、照片-2、照片-3。",
     ),
@@ -163,6 +170,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "keepCharacters": MessageLookupByLibrary.simpleMessage("保留二者之间的字符"),
     "language": MessageLookupByLibrary.simpleMessage("语言："),
     "limit": MessageLookupByLibrary.simpleMessage("次数"),
+    "loadRules": MessageLookupByLibrary.simpleMessage("加载规则"),
+    "logEmpty": MessageLookupByLibrary.simpleMessage("日志为空。"),
     "lowercaseAppName": MessageLookupByLibrary.simpleMessage("flut renamer"),
     "me": MessageLookupByLibrary.simpleMessage("黑山语"),
     "metadataParserNotProvided": MessageLookupByLibrary.simpleMessage(
@@ -185,6 +194,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "musicYear": MessageLookupByLibrary.simpleMessage("曲目的出版年份"),
     "newName": MessageLookupByLibrary.simpleMessage("新文件名"),
     "noSysDir": MessageLookupByLibrary.simpleMessage("请勿重命名系统保留目录。"),
+    "numberOfDigits": MessageLookupByLibrary.simpleMessage("编号位数"),
     "ok": MessageLookupByLibrary.simpleMessage("确定"),
     "omitDash": MessageLookupByLibrary.simpleMessage("省略短横线"),
     "onlySelected": MessageLookupByLibrary.simpleMessage("仅重命名选中的文件"),
@@ -244,6 +254,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "规则是按顺序执行的，点击规则可以重新编辑，按住左侧的“=”按钮并拖动即可对规则进行排序。",
     ),
     "save": MessageLookupByLibrary.simpleMessage("保存"),
+    "saveRules": MessageLookupByLibrary.simpleMessage("保存规则"),
     "select": MessageLookupByLibrary.simpleMessage("选择"),
     "selectAll": MessageLookupByLibrary.simpleMessage("全选"),
     "semanticSwitchNumberToStartAndToEnd": m5,
@@ -290,5 +301,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "truncate": MessageLookupByLibrary.simpleMessage("截取"),
     "truncateToString": m12,
     "ua": MessageLookupByLibrary.simpleMessage("乌克兰语"),
+    "viewLog": MessageLookupByLibrary.simpleMessage("查看日志"),
   };
 }

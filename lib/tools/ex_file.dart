@@ -6,58 +6,51 @@ import 'package:path/path.dart' as p;
 
 import '../tools/file_metadata.dart';
 
-class ExtFieldHandler<T> {
-  final Map<String, T> _values = {};
+class FileEntity {
+  final FileSystemEntity entity;
+  bool selected;
+  String? error;
+  String? _newName;
+  FileMetadata? _metadata;
 
-  T? getValue(String path) => _values[path];
+  FileEntity(this.entity, {this.selected = false, this.error, String? newName}) : _newName = newName;
 
-  void setValue(String path, T? value) {
-    if (value != null) {
-      _values[path] = value;
-    } else {
-      _values.remove(path);
+  String get path => entity.path;
+  String get name => p.basename(path);
+  String get directory => p.dirname(path);
+
+  String get newName => _newName ?? name;
+  set newName(String? val) => _newName = val;
+
+  String get newPath => p.join(directory, newName);
+
+  bool isNewNameDuplicate(List<FileEntity> others) {
+    final myNewPath = newPath;
+    return others.any((other) => other != this && other.newPath == myNewPath);
+  }
+
+  FileMetadata? get metadata => _metadata;
+
+  Future<void> initMetadata() async {
+    _metadata ??= FileMetadata(entity);
+    if (!_metadata!.inited) {
+      await _metadata!.init();
     }
   }
 
-  void clearValues() => _values.clear();
+  bool existsSync() {
+    if (Platform.isAndroid && path.startsWith('content://')) {
+      return true; // Assume exists for SAF paths for now, or use metadata if available
+    }
+    return entity.existsSync();
+  }
 
-  bool checkDuplicatedPath(String path, T value) =>
-      _values.entries.where((e) => e.key != path && p.join(p.dirname(path), value.toString()) == p.join(p.dirname(e.key), e.value.toString())).isNotEmpty;
-}
+  Directory get parent => entity.parent;
 
-// an extension to control file list selection.
-extension ExFile on FileSystemEntity {
-  // get file name
-  String get name => p.basename(path);
+  FileEntity get absolute => FileEntity(entity.absolute, selected: selected, error: error, newName: _newName);
 
-  // get the directory
-  String get directory => p.dirname(path);
-
-  static final ExtFieldHandler<bool> _selectionHandler = ExtFieldHandler();
-  bool get selected => _selectionHandler.getValue(path) ?? false;
-  set selected(bool? val) => _selectionHandler.setValue(path, val);
-  static void clearSelections() => _selectionHandler.clearValues();
-
-  static final ExtFieldHandler<String> _errorHandler = ExtFieldHandler();
-  String? get error => _errorHandler.getValue(path);
-  set error(String? val) => _errorHandler.setValue(path, val);
-  static void clearErrors() => _errorHandler.clearValues();
-
-  static final ExtFieldHandler<String> _newNameHandler = ExtFieldHandler();
-  String get newName => _newNameHandler.getValue(path) ?? name;
-  set newName(String? val) => _newNameHandler.setValue(path, val);
-  static void clearNewNames() => _newNameHandler.clearValues();
-
-  bool get newNameDuplicate => _newNameHandler.checkDuplicatedPath(path, newName);
-  String get newPath => p.join(directory, newName);
-
-  static final ExtFieldHandler<FileMetadata> _metadataHandler = ExtFieldHandler();
-  FileMetadata? get parser => _metadataHandler.getValue(path);
-  set parser(FileMetadata? metadata) => _metadataHandler.setValue(path, parser);
-  static void clearParsers() => _metadataHandler.clearValues();
-
-  String fileOrDir([bool returnLink=false]) {
-    FileSystemEntity file = this;
+  String fileOrDir([bool returnLink = false]) {
+    FileSystemEntity file = entity;
 
     while (file is Link) {
       if (returnLink) {
@@ -78,10 +71,12 @@ extension ExFile on FileSystemEntity {
 }
 
 extension ExXFile on XFile {
+  FileEntity toFileEntity() => FileEntity(toFileSystemEntity());
   FileSystemEntity toFileSystemEntity() => _toFileSystemEntity(this, (xFile) => xFile.path);
 }
 
 extension ExPlatformFile on PlatformFile {
+  FileEntity toFileEntity() => FileEntity(toFileSystemEntity());
   FileSystemEntity toFileSystemEntity() => _toFileSystemEntity(this, (file) => file.path ?? '');
 }
 
@@ -90,6 +85,7 @@ extension ExLink on Link {
 }
 
 extension ExPathString on String {
+  FileEntity toFileEntity() => FileEntity(toFileSystemEntity());
   FileSystemEntity toFileSystemEntity() => _toFileSystemEntity(this, (str) => str);
 
   // usually causes the talkback to choose a wrong language.

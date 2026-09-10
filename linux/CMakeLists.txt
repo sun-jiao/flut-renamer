@@ -105,6 +105,16 @@ set_target_properties(${BINARY_NAME}
 # them to the application.
 include(flutter/generated_plugins.cmake)
 
+# jni 1.0.3 passes a JNIEnv** to the C JNI API's void** parameter.  Clang 22
+# promotes that diagnostic to an error, although the JNI ABI explicitly uses
+# void** at this boundary.  Scope the compatibility flag to the third-party
+# target instead of changing Flutter's generated plugin files.  The C compiler
+# is enabled inside the plugin's CMake project, so its compiler-ID variable is
+# not visible in this parent scope; GCC also accepts this compatibility flag.
+if(TARGET jni)
+  target_compile_options(jni PRIVATE -Wno-incompatible-pointer-types)
+endif()
+
 
 # === Installation ===
 # By default, "installing" just makes a relocatable bundle in the build

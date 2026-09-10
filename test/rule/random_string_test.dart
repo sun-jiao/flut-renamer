@@ -92,6 +92,8 @@ void main() {
     final newFileName = await rule.newName('file.txt');
 
     expect(
-        newFileName, matches(RegExp(r'^prefix-[a-f0-9]{6}-suffixfile\.txt$')));
+      newFileName,
+      matches(RegExp(r'^prefix-[a-f0-9]{6}-suffixfile\.txt$')),
+    );
   });
 }

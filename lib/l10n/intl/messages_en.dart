@@ -70,7 +70,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "add": MessageLookupByLibrary.simpleMessage("Add"),
     "addFile": MessageLookupByLibrary.simpleMessage("Add file"),
     "addFiles": MessageLookupByLibrary.simpleMessage("Add files"),
+    "addFilesAndroid": MessageLookupByLibrary.simpleMessage(
+      "Choose one or more files to rename. Android may ask you to confirm changes to media files.",
+    ),
     "addRule": MessageLookupByLibrary.simpleMessage("Add Rule"),
+    "addedFilesCannotRename": MessageLookupByLibrary.simpleMessage(
+      "Some files cannot be renamed and were ignored.",
+    ),
     "androidRemindContent": MessageLookupByLibrary.simpleMessage(
       "Using the Flut Renamer, you can rename not only files but also directories. Long-press a directory to select it, and select \'Files & Dirs\' from the dropdown button in the upper-left corner to enable directory renaming. For security reasons, some system reserved directories are not selectable.",
     ),
@@ -86,6 +92,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "caseSensitive": MessageLookupByLibrary.simpleMessage("Case sensitive"),
     "collapseOptions": MessageLookupByLibrary.simpleMessage("Collapse options"),
     "currentName": MessageLookupByLibrary.simpleMessage("Current name"),
+    "dateFormat": MessageLookupByLibrary.simpleMessage("Date format"),
     "descriptionIncrement": MessageLookupByLibrary.simpleMessage(
       "Increment the filename, e.g., Photo-1, Photo-2, Photo-3.",
     ),
@@ -200,6 +207,8 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "language": MessageLookupByLibrary.simpleMessage("Language: "),
     "limit": MessageLookupByLibrary.simpleMessage("limit"),
+    "loadRules": MessageLookupByLibrary.simpleMessage("Load Rules"),
+    "logEmpty": MessageLookupByLibrary.simpleMessage("Log is empty."),
     "lowercaseAppName": MessageLookupByLibrary.simpleMessage("flut renamer"),
     "me": MessageLookupByLibrary.simpleMessage("Montenegrin"),
     "metadataParserNotProvided": MessageLookupByLibrary.simpleMessage(
@@ -238,6 +247,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "noSysDir": MessageLookupByLibrary.simpleMessage(
       "Do not rename a system reserved directory.",
     ),
+    "numberOfDigits": MessageLookupByLibrary.simpleMessage("Number of digits"),
     "ok": MessageLookupByLibrary.simpleMessage("OK"),
     "omitDash": MessageLookupByLibrary.simpleMessage("Omit dash"),
     "onlySelected": MessageLookupByLibrary.simpleMessage("Only selected"),
@@ -337,6 +347,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Rules are executed sequentially. Click a rule to edit it. Hold the \'=\' button on the left and drag it to sort rules.",
     ),
     "save": MessageLookupByLibrary.simpleMessage("Save"),
+    "saveRules": MessageLookupByLibrary.simpleMessage("Save Rules"),
     "select": MessageLookupByLibrary.simpleMessage("Select"),
     "selectAll": MessageLookupByLibrary.simpleMessage("Select All"),
     "semanticNumberWithDirection": MessageLookupByLibrary.simpleMessage(
@@ -398,5 +409,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "truncate": MessageLookupByLibrary.simpleMessage("Truncate"),
     "truncateToString": m12,
     "ua": MessageLookupByLibrary.simpleMessage("Ukrainian"),
+    "viewLog": MessageLookupByLibrary.simpleMessage("View Log"),
   };
 }

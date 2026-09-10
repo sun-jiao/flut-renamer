@@ -7,22 +7,51 @@ import 'package:flutter/services.dart';
 import '../l10n/l10n.dart';
 import '../tools/ex_file.dart';
 import '../widget/custom_dialog.dart';
+import '../tools/platform_channel.dart';
+import '../tools/logger.dart';
 
-Future<FileSystemEntity?> rename(
-  FileSystemEntity file, {
+Future<FileEntity?> rename(
+  FileEntity file, {
   BuildContext? context,
 }) async {
   if (file.error != null) {
-    return null;
+    return file;
   }
 
-  if (file.name == file.newName) {
-    return null;
+  final isAndroidUri = Platform.isAndroid && file.path.startsWith('content://');
+  if (isAndroidUri) {
+    await file.initMetadata();
+    if (file.metadata!.androidRealName == file.newName) {
+      return file;
+    }
+  } else if (file.name == file.newName) {
+    return file;
   }
 
   try {
     file.newName = replaceSpecialCharacters(file.newName);
-    return await file.rename(file.newPath);
+    if (isAndroidUri) {
+      final newUriString =
+          await PlatformFilePicker.rename(file.path, file.newName);
+      if (newUriString != null) {
+        // SAF URIs do not encode whether the selected document is a file or
+        // directory. Keep the original entity type so directory rows remain
+        // visible when the active filter is "Directories" after a rename.
+        final renamedEntity = file.entity is Directory
+            ? Directory(newUriString)
+            : File(newUriString);
+        final newFileEntity = FileEntity(renamedEntity);
+        newFileEntity.selected = file.selected;
+        await Logger().logRename(file.path, newUriString);
+        return newFileEntity;
+      } else {
+        throw FileSystemException("SAF rename returned null for ${file.path}");
+      }
+    } else {
+      final renamedEntity = await file.entity.rename(file.newPath);
+      await Logger().logRename(file.path, renamedEntity.path);
+      return FileEntity(renamedEntity);
+    }
   } catch (e, s) {
     debugPrint(e.toString());
     debugPrintStack(stackTrace: s);
@@ -64,9 +93,8 @@ Future<FileSystemEntity?> rename(
         ),
       );
     }
+    return null;
   }
-
-  return null;
 }
 
 String replaceSpecialCharacters(String input) {

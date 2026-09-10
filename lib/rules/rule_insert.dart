@@ -6,7 +6,9 @@ class RuleInsert implements Rule {
     this.insertIndex,
     this.toEnd,
     this.withMetadata,
-    this.ignoreExtension,
+    this.ignoreExtension, {
+    this.dateFormat = FileMetadata.defaultDateFormat,
+  }
   );
 
   final String insert; // string to be inserted
@@ -14,6 +16,7 @@ class RuleInsert implements Rule {
   final bool toEnd; // true: count from start; false: from end.
   final bool withMetadata; // true: replace metadata tag with metadata
   final bool ignoreExtension;
+  final String dateFormat;
 
   @override
   Future<String> newName(String oldName, {FileMetadata? metadata}) async {
@@ -46,7 +49,7 @@ class RuleInsert implements Rule {
 
     if (withMetadata) {
       await metadata!.init();
-      insert = metadata.parse(insert);
+      insert = metadata.parse(insert, dateFormat: dateFormat);
     }
 
     int index = insertIndex;
@@ -69,6 +72,30 @@ class RuleInsert implements Rule {
   @override
   String toString() {
     return L10n.current.insertToString(toEnd.toString(), 'o${insertIndex % 10}', insert, insertIndex);
+  }
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'type': 'Insert',
+      'insert': insert,
+      'insertIndex': insertIndex,
+      'toEnd': toEnd,
+      'withMetadata': withMetadata,
+      'ignoreExtension': ignoreExtension,
+      'dateFormat': dateFormat,
+    };
+  }
+
+  factory RuleInsert.fromMap(Map<dynamic, dynamic> map) {
+    return RuleInsert(
+      map['insert'] as String,
+      map['insertIndex'] as int,
+      map['toEnd'] as bool,
+      map['withMetadata'] as bool,
+      map['ignoreExtension'] as bool,
+      dateFormat: map['dateFormat'] as String? ?? FileMetadata.defaultDateFormat,
+    );
   }
 
   @override

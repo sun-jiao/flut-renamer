@@ -1,4 +1,4 @@
-library renamer.test.rule.replace;
+library;
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flut_renamer/rules/rule.dart';
@@ -214,5 +214,19 @@ void main() {
     ).newName('file.txt');
 
     expect(newFileName, '{File:Size}.txt');
+  });
+
+  test('replace with a random string', () async {
+    final newFileName = await RuleReplace(
+      'file',
+      '{RandomString}',
+      0,
+      false,
+      false,
+      false,
+      true,
+    ).newName('file.txt');
+
+    expect(newFileName, matches(RegExp(r'^[a-f0-9]{8}\.txt$')));
   });
 }

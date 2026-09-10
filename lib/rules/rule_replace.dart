@@ -8,8 +8,9 @@ class RuleReplace implements Rule {
     this.withMetadata,
     this.caseSensitive,
     this.isRegex,
-    this.ignoreExtension,
-  );
+    this.ignoreExtension, {
+    this.dateFormat = FileMetadata.defaultDateFormat,
+  });
 
   final String targetString; // target to be matched and replaced.
   final String replacementString; // `targetString` will be replaced to this.
@@ -19,6 +20,7 @@ class RuleReplace implements Rule {
   final bool caseSensitive;
   final bool isRegex;
   final bool ignoreExtension;
+  final String dateFormat;
 
   @override
   Future<String> newName(String oldName, {FileMetadata? metadata}) async {
@@ -33,17 +35,21 @@ class RuleReplace implements Rule {
     String newName, extension;
     (newName, extension) = splitFileName(oldName, ignoreExtension);
 
-    String parsedReplacement = replacementString;
+    String replacementString = this.replacementString;
 
-    // 检查并替换特殊的随机字符串标记，支持在任何位置出现
-    if (parsedReplacement.contains('{RandomString}')) {
-      parsedReplacement = parsedReplacement.replaceAll(
-          '{RandomString}', Uuid().v4().substring(0, 8));
+    if (replacementString.contains('{RandomString}')) {
+      replacementString = replacementString.replaceAll(
+        '{RandomString}',
+        Uuid().v4().replaceAll('-', '').substring(0, 8),
+      );
     }
 
     if (withMetadata) {
       await metadata!.init();
-      parsedReplacement = metadata.parse(parsedReplacement);
+      replacementString = metadata.parse(
+        replacementString,
+        dateFormat: dateFormat,
+      );
     }
 
     Pattern target;
@@ -55,7 +61,7 @@ class RuleReplace implements Rule {
         List<String?> groups = match
             .groups(List<int>.generate(match.groupCount + 1, (index) => index));
 
-        String replacedString = parsedReplacement;
+        String replacedString = replacementString;
         for (int i = 0; i <= match.groupCount; i++) {
           replacedString = replacedString.replaceAll('\\$i', groups[i] ?? '');
         }
@@ -65,7 +71,7 @@ class RuleReplace implements Rule {
     } else {
       target =
           RegExp(RegExp.escape(targetString), caseSensitive: caseSensitive);
-      replacer = (match) => parsedReplacement;
+      replacer = (match) => replacementString;
     }
 
     if (replaceLimit == 0) {
@@ -86,6 +92,35 @@ class RuleReplace implements Rule {
   @override
   String toString() {
     return L10n.current.replaceToString(targetString, replacementString);
+  }
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'type': 'Replace',
+      'targetString': targetString,
+      'replacementString': replacementString,
+      'replaceLimit': replaceLimit,
+      'withMetadata': withMetadata,
+      'caseSensitive': caseSensitive,
+      'isRegex': isRegex,
+      'ignoreExtension': ignoreExtension,
+      'dateFormat': dateFormat,
+    };
+  }
+
+  factory RuleReplace.fromMap(Map<dynamic, dynamic> map) {
+    return RuleReplace(
+      map['targetString'] as String,
+      map['replacementString'] as String,
+      map['replaceLimit'] as int,
+      map['withMetadata'] as bool,
+      map['caseSensitive'] as bool,
+      map['isRegex'] as bool,
+      map['ignoreExtension'] as bool,
+      dateFormat:
+          map['dateFormat'] as String? ?? FileMetadata.defaultDateFormat,
+    );
   }
 
   @override

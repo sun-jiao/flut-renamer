@@ -70,7 +70,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "addFiles": MessageLookupByLibrary.simpleMessage(
       "Lütfen dosyalar ekleyin.",
     ),
+    "addFilesAndroid": MessageLookupByLibrary.simpleMessage(
+      "Yeniden adlandırmak için bir veya daha fazla dosya seçin. Android, medya dosyalarında değişiklik izni vermenizi isteyebilir.",
+    ),
     "addRule": MessageLookupByLibrary.simpleMessage("Kural Ekle"),
+    "addedFilesCannotRename": MessageLookupByLibrary.simpleMessage(
+      "Bazı dosyalar yeniden adlandırılamadı ve yok sayıldı.",
+    ),
     "androidRemindContent": MessageLookupByLibrary.simpleMessage(
       "Flut Renamer\'ı kullanarak sadece dosyaların değil, dizinlerin de adını değiştirebilirsiniz. Bir dizini seçmek için uzun basın, ardından dizin yeniden adlandırmayı etkinleştirmek için sol üst köşedeki açılır düğmeden \'Dosyalar ve Dizinler\'i seçin. Güvenlik nedeniyle, bazı sistem ayrılmış dizinler seçilemez.",
     ),
@@ -90,6 +96,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Seçenekleri Daralt",
     ),
     "currentName": MessageLookupByLibrary.simpleMessage("Mevcut Dosya Adı"),
+    "dateFormat": MessageLookupByLibrary.simpleMessage("Tarih biçimi"),
     "descriptionIncrement": MessageLookupByLibrary.simpleMessage(
       "Dosya adını artırın, örneğin Fotoğraf-1, Fotoğraf-2, Fotoğraf-3.",
     ),
@@ -207,6 +214,8 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "language": MessageLookupByLibrary.simpleMessage("Dil:"),
     "limit": MessageLookupByLibrary.simpleMessage("Sınır"),
+    "loadRules": MessageLookupByLibrary.simpleMessage("Kuralları Yükle"),
+    "logEmpty": MessageLookupByLibrary.simpleMessage("Günlük boş."),
     "lowercaseAppName": MessageLookupByLibrary.simpleMessage("flut renamer"),
     "me": MessageLookupByLibrary.simpleMessage("Karadağca"),
     "metadataParserNotProvided": MessageLookupByLibrary.simpleMessage(
@@ -235,6 +244,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "noSysDir": MessageLookupByLibrary.simpleMessage(
       "Lütfen sistem korumalı klasörleri yeniden adlandırmayın.",
     ),
+    "numberOfDigits": MessageLookupByLibrary.simpleMessage("Basamak sayısı"),
     "ok": MessageLookupByLibrary.simpleMessage("Tamam"),
     "omitDash": MessageLookupByLibrary.simpleMessage("Tireyi Atla"),
     "onlySelected": MessageLookupByLibrary.simpleMessage(
@@ -331,6 +341,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Kurallar sırayla uygulanır. Bir kuralı düzenlemek için tıklayın. Kuralları sıralamak için sol taraftaki \'=\' düğmesini basılı tutun ve sürükleyin.",
     ),
     "save": MessageLookupByLibrary.simpleMessage("Kaydet"),
+    "saveRules": MessageLookupByLibrary.simpleMessage("Kuralları Kaydet"),
     "select": MessageLookupByLibrary.simpleMessage("Seç"),
     "selectAll": MessageLookupByLibrary.simpleMessage("Tümünü Seç"),
     "semanticSwitchNumberToStartAndToEnd": m5,
@@ -388,5 +399,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "truncate": MessageLookupByLibrary.simpleMessage("Kırp"),
     "truncateToString": m12,
     "ua": MessageLookupByLibrary.simpleMessage("Ukraynaca"),
+    "viewLog": MessageLookupByLibrary.simpleMessage("Günlüğü Görüntüle"),
   };
 }

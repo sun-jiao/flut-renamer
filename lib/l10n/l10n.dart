@@ -315,6 +315,26 @@ class L10n {
     );
   }
 
+  /// `View Log`
+  String get viewLog {
+    return Intl.message('View Log', name: 'viewLog', desc: '', args: []);
+  }
+
+  /// `Log is empty.`
+  String get logEmpty {
+    return Intl.message('Log is empty.', name: 'logEmpty', desc: '', args: []);
+  }
+
+  /// `Save Rules`
+  String get saveRules {
+    return Intl.message('Save Rules', name: 'saveRules', desc: '', args: []);
+  }
+
+  /// `Load Rules`
+  String get loadRules {
+    return Intl.message('Load Rules', name: 'loadRules', desc: '', args: []);
+  }
+
   /// `Add Rule`
   String get addRule {
     return Intl.message('Add Rule', name: 'addRule', desc: '', args: []);
@@ -433,6 +453,26 @@ class L10n {
   /// `Add files`
   String get addFiles {
     return Intl.message('Add files', name: 'addFiles', desc: '', args: []);
+  }
+
+  /// `Choose one or more files to rename. Android may ask you to confirm changes to media files.`
+  String get addFilesAndroid {
+    return Intl.message(
+      'Choose one or more files to rename. Android may ask you to confirm changes to media files.',
+      name: 'addFilesAndroid',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Some files cannot be renamed and were ignored.`
+  String get addedFilesCannotRename {
+    return Intl.message(
+      'Some files cannot be renamed and were ignored.',
+      name: 'addedFilesCannotRename',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Drag and drop to add files.`
@@ -643,6 +683,11 @@ class L10n {
       desc: '',
       args: [],
     );
+  }
+
+  /// `Date format`
+  String get dateFormat {
+    return Intl.message('Date format', name: 'dateFormat', desc: '', args: []);
   }
 
   /// `Date of today`
@@ -963,6 +1008,16 @@ class L10n {
   /// `Start index`
   String get startIndex {
     return Intl.message('Start index', name: 'startIndex', desc: '', args: []);
+  }
+
+  /// `Number of digits`
+  String get numberOfDigits {
+    return Intl.message(
+      'Number of digits',
+      name: 'numberOfDigits',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Index incremental step`
