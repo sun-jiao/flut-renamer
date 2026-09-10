@@ -38,12 +38,8 @@ class _InsertDialogState extends State<InsertDialog> {
   TextEditingController indexController = TextEditingController(
     text: '0',
   );
-  TextEditingController randomLengthController = TextEditingController(
-    text: '8',
-  );
   ValueNotifier<bool> withMetadata = ValueNotifier(false);
   ValueNotifier<bool> toEnd = ValueNotifier(false);
-  ValueNotifier<bool> useRandomString = ValueNotifier(false);
   bool ignoreExtension = true;
   String dateFormat = FileMetadata.defaultDateFormat;
 
@@ -56,15 +52,6 @@ class _InsertDialogState extends State<InsertDialog> {
       toEnd.value = widget.rule!.toEnd;
       ignoreExtension = widget.rule!.ignoreExtension;
       dateFormat = widget.rule!.dateFormat;
-      final randomStringToken = RegExp(r'^\{RandomString(?::(\d+))?\}$');
-      final match = randomStringToken.firstMatch(widget.rule!.insert);
-      useRandomString.value = match != null;
-      if (match?.group(1) case final length?) {
-        randomLengthController.text = length;
-      }
-      if (useRandomString.value) {
-        withMetadata.value = false;
-      }
     }
 
     super.initState();
@@ -80,40 +67,9 @@ class _InsertDialogState extends State<InsertDialog> {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Text(L10n.current.descriptionInsert),
-            ValueListenableBuilder<bool>(
-              valueListenable: useRandomString,
-              builder: (context, useRandom, child) => Column(
-                children: [
-                  CheckboxTile(
-                    title: Text(L10n.current.insertRandomString),
-                    value: useRandom,
-                    onChanged: (value) {
-                      setState(() {
-                        useRandomString.value = value ?? useRandom;
-                        if (value == true) {
-                          textController.clear();
-                          withMetadata.value = false;
-                        }
-                      });
-                    },
-                  ),
-                  if (useRandom)
-                    TextFormField(
-                      controller: randomLengthController,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        labelText: L10n.current.randomStringLength,
-                        hintText: L10n.current.randomStringLengthHint,
-                      ),
-                    )
-                  else
-                    TextFormField(
-                      controller: textController,
-                      decoration:
-                          InputDecoration(labelText: L10n.current.insertedText),
-                    ),
-                ],
-              ),
+            TextFormField(
+              controller: textController,
+              decoration: InputDecoration(labelText: L10n.current.insertedText),
             ),
             box,
             DirectionTextField(
@@ -122,22 +78,20 @@ class _InsertDialogState extends State<InsertDialog> {
               labelText: L10n.current.insertIndex,
             ),
             // Text(L10n.current.insertBeforeIndex, style: const TextStyle(fontSize: 13),),
-            if (!useRandomString.value) ...[
-              MetadataTile(
-                textController: textController,
-                withMetadata: withMetadata,
-              ),
-              ValueListenableBuilder<bool>(
-                valueListenable: withMetadata,
-                builder: (context, usesMetadata, child) => usesMetadata
-                    ? DateFormatDropdown(
-                        value: dateFormat,
-                        onChanged: (value) =>
-                            setState(() => dateFormat = value),
-                      )
-                    : const SizedBox.shrink(),
-              ),
-            ],
+            MetadataTile(
+              textController: textController,
+              withMetadata: withMetadata,
+              includeRandomString: true,
+            ),
+            ValueListenableBuilder<bool>(
+              valueListenable: withMetadata,
+              builder: (context, usesMetadata, child) => usesMetadata
+                  ? DateFormatDropdown(
+                      value: dateFormat,
+                      onChanged: (value) => setState(() => dateFormat = value),
+                    )
+                  : const SizedBox.shrink(),
+            ),
             CheckboxTile(
               title: Text(L10n.current.ignoreExtension),
               value: ignoreExtension,
@@ -159,15 +113,7 @@ class _InsertDialogState extends State<InsertDialog> {
         ),
         TextButton(
           onPressed: () {
-            String insertText;
-            if (useRandomString.value) {
-              final parsedLength =
-                  int.tryParse(randomLengthController.text) ?? 8;
-              final length = parsedLength.clamp(1, 32);
-              insertText = '{RandomString:$length}';
-            } else {
-              insertText = textController.text;
-            }
+            String insertText = textController.text;
             int insertIndex = int.tryParse(indexController.text) ?? 0;
 
             final Rule rule = RuleInsert(

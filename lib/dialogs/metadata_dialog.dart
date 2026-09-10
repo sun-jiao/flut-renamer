@@ -3,17 +3,28 @@ import 'package:flutter/material.dart';
 import '../l10n/l10n.dart';
 import '../widget/custom_dialog.dart';
 
-void showMetadataDialog(BuildContext context, Function(String tag) onInsert) => showDialog(
+void showMetadataDialog(
+  BuildContext context,
+  Function(String tag) onInsert, {
+  bool includeRandomString = false,
+}) =>
+    showDialog(
       context: context,
       builder: (context) => MetadataDialog(
         onInsert: onInsert,
+        includeRandomString: includeRandomString,
       ),
     );
 
 class MetadataDialog extends StatelessWidget {
-  const MetadataDialog({super.key, required this.onInsert});
+  const MetadataDialog({
+    super.key,
+    required this.onInsert,
+    this.includeRandomString = false,
+  });
 
   final Function(String tag) onInsert;
+  final bool includeRandomString;
 
   static final List<MapEntry> _list = [
     MapEntry('OS:TodayDate', L10n.current.osTodayDate),
@@ -56,7 +67,11 @@ class MetadataDialog extends StatelessWidget {
       title: Text(L10n.current.metadataTags),
       content: SingleChildScrollView(
         child: Column(
-          children: _list
+          children: [
+            if (includeRandomString)
+              MapEntry('RandomString:8', L10n.current.insertRandomString),
+            ..._list,
+          ]
               .map(
                 (e) => ListTile(
                   title: Text(e.key),

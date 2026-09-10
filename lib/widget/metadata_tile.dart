@@ -7,33 +7,49 @@ import '../l10n/l10n.dart';
 import 'checkbox_tile.dart';
 
 class MetadataTile extends StatefulWidget {
-  const MetadataTile({super.key, required this.textController, required this.withMetadata});
+  const MetadataTile({
+    super.key,
+    required this.textController,
+    required this.withMetadata,
+    this.includeRandomString = false,
+  });
 
   final TextEditingController textController;
   final ValueNotifier<bool> withMetadata;
+  final bool includeRandomString;
   @override
   State<MetadataTile> createState() => _MetadataTileState();
 }
 
 class _MetadataTileState extends State<MetadataTile> {
-  final Map<CustomSemanticsAction, VoidCallback> _semanticsActions = <CustomSemanticsAction, VoidCallback>{};
-  
+  final Map<CustomSemanticsAction, VoidCallback> _semanticsActions =
+      <CustomSemanticsAction, VoidCallback>{};
+
   @override
   void initState() {
-    _semanticsActions[CustomSemanticsAction(label: L10n.current.semanticsOpenMetadataDialog)] = _showDialog;
+    final action = CustomSemanticsAction(
+      label: L10n.current.semanticsOpenMetadataDialog,
+    );
+    _semanticsActions[action] = _showDialog;
     super.initState();
   }
 
-  void _showDialog() => showMetadataDialog(context, (tag) {
-    widget.textController.insertTag(tag, context);
-    setState(() {
-      widget.withMetadata.value = true;
-    });
-  });
+  void _showDialog() => showMetadataDialog(
+        context,
+        (tag) {
+          widget.textController.insertTag(tag, context);
+          if (tag != '{RandomString:8}') {
+            setState(() {
+              widget.withMetadata.value = true;
+            });
+          }
+        },
+        includeRandomString: widget.includeRandomString,
+      );
 
   void _onChanged(bool? value) => setState(() {
-    widget.withMetadata.value = value ?? widget.withMetadata.value;
-  });
+        widget.withMetadata.value = value ?? widget.withMetadata.value;
+      });
 
   @override
   Widget build(BuildContext context) {
