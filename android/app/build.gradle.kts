@@ -20,7 +20,11 @@ if (localPropertiesFile.exists()) {
 val flutterVersionCode = localProperties.getProperty("flutter.versionCode") ?: "1"
 val flutterVersionName = localProperties.getProperty("flutter.versionName") ?: "1.0"
 
-val keystorePropertiesFile = rootProject.file("key.properties")
+val keystorePropertiesFile = File(
+    System.getProperty("user.home"),
+    ".secrets/renamer.key.properties"
+)
+
 val keystoreProperties = Properties()
 if (keystorePropertiesFile.exists()) {
     keystorePropertiesFile.inputStream().use { 
@@ -106,7 +110,6 @@ flutter {
 }
 
 dependencies {
-    implementation(kotlin("stdlib-jdk7"))
-    implementation("androidx.documentfile:documentfile:1.0.1")
+    implementation("androidx.documentfile:documentfile:1.1.0")
     implementation("androidx.exifinterface:exifinterface:1.4.2")
 }

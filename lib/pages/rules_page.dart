@@ -71,10 +71,11 @@ class RulesPageState extends State<RulesPage> {
   }
 
   void _manualSaveRules() async {
-    final List<Map<String, dynamic>> ruleMaps = _rules.map((r) => r.toMap()).toList();
+    final List<Map<String, dynamic>> ruleMaps =
+        _rules.map((r) => r.toMap()).toList();
     final yamlWriter = YamlWriter();
     final yamlString = yamlWriter.write(ruleMaps);
-    List<int> bomBytes = [0xEF, 0xBB, 0xBF];  // UTF-8 byte-order mark
+    List<int> bomBytes = [0xEF, 0xBB, 0xBF]; // UTF-8 byte-order mark
     List<int> contentBytes = utf8.encode(yamlString);
 
     Uint8List bytes = Uint8List.fromList(bomBytes + contentBytes);
@@ -89,13 +90,13 @@ class RulesPageState extends State<RulesPage> {
   }
 
   void _manualLoadRules() async {
-    FilePickerResult? result = await FilePicker.pickFiles(
+    final result = await FilePicker.pickFile(
       type: FileType.custom,
       allowedExtensions: ['yaml', 'yml'],
     );
 
-    if (result != null && result.files.single.path != null) {
-      final rules = await RulePersistence.loadRules(sourceFile: File(result.files.single.path!));
+    if (result?.path case final path?) {
+      final rules = await RulePersistence.loadRules(sourceFile: File(path));
       setState(() {
         _rules.clear();
         _rules.addAll(rules);
@@ -153,15 +154,17 @@ class RulesPageState extends State<RulesPage> {
                 ].map((String value) {
                   return PopupMenuItem<String>(
                     value: value,
-                    child: Text({
-                      'Replace': L10n.current.replace,
-                      'Remove': L10n.current.remove,
-                      'Insert': L10n.current.insert,
-                      'Increment': L10n.current.increment,
-                      'Rearrange': L10n.current.rearrange,
-                      'Transliterate': L10n.current.transliterate,
-                      'Truncate': L10n.current.truncate,
-                    }[value]!,),
+                    child: Text(
+                      {
+                        'Replace': L10n.current.replace,
+                        'Remove': L10n.current.remove,
+                        'Insert': L10n.current.insert,
+                        'Increment': L10n.current.increment,
+                        'Rearrange': L10n.current.rearrange,
+                        'Transliterate': L10n.current.transliterate,
+                        'Truncate': L10n.current.truncate,
+                      }[value]!,
+                    ),
                   );
                 }).toList(),
               ),

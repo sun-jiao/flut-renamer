@@ -89,49 +89,57 @@ class FilesPageState extends State<FilesPage> {
 
       if (!_files.any((e) => e.parent.path == dirs.first.toString())) {
         await PlatformFilePicker.changeScopedAccess(
-            dirs.first.toString(), true,);
+          dirs.first.toString(),
+          true,
+        );
       }
 
       if (mounted) {
         final files =
-          await PlatformFilePicker.fileAccess(context, dirs.first.toString());
+            await PlatformFilePicker.fileAccess(context, dirs.first.toString());
 
         if (files == null) {
           return;
         }
 
-        entities = files
-            .map((e) => e.toString())
-            .map((e) => e.toFileEntity());
+        entities = files.map((e) => e.toString()).map((e) => e.toFileEntity());
       } else {
         return;
       }
     } else {
-      FilePickerResult? result = await FilePicker.pickFiles();
-      if (result != null) {
-        entities = result.files
-            .where((e1) =>
-                e1.path != null && _files.every((e2) => e1.path != e2.path),)
+      final result = await FilePicker.pickFiles();
+      if (result.isNotEmpty) {
+        entities = result
+            .where(
+              (e1) =>
+                  e1.path != null && _files.every((e2) => e1.path != e2.path),
+            )
             .map((e) => e.toFileEntity());
       } else {
         return;
       }
     }
     setState(() {
-      _files.addAll(entities
-          .skipWhile((eNew) => _files.any((eOld) => eNew.path == eOld.path)),);
+      _files.addAll(
+        entities
+            .skipWhile((eNew) => _files.any((eOld) => eNew.path == eOld.path)),
+      );
     });
   }
 
   Future<bool?> _remindDialog(BuildContext contextD) => showDialog<bool>(
         context: contextD,
         builder: (contextD) => CustomDialog(
-          title: Text(Platform.isIOS
-              ? L10n.current.iosRemindTitle
-              : L10n.current.androidRemindTitle,),
-          content: Text(Platform.isIOS
-              ? L10n.current.iosRemindContent
-              : L10n.current.androidRemindContent,),
+          title: Text(
+            Platform.isIOS
+                ? L10n.current.iosRemindTitle
+                : L10n.current.androidRemindTitle,
+          ),
+          content: Text(
+            Platform.isIOS
+                ? L10n.current.iosRemindContent
+                : L10n.current.androidRemindContent,
+          ),
           actions: [
             if (Platform.isIOS)
               TextButton(
@@ -550,11 +558,13 @@ class FilesPageState extends State<FilesPage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Center(
-                        child: Text(Platform.isIOS
-                            ? L10n.current.addFiles
-                            : (Platform.isAndroid
-                                ? L10n.current.addFilesAndroid
-                                : L10n.current.dragToAdd),),
+                        child: Text(
+                          Platform.isIOS
+                              ? L10n.current.addFiles
+                              : (Platform.isAndroid
+                                  ? L10n.current.addFilesAndroid
+                                  : L10n.current.dragToAdd),
+                        ),
                       ),
                     ),
                   if (_dragging)
