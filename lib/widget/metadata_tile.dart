@@ -11,12 +11,10 @@ class MetadataTile extends StatefulWidget {
     super.key,
     required this.textController,
     required this.withMetadata,
-    this.includeRandomString = false,
   });
 
   final TextEditingController textController;
   final ValueNotifier<bool> withMetadata;
-  final bool includeRandomString;
   @override
   State<MetadataTile> createState() => _MetadataTileState();
 }
@@ -38,13 +36,12 @@ class _MetadataTileState extends State<MetadataTile> {
         context,
         (tag) {
           widget.textController.insertTag(tag, context);
-          if (tag != '{RandomString:8}') {
+          if (!tag.startsWith('{RandomString:')) {
             setState(() {
               widget.withMetadata.value = true;
             });
           }
         },
-        includeRandomString: widget.includeRandomString,
       );
 
   void _onChanged(bool? value) => setState(() {

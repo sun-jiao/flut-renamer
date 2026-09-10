@@ -37,10 +37,15 @@ class RuleReplace implements Rule {
 
     String replacementString = this.replacementString;
 
-    if (replacementString.contains('{RandomString}')) {
-      replacementString = replacementString.replaceAll(
-        '{RandomString}',
-        Uuid().v4().replaceAll('-', '').substring(0, 8),
+    final randomStringRegex = RegExp(r'\{RandomString(?::(\d+))?\}');
+    if (randomStringRegex.hasMatch(replacementString)) {
+      replacementString = replacementString.replaceAllMapped(
+        randomStringRegex,
+        (match) {
+          final parsedLength = int.tryParse(match.group(1) ?? '') ?? 8;
+          final length = parsedLength.clamp(1, 32);
+          return Uuid().v4().replaceAll('-', '').substring(0, length);
+        },
       );
     }
 

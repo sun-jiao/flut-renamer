@@ -81,7 +81,6 @@ class _InsertDialogState extends State<InsertDialog> {
             MetadataTile(
               textController: textController,
               withMetadata: withMetadata,
-              includeRandomString: true,
             ),
             ValueListenableBuilder<bool>(
               valueListenable: withMetadata,

@@ -229,4 +229,18 @@ void main() {
 
     expect(newFileName, matches(RegExp(r'^[a-f0-9]{8}\.txt$')));
   });
+
+  test('replace with a custom-length random string', () async {
+    final newFileName = await RuleReplace(
+      'file',
+      '{RandomString:12}',
+      0,
+      false,
+      false,
+      false,
+      true,
+    ).newName('file.txt');
+
+    expect(newFileName, matches(RegExp(r'^[a-f0-9]{12}\.txt$')));
+  });
 }
