@@ -42,14 +42,14 @@ Future<FileEntity?> rename(
             : File(newUriString);
         final newFileEntity = FileEntity(renamedEntity);
         newFileEntity.selected = file.selected;
-        await Logger().logRename(file.path, newUriString);
+        _logRename(file.path, newUriString);
         return newFileEntity;
       } else {
         throw FileSystemException("SAF rename returned null for ${file.path}");
       }
     } else {
       final renamedEntity = await file.entity.rename(file.newPath);
-      await Logger().logRename(file.path, renamedEntity.path);
+      _logRename(file.path, renamedEntity.path);
       return FileEntity(renamedEntity);
     }
   } catch (e, s) {
@@ -95,6 +95,19 @@ Future<FileEntity?> rename(
     }
     return null;
   }
+}
+
+/// Logging is best-effort: a successful filesystem rename must not be
+/// presented to the user as a failure merely because its audit entry failed.
+void _logRename(String oldPath, String newPath) {
+  unawaited(
+    Logger()
+        .logRename(oldPath, newPath)
+        .catchError((Object error, StackTrace stackTrace) {
+      debugPrint('Failed to write rename log: $error');
+      debugPrintStack(stackTrace: stackTrace);
+    }),
+  );
 }
 
 String replaceSpecialCharacters(String input) {

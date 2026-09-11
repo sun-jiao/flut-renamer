@@ -19,9 +19,16 @@ class Logger {
   }
 
   Future<void> logRename(String oldPath, String newPath) async {
-    final task = (_writeTask ?? Future.value()).then((_) async {
+    // Keep the queue usable when an earlier write failed. The previous task is
+    // still returned to its caller with its original error, but later writes
+    // start after that error has been handled here.
+    final previousTask = (_writeTask ?? Future<void>.value()).catchError(
+      (Object _, StackTrace __) {},
+    );
+    final task = previousTask.then((_) async {
       final file = await _getLogFile();
-      final timestamp = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+      final timestamp =
+          DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
       final logEntry = '[$timestamp] RENAME: "$oldPath" -> "$newPath"\n';
       await file.writeAsString(logEntry, mode: FileMode.append, flush: true);
     });
