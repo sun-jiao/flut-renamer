@@ -31,6 +31,22 @@ void main() {
 
       expect(filenames, ['clip1', 'clip2', 'clip10']);
     });
+
+    test('compares numeric runs beyond the native integer range', () {
+      final filenames = <String>[
+        'clip999999999999999999999999999999999999',
+        'clip1000000000000000000000000000000000000',
+        'clip0000000000000000000000000000000000001',
+      ];
+
+      filenames.sort(compareNaturally);
+
+      expect(filenames, [
+        'clip0000000000000000000000000000000000001',
+        'clip999999999999999999999999999999999999',
+        'clip1000000000000000000000000000000000000',
+      ]);
+    });
   });
 
   group('file metadata sorting', () {

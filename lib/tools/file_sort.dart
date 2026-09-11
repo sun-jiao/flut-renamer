@@ -20,12 +20,29 @@ int compareNaturally(String left, String right) {
     final rightIsNumber = RegExp(r'^\d+$').hasMatch(rightPart);
 
     final comparison = leftIsNumber && rightIsNumber
-        ? int.parse(leftPart).compareTo(int.parse(rightPart))
+        ? _compareNumericRuns(leftPart, rightPart)
         : leftPart.compareTo(rightPart);
     if (comparison != 0) return comparison;
   }
 
   return leftParts.length.compareTo(rightParts.length);
+}
+
+/// Compares decimal strings without converting them to a native integer.
+///
+/// File names may contain numeric runs that exceed Dart's integer range.
+/// Removing leading zeroes first makes length a reliable magnitude comparison;
+/// equal-length runs can then be compared lexicographically.
+int _compareNumericRuns(String left, String right) {
+  final normalizedLeft = left.replaceFirst(RegExp(r'^0+'), '');
+  final normalizedRight = right.replaceFirst(RegExp(r'^0+'), '');
+  final leftValue = normalizedLeft.isEmpty ? '0' : normalizedLeft;
+  final rightValue = normalizedRight.isEmpty ? '0' : normalizedRight;
+
+  final lengthComparison = leftValue.length.compareTo(rightValue.length);
+  if (lengthComparison != 0) return lengthComparison;
+
+  return leftValue.compareTo(rightValue);
 }
 
 /// Loads size and modification-time values before a size/date sort.
