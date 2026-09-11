@@ -581,9 +581,9 @@ class MainActivity: FlutterActivity() {
     }
 
     private fun formatDuration(milliseconds: Long): String {
-        val centiseconds = milliseconds / 10
-        val seconds = milliseconds / 1_000
-        val minutes = milliseconds / 60_000
+        val centiseconds = milliseconds / 10 % 100
+        val seconds = milliseconds / 1_000 % 60
+        val minutes = milliseconds / 60_000 % 60
         val hours = milliseconds / 3_600_000
         return when {
             hours > 0 -> "$hours:${twoDigits(minutes)}:${twoDigits(seconds)}.${twoDigits(centiseconds)}"
