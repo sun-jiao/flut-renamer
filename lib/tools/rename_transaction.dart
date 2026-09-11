@@ -32,7 +32,6 @@ Future<RenameTransactionResult> commitRenameTransaction(
   RenameOperation operation = _renameOperation,
 }) async {
   final current = List<FileEntity>.from(files);
-  final completed = <int>[];
   final originalNames = files
       .map(
         (file) => file.path.startsWith('content://') && file.metadata != null
@@ -40,45 +39,144 @@ Future<RenameTransactionResult> commitRenameTransaction(
             : file.name,
       )
       .toList(growable: false);
+  final finalNames = files.map((file) => file.newName).toList(growable: false);
+  final completedSteps = <_CompletedRename>[];
+  final temporaryIndexes = _temporaryIndexes(files);
 
-  for (var index = 0; index < files.length; index++) {
-    FileEntity? renamed;
-    try {
-      renamed = await operation(files[index], context);
-    } catch (_) {
-      renamed = null;
-    }
-    if (renamed == null) {
-      // The operation itself checks context.mounted before showing UI.
+  for (final index in temporaryIndexes) {
+    final temporary = await _temporaryEntity(files[index], index);
+    if (!await _performRename(
+      index,
+      temporary,
+      files[index].name,
+      current,
+      completedSteps,
+      // The operation checks context.mounted before showing UI.
       // ignore: use_build_context_synchronously
-      await _rollback(originalNames, current, completed, context, operation);
+      context,
+      operation,
+    )) {
+      // The operation checks context.mounted before showing UI.
+      // ignore: use_build_context_synchronously
+      await _rollback(current, completedSteps, context, operation);
       await _rescanLocalState(files, current);
       return RenameTransactionResult(entities: current, succeeded: false);
     }
-    current[index] = renamed;
-    if (!identical(renamed, files[index])) completed.add(index);
+  }
+
+  for (var index = 0; index < files.length; index++) {
+    final previousName = temporaryIndexes.contains(index)
+        ? current[index].name
+        : originalNames[index];
+    current[index].newName = finalNames[index];
+    if (!await _performRename(
+      index,
+      current[index],
+      previousName,
+      current,
+      completedSteps,
+      // The operation checks context.mounted before showing UI.
+      // ignore: use_build_context_synchronously
+      context,
+      operation,
+    )) {
+      // The operation itself checks context.mounted before showing UI.
+      // ignore: use_build_context_synchronously
+      await _rollback(current, completedSteps, context, operation);
+      await _rescanLocalState(files, current);
+      return RenameTransactionResult(entities: current, succeeded: false);
+    }
   }
 
   return RenameTransactionResult(entities: current, succeeded: true);
 }
 
-Future<void> _rollback(
-  List<String> originalNames,
+Future<bool> _performRename(
+  int index,
+  FileEntity file,
+  String previousName,
   List<FileEntity> current,
-  List<int> completed,
+  List<_CompletedRename> completedSteps,
   BuildContext? context,
   RenameOperation operation,
 ) async {
-  for (final index in completed.reversed) {
-    final renamed = current[index];
-    renamed.newName = originalNames[index];
+  FileEntity? renamed;
+  try {
+    renamed = await operation(file, context);
+  } catch (_) {
+    renamed = null;
+  }
+  if (renamed == null) return false;
+
+  current[index] = renamed;
+  if (!identical(renamed, file)) {
+    completedSteps.add(_CompletedRename(index, previousName));
+  }
+  return true;
+}
+
+Future<void> _rollback(
+  List<FileEntity> current,
+  List<_CompletedRename> completedSteps,
+  BuildContext? context,
+  RenameOperation operation,
+) async {
+  for (final step in completedSteps.reversed) {
+    final renamed = current[step.index];
+    renamed.newName = step.previousName;
     try {
       final restored = await operation(renamed, context);
-      if (restored != null) current[index] = restored;
+      if (restored != null) current[step.index] = restored;
     } catch (_) {
       // Continue rolling back the other entries, then rescan all local paths.
     }
   }
+}
+
+Set<int> _temporaryIndexes(List<FileEntity> files) {
+  final localMoves = <int>{
+    for (var index = 0; index < files.length; index++)
+      if (!files[index].path.startsWith('content://') &&
+          _pathKey(files[index].path) != _pathKey(files[index].newPath))
+        index,
+  };
+
+  return {
+    for (final index in localMoves)
+      if (localMoves.any(
+        (other) =>
+            other != index &&
+            _pathKey(files[other].path) == _pathKey(files[index].newPath),
+      ))
+        index,
+  };
+}
+
+Future<FileEntity> _temporaryEntity(FileEntity file, int index) async {
+  final stamp = DateTime.now().microsecondsSinceEpoch;
+  var attempt = 0;
+  while (true) {
+    final name = '.${file.name}.renamer-tmp-$stamp-$index-$attempt';
+    final path = '${file.directory}${Platform.pathSeparator}$name';
+    if (await FileSystemEntity.type(path) == FileSystemEntityType.notFound) {
+      return FileEntity(file.entity, newName: name);
+    }
+    attempt++;
+  }
+}
+
+String _pathKey(String path) {
+  final absolutePath = File(path).absolute.path;
+  return Platform.isWindows || Platform.isMacOS || Platform.isIOS
+      ? absolutePath.toLowerCase()
+      : absolutePath;
+}
+
+class _CompletedRename {
+  const _CompletedRename(this.index, this.previousName);
+
+  final int index;
+  final String previousName;
 }
 
 Future<void> _rescanLocalState(

@@ -69,4 +69,27 @@ void main() {
     );
     expect(await File(result.entities.first.path).readAsString(), 'source');
   });
+
+  test('uses temporary names to swap two files', () async {
+    final first = File('${temporaryDirectory.path}/first.txt');
+    final second = File('${temporaryDirectory.path}/second.txt');
+    await first.writeAsString('first');
+    await second.writeAsString('second');
+    final files = [
+      FileEntity(first, newName: 'second.txt'),
+      FileEntity(second, newName: 'first.txt'),
+    ];
+
+    final result = await commitRenameTransaction(
+      files,
+      operation: (file, _) async => FileEntity(
+        await file.entity.rename(file.newPath),
+      ),
+    );
+
+    expect(result.succeeded, isTrue);
+    expect(await first.readAsString(), 'second');
+    expect(await second.readAsString(), 'first');
+    expect(result.entities.map((file) => file.path), [second.path, first.path]);
+  });
 }

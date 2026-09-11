@@ -876,36 +876,7 @@ class FilesPageState extends State<FilesPage> {
       }
     }
 
-    final orderedLocalMoves = <FileEntity>[];
-    final pendingMoves = localFiles
-        .where(
-          (file) =>
-              file.error == null &&
-              _sourcePathKey(file) != _targetPathKey(file),
-        )
-        .toList();
-    while (pendingMoves.isNotEmpty) {
-      final ready = pendingMoves.where((file) {
-        final target = _targetPathKey(file);
-        return pendingMoves.every(
-          (other) => identical(file, other) || _sourcePathKey(other) != target,
-        );
-      }).toList();
-      if (ready.isEmpty) {
-        for (final file in pendingMoves) {
-          file.error = L10n.current.renameFailed;
-        }
-        break;
-      }
-      orderedLocalMoves.addAll(ready);
-      pendingMoves.removeWhere(ready.contains);
-    }
-
-    final localNoOps = localFiles.where(
-      (file) =>
-          file.error == null && _sourcePathKey(file) == _targetPathKey(file),
-    );
-    return [...orderedLocalMoves, ...localNoOps, ...safFiles];
+    return [...localFiles.where((file) => file.error == null), ...safFiles];
   }
 
   String _sourcePathKey(FileEntity file) => _normalisedPath(file.path);
