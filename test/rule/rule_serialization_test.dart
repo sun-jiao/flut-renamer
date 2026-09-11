@@ -125,6 +125,56 @@ void main() {
     expect(rules.single, isA<RuleInsert>());
   });
 
+  test('skips rules with invalid schemas, enum values, and numeric ranges',
+      () async {
+    final directory =
+        await Directory.systemTemp.createTemp('renamer_invalid_rules_');
+    addTearDown(() => directory.delete(recursive: true));
+    final yamlFile = File('${directory.path}/rules.yaml');
+    await yamlFile.writeAsString('''
+- type: Replace
+  targetString: target
+  replacementString: replacement
+  replaceLimit: 0
+  withMetadata: false
+  caseSensitive: false
+  isRegex: false
+  ignoreExtension: true
+  unexpected: field
+- type: Increment
+  prefix: prefix
+  startIndex: 0
+  step: 1
+  omitDash: false
+  ignoreExtension: true
+  minimumDigits: -1
+- type: Rearrange
+  delimiter: '-'
+  order: [1, 0]
+  ignoreExtension: true
+- type: Transliterate
+  transliterateType: 99
+  langCode: bg
+- type: Transliterate
+  transliterateType: 5
+  langCode: invalid
+- type: Truncate
+  index1: -1
+  index2: 2
+  i1toEnd: false
+  i2toEnd: false
+  ignoreExtension: true
+  keepBetween: true
+- type: Transliterate
+  transliterateType: 5
+  langCode: ru
+''');
+
+    final rules = await RulePersistence.loadRules(sourceFile: yamlFile);
+    expect(rules, hasLength(1));
+    expect((rules.single as RuleTransliterate).langCode, 'ru');
+  });
+
   test('RuleIncrement serialization', () {
     final rule = RuleIncrement('P', 1, 1, false, true, minimumDigits: 4);
     final map = rule.toMap();

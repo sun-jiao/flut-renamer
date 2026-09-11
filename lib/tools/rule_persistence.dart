@@ -34,22 +34,18 @@ class RulePersistence {
       final List<Rule> rules = [];
       for (final item in yamlData) {
         if (item is YamlMap) {
-          try {
-            final rule = RuleFactory.fromMap(item);
-            if (rule != null) {
-              rules.add(rule);
-            }
-          } on TypeError {
-            // Ignore an invalid rule while retaining the remaining valid ones.
+          final rule = RuleFactory.fromMap(item);
+          if (rule != null) {
+            rules.add(rule);
           }
         }
       }
       return rules;
     } on FileSystemException {
       return [];
-    } on FormatException {
-      return [];
     } on YamlException {
+      return [];
+    } on FormatException {
       return [];
     }
   }
