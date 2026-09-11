@@ -58,6 +58,7 @@ class FilesPageState extends State<FilesPage> {
   String _filter = '';
   FileSortField? _sortField;
   bool _sortAscending = true;
+  int _sortGeneration = 0;
   final Map<FileEntity, Future<void>> _newNameFutures = {};
   int _newNameGeneration = 0;
   int? _collisionValidationGeneration;
@@ -336,18 +337,30 @@ class FilesPageState extends State<FilesPage> {
         .toList();
   }
 
-  void _sortFiles(FileSortField field) {
+  Future<void> _sortFiles(FileSortField field) async {
+    final generation = ++_sortGeneration;
+    late final bool ascending;
     setState(() {
-      _invalidateNewNamesForOrderChange();
       if (_sortField == field) {
         _sortAscending = !_sortAscending;
       } else {
         _sortField = field;
         _sortAscending = true;
       }
+      ascending = _sortAscending;
+    });
+
+    if (field == FileSortField.size || field == FileSortField.date) {
+      await preloadFileSortMetadata(List<FileEntity>.of(_files));
+    }
+
+    if (!mounted || generation != _sortGeneration) return;
+
+    setState(() {
+      _invalidateNewNamesForOrderChange();
       _files.sort((left, right) {
-        final comparison = compareFiles(left, right, _sortField!);
-        return _sortAscending ? comparison : -comparison;
+        final comparison = compareFiles(left, right, field);
+        return ascending ? comparison : -comparison;
       });
     });
   }

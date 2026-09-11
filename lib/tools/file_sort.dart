@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:path/path.dart' as p;
 
 import 'ex_file.dart';
@@ -30,6 +28,30 @@ int compareNaturally(String left, String right) {
   return leftParts.length.compareTo(rightParts.length);
 }
 
+/// Loads size and modification-time values before a size/date sort.
+///
+/// A small worker pool keeps a very large selection from opening an
+/// unbounded number of file-system requests at once. [compareFiles] only
+/// reads the values cached by this function; it never performs I/O.
+Future<void> preloadFileSortMetadata(Iterable<FileEntity> files) async {
+  final pending = files.toList(growable: false);
+  const maxConcurrentLoads = 8;
+  final workerCount =
+      pending.length < maxConcurrentLoads ? pending.length : maxConcurrentLoads;
+  var nextIndex = 0;
+
+  Future<void> loadNext() async {
+    while (nextIndex < pending.length) {
+      final file = pending[nextIndex++];
+      await file.preloadSortMetadata();
+    }
+  }
+
+  await Future.wait(
+    List<Future<void>>.generate(workerCount, (_) => loadNext()),
+  );
+}
+
 int compareFiles(FileEntity left, FileEntity right, FileSortField field) {
   final comparison = switch (field) {
     FileSortField.name => compareNaturally(
@@ -40,11 +62,12 @@ int compareFiles(FileEntity left, FileEntity right, FileSortField field) {
         p.extension(left.name),
         p.extension(right.name),
       ),
-    FileSortField.size => _statValue(left, right, (stat) => stat.size),
-    FileSortField.date => _statValue(
+    FileSortField.size =>
+      _metadataValue(left, right, (metadata) => metadata.size),
+    FileSortField.date => _metadataValue(
         left,
         right,
-        (stat) => stat.modified.millisecondsSinceEpoch,
+        (metadata) => metadata.modified?.millisecondsSinceEpoch,
       ),
   };
 
@@ -55,21 +78,17 @@ int compareFiles(FileEntity left, FileEntity right, FileSortField field) {
   return compareNaturally(left.name, right.name);
 }
 
-int _statValue(
+int _metadataValue(
   FileEntity left,
   FileEntity right,
-  int Function(FileStat stat) value,
+  int? Function(FileSortMetadata metadata) value,
 ) {
-  final leftStat = _tryStat(left);
-  final rightStat = _tryStat(right);
-  if (leftStat == null || rightStat == null) return 0;
-  return value(leftStat).compareTo(value(rightStat));
-}
+  final leftMetadata = left.sortMetadata;
+  final rightMetadata = right.sortMetadata;
+  if (leftMetadata == null || rightMetadata == null) return 0;
 
-FileStat? _tryStat(FileEntity file) {
-  try {
-    return file.entity.statSync();
-  } on FileSystemException {
-    return null;
-  }
+  final leftValue = value(leftMetadata);
+  final rightValue = value(rightMetadata);
+  if (leftValue == null || rightValue == null) return 0;
+  return leftValue.compareTo(rightValue);
 }

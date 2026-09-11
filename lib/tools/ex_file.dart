@@ -5,6 +5,22 @@ import 'package:file_picker/file_picker.dart';
 import 'package:path/path.dart' as p;
 
 import '../tools/file_metadata.dart';
+import '../tools/platform_channel.dart';
+
+/// The small subset of file metadata needed to sort the file list.
+///
+/// This is deliberately separate from [FileMetadata], whose initialization
+/// also reads EXIF and audio tags. Sorting a large list only needs these two
+/// values.
+class FileSortMetadata {
+  const FileSortMetadata({
+    required this.size,
+    required this.modified,
+  });
+
+  final int? size;
+  final DateTime? modified;
+}
 
 class FileEntity {
   final FileSystemEntity entity;
@@ -12,6 +28,8 @@ class FileEntity {
   String? error;
   String? _newName;
   FileMetadata? _metadata;
+  FileSortMetadata? _sortMetadata;
+  Future<void>? _sortMetadataLoad;
 
   FileEntity(this.entity, {this.selected = false, this.error, String? newName}) : _newName = newName;
 
@@ -30,12 +48,54 @@ class FileEntity {
   }
 
   FileMetadata? get metadata => _metadata;
+  FileSortMetadata? get sortMetadata => _sortMetadata;
 
   Future<void> initMetadata() async {
     _metadata ??= FileMetadata(entity);
     if (!_metadata!.inited) {
       await _metadata!.init();
     }
+  }
+
+  /// Loads only the values used by size/date sorting and retains them for the
+  /// lifetime of this entity. In particular, SAF URIs must use the Android
+  /// metadata channel instead of Dart's file-system APIs.
+  Future<void> preloadSortMetadata() {
+    return _sortMetadataLoad ??= _loadSortMetadata();
+  }
+
+  Future<void> _loadSortMetadata() async {
+    try {
+      if (Platform.isAndroid && path.startsWith('content://')) {
+        final metadata = await PlatformFilePicker.getMetaData(path);
+        _sortMetadata = FileSortMetadata(
+          size: _metadataInt(metadata?['size']),
+          modified: _metadataDate(metadata?['modified']),
+        );
+      } else {
+        final stat = await entity.stat();
+        _sortMetadata = FileSortMetadata(
+          size: stat.size,
+          modified: stat.modified,
+        );
+      }
+    } on FileSystemException {
+      // A file can disappear while its list entry is still visible. Leave its
+      // sort metadata unavailable so the comparator uses its name as a tie.
+    }
+  }
+
+  int? _metadataInt(Object? value) => switch (value) {
+        int value => value,
+        num value => value.toInt(),
+        _ => null,
+      };
+
+  DateTime? _metadataDate(Object? value) {
+    final milliseconds = _metadataInt(value);
+    return milliseconds == null
+        ? null
+        : DateTime.fromMillisecondsSinceEpoch(milliseconds);
   }
 
   bool existsSync() {
@@ -47,7 +107,12 @@ class FileEntity {
 
   Directory get parent => entity.parent;
 
-  FileEntity get absolute => FileEntity(entity.absolute, selected: selected, error: error, newName: _newName);
+  FileEntity get absolute => FileEntity(
+        entity.absolute,
+        selected: selected,
+        error: error,
+        newName: _newName,
+      );
 
   String fileOrDir([bool returnLink = false]) {
     FileSystemEntity file = entity;

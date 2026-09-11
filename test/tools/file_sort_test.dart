@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flut_renamer/tools/ex_file.dart';
 import 'package:flut_renamer/tools/file_sort.dart';
 
 void main() {
@@ -27,6 +30,41 @@ void main() {
       filenames.sort(compareNaturally);
 
       expect(filenames, ['clip1', 'clip2', 'clip10']);
+    });
+  });
+
+  group('file metadata sorting', () {
+    late Directory directory;
+
+    setUp(() async {
+      directory = await Directory.systemTemp.createTemp('file_sort_test_');
+    });
+
+    tearDown(() => directory.delete(recursive: true));
+
+    test('uses asynchronously cached sizes instead of name order', () async {
+      final larger = FileEntity(File('${directory.path}/a-large'));
+      final smaller = FileEntity(File('${directory.path}/z-small'));
+      await (larger.entity as File).writeAsBytes(List<int>.filled(10, 0));
+      await (smaller.entity as File).writeAsBytes([0]);
+
+      await preloadFileSortMetadata([larger, smaller]);
+
+      expect(compareFiles(larger, smaller, FileSortField.size), greaterThan(0));
+    });
+
+    test('uses asynchronously cached modification dates instead of name order',
+        () async {
+      final newer = FileEntity(File('${directory.path}/a-newer'));
+      final older = FileEntity(File('${directory.path}/z-older'));
+      await (newer.entity as File).writeAsString('new');
+      await (older.entity as File).writeAsString('old');
+      await (newer.entity as File).setLastModified(DateTime(2025));
+      await (older.entity as File).setLastModified(DateTime(2020));
+
+      await preloadFileSortMetadata([newer, older]);
+
+      expect(compareFiles(newer, older, FileSortField.date), greaterThan(0));
     });
   });
 }
