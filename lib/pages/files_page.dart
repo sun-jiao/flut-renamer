@@ -914,6 +914,8 @@ class FilesPageState extends State<FilesPage> {
 
   String _normalisedPath(String path) {
     final absolutePath = File(path).absolute.path;
-    return Platform.isWindows ? absolutePath.toLowerCase() : absolutePath;
+    return Platform.isWindows || Platform.isMacOS || Platform.isIOS
+        ? absolutePath.toLowerCase()
+        : absolutePath;
   }
 }

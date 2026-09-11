@@ -50,6 +50,15 @@ Future<FileSystemEntity> atomicRenameNoReplace(
     return entity.rename(newPath);
   }
 
+  // APFS and the default iOS filesystem are case-insensitive.  A rename that
+  // only changes casing therefore resolves [newPath] to [entity] itself, but
+  // RENAME_EXCL rejects it as an existing destination.  It is safe to use the
+  // platform rename after confirming both paths identify the same entity.
+  if ((Platform.isMacOS || Platform.isIOS) &&
+      await FileSystemEntity.identical(entity.path, newPath)) {
+    return entity.rename(newPath);
+  }
+
   final oldPathPointer = entity.path.toNativeUtf8();
   final newPathPointer = newPath.toNativeUtf8();
   try {

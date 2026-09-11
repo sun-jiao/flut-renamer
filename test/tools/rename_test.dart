@@ -64,6 +64,18 @@ void main() {
     expect(await source.exists(), isTrue);
   });
 
+  test('renames a file when only its casing changes', () async {
+    final source = File('${temporaryDirectory.path}/Photo.txt');
+    await source.writeAsString('contents');
+    final file = FileEntity(source, newName: 'photo.txt');
+
+    final renamed = await rename(file);
+
+    expect(renamed, isNotNull);
+    expect(renamed!.path, '${temporaryDirectory.path}/photo.txt');
+    expect(await File(renamed.path).readAsString(), 'contents');
+  });
+
   test('sanitizes a new name before renaming the file', () async {
     final source = File('${temporaryDirectory.path}/source.txt');
     await source.writeAsString('source');
