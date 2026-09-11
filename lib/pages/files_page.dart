@@ -15,6 +15,7 @@ import '../tools/file_sort.dart';
 import '../tools/file_metadata.dart';
 import '../entity/sharedpref.dart';
 import '../tools/rename.dart';
+import '../tools/rename_transaction.dart';
 import '../widget/custom_dialog.dart';
 import '../widget/custom_drop.dart';
 
@@ -733,6 +734,7 @@ class FilesPageState extends State<FilesPage> {
       if (mounted) {
         setState(() {});
       }
+      if (!noError) return;
 
       final mediaUris = <String>[];
       if (Platform.isAndroid) {
@@ -750,46 +752,49 @@ class FilesPageState extends State<FilesPage> {
           : const MediaWritePermission.empty();
       if (!mounted) return;
 
-      for (final file in filesToRename) {
-        final index = _files.indexOf(file);
-        final deniedMediaWrite =
+      final deniedFiles = filesToRename.where(
+        (file) =>
             mediaPermission.candidates.contains(file.path) &&
-                !mediaPermission.approved.contains(file.path);
-
-        if (deniedMediaWrite) {
-          noError = false;
-          setState(() {
+            !mediaPermission.approved.contains(file.path),
+      );
+      if (deniedFiles.isNotEmpty) {
+        noError = false;
+        setState(() {
+          for (final file in deniedFiles) {
             file.error = L10n.current.renameFailed;
-          });
-          continue;
+          }
+        });
+        return;
+      }
+
+      final result = await commitRenameTransaction(
+        filesToRename,
+        context: context,
+      );
+      noError = noError && result.succeeded;
+      if (!mounted) return;
+
+      setState(() {
+        for (var index = 0; index < filesToRename.length; index++) {
+          final original = filesToRename[index];
+          final listIndex = _files.indexOf(original);
+          if (listIndex < 0) continue;
+          if (result.succeeded && remove) {
+            _files.removeAt(listIndex);
+          } else {
+            _files[listIndex] = result.entities[index];
+            if (!result.succeeded) {
+              _files[listIndex].error = L10n.current.renameFailed;
+            }
+          }
         }
+      });
 
-        final value = await rename(
-          file,
-          context: context,
-        );
-        if (value == null) {
-          noError = false;
-          if (mounted) {
-            setState(() {
-              file.error = L10n.current.renameFailed;
-            });
-          }
-        } else if (remove) {
-          if (mounted) {
-            setState(() {
-              _files.remove(file);
-            });
-          }
-
-          if (Platform.isIOS &&
-              !_files.any((e) => e.parent.path == file.parent.path)) {
+      if (result.succeeded && remove && Platform.isIOS) {
+        for (final file in filesToRename) {
+          if (!_files.any((e) => e.parent.path == file.parent.path)) {
             PlatformFilePicker.changeScopedAccess(file.parent.path, false);
           }
-        } else if (mounted && index >= 0) {
-          setState(() {
-            _files[index] = value;
-          });
         }
       }
 

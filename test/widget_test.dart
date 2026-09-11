@@ -16,6 +16,7 @@ import 'rule/rearrange.dart' as rearrange_test;
 import 'rule/rule_serialization_test.dart' as rule_serialization_test;
 import 'rule/random_string_test.dart' as random_string_test;
 import 'tools/rename_test.dart' as rename_test;
+import 'tools/rename_transaction_test.dart' as rename_transaction_test;
 import 'tools/file_metadata_test.dart' as file_metadata_test;
 import 'tools/file_sort_test.dart' as file_sort_test;
 import 'widget/custom_drop_test.dart' as custom_drop_test;
@@ -27,6 +28,7 @@ void main() {
   group('rule rearrange', rearrange_test.main);
   group('rule replace serialization', rule_serialization_test.main);
   group('rename test', rename_test.main);
+  group('rename transaction test', rename_transaction_test.main);
   group('random string test', random_string_test.main);
   group('file metadata test', file_metadata_test.main);
   group('file sort test', file_sort_test.main);
