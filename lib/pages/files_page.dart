@@ -576,6 +576,8 @@ class FilesPageState extends State<FilesPage> {
 
   @override
   Widget build(BuildContext context) {
+    final filteredFiles = _filteredList();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -689,9 +691,9 @@ class FilesPageState extends State<FilesPage> {
                     ReorderableListView.builder(
                       buildDefaultDragHandles: false,
                       onReorderItem: _reorderFiles,
-                      itemCount: _filteredList().length,
+                      itemCount: filteredFiles.length,
                       itemBuilder: (context, index) {
-                        final file = _filteredList()[index];
+                        final file = filteredFiles[index];
                         return _table(
                           [
                             _tableRow(file, index),
