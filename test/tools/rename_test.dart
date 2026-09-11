@@ -79,4 +79,21 @@ void main() {
       'source',
     );
   });
+
+  test('does not replace a destination created after planning', () async {
+    final source = File('${temporaryDirectory.path}/source.txt');
+    final destination = File('${temporaryDirectory.path}/destination.txt');
+    await source.writeAsString('source contents');
+    final file = FileEntity(source, newName: 'destination.txt');
+
+    // This represents another process creating the destination after the UI's
+    // rename-plan existence check but before the filesystem operation.
+    await destination.writeAsString('existing contents');
+
+    final renamed = await rename(file);
+
+    expect(renamed, isNull);
+    expect(await source.readAsString(), 'source contents');
+    expect(await destination.readAsString(), 'existing contents');
+  });
 }

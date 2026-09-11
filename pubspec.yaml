@@ -44,6 +44,7 @@ dependencies:
   cyrtranslit: ^1.0.1
   desktop_drop: ^0.8.4 # not compatible with iOS
   exif: ^3.3.0
+  ffi: ^2.1.4
   file_manager: ^1.0.2
   file_picker: ^12.2.0
   fluttertoast: ^10.0.0

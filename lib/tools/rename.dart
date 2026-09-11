@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../l10n/l10n.dart';
+import '../tools/atomic_rename.dart';
 import '../tools/ex_file.dart';
 import '../widget/custom_dialog.dart';
 import '../tools/platform_channel.dart';
@@ -48,7 +49,10 @@ Future<FileEntity?> rename(
         throw FileSystemException("SAF rename returned null for ${file.path}");
       }
     } else {
-      final renamedEntity = await file.entity.rename(file.newPath);
+      final renamedEntity = await atomicRenameNoReplace(
+        file.entity,
+        file.newPath,
+      );
       _logRename(file.path, renamedEntity.path);
       return FileEntity(renamedEntity);
     }
