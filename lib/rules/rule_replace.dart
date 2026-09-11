@@ -63,15 +63,13 @@ class RuleReplace implements Rule {
     if (isRegex) {
       target = RegExp(targetString, caseSensitive: caseSensitive);
       replacer = (match) {
-        List<String?> groups = match
-            .groups(List<int>.generate(match.groupCount + 1, (index) => index));
-
-        String replacedString = replacementString;
-        for (int i = 0; i <= match.groupCount; i++) {
-          replacedString = replacedString.replaceAll('\\$i', groups[i] ?? '');
-        }
-
-        return replacedString;
+        return replacementString.replaceAllMapped(RegExp(r'\\(\d+)'), (
+          reference,
+        ) {
+          final index = int.tryParse(reference.group(1)!);
+          if (index == null || index > match.groupCount) return '';
+          return match.group(index) ?? '';
+        });
       };
     } else {
       target =

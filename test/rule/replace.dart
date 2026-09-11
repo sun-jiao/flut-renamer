@@ -202,6 +202,20 @@ void main() {
     expect(newFileName, "example_data_name.txt");
   });
 
+  test('regex replacement preserves two-digit capture references', () async {
+    final newFileName = await RuleReplace(
+      r'(a)(b)(c)(d)(e)(f)(g)(h)(i)(j)',
+      r'\10-\1',
+      1,
+      false,
+      false,
+      true,
+      true,
+    ).newName('abcdefghij.txt');
+
+    expect(newFileName, 'j-a.txt');
+  });
+
   test('does not parse metadata tags when metadata is disabled', () async {
     final newFileName = await RuleReplace(
       'file',
