@@ -5,6 +5,18 @@ import 'package:flut_renamer/tools/ex_file.dart';
 import 'package:flut_renamer/tools/file_metadata.dart';
 
 void main() {
+  test('formats audio duration using component units', () {
+    expect(
+      FileMetadata.formatDuration(const Duration(
+        hours: 1,
+        minutes: 2,
+        seconds: 3,
+        milliseconds: 450,
+      )),
+      '1:02:03.45',
+    );
+  });
+
   test('formats file dates with the selected date format', () async {
     final directory =
         await Directory.systemTemp.createTemp('renamer_metadata_');

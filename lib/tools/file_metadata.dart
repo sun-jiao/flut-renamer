@@ -165,7 +165,7 @@ class FileMetadata {
       case 'Music:Year':
         return (_audioMetadata?.year?.year ?? '').toString();
       case 'Music:TrackDuration':
-        return (_formatDuration(_audioMetadata?.duration) ?? '').toString();
+        return (formatDuration(_audioMetadata?.duration) ?? '').toString();
       case 'Music:TrackName':
         return (_audioMetadata?.title ?? '').toString();
       // case 'Music:TrackArtist':
@@ -297,7 +297,8 @@ class FileMetadata {
     throw AssertionError('Unreachable');
   }
 
-  String? _formatDuration(Duration? dur) {
+  /// Formats a track length without using [Duration]'s cumulative units.
+  static String? formatDuration(Duration? dur) {
     if (dur == null) {
       return null;
     }
@@ -307,9 +308,9 @@ class FileMetadata {
       return "0$n";
     }
 
-    int centiseconds = dur.inMilliseconds ~/ 10;
-    int seconds = dur.inSeconds;
-    int minutes = dur.inMinutes;
+    int centiseconds = (dur.inMilliseconds ~/ 10) % 100;
+    int seconds = dur.inSeconds % 60;
+    int minutes = dur.inMinutes % 60;
     int hours = dur.inHours;
 
     if (hours > 0) {
