@@ -23,6 +23,12 @@ class RuleReplace implements Rule {
   final String dateFormat;
 
   @override
+  bool get requiresMetadata =>
+      targetString.isNotEmpty &&
+      withMetadata &&
+      metadataTagRegex.hasMatch(replacementString);
+
+  @override
   Future<String> newName(String oldName, {FileMetadata? metadata}) async {
     if (targetString.isEmpty) {
       return oldName;
@@ -49,7 +55,7 @@ class RuleReplace implements Rule {
       );
     }
 
-    if (withMetadata) {
+    if (requiresMetadata) {
       await metadata!.init();
       replacementString = metadata.parse(
         replacementString,

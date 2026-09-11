@@ -15,7 +15,11 @@ class RuleTruncate implements Rule {
   final bool i1toEnd;
   final bool i2toEnd;
   final bool ignoreExtension;
-  final bool keepBetween; // true: keep chars between 2 indexes, false: keep chars around them
+  final bool
+      keepBetween; // true: keep chars between 2 indexes, false: keep chars around them
+
+  @override
+  bool get requiresMetadata => false;
 
   @override
   String newName(String oldName, {FileMetadata? metadata}) {
@@ -87,5 +91,6 @@ class RuleTruncate implements Rule {
   }
 
   @override
-  void openDialog(BuildContext context, Function(Rule rule) onSave) => showTruncateDialog(context, onSave, this);
+  void openDialog(BuildContext context, Function(Rule rule) onSave) =>
+      showTruncateDialog(context, onSave, this);
 }

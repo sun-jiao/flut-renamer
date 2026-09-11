@@ -40,6 +40,8 @@ class HomePage extends StatelessWidget {
       },
       dependsOnFileOrder: () => (rulesKey.currentState?.rules ?? [])
           .any((rule) => rule is RuleIncrement),
+      requiresMetadata: () => (rulesKey.currentState?.rules ?? [])
+          .any((rule) => rule.requiresMetadata),
       clearRules: () {
         rulesKey.currentState?.clearRule();
       },
@@ -182,7 +184,9 @@ class _HomeToolBarState extends State<HomeToolBar> {
                   ),
                   onTap: () {
                     launchUrl(
-                      Uri.parse('https://github.com/sun-jiao/renamer/issues/new'),
+                      Uri.parse(
+                        'https://github.com/sun-jiao/renamer/issues/new',
+                      ),
                     );
                   },
                 ),

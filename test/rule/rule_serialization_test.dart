@@ -60,6 +60,27 @@ void main() {
     expect(restored.dateFormat, 'yyyyMMdd');
   });
 
+  test('only metadata tags require metadata initialization', () {
+    final plainReplace =
+        RuleReplace('old', 'new', 0, true, false, false, false);
+    final taggedReplace = RuleReplace(
+      'old',
+      '{File:ModifyDate}',
+      0,
+      true,
+      false,
+      false,
+      false,
+    );
+    final plainInsert = RuleInsert('prefix', 0, false, true, false);
+    final taggedInsert = RuleInsert('{Music:TrackName}', 0, false, true, false);
+
+    expect(plainReplace.requiresMetadata, isFalse);
+    expect(taggedReplace.requiresMetadata, isTrue);
+    expect(plainInsert.requiresMetadata, isFalse);
+    expect(taggedInsert.requiresMetadata, isTrue);
+  });
+
   test('date format is persisted in YAML', () async {
     final directory =
         await Directory.systemTemp.createTemp('renamer_rules_date_format_');

@@ -23,6 +23,9 @@ class RuleTransliterate implements Rule {
   late final String langCode;
 
   @override
+  bool get requiresMetadata => false;
+
+  @override
   String newName(String oldName, {FileMetadata? metadata}) {
     String newName, extension;
     (newName, extension) = splitFileName(oldName, true);

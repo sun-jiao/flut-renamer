@@ -8,8 +8,7 @@ class RuleInsert implements Rule {
     this.withMetadata,
     this.ignoreExtension, {
     this.dateFormat = FileMetadata.defaultDateFormat,
-  }
-  );
+  });
 
   final String insert; // string to be inserted
   final int insertIndex; // insert before character at index
@@ -17,6 +16,10 @@ class RuleInsert implements Rule {
   final bool withMetadata; // true: replace metadata tag with metadata
   final bool ignoreExtension;
   final String dateFormat;
+
+  @override
+  bool get requiresMetadata =>
+      withMetadata && metadataTagRegex.hasMatch(insert);
 
   @override
   Future<String> newName(String oldName, {FileMetadata? metadata}) async {
@@ -47,7 +50,7 @@ class RuleInsert implements Rule {
       });
     }
 
-    if (withMetadata) {
+    if (requiresMetadata) {
       await metadata!.init();
       insert = metadata.parse(insert, dateFormat: dateFormat);
     }
@@ -71,7 +74,12 @@ class RuleInsert implements Rule {
 
   @override
   String toString() {
-    return L10n.current.insertToString(toEnd.toString(), 'o${insertIndex % 10}', insert, insertIndex);
+    return L10n.current.insertToString(
+      toEnd.toString(),
+      'o${insertIndex % 10}',
+      insert,
+      insertIndex,
+    );
   }
 
   @override
@@ -94,10 +102,12 @@ class RuleInsert implements Rule {
       map['toEnd'] as bool,
       map['withMetadata'] as bool,
       map['ignoreExtension'] as bool,
-      dateFormat: map['dateFormat'] as String? ?? FileMetadata.defaultDateFormat,
+      dateFormat:
+          map['dateFormat'] as String? ?? FileMetadata.defaultDateFormat,
     );
   }
 
   @override
-  void openDialog(BuildContext context, Function(Rule rule) onSave) => showInsertDialog(context, onSave, this);
+  void openDialog(BuildContext context, Function(Rule rule) onSave) =>
+      showInsertDialog(context, onSave, this);
 }

@@ -23,6 +23,9 @@ class RuleRemove implements Rule {
   late final RuleReplace ruleReplace;
 
   @override
+  bool get requiresMetadata => false;
+
+  @override
   Future<String> newName(String fileName, {FileMetadata? metadata}) =>
       ruleReplace.newName(fileName, metadata: metadata);
 
@@ -54,5 +57,6 @@ class RuleRemove implements Rule {
   }
 
   @override
-  void openDialog(BuildContext context, Function(Rule rule) onSave) => showRemoveDialog(context, onSave, this);
+  void openDialog(BuildContext context, Function(Rule rule) onSave) =>
+      showRemoveDialog(context, onSave, this);
 }

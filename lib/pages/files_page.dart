@@ -26,6 +26,7 @@ class FilesPage extends StatefulWidget {
     required this.clearRules,
     required this.resetRules,
     required this.dependsOnFileOrder,
+    required this.requiresMetadata,
   });
 
   final FutureOr<String> Function(String name, FileMetadata metadata)
@@ -36,6 +37,9 @@ class FilesPage extends StatefulWidget {
   /// Whether changing the list order changes generated names.  Increment is
   /// currently the only rule with this property.
   final bool Function() dependsOnFileOrder;
+
+  /// Whether any active rule will read metadata while generating a name.
+  final bool Function() requiresMetadata;
 
   @override
   State<FilesPage> createState() => FilesPageState();
@@ -62,6 +66,7 @@ class FilesPageState extends State<FilesPage> {
   final Map<FileEntity, Future<void>> _newNameFutures = {};
   int _newNameGeneration = 0;
   int? _collisionValidationGeneration;
+  final _BoundedTaskQueue _metadataQueue = _BoundedTaskQueue(maxConcurrent: 8);
 
   Future<void> addFileFromPicker() async {
     late Iterable<FileEntity> entities;
@@ -194,7 +199,9 @@ class FilesPageState extends State<FilesPage> {
     if (!widget.dependsOnFileOrder()) {
       return _newNameFutures.putIfAbsent(
         file,
-        () => getNewName(file, generation: generation),
+        () => widget.requiresMetadata()
+            ? _metadataQueue.run(() => getNewName(file, generation: generation))
+            : getNewName(file, generation: generation),
       );
     }
 
@@ -247,12 +254,13 @@ class FilesPageState extends State<FilesPage> {
       widget.resetRules.call();
     }
 
-    await file.initMetadata();
     if (requestedGeneration != _newNameGeneration) return;
 
     late final String filename;
 
     if (Platform.isAndroid && file.path.startsWith('content://')) {
+      await file.initMetadata();
+      if (requestedGeneration != _newNameGeneration) return;
       filename = file.metadata!.androidRealName;
     } else {
       filename = file.name;
@@ -260,7 +268,7 @@ class FilesPageState extends State<FilesPage> {
 
     try {
       final newName = replaceSpecialCharacters(
-        await widget.getNewName(filename, file.metadata!),
+        await widget.getNewName(filename, file.metadataForRename),
       );
       final newPath = p.join(file.directory, newName);
       final isAndroidUri =
@@ -428,7 +436,6 @@ class FilesPageState extends State<FilesPage> {
     } else {
       content = getRowText(file.name, null);
     }
-    unawaited(file.initMetadata());
     return TableCell(
       child: content,
     );
@@ -888,5 +895,38 @@ class FilesPageState extends State<FilesPage> {
     return Platform.isWindows || Platform.isMacOS || Platform.isIOS
         ? absolutePath.toLowerCase()
         : absolutePath;
+  }
+}
+
+/// Limits expensive per-file metadata work while allowing independent rules to
+/// keep the UI responsive for large selections.
+class _BoundedTaskQueue {
+  _BoundedTaskQueue({required this.maxConcurrent});
+
+  final int maxConcurrent;
+  final List<void Function()> _pending = [];
+  int _active = 0;
+
+  Future<T> run<T>(Future<T> Function() task) {
+    final completer = Completer<T>();
+    _pending.add(() async {
+      try {
+        completer.complete(await task());
+      } catch (error, stackTrace) {
+        completer.completeError(error, stackTrace);
+      } finally {
+        _active--;
+        _startNext();
+      }
+    });
+    _startNext();
+    return completer.future;
+  }
+
+  void _startNext() {
+    while (_active < maxConcurrent && _pending.isNotEmpty) {
+      _active++;
+      _pending.removeAt(0)();
+    }
   }
 }

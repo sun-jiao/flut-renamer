@@ -50,6 +50,10 @@ class FileEntity {
   }
 
   FileMetadata? get metadata => _metadata;
+
+  /// Creates the lazy metadata object without performing I/O. Rules can pass
+  /// this to one another and initialize it only when a tag is actually used.
+  FileMetadata get metadataForRename => _metadata ??= FileMetadata(entity);
   FileSortMetadata? get sortMetadata => _sortMetadata;
 
   /// Initializes metadata at most once, even when several rows request it

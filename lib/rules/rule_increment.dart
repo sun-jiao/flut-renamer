@@ -1,10 +1,14 @@
 part of 'rule.dart';
 
 class RuleIncrement implements Rule {
-  RuleIncrement(this.prefix, this.startIndex, this.step, this.omitDash,
-      this.ignoreExtension,
-      {this.minimumDigits = 0,})
-      : index = startIndex;
+  RuleIncrement(
+    this.prefix,
+    this.startIndex,
+    this.step,
+    this.omitDash,
+    this.ignoreExtension, {
+    this.minimumDigits = 0,
+  }) : index = startIndex;
 
   int index;
 
@@ -15,6 +19,9 @@ class RuleIncrement implements Rule {
   final bool omitDash; // omit the dash between prefix and index
   final bool ignoreExtension;
   final int minimumDigits;
+
+  @override
+  bool get requiresMetadata => false;
 
   @override
   Future<String> newName(String oldName, {FileMetadata? metadata}) async {

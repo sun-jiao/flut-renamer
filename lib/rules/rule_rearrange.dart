@@ -12,6 +12,9 @@ class RuleRearrange implements Rule {
   final bool ignoreExtension;
 
   @override
+  bool get requiresMetadata => false;
+
+  @override
   String newName(String oldName, {FileMetadata? metadata}) {
     String newName, extension;
     (newName, extension) = splitFileName(oldName, ignoreExtension);
@@ -20,10 +23,14 @@ class RuleRearrange implements Rule {
     List<String> substrings = newName.split(delimiter);
 
     // remove indexes out of limit
-    final order = this.order.where((index) => index >= 1 && index <= substrings.length).toList();
+    final order = this
+        .order
+        .where((index) => index >= 1 && index <= substrings.length)
+        .toList();
 
     // rearrange substrings
-    List<String> reorderedSubstrings = order.map((index) => substrings[index - 1]).toList();
+    List<String> reorderedSubstrings =
+        order.map((index) => substrings[index - 1]).toList();
 
     // join substrings
     String result = reorderedSubstrings.join(delimiter);
@@ -55,5 +62,6 @@ class RuleRearrange implements Rule {
   }
 
   @override
-  void openDialog(BuildContext context, Function(Rule rule) onSave) => showRearrangeDialog(context, onSave, this);
+  void openDialog(BuildContext context, Function(Rule rule) onSave) =>
+      showRearrangeDialog(context, onSave, this);
 }
