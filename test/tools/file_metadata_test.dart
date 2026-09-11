@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flut_renamer/tools/ex_file.dart';
 import 'package:flut_renamer/tools/file_metadata.dart';
 
 void main() {
@@ -34,5 +35,21 @@ void main() {
       metadata.getByName('File:ModifyDate', dateFormat: 'not-a-format'),
       matches(r'^\d{4}-\d{2}-\d{2}$'),
     );
+  });
+
+  test('shares in-flight metadata initialization per file', () async {
+    final directory =
+        await Directory.systemTemp.createTemp('renamer_metadata_');
+    addTearDown(() => directory.delete(recursive: true));
+
+    final file = File('${directory.path}/sample.txt');
+    await file.writeAsString('metadata');
+    final entity = FileEntity(file);
+
+    final first = entity.initMetadata();
+    final second = entity.initMetadata();
+
+    await Future.wait([first, second]);
+    expect(entity.metadata!.inited, isTrue);
   });
 }

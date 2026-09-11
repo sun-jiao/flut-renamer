@@ -28,10 +28,12 @@ class FileEntity {
   String? error;
   String? _newName;
   FileMetadata? _metadata;
+  Future<void>? _metadataLoad;
   FileSortMetadata? _sortMetadata;
   Future<void>? _sortMetadataLoad;
 
-  FileEntity(this.entity, {this.selected = false, this.error, String? newName}) : _newName = newName;
+  FileEntity(this.entity, {this.selected = false, this.error, String? newName})
+      : _newName = newName;
 
   String get path => entity.path;
   String get name => p.basename(path);
@@ -50,10 +52,19 @@ class FileEntity {
   FileMetadata? get metadata => _metadata;
   FileSortMetadata? get sortMetadata => _sortMetadata;
 
+  /// Initializes metadata at most once, even when several rows request it
+  /// during the same build.
   Future<void> initMetadata() async {
     _metadata ??= FileMetadata(entity);
-    if (!_metadata!.inited) {
-      await _metadata!.init();
+    if (_metadata!.inited) return;
+
+    final initialization = _metadataLoad ??= _metadata!.init();
+    try {
+      await initialization;
+    } finally {
+      if (identical(_metadataLoad, initialization)) {
+        _metadataLoad = null;
+      }
     }
   }
 
@@ -137,24 +148,32 @@ class FileEntity {
 
 extension ExXFile on XFile {
   FileEntity toFileEntity() => FileEntity(toFileSystemEntity());
-  FileSystemEntity toFileSystemEntity() => _toFileSystemEntity(this, (xFile) => xFile.path);
+  FileSystemEntity toFileSystemEntity() =>
+      _toFileSystemEntity(this, (xFile) => xFile.path);
 }
 
 extension ExPlatformFile on PlatformFile {
   FileEntity toFileEntity() => FileEntity(toFileSystemEntity());
-  FileSystemEntity toFileSystemEntity() => _toFileSystemEntity(this, (file) => file.path ?? '');
+  FileSystemEntity toFileSystemEntity() =>
+      _toFileSystemEntity(this, (file) => file.path ?? '');
 }
 
 extension ExLink on Link {
-  FileSystemEntity toFileSystemEntity() => _toFileSystemEntity(this, (link) => link.targetSync());
+  FileSystemEntity toFileSystemEntity() =>
+      _toFileSystemEntity(this, (link) => link.targetSync());
 }
 
 extension ExPathString on String {
   FileEntity toFileEntity() => FileEntity(toFileSystemEntity());
-  FileSystemEntity toFileSystemEntity() => _toFileSystemEntity(this, (str) => str);
+  FileSystemEntity toFileSystemEntity() =>
+      _toFileSystemEntity(this, (str) => str);
 
   // usually causes the talkback to choose a wrong language.
-  String toFilenameSemanticLabel() => RegExp(r'([a-zA-Z]+|\d.{0,3}|[^a-zA-Z0-9]+)').allMatches(this).map((e) => e.group(0)).join('，');
+  String toFilenameSemanticLabel() =>
+      RegExp(r'([a-zA-Z]+|\d.{0,3}|[^a-zA-Z0-9]+)')
+          .allMatches(this)
+          .map((e) => e.group(0))
+          .join('，');
 }
 
 FileSystemEntity _toFileSystemEntity<T>(T file, String Function(T file) func) {

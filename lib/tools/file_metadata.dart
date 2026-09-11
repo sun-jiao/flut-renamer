@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:isolate';
 import 'dart:typed_data';
 
 import 'package:audio_metadata_reader/audio_metadata_reader.dart';
@@ -8,9 +9,10 @@ import 'package:audio_metadata_reader/src/metadata/base.dart';
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:exif/exif.dart';
 import 'package:intl/intl.dart';
+import 'package:path/path.dart' as p;
 
-import 'audio_metadata.dart';
 import 'ex_file.dart';
+import 'audio_metadata.dart';
 import 'platform_channel.dart';
 
 final metadataTagRegex = RegExp(r'\{([A-Za-z]+:[A-Za-z]+)\}');
@@ -42,7 +44,13 @@ class FileMetadata {
         } else {
           _clearContentMetadata();
           _exif = await readExifFromFile(file as File);
-          _audioMetadata = _tryReadAudioMetadata(file as File);
+          if (supportedFileExtensions
+              .contains(p.extension(file.path).toLowerCase())) {
+            final audioFilePath = file.path;
+            _audioMetadata = await Isolate.run(
+              () => _tryReadAudioMetadata(audioFilePath),
+            );
+          }
         }
       }
       inited = true;
@@ -53,7 +61,7 @@ class FileMetadata {
   late FileStat _stat;
   late Uint8List _bytes;
   late Map<String, IfdTag> _exif;
-  late ParserTag? _audioMetadata;
+  late _AudioMetadata? _audioMetadata;
   Map<String, String> _androidEmbeddedMetadata = const {};
   bool inited = false;
   late String androidRealName;
@@ -106,10 +114,14 @@ class FileMetadata {
         return _formatTime(_stat.modified.toLocal(), dateFormat);
       case 'Photo:Date':
         final value = _parsePhotoDate();
-        return value == null ? _photoDateValue() : _formatDate(value, dateFormat);
+        return value == null
+            ? _photoDateValue()
+            : _formatDate(value, dateFormat);
       case 'Photo:Time':
         final value = _parsePhotoDate();
-        return value == null ? _photoTimeValue() : _formatTime(value, dateFormat);
+        return value == null
+            ? _photoTimeValue()
+            : _formatTime(value, dateFormat);
       case 'Photo:CamName':
         final oem = (_exif['Image Make'] ?? '').toString();
         final model = (_exif['Image Model'] ?? '').toString();
@@ -130,10 +142,14 @@ class FileMetadata {
         return (_exif['EXIF ISOSpeedRatings'] ?? '').toString();
       case 'Photo:Longitude':
         return _getLatLng(
-            _exif['GPS GPSLongitude'], _exif['GPS GPSLongitudeRef'],);
+          _exif['GPS GPSLongitude'],
+          _exif['GPS GPSLongitudeRef'],
+        );
       case 'Photo:Latitude':
         return _getLatLng(
-            _exif['GPS GPSLatitude'], _exif['GPS GPSLatitudeRef'],);
+          _exif['GPS GPSLatitude'],
+          _exif['GPS GPSLatitudeRef'],
+        );
       case 'Photo:Altitude':
         return (_exif['GPS GPSAltitude'] ?? 0).toString();
       case 'Photo:Photographer':
@@ -172,7 +188,8 @@ class FileMetadata {
   String parse(
     String target, {
     String dateFormat = defaultDateFormat,
-  }) => target.replaceAllMapped(
+  }) =>
+      target.replaceAllMapped(
         metadataTagRegex,
         (match) => getByName(match.group(1).toString(), dateFormat: dateFormat),
       );
@@ -340,13 +357,49 @@ class FileMetadata {
     _audioMetadata = null;
   }
 
-  ParserTag? _tryReadAudioMetadata(File file) {
+  static _AudioMetadata? _tryReadAudioMetadata(String path) {
     try {
-      return readAllMetadata(file, getImage: false);
+      final metadata = readAllMetadata(File(path), getImage: false);
+      return _AudioMetadata.fromParserTag(metadata);
     } catch (_) {
       return null;
     }
   }
+}
+
+/// The subset of audio tags used by renaming rules. Keeping this data-only
+/// makes the result safe to transfer back from the audio parsing isolate.
+class _AudioMetadata {
+  const _AudioMetadata({
+    this.album,
+    this.year,
+    this.duration,
+    this.title,
+    this.trackNumber,
+    this.discNumber,
+    this.genres = const [],
+    this.trackArtist,
+  });
+
+  factory _AudioMetadata.fromParserTag(ParserTag metadata) => _AudioMetadata(
+        album: metadata.album,
+        year: metadata.year,
+        duration: metadata.duration,
+        title: metadata.title,
+        trackNumber: metadata.trackNumber,
+        discNumber: metadata.discNumber,
+        genres: List<String>.from(metadata.genres),
+        trackArtist: metadata.trackArtist,
+      );
+
+  final String? album;
+  final DateTime? year;
+  final Duration? duration;
+  final String? title;
+  final int? trackNumber;
+  final int? discNumber;
+  final List<String> genres;
+  final String? trackArtist;
 }
 
 class _FileStat implements FileStat {

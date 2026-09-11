@@ -428,7 +428,7 @@ class FilesPageState extends State<FilesPage> {
     } else {
       content = getRowText(file.name, null);
     }
-    file.initMetadata();
+    unawaited(file.initMetadata());
     return TableCell(
       child: content,
     );
