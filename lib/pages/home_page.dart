@@ -181,7 +181,9 @@ class _HomeToolBarState extends State<HomeToolBar> {
                     style: TextStyle(color: Colors.blue),
                   ),
                   onTap: () {
-                    launchUrl(Uri.parse('https://github.com/sun-jiao/renamer/issues/new'));
+                    launchUrl(
+                      Uri.parse('https://github.com/sun-jiao/renamer/issues/new'),
+                    );
                   },
                 ),
               ],
@@ -202,25 +204,37 @@ class _HomeToolBarState extends State<HomeToolBar> {
             showDialog(
               context: context,
               builder: (context) => CustomDialog(
-                  title: Text(L10n.current.viewLog),
-                  content: SizedBox(
-                    width: double.maxFinite,
-                    child: SelectionArea(
-                      child: SingleChildScrollView(
-                        child: Text(
-                          logs.isEmpty ? L10n.current.logEmpty : logs,
-                          style: const TextStyle(fontFamily: 'monospace', fontSize: 12),
+                title: Text(L10n.current.viewLog),
+                content: SizedBox(
+                  width: double.maxFinite,
+                  child: SelectionArea(
+                    child: SingleChildScrollView(
+                      child: Text(
+                        logs.isEmpty ? L10n.current.logEmpty : logs,
+                        style: const TextStyle(
+                          fontFamily: 'monospace',
+                          fontSize: 12,
                         ),
                       ),
                     ),
                   ),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: Text(L10n.current.ok),
-                    ),
-                  ],
                 ),
+                actions: [
+                  IconButton(
+                    tooltip:
+                        MaterialLocalizations.of(context).deleteButtonTooltip,
+                    onPressed: () async {
+                      await Logger().clearLogs();
+                      if (context.mounted) Navigator.pop(context);
+                    },
+                    icon: const Icon(Icons.delete_outline_rounded),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text(L10n.current.ok),
+                  ),
+                ],
+              ),
             );
           },
         ),
@@ -232,14 +246,18 @@ class _HomeToolBarState extends State<HomeToolBar> {
       ];
 
   IconButton _expandIndicator() => IconButton(
-        tooltip: expanded ? L10n.current.collapseOptions : L10n.current.expandOptions,
+        tooltip: expanded
+            ? L10n.current.collapseOptions
+            : L10n.current.expandOptions,
         onPressed: () {
           setState(() {
             expanded = !expanded;
           });
         },
         icon: Icon(
-          expanded ? Icons.arrow_back_ios_new_rounded : Icons.arrow_forward_ios_rounded,
+          expanded
+              ? Icons.arrow_back_ios_new_rounded
+              : Icons.arrow_forward_ios_rounded,
           size: 20,
         ),
       );
