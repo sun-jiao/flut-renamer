@@ -13,7 +13,8 @@ class RulePersistence {
 
   static Future<void> saveRules(List<Rule> rules, {File? targetFile}) async {
     final file = targetFile ?? await _getTempFile();
-    final List<Map<String, dynamic>> ruleMaps = rules.map((r) => r.toMap()).toList();
+    final List<Map<String, dynamic>> ruleMaps =
+        rules.map((r) => r.toMap()).toList();
     final yamlWriter = YamlWriter();
     final yamlString = yamlWriter.write(ruleMaps);
     await file.writeAsString(yamlString, encoding: utf8);
@@ -21,23 +22,35 @@ class RulePersistence {
 
   static Future<List<Rule>> loadRules({File? sourceFile}) async {
     final file = sourceFile ?? await _getTempFile();
-    if (!await file.exists()) return [];
+    try {
+      if (!await file.exists()) return [];
 
-    final content = await file.readAsString(encoding: utf8);
-    if (content.isEmpty) return [];
+      final content = await file.readAsString(encoding: utf8);
+      if (content.isEmpty) return [];
 
-    final yamlData = loadYaml(content);
-    if (yamlData is! YamlList) return [];
+      final yamlData = loadYaml(content);
+      if (yamlData is! YamlList) return [];
 
-    final List<Rule> rules = [];
-    for (final item in yamlData) {
-      if (item is YamlMap) {
-        final rule = RuleFactory.fromMap(item);
-        if (rule != null) {
-          rules.add(rule);
+      final List<Rule> rules = [];
+      for (final item in yamlData) {
+        if (item is YamlMap) {
+          try {
+            final rule = RuleFactory.fromMap(item);
+            if (rule != null) {
+              rules.add(rule);
+            }
+          } on TypeError {
+            // Ignore an invalid rule while retaining the remaining valid ones.
+          }
         }
       }
+      return rules;
+    } on FileSystemException {
+      return [];
+    } on FormatException {
+      return [];
+    } on YamlException {
+      return [];
     }
-    return rules;
   }
 }

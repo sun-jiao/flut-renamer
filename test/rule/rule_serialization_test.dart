@@ -88,6 +88,43 @@ void main() {
     expect((restored.single as RuleInsert).dateFormat, 'yyyy.MM.dd');
   });
 
+  test('ignores malformed YAML rule files', () async {
+    final directory =
+        await Directory.systemTemp.createTemp('renamer_invalid_rules_');
+    addTearDown(() => directory.delete(recursive: true));
+    final yamlFile = File('${directory.path}/rules.yaml');
+    await yamlFile.writeAsString('- type: Replace\n  targetString: [');
+
+    expect(await RulePersistence.loadRules(sourceFile: yamlFile), isEmpty);
+  });
+
+  test('skips YAML rules with invalid field types', () async {
+    final directory =
+        await Directory.systemTemp.createTemp('renamer_invalid_rules_');
+    addTearDown(() => directory.delete(recursive: true));
+    final yamlFile = File('${directory.path}/rules.yaml');
+    await yamlFile.writeAsString('''
+- type: Replace
+  targetString: 1
+  replacementString: replacement
+  replaceLimit: 0
+  withMetadata: false
+  caseSensitive: false
+  isRegex: false
+  ignoreExtension: true
+- type: Insert
+  insert: valid
+  insertIndex: 0
+  toEnd: false
+  withMetadata: false
+  ignoreExtension: true
+''');
+
+    final rules = await RulePersistence.loadRules(sourceFile: yamlFile);
+    expect(rules, hasLength(1));
+    expect(rules.single, isA<RuleInsert>());
+  });
+
   test('RuleIncrement serialization', () {
     final rule = RuleIncrement('P', 1, 1, false, true, minimumDigits: 4);
     final map = rule.toMap();
