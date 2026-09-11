@@ -204,7 +204,7 @@ void main() {
 
   test('regex replacement preserves two-digit capture references', () async {
     final newFileName = await RuleReplace(
-      r'(a)(b)(c)(d)(e)(f)(g)(h)(i)(j)',
+      '(a)(b)(c)(d)(e)(f)(g)(h)(i)(j)',
       r'\10-\1',
       1,
       false,

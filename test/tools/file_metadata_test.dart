@@ -7,12 +7,14 @@ import 'package:flut_renamer/tools/file_metadata.dart';
 void main() {
   test('formats audio duration using component units', () {
     expect(
-      FileMetadata.formatDuration(const Duration(
-        hours: 1,
-        minutes: 2,
-        seconds: 3,
-        milliseconds: 450,
-      )),
+      FileMetadata.formatDuration(
+        const Duration(
+          hours: 1,
+          minutes: 2,
+          seconds: 3,
+          milliseconds: 450,
+        ),
+      ),
       '1:02:03.45',
     );
   });

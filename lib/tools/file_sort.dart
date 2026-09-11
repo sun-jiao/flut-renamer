@@ -34,8 +34,8 @@ int compareNaturally(String left, String right) {
 /// Removing leading zeroes first makes length a reliable magnitude comparison;
 /// equal-length runs can then be compared lexicographically.
 int _compareNumericRuns(String left, String right) {
-  final normalizedLeft = left.replaceFirst(RegExp(r'^0+'), '');
-  final normalizedRight = right.replaceFirst(RegExp(r'^0+'), '');
+  final normalizedLeft = left.replaceFirst(RegExp('^0+'), '');
+  final normalizedRight = right.replaceFirst(RegExp('^0+'), '');
   final leftValue = normalizedLeft.isEmpty ? '0' : normalizedLeft;
   final rightValue = normalizedRight.isEmpty ? '0' : normalizedRight;
 
