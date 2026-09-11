@@ -67,6 +67,42 @@ void main() {
     expect(find.text(L10n.current.dragToAdd), findsOneWidget);
   });
 
+  testWidgets('deduplicates files across and within selections',
+      (tester) async {
+    final first = FileEntity(File('/tmp/flut_renamer_first_missing'));
+    final second = FileEntity(File('/tmp/flut_renamer_second_missing'));
+    FilesPage.addFiles([first]);
+    FilesPage.addFiles([second, first, second]);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: ThemeData(
+          extensions: <ThemeExtension<dynamic>>[
+            FileListColors(
+              primaryColor: Colors.white,
+              secondaryColor: Colors.grey.shade100,
+            ),
+          ],
+        ),
+        home: Scaffold(
+          body: FilesPage(
+            getNewName: (name, FileMetadata _) => name,
+            clearRules: () {},
+            resetRules: () {},
+            dependsOnFileOrder: () => false,
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+
+    expect(find.text(L10n.current.fileNotExist), findsNWidgets(4));
+    expect(find.byType(Checkbox), findsNWidgets(3));
+
+    await tester.tap(find.byTooltip(L10n.current.removeAll));
+    await tester.pump();
+  });
+
   testWidgets('keeps generated names stable across unrelated rebuilds',
       (tester) async {
     final key = GlobalKey<FilesPageState>();

@@ -41,11 +41,16 @@ class FilesPage extends StatefulWidget {
   State<FilesPage> createState() => FilesPageState();
 
   static void addFiles(Iterable<FileEntity> files) {
-    _files.addAll(files);
+    _addUniqueFiles(files);
   }
 }
 
 final List<FileEntity> _files = [];
+
+void _addUniqueFiles(Iterable<FileEntity> files) {
+  final paths = _files.map((file) => file.path).toSet();
+  _files.addAll(files.where((file) => paths.add(file.path)));
+}
 
 class FilesPageState extends State<FilesPage> {
   bool _dragging = false;
@@ -130,10 +135,7 @@ class FilesPageState extends State<FilesPage> {
       }
     }
     setState(() {
-      _files.addAll(
-        entities
-            .skipWhile((eNew) => _files.any((eOld) => eNew.path == eOld.path)),
-      );
+      _addUniqueFiles(entities);
     });
   }
 
