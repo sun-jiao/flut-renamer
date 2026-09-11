@@ -33,16 +33,32 @@ typedef _RenameX = int Function(
 );
 typedef _ErrnoLocationNative = Pointer<Int32> Function();
 typedef _ErrnoLocation = Pointer<Int32> Function();
+typedef _MoveFileExWNative = Int32 Function(
+  Pointer<Utf16> oldPath,
+  Pointer<Utf16> newPath,
+  Uint32 flags,
+);
+typedef _MoveFileExW = int Function(
+  Pointer<Utf16> oldPath,
+  Pointer<Utf16> newPath,
+  int flags,
+);
+typedef _GetLastErrorNative = Uint32 Function();
+typedef _GetLastError = int Function();
 
 /// Atomically renames [entity] without replacing an existing destination on
-/// POSIX platforms.
+/// supported platforms.
 ///
-/// The ordinary `FileSystemEntity.rename` operation may replace [newPath] on
-/// POSIX, leaving a time-of-check/time-of-use window after rename planning.
+/// The ordinary `FileSystemEntity.rename` operation may replace [newPath],
+/// leaving a time-of-check/time-of-use window after rename planning.
 Future<FileSystemEntity> atomicRenameNoReplace(
   FileSystemEntity entity,
   String newPath,
 ) async {
+  if (Platform.isWindows) {
+    return _moveFileExNoReplace(entity, newPath);
+  }
+
   if (!Platform.isLinux &&
       !Platform.isAndroid &&
       !Platform.isMacOS &&
@@ -95,6 +111,43 @@ Future<FileSystemEntity> atomicRenameNoReplace(
   } on ArgumentError catch (error) {
     // Never fall back to a potentially overwriting rename when the required
     // libc operation is unavailable.
+    throw FileSystemException(
+      'Atomic rename without replacement is unavailable: $error',
+      newPath,
+    );
+  } finally {
+    malloc.free(oldPathPointer);
+    malloc.free(newPathPointer);
+  }
+}
+
+/// `MoveFileExW` without `MOVEFILE_REPLACE_EXISTING` has the kernel perform
+/// the destination-existence check as part of the move.  In contrast,
+/// `FileSystemEntity.rename` may replace an existing target on Windows.
+Future<FileSystemEntity> _moveFileExNoReplace(
+  FileSystemEntity entity,
+  String newPath,
+) async {
+  final oldPathPointer = entity.path.toNativeUtf16();
+  final newPathPointer = newPath.toNativeUtf16();
+  try {
+    final library = DynamicLibrary.open('kernel32.dll');
+    final moveFileEx =
+        library.lookupFunction<_MoveFileExWNative, _MoveFileExW>('MoveFileExW');
+    if (moveFileEx(oldPathPointer, newPathPointer, 0) == 0) {
+      final error = library
+          .lookupFunction<_GetLastErrorNative, _GetLastError>('GetLastError')();
+      throw FileSystemException(
+        'Atomic rename without replacement failed',
+        newPath,
+        OSError('MoveFileExW failed', error),
+      );
+    }
+
+    if (entity is Directory) return Directory(newPath);
+    if (entity is Link) return Link(newPath);
+    return File(newPath);
+  } on ArgumentError catch (error) {
     throw FileSystemException(
       'Atomic rename without replacement is unavailable: $error',
       newPath,
