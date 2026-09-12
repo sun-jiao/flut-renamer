@@ -134,21 +134,26 @@ Future<void> _rollback(
 }
 
 Set<int> _temporaryIndexes(List<FileEntity> files) {
-  final localMoves = <int>{
-    for (var index = 0; index < files.length; index++)
-      if (!files[index].path.startsWith('content://') &&
-          _pathKey(files[index].path) != _pathKey(files[index].newPath))
-        index,
-  };
+  final localMoves = <int>[];
+  final sourceKeys = <String>{};
+  final targetKeys = <String>[];
+
+  for (var index = 0; index < files.length; index++) {
+    final file = files[index];
+    if (file.path.startsWith('content://')) continue;
+
+    final sourceKey = _pathKey(file.path);
+    final targetKey = _pathKey(file.newPath);
+    if (sourceKey == targetKey) continue;
+
+    localMoves.add(index);
+    sourceKeys.add(sourceKey);
+    targetKeys.add(targetKey);
+  }
 
   return {
-    for (final index in localMoves)
-      if (localMoves.any(
-        (other) =>
-            other != index &&
-            _pathKey(files[other].path) == _pathKey(files[index].newPath),
-      ))
-        index,
+    for (var moveIndex = 0; moveIndex < localMoves.length; moveIndex++)
+      if (sourceKeys.contains(targetKeys[moveIndex])) localMoves[moveIndex],
   };
 }
 
