@@ -322,7 +322,11 @@ class FilesPageState extends State<FilesPage> {
       if (!isAndroidUri &&
           target != _sourcePathKey(file) &&
           !sources.contains(target) &&
-          await File(file.newPath).exists()) {
+          await FileSystemEntity.type(
+                file.newPath,
+                followLinks: false,
+              ) !=
+              FileSystemEntityType.notFound) {
         file.error = L10n.current.fileAlreadyExists;
       }
     }
@@ -875,6 +879,7 @@ class FilesPageState extends State<FilesPage> {
         if (!movingSources.contains(target) &&
             await FileSystemEntity.type(
                   file.newPath,
+                  followLinks: false,
                 ) !=
                 FileSystemEntityType.notFound) {
           file.error = L10n.current.fileAlreadyExists;
