@@ -86,7 +86,12 @@ Future<FileSystemEntity> atomicRenameNoReplace(
   // only changes casing therefore resolves [newPath] to [entity] itself, but
   // RENAME_EXCL rejects it as an existing destination.  It is safe to use the
   // platform rename after confirming both paths identify the same entity.
+  // `FileSystemEntity.identical` throws if either path does not exist. Most
+  // renames create a new destination, so only compare identities after
+  // establishing that the destination is present.
   if ((Platform.isMacOS || Platform.isIOS) &&
+      await FileSystemEntity.type(newPath, followLinks: false) !=
+          FileSystemEntityType.notFound &&
       await FileSystemEntity.identical(entity.path, newPath)) {
     return entity.rename(newPath);
   }
