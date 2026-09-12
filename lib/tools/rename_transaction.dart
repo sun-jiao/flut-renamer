@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/widgets.dart';
+import 'package:path/path.dart' as p;
 
 import 'ex_file.dart';
 import 'rename.dart';
@@ -42,8 +43,9 @@ Future<RenameTransactionResult> commitRenameTransaction(
   final finalNames = files.map((file) => file.newName).toList(growable: false);
   final completedSteps = <_CompletedRename>[];
   final temporaryIndexes = _temporaryIndexes(files);
+  final renameOrder = _deepestPathsFirst(files);
 
-  for (final index in temporaryIndexes) {
+  for (final index in renameOrder.where(temporaryIndexes.contains)) {
     final temporary = await _temporaryEntity(files[index], index);
     if (!await _performRename(
       index,
@@ -64,7 +66,7 @@ Future<RenameTransactionResult> commitRenameTransaction(
     }
   }
 
-  for (var index = 0; index < files.length; index++) {
+  for (final index in renameOrder) {
     final previousName = temporaryIndexes.contains(index)
         ? current[index].name
         : originalNames[index];
@@ -109,10 +111,36 @@ Future<bool> _performRename(
   if (renamed == null) return false;
 
   current[index] = renamed;
+  if (file.entity is Directory && file.path != renamed.path) {
+    _relocateDescendants(current, index, file.path, renamed.path);
+  }
   if (!identical(renamed, file)) {
     completedSteps.add(_CompletedRename(index, previousName));
   }
   return true;
+}
+
+/// A directory move changes the paths of every selected descendant. Keep their
+/// transaction entries in sync so later operations and rollback use the new
+/// location as their source.
+void _relocateDescendants(
+  List<FileEntity> current,
+  int renamedIndex,
+  String oldDirectory,
+  String newDirectory,
+) {
+  for (var index = 0; index < current.length; index++) {
+    if (index == renamedIndex || !p.isWithin(oldDirectory, current[index].path)) {
+      continue;
+    }
+
+    final relativePath = p.relative(current[index].path, from: oldDirectory);
+    final relocatedPath = p.join(newDirectory, relativePath);
+    final entity = current[index].entity is Directory
+        ? Directory(relocatedPath)
+        : File(relocatedPath);
+    current[index] = FileEntity(entity, newName: current[index].newName);
+  }
 }
 
 Future<void> _rollback(
@@ -155,6 +183,24 @@ Set<int> _temporaryIndexes(List<FileEntity> files) {
     for (var moveIndex = 0; moveIndex < localMoves.length; moveIndex++)
       if (sourceKeys.contains(targetKeys[moveIndex])) localMoves[moveIndex],
   };
+}
+
+/// Descendants must be renamed before their selected directory ancestors.
+/// Otherwise a directory rename invalidates the source path of a later child.
+List<int> _deepestPathsFirst(List<FileEntity> files) {
+  final indexes = List<int>.generate(files.length, (index) => index);
+  indexes.sort((left, right) {
+    final depthComparison = _pathDepth(files[right].path).compareTo(
+      _pathDepth(files[left].path),
+    );
+    return depthComparison == 0 ? left.compareTo(right) : depthComparison;
+  });
+  return indexes;
+}
+
+int _pathDepth(String path) {
+  if (path.startsWith('content://')) return 0;
+  return p.split(p.normalize(path)).length;
 }
 
 Future<FileEntity> _temporaryEntity(FileEntity file, int index) async {

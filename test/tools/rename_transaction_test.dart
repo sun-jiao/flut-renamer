@@ -92,4 +92,31 @@ void main() {
     expect(await second.readAsString(), 'first');
     expect(result.entities.map((file) => file.path), [second.path, first.path]);
   });
+
+  test('renames a selected child before its directory ancestor', () async {
+    final directory = Directory('${temporaryDirectory.path}/folder');
+    await directory.create();
+    final child = File('${directory.path}/a.txt');
+    await child.writeAsString('contents');
+    final files = [
+      FileEntity(directory, newName: 'renamed-folder'),
+      FileEntity(child, newName: 'b.txt'),
+    ];
+
+    final result = await commitRenameTransaction(
+      files,
+      operation: (file, _) async => FileEntity(
+        await file.entity.rename(file.newPath),
+      ),
+    );
+
+    final renamedDirectory = Directory('${temporaryDirectory.path}/renamed-folder');
+    final renamedChild = File('${renamedDirectory.path}/b.txt');
+    expect(result.succeeded, isTrue);
+    expect(await renamedChild.readAsString(), 'contents');
+    expect(result.entities.map((file) => file.path), [
+      renamedDirectory.path,
+      renamedChild.path,
+    ]);
+  });
 }
