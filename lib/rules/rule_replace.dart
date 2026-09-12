@@ -85,13 +85,21 @@ class RuleReplace implements Rule {
 
     if (replaceLimit == 0) {
       newName = newName.replaceAllMapped(target, replacer);
-    } else if (replaceLimit > 0) {
-      for (int i = 0; i < replaceLimit; i++) {
-        newName = newName.replaceFirstMapped(target, replacer);
-      }
     } else {
-      for (int i = 0; i > replaceLimit; i--) {
-        newName = newName.replaceLastMapped(target, replacer);
+      final matches = target.allMatches(newName).toList();
+      final count = replaceLimit.abs().clamp(0, matches.length).toInt();
+      final selectedMatches = replaceLimit > 0
+          ? matches.take(count)
+          : matches.skip(matches.length - count);
+
+      // Work backwards so each match range continues to refer to the original
+      // name, even when earlier replacements change its length or add targets.
+      for (final match in selectedMatches.toList().reversed) {
+        newName = newName.replaceRange(
+          match.start,
+          match.end,
+          replacer(match),
+        );
       }
     }
 

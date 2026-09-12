@@ -136,6 +136,20 @@ void main() {
     expect(newFileName, "data_example_file_name_file.file");
   });
 
+  test('limited replacement uses matches from the original name', () async {
+    final newFileName = await RuleReplace(
+      'a',
+      'ab',
+      2,
+      false,
+      true,
+      false,
+      true,
+    ).newName('a_a_a.txt');
+
+    expect(newFileName, 'ab_ab_a.txt');
+  });
+
   test('replace last', () async {
     String fileName = "file_example_file_name_file.file";
     String targetString = "file";
