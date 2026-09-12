@@ -29,13 +29,25 @@ class RuleTruncate implements Rule {
     int start = index1;
 
     if (i1toEnd) {
-      start = newName.length + start;
+      start = newName.length - start;
     }
 
     int end = index2;
 
     if (i2toEnd) {
-      end = newName.length + end;
+      end = newName.length - end;
+    }
+
+    if (start < 0) {
+      start = 0;
+    } else if (start > newName.length) {
+      start = newName.length;
+    }
+
+    if (end < 0) {
+      end = 0;
+    } else if (end > newName.length) {
+      end = newName.length;
     }
 
     if (start > end) {
