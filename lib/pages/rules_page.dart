@@ -211,9 +211,6 @@ class RulesPageState extends State<RulesPage> {
             child: ReorderableListView.builder(
               onReorderItem: (oldIndex, newIndex) {
                 setState(() {
-                  if (newIndex > oldIndex) {
-                    newIndex -= 1;
-                  }
                   final item = _rules.removeAt(oldIndex);
                   _rules.insert(newIndex, item);
                 });
