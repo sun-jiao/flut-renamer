@@ -37,7 +37,7 @@ class PlatformFilePicker {
   static Future<List<String>?> fileAccess(
       BuildContext context, String startPath,) async {
     try {
-      final Map<dynamic, dynamic>? result = await _channel.invokeMethod(
+      final result = await _channel.invokeMethod<dynamic>(
         'fileAccess',
         {
           'startPath': startPath,
@@ -46,9 +46,22 @@ class PlatformFilePicker {
 
       if (result == null) return null;
 
-      final paths = (result['paths'] as List?)?.cast<String>() ?? [];
-      final hasUnsupportedFiles =
-          result['hasUnsupportedFiles'] as bool? ?? false;
+      // Android returns `{paths, hasUnsupportedFiles}`, while iOS returns
+      // its selected paths directly.
+      final List<String> paths;
+      final bool hasUnsupportedFiles;
+      if (result is Map) {
+        paths = (result['paths'] as List?)?.whereType<String>().toList() ?? [];
+        hasUnsupportedFiles = result['hasUnsupportedFiles'] as bool? ?? false;
+      } else if (result is List) {
+        paths = result.whereType<String>().toList();
+        hasUnsupportedFiles = false;
+      } else {
+        throw PlatformException(
+          code: 'INVALID_FILE_RESULT',
+          message: 'Unsupported file picker result: ${result.runtimeType}',
+        );
+      }
 
       if (hasUnsupportedFiles && context.mounted) {
         if (Platform.isAndroid) {
