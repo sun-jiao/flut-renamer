@@ -53,7 +53,14 @@ class MainActivity: FlutterActivity() {
                     startActivityForResult(intent, REQUEST_CODE_OPEN_DOC, result)
                 }
                 "dirAccess" -> {
-                    val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
+                    val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE).apply {
+                        addFlags(
+                            Intent.FLAG_GRANT_READ_URI_PERMISSION or
+                                Intent.FLAG_GRANT_WRITE_URI_PERMISSION or
+                                Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION or
+                                Intent.FLAG_GRANT_PREFIX_URI_PERMISSION
+                        )
+                    }
                     startActivityForResult(intent, REQUEST_CODE_OPEN_TREE, result)
                 }
                 "rename" -> {
