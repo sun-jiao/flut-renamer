@@ -118,7 +118,7 @@ class FileMetadata {
             ? _photoDateValue()
             : _formatDate(value, dateFormat);
       case 'Photo:Time':
-        final value = _parsePhotoDate();
+        final value = _parsePhotoDateTime();
         return value == null
             ? _photoTimeValue()
             : _formatTime(value, dateFormat);
@@ -223,6 +223,13 @@ class FileMetadata {
     return DateFormat('yyyy:MM:dd').tryParseStrict(value) ??
         DateFormat('yyyy-MM-dd').tryParseStrict(value) ??
         DateFormat('yyyy/MM/dd').tryParseStrict(value);
+  }
+
+  DateTime? _parsePhotoDateTime() {
+    final value = _photoTimeValue();
+    return DateFormat('yyyy:MM:dd HH:mm:ss').tryParseStrict(value) ??
+        DateFormat('yyyy-MM-dd HH:mm:ss').tryParseStrict(value) ??
+        DateFormat('yyyy/MM/dd HH:mm:ss').tryParseStrict(value);
   }
 
   String _getLatLng(IfdTag? coordTag, IfdTag? refTag) {
