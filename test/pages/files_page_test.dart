@@ -210,4 +210,52 @@ void main() {
     expect(await sortAndCount(dependsOnFileOrder: false), 1);
     expect(await sortAndCount(dependsOnFileOrder: true), 2);
   });
+
+  testWidgets('renames only selected files and retains list entries on request',
+      (tester) async {
+    final directory = await Directory.systemTemp.createTemp('files_rename_');
+    addTearDown(() => directory.delete(recursive: true));
+    final selected = File('${directory.path}/selected.txt');
+    final untouched = File('${directory.path}/untouched.txt');
+    await selected.writeAsString('selected');
+    await untouched.writeAsString('untouched');
+    final selectedEntity = FileEntity(selected)..selected = true;
+    final untouchedEntity = FileEntity(untouched);
+    final key = GlobalKey<FilesPageState>();
+    FilesPage.addFiles([selectedEntity, untouchedEntity]);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: ThemeData(
+          extensions: <ThemeExtension<dynamic>>[
+            FileListColors(
+              primaryColor: Colors.white,
+              secondaryColor: Colors.grey.shade100,
+            ),
+          ],
+        ),
+        home: Scaffold(
+          body: FilesPage(
+            key: key,
+            getNewName: (name, FileMetadata _) => 'renamed-$name',
+            clearRules: () {},
+            resetRules: () {},
+            dependsOnFileOrder: () => false,
+            requiresMetadata: () => false,
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+
+    await tester.runAsync(
+      () => key.currentState!.renameFiles(remove: false, onlySelected: true),
+    );
+    await tester.pump();
+
+    expect(await File('${directory.path}/renamed-selected.txt').readAsString(),
+        'selected');
+    expect(await untouched.readAsString(), 'untouched');
+    expect(find.text('renamed-selected.txt'), findsOneWidget);
+  });
 }

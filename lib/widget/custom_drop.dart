@@ -36,7 +36,14 @@ class CustomDrop<T> extends StatelessWidget {
             final text = tToStr.call(tValue);
             return DropdownMenuItem<T>(
               value: tValue,
-              child: Text(text, semanticsLabel: text + semanticsAppendix,),
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 350),
+                child: Text(
+                  text,
+                  overflow: TextOverflow.ellipsis,
+                  semanticsLabel: text + semanticsAppendix,
+                ),
+              ),
             );
           }).toList(),
         ),

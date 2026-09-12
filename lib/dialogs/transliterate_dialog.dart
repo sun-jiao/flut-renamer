@@ -7,7 +7,9 @@ import 'package:cyrtranslit/cyrtranslit.dart' as cyrtranslit;
 
 import '../rules/rule.dart';
 
-void showTransliterateDialog(BuildContext context, Function(Rule) onSave, [RuleTransliterate? rule]) => showDialog(
+void showTransliterateDialog(BuildContext context, Function(Rule) onSave,
+        [RuleTransliterate? rule]) =>
+    showDialog(
       context: context,
       builder: (context) => TransliterateDialog(
         onSave: onSave,
@@ -49,16 +51,20 @@ class _TransliterateDialogState extends State<TransliterateDialog> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(L10n.current.descriptionTransliterate),
-            CustomDrop<Transliterate>(
-              value: type,
-              onChanged: (Transliterate? newValue) {
-                setState(() {
-                  type = newValue!;
-                });
-              },
-              items: Transliterate.values,
+            SizedBox(
+              width: double.infinity,
+              child: CustomDrop<Transliterate>(
+                value: type,
+                onChanged: (Transliterate? newValue) {
+                  setState(() {
+                    type = newValue!;
+                  });
+                },
+                items: Transliterate.values,
+              ),
             ),
-            if ([Transliterate.cyrillic2Latin, Transliterate.latin2Cyrillic].contains(type))
+            if ([Transliterate.cyrillic2Latin, Transliterate.latin2Cyrillic]
+                .contains(type))
               Row(
                 children: [
                   Text(L10n.current.language),
@@ -69,7 +75,10 @@ class _TransliterateDialogState extends State<TransliterateDialog> {
                         langCode = newValue;
                       });
                     },
-                    items: cyrtranslit.supported().map((e) => e.toString()).toList(),
+                    items: cyrtranslit
+                        .supported()
+                        .map((e) => e.toString())
+                        .toList(),
                     tToStr: (e) => RuleTransliterate.langCodeMap[e]!,
                   ),
                 ],

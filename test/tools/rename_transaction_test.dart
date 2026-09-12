@@ -93,6 +93,37 @@ void main() {
     expect(result.entities.map((file) => file.path), [second.path, first.path]);
   });
 
+  test('uses temporary names for a three-file rename cycle', () async {
+    final first = File('${temporaryDirectory.path}/first.txt');
+    final second = File('${temporaryDirectory.path}/second.txt');
+    final third = File('${temporaryDirectory.path}/third.txt');
+    await first.writeAsString('first');
+    await second.writeAsString('second');
+    await third.writeAsString('third');
+    final files = [
+      FileEntity(first, newName: 'second.txt'),
+      FileEntity(second, newName: 'third.txt'),
+      FileEntity(third, newName: 'first.txt'),
+    ];
+
+    final result = await commitRenameTransaction(
+      files,
+      operation: (file, _) async => FileEntity(
+        await file.entity.rename(file.newPath),
+      ),
+    );
+
+    expect(result.succeeded, isTrue);
+    expect(await first.readAsString(), 'third');
+    expect(await second.readAsString(), 'first');
+    expect(await third.readAsString(), 'second');
+    expect(result.entities.map((file) => file.path), [
+      second.path,
+      third.path,
+      first.path,
+    ]);
+  });
+
   test('renames a selected child before its directory ancestor', () async {
     final directory = Directory('${temporaryDirectory.path}/folder');
     await directory.create();
@@ -110,7 +141,8 @@ void main() {
       ),
     );
 
-    final renamedDirectory = Directory('${temporaryDirectory.path}/renamed-folder');
+    final renamedDirectory =
+        Directory('${temporaryDirectory.path}/renamed-folder');
     final renamedChild = File('${renamedDirectory.path}/b.txt');
     expect(result.succeeded, isTrue);
     expect(await renamedChild.readAsString(), 'contents');

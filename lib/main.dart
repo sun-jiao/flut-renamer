@@ -46,15 +46,19 @@ void main([List<String> arguments = const []]) async {
 }
 
 class RenamerApp extends StatelessWidget {
-  const RenamerApp({super.key});
+  const RenamerApp({super.key, this.locale});
+
+  /// Allows tests and embedding hosts to provide a deterministic locale.
+  final Locale? locale;
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final appLocale = locale ?? _appLocale;
     return MaterialApp(
       title: L10n.current.appName,
       themeMode: ThemeMode.system,
-      locale: _appLocale,
+      locale: appLocale,
       debugShowCheckedModeBanner: false,
 
       /// The following code should automatically set the right direction for
@@ -86,7 +90,9 @@ class RenamerApp extends StatelessWidget {
       ],
       theme: ThemeData(
         // fixed Chinese font rendering error on Windows
-        fontFamily: (Platform.isWindows && _appLocale.languageCode == "zh") ? "微软雅黑" : null,
+        fontFamily: (Platform.isWindows && appLocale.languageCode == "zh")
+            ? "微软雅黑"
+            : null,
         colorScheme: ColorScheme.fromSeed(
           brightness: Brightness.light,
           seedColor: const Color(0xff9cdce8),
@@ -102,7 +108,9 @@ class RenamerApp extends StatelessWidget {
       ),
       darkTheme: ThemeData(
         // fixed Chinese font rendering error on Windows
-        fontFamily: (Platform.isWindows && _appLocale.languageCode == "zh") ? "微软雅黑" : null,
+        fontFamily: (Platform.isWindows && appLocale.languageCode == "zh")
+            ? "微软雅黑"
+            : null,
         colorScheme: ColorScheme.fromSeed(
           brightness: Brightness.dark,
           seedColor: const Color(0xff26546e),
@@ -117,7 +125,7 @@ class RenamerApp extends StatelessWidget {
         ],
       ),
       home: Directionality(
-        textDirection: Bidi.isRtlLanguage(_appLocale.languageCode)
+        textDirection: Bidi.isRtlLanguage(appLocale.languageCode)
             ? TextDirection.rtl
             : TextDirection.ltr,
         child: const AppPage(),

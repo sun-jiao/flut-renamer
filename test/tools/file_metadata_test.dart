@@ -82,6 +82,47 @@ void main() {
     await Future.wait([first, second]);
     expect(entity.metadata!.inited, isTrue);
   });
+
+  test('returns filesystem values, stable md5, and empty missing tags',
+      () async {
+    final directory =
+        await Directory.systemTemp.createTemp('renamer_metadata_values_');
+    addTearDown(() => directory.delete(recursive: true));
+    final file = File('${directory.path}/sample.txt');
+    await file.writeAsString('12345');
+    final metadata = FileMetadata(file);
+    await metadata.init();
+
+    expect(metadata.getByName('File:Size'), '5.00Bytes');
+    expect(metadata.getByName('Photo:CamName'), isEmpty);
+    expect(metadata.getByName('Unknown:Tag'), isEmpty);
+    expect(await metadata.md5, matches(RegExp(r'^[a-f0-9]{32}$')));
+    expect(await metadata.md5, await metadata.md5);
+  });
+
+  test('initializes directories without trying to parse media content',
+      () async {
+    final directory =
+        await Directory.systemTemp.createTemp('renamer_metadata_directory_');
+    addTearDown(() => directory.delete(recursive: true));
+    final metadata = FileMetadata(directory);
+    await metadata.init();
+
+    expect(metadata.inited, isTrue);
+    expect(
+        metadata.getByName('File:Size'), matches(RegExp(r'^\d+\.\d{2}Bytes$')));
+  });
+
+  test('formats each short duration branch', () {
+    expect(FileMetadata.formatDuration(null), isNull);
+    expect(
+        FileMetadata.formatDuration(const Duration(milliseconds: 25)), '25ms');
+    expect(FileMetadata.formatDuration(const Duration(seconds: 5)), '05.00sec');
+    expect(
+      FileMetadata.formatDuration(const Duration(minutes: 2, seconds: 5)),
+      '02:05.00',
+    );
+  });
 }
 
 const _jpegWithExifTimestamp = <int>[

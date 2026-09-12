@@ -60,51 +60,10 @@ class MetadataDialog extends StatelessWidget {
   ];
 
   Future<int?> _selectRandomStringLength(BuildContext context) async {
-    final formKey = GlobalKey<FormState>();
-    final controller = TextEditingController(text: '8');
-    final length = await showDialog<int>(
+    return showDialog<int>(
       context: context,
-      builder: (context) => CustomDialog(
-        title: Text(L10n.current.insertRandomString),
-        content: Form(
-          key: formKey,
-          child: TextFormField(
-            controller: controller,
-            autofocus: true,
-            keyboardType: TextInputType.number,
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            decoration: InputDecoration(
-              labelText: L10n.current.randomStringLength,
-              hintText: L10n.current.randomStringLengthHint,
-            ),
-            validator: (value) {
-              final parsedLength = int.tryParse(value ?? '');
-              return parsedLength == null ||
-                      parsedLength < 1 ||
-                      parsedLength > 32
-                  ? L10n.current.randomStringLengthError
-                  : null;
-            },
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(L10n.current.cancel),
-          ),
-          TextButton(
-            onPressed: () {
-              if (formKey.currentState!.validate()) {
-                Navigator.pop(context, int.parse(controller.text));
-              }
-            },
-            child: Text(L10n.current.add),
-          ),
-        ],
-      ),
+      builder: (_) => const _RandomStringLengthDialog(),
     );
-    controller.dispose();
-    return length;
   }
 
   @override
@@ -140,4 +99,63 @@ class MetadataDialog extends StatelessWidget {
       ),
     );
   }
+}
+
+class _RandomStringLengthDialog extends StatefulWidget {
+  const _RandomStringLengthDialog();
+
+  @override
+  State<_RandomStringLengthDialog> createState() =>
+      _RandomStringLengthDialogState();
+}
+
+class _RandomStringLengthDialogState extends State<_RandomStringLengthDialog> {
+  final _formKey = GlobalKey<FormState>();
+  final _controller = TextEditingController(text: '8');
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => CustomDialog(
+        title: Text(L10n.current.insertRandomString),
+        content: Form(
+          key: _formKey,
+          child: TextFormField(
+            controller: _controller,
+            autofocus: true,
+            keyboardType: TextInputType.number,
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            decoration: InputDecoration(
+              labelText: L10n.current.randomStringLength,
+              hintText: L10n.current.randomStringLengthHint,
+            ),
+            validator: (value) {
+              final parsedLength = int.tryParse(value ?? '');
+              return parsedLength == null ||
+                      parsedLength < 1 ||
+                      parsedLength > 32
+                  ? L10n.current.randomStringLengthError
+                  : null;
+            },
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(L10n.current.cancel),
+          ),
+          TextButton(
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                Navigator.pop(context, int.parse(_controller.text));
+              }
+            },
+            child: Text(L10n.current.add),
+          ),
+        ],
+      );
 }

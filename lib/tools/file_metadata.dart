@@ -70,7 +70,6 @@ class FileMetadata {
   static const defaultDateFormat = 'yyyy-MM-dd';
   static const dateFormats = <String>[
     defaultDateFormat,
-    'yyyy-MM-dd',
     'yyyy_MM_dd',
     'yyyyMMdd',
     'yyyy-MMM-dd',

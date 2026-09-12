@@ -11,7 +11,16 @@ class CustomDialog extends StatelessWidget {
     return AlertDialog(
       semanticLabel: '',
       title: title,
-      actions: actions,
+      actions: actions == null
+          ? null
+          : [
+              Wrap(
+                alignment: WrapAlignment.end,
+                spacing: 8,
+                runSpacing: 4,
+                children: actions!,
+              ),
+            ],
       content: Container(
         constraints: const BoxConstraints(minWidth: 200, maxWidth: 400),
         child: content,

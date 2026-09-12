@@ -47,6 +47,12 @@ void main() {
         'clip1000000000000000000000000000000000000',
       ]);
     });
+
+    test('is case-insensitive while preserving a deterministic short-name tie',
+        () {
+      expect(compareNaturally('PHOTO2', 'photo10'), lessThan(0));
+      expect(compareNaturally('file', 'file1'), lessThan(0));
+    });
   });
 
   group('file metadata sorting', () {
@@ -81,6 +87,23 @@ void main() {
       await preloadFileSortMetadata([newer, older]);
 
       expect(compareFiles(newer, older, FileSortField.date), greaterThan(0));
+    });
+
+    test('falls back to names when metadata has not been preloaded', () {
+      final zeta = FileEntity(File('${directory.path}/zeta.txt'));
+      final alpha = FileEntity(File('${directory.path}/alpha.txt'));
+
+      expect(compareFiles(zeta, alpha, FileSortField.size), greaterThan(0));
+      expect(compareFiles(zeta, alpha, FileSortField.date), greaterThan(0));
+    });
+
+    test('sorts by extension and then by full file name', () {
+      final first = FileEntity(File('${directory.path}/zeta.jpg'));
+      final second = FileEntity(File('${directory.path}/alpha.jpg'));
+      final third = FileEntity(File('${directory.path}/photo.png'));
+
+      expect(compareFiles(first, third, FileSortField.type), lessThan(0));
+      expect(compareFiles(first, second, FileSortField.type), greaterThan(0));
     });
   });
 }

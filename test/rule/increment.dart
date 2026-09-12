@@ -40,6 +40,16 @@ void main() {
     expect(await rule.newName('second.jpg'), 'Photo-10000.jpg');
   });
 
+  test('supports negative steps, no separator, and resetting the sequence',
+      () async {
+    final rule = RuleIncrement('img', 3, -2, true, false);
+
+    expect(await rule.newName('first.jpg'), 'img3');
+    expect(await rule.newName('second.jpg'), 'img1');
+    rule.indexReset();
+    expect(await rule.newName('third.jpg'), 'img3');
+  });
+
   testWidgets(
       'saves a number of digits chosen independently of the start index',
       (tester) async {

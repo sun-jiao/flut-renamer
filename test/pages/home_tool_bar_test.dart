@@ -35,9 +35,11 @@ void main() {
       ),
     );
 
-    await tester.tap(
-      find.widgetWithText(FilterChip, L10n.current.onlySelected),
-    );
+    final onlySelectedChip =
+        find.widgetWithText(FilterChip, L10n.current.onlySelected);
+    await tester.drag(find.byType(ListView), const Offset(-300, 0));
+    await tester.pumpAndSettle();
+    await tester.tap(onlySelectedChip);
     await tester.pump();
     expect(onlySelected, isTrue);
 
@@ -52,5 +54,34 @@ void main() {
     );
     await tester.pump();
     expect(removeRules, isTrue);
+  });
+
+  testWidgets('expands and collapses mobile options', (tester) async {
+    tester.view.physicalSize = const Size(360, 800);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          bottomNavigationBar: HomeToolBar(
+            onlySelectedCallback: (_) {},
+            onlySelectedValue: () => false,
+            removeRenamedCallback: (_) {},
+            removeRenamedValue: () => true,
+            removeRulesCallback: (_) {},
+            removeRulesValue: () => false,
+          ),
+        ),
+      ),
+    );
+
+    expect(find.text(L10n.current.onlySelected), findsNothing);
+    await tester.tap(find.byTooltip(L10n.current.expandOptions));
+    await tester.pump();
+    expect(find.text(L10n.current.onlySelected), findsOneWidget);
+
+    await tester.tap(find.byTooltip(L10n.current.collapseOptions));
+    await tester.pump();
+    expect(find.text(L10n.current.onlySelected), findsNothing);
   });
 }

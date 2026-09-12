@@ -109,6 +109,37 @@ void main() {
     expect((restored.single as RuleInsert).dateFormat, 'yyyy.MM.dd');
   });
 
+  test('round-trips a complete ordered rule set through YAML', () async {
+    final directory =
+        await Directory.systemTemp.createTemp('renamer_rules_round_trip_');
+    addTearDown(() => directory.delete(recursive: true));
+    final yamlFile = File('${directory.path}/rules.yaml');
+    final rules = <Rule>[
+      RuleReplace('old', 'new', 2, false, true, false, true),
+      RuleRemove('remove', 1, true, false, false),
+      RuleInsert('prefix', 3, false, false, true),
+      RuleIncrement('image', 4, 2, false, true, minimumDigits: 3),
+      RuleRearrange('-', [2, 1], true),
+      RuleTransliterate(Transliterate.pinyin),
+      RuleTruncate(1, 4, false, false, true, true),
+    ];
+
+    await RulePersistence.saveRules(rules, targetFile: yamlFile);
+    final restored = await RulePersistence.loadRules(sourceFile: yamlFile);
+
+    expect(restored.map((rule) => rule.runtimeType), [
+      RuleReplace,
+      RuleRemove,
+      RuleInsert,
+      RuleIncrement,
+      RuleRearrange,
+      RuleTransliterate,
+      RuleTruncate,
+    ]);
+    expect(restored.map((rule) => rule.toMap()),
+        rules.map((rule) => rule.toMap()));
+  });
+
   test('ignores malformed YAML rule files', () async {
     final directory =
         await Directory.systemTemp.createTemp('renamer_invalid_rules_');
