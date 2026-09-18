@@ -42,16 +42,24 @@ void main() {
   test('keeps only the two newest archived logs', () async {
     for (var index = 0; index < 4; index++) {
       await logger.logRename(
-          'old-path-$index-that-fills-the-log', 'new-$index');
+        'old-path-$index-that-fills-the-log',
+        'new-$index',
+      );
     }
 
     final logDirectory = Directory('${temporaryDirectory.path}/logs');
     expect(
-        await File('${logDirectory.path}/renamer_log.1.txt').exists(), isTrue);
+      await File('${logDirectory.path}/renamer_log.1.txt').exists(),
+      isTrue,
+    );
     expect(
-        await File('${logDirectory.path}/renamer_log.2.txt').exists(), isTrue);
+      await File('${logDirectory.path}/renamer_log.2.txt').exists(),
+      isTrue,
+    );
     expect(
-        await File('${logDirectory.path}/renamer_log.3.txt').exists(), isFalse);
+      await File('${logDirectory.path}/renamer_log.3.txt').exists(),
+      isFalse,
+    );
     expect(await logger.getLogPath(), '${logDirectory.path}/renamer_log.txt');
   });
 }

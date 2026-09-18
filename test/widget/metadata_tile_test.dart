@@ -17,14 +17,16 @@ void main() {
       controller.dispose();
       usesMetadata.dispose();
     });
-    await tester.pumpWidget(MaterialApp(
-      home: Scaffold(
-        body: MetadataTile(
-          textController: controller,
-          withMetadata: usesMetadata,
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: MetadataTile(
+            textController: controller,
+            withMetadata: usesMetadata,
+          ),
         ),
       ),
-    ));
+    );
 
     await tester.tap(find.byType(Checkbox));
     await tester.pump();

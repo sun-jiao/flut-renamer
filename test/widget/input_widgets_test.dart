@@ -14,19 +14,23 @@ void main() {
       'date format dropdown presents unique formats and notifies changes',
       (tester) async {
     var selected = FileMetadata.defaultDateFormat;
-    await tester.pumpWidget(MaterialApp(
-      home: Scaffold(
-        body: StatefulBuilder(
-          builder: (context, setState) => DateFormatDropdown(
-            value: selected,
-            onChanged: (value) => setState(() => selected = value),
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: StatefulBuilder(
+            builder: (context, setState) => DateFormatDropdown(
+              value: selected,
+              onChanged: (value) => setState(() => selected = value),
+            ),
           ),
         ),
       ),
-    ));
+    );
 
-    expect(FileMetadata.dateFormats.toSet(),
-        hasLength(FileMetadata.dateFormats.length));
+    expect(
+      FileMetadata.dateFormats.toSet(),
+      hasLength(FileMetadata.dateFormats.length),
+    );
     await tester.tap(find.byType(DropdownButtonFormField<String>));
     await tester.pumpAndSettle();
     await tester.tap(find.text('yyyyMMdd').last);
@@ -43,15 +47,17 @@ void main() {
       controller.dispose();
       toEnd.dispose();
     });
-    await tester.pumpWidget(MaterialApp(
-      home: Scaffold(
-        body: DirectionTextField(
-          con: controller,
-          toEnd: toEnd,
-          labelText: 'Position',
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: DirectionTextField(
+            con: controller,
+            toEnd: toEnd,
+            labelText: 'Position',
+          ),
         ),
       ),
-    ));
+    );
 
     await tester.enterText(find.byType(TextFormField), '12abc');
     expect(controller.text, '12');

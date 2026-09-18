@@ -12,17 +12,19 @@ void main() {
   testWidgets('metadata dialog validates and inserts a random-string tag',
       (tester) async {
     String? inserted;
-    await tester.pumpWidget(MaterialApp(
-      home: Scaffold(
-        body: Builder(
-          builder: (context) => TextButton(
-            onPressed: () =>
-                showMetadataDialog(context, (tag) => inserted = tag),
-            child: const Text('open'),
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: Builder(
+            builder: (context) => TextButton(
+              onPressed: () =>
+                  showMetadataDialog(context, (tag) => inserted = tag),
+              child: const Text('open'),
+            ),
           ),
         ),
       ),
-    ));
+    );
 
     await tester.tap(find.text('open'));
     await tester.pumpAndSettle();
@@ -45,16 +47,18 @@ void main() {
       ..selection = const TextSelection.collapsed(offset: 7);
     addTearDown(controller.dispose);
     late BuildContext context;
-    await tester.pumpWidget(MaterialApp(
-      home: Scaffold(
-        body: Builder(
-          builder: (value) {
-            context = value;
-            return TextField(controller: controller);
-          },
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: Builder(
+            builder: (value) {
+              context = value;
+              return TextField(controller: controller);
+            },
+          ),
         ),
       ),
-    ));
+    );
 
     controller.insertTag('{File:Size}', context);
     expect(controller.text, 'before-{File:Size}after');

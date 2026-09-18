@@ -110,13 +110,17 @@ void main() {
 
     expect(metadata.inited, isTrue);
     expect(
-        metadata.getByName('File:Size'), matches(RegExp(r'^\d+\.\d{2}Bytes$')));
+      metadata.getByName('File:Size'),
+      matches(RegExp(r'^\d+\.\d{2}Bytes$')),
+    );
   });
 
   test('formats each short duration branch', () {
     expect(FileMetadata.formatDuration(null), isNull);
     expect(
-        FileMetadata.formatDuration(const Duration(milliseconds: 25)), '25ms');
+      FileMetadata.formatDuration(const Duration(milliseconds: 25)),
+      '25ms',
+    );
     expect(FileMetadata.formatDuration(const Duration(seconds: 5)), '05.00sec');
     expect(
       FileMetadata.formatDuration(const Duration(minutes: 2, seconds: 5)),

@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:flut_renamer/tools/platform_channel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -76,10 +74,11 @@ void main() {
       () async {
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(pickerChannel, (call) async {
-      if (call.method == 'dirAccess')
+      if (call.method == 'dirAccess') {
         return {
-          'paths': <Object>['/tmp/a', 3]
+          'paths': <Object>['/tmp/a', 3],
         };
+      }
       return null;
     });
     expect(await PlatformFilePicker.dirAccess(), ['/tmp/a']);
@@ -98,11 +97,11 @@ void main() {
       switch (call.method) {
         case 'requestMediaWritePermission':
           expect(call.arguments, {
-            'uris': ['one', 'two']
+            'uris': ['one', 'two'],
           });
           return {
             'candidates': ['one', 'one'],
-            'approved': ['two']
+            'approved': ['two'],
           };
         case 'getMetaData':
           return {'size': 12};
@@ -120,9 +119,13 @@ void main() {
     expect(permission.approved, {'two'});
     expect(await PlatformFilePicker.getMetaData('uri'), {'size': 12});
     expect(
-        await PlatformFilePicker.readFile('uri'), Uint8List.fromList([1, 2]));
+      await PlatformFilePicker.readFile('uri'),
+      Uint8List.fromList([1, 2]),
+    );
     expect(
-        await PlatformFilePicker.getEmbeddedMetadata('uri'), {'artist': '4'});
+      await PlatformFilePicker.getEmbeddedMetadata('uri'),
+      {'artist': '4'},
+    );
   });
 
   test('uses safe empty values when optional native calls fail', () async {
@@ -149,7 +152,9 @@ void main() {
         .setMockMethodCallHandler(pickerChannel, (call) async {
       if (call.method == 'changeScopedAccess') {
         expect(
-            call.arguments, {'targetPath': '/tmp/folder', 'startOrEnd': true});
+          call.arguments,
+          {'targetPath': '/tmp/folder', 'startOrEnd': true},
+        );
         return true;
       }
       if (call.method == 'rename') {
@@ -159,8 +164,10 @@ void main() {
       return null;
     });
 
-    expect(await PlatformFilePicker.changeScopedAccess('/tmp/folder', true),
-        isTrue);
+    expect(
+      await PlatformFilePicker.changeScopedAccess('/tmp/folder', true),
+      isTrue,
+    );
     expect(
       await PlatformFilePicker.rename('content://item', 'new.jpg'),
       'content://renamed-item',

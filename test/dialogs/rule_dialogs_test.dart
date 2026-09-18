@@ -19,10 +19,14 @@ void main() {
   testWidgets('ReplaceDialog saves edited options into a replace rule',
       (tester) async {
     RuleReplace? saved;
-    await tester.pumpWidget(host(ReplaceDialog(
-      remove: false,
-      onSave: (rule) => saved = rule as RuleReplace,
-    )));
+    await tester.pumpWidget(
+      host(
+        ReplaceDialog(
+          remove: false,
+          onSave: (rule) => saved = rule as RuleReplace,
+        ),
+      ),
+    );
 
     final fields = find.byType(TextFormField);
     await tester.enterText(fields.at(0), 'old');
@@ -48,15 +52,21 @@ void main() {
       (tester) async {
     RuleRemove? saved;
     final existing = RuleRemove('draft', -3, true, true, false);
-    await tester.pumpWidget(host(ReplaceDialog(
-      remove: true,
-      rule: existing.ruleReplace,
-      onSave: (rule) => saved = rule as RuleRemove,
-    )));
+    await tester.pumpWidget(
+      host(
+        ReplaceDialog(
+          remove: true,
+          rule: existing.ruleReplace,
+          onSave: (rule) => saved = rule as RuleRemove,
+        ),
+      ),
+    );
 
     final fields = find.byType(TextFormField);
     expect(
-        tester.widget<TextFormField>(fields.at(0)).controller!.text, 'draft');
+      tester.widget<TextFormField>(fields.at(0)).controller!.text,
+      'draft',
+    );
     expect(tester.widget<TextFormField>(fields.at(1)).controller!.text, '3');
     await tester.enterText(fields.at(0), 'tmp');
     await tester.enterText(fields.at(1), '2');
@@ -73,15 +83,21 @@ void main() {
   testWidgets('RearrangeDialog restores an existing rule and saves edits',
       (tester) async {
     RuleRearrange? saved;
-    await tester.pumpWidget(host(RearrangeDialog(
-      rule: RuleRearrange('-', [3, 2, 1], true),
-      onSave: (rule) => saved = rule as RuleRearrange,
-    )));
+    await tester.pumpWidget(
+      host(
+        RearrangeDialog(
+          rule: RuleRearrange('-', [3, 2, 1], true),
+          onSave: (rule) => saved = rule as RuleRearrange,
+        ),
+      ),
+    );
 
     final fields = find.byType(TextFormField);
     expect(tester.widget<TextFormField>(fields.at(0)).controller!.text, '-');
     expect(
-        tester.widget<TextFormField>(fields.at(1)).controller!.text, '3,2,1');
+      tester.widget<TextFormField>(fields.at(1)).controller!.text,
+      '3,2,1',
+    );
     await tester.enterText(fields.at(0), '_');
     await tester.enterText(fields.at(1), '2,1');
     await tester.tap(find.widgetWithText(TextButton, L10n.current.add));
@@ -95,10 +111,14 @@ void main() {
   testWidgets(
       'ReplaceDialog exposes one valid date-format selector for metadata',
       (tester) async {
-    await tester.pumpWidget(host(const ReplaceDialog(
-      remove: false,
-      onSave: _ignoreRule,
-    )));
+    await tester.pumpWidget(
+      host(
+        const ReplaceDialog(
+          remove: false,
+          onSave: _ignoreRule,
+        ),
+      ),
+    );
 
     final metadata = find.byType(Checkbox).at(1);
     await tester.ensureVisible(metadata);
@@ -111,10 +131,14 @@ void main() {
   testWidgets('InsertDialog saves text, index, and existing options',
       (tester) async {
     RuleInsert? saved;
-    await tester.pumpWidget(host(InsertDialog(
-      rule: RuleInsert('old', 3, true, false, false),
-      onSave: (rule) => saved = rule as RuleInsert,
-    )));
+    await tester.pumpWidget(
+      host(
+        InsertDialog(
+          rule: RuleInsert('old', 3, true, false, false),
+          onSave: (rule) => saved = rule as RuleInsert,
+        ),
+      ),
+    );
 
     final fields = find.byType(TextFormField);
     expect(tester.widget<TextFormField>(fields.at(0)).controller!.text, 'old');
@@ -131,10 +155,14 @@ void main() {
 
   testWidgets('TruncateDialog saves restored range settings', (tester) async {
     RuleTruncate? saved;
-    await tester.pumpWidget(host(TruncateDialog(
-      rule: RuleTruncate(2, 4, true, false, false, false),
-      onSave: (rule) => saved = rule as RuleTruncate,
-    )));
+    await tester.pumpWidget(
+      host(
+        TruncateDialog(
+          rule: RuleTruncate(2, 4, true, false, false, false),
+          onSave: (rule) => saved = rule as RuleTruncate,
+        ),
+      ),
+    );
 
     final fields = find.byType(TextFormField);
     await tester.enterText(fields.at(0), '1');
@@ -152,10 +180,14 @@ void main() {
   testWidgets('TransliterateDialog restores and saves the selected type',
       (tester) async {
     RuleTransliterate? saved;
-    await tester.pumpWidget(host(TransliterateDialog(
-      rule: RuleTransliterate(Transliterate.pinyin),
-      onSave: (rule) => saved = rule as RuleTransliterate,
-    )));
+    await tester.pumpWidget(
+      host(
+        TransliterateDialog(
+          rule: RuleTransliterate(Transliterate.pinyin),
+          onSave: (rule) => saved = rule as RuleTransliterate,
+        ),
+      ),
+    );
 
     expect(find.text(L10n.current.transliteratePinyin), findsOneWidget);
     await tester.tap(find.widgetWithText(TextButton, L10n.current.add));

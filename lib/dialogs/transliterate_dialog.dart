@@ -7,8 +7,11 @@ import 'package:cyrtranslit/cyrtranslit.dart' as cyrtranslit;
 
 import '../rules/rule.dart';
 
-void showTransliterateDialog(BuildContext context, Function(Rule) onSave,
-        [RuleTransliterate? rule]) =>
+void showTransliterateDialog(
+  BuildContext context,
+  Function(Rule) onSave, [
+  RuleTransliterate? rule,
+]) =>
     showDialog(
       context: context,
       builder: (context) => TransliterateDialog(

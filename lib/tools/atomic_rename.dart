@@ -232,8 +232,12 @@ Future<FileSystemEntity> _moveFileExNoReplace(
 }
 
 int _readErrno(DynamicLibrary library) {
-  final symbol =
-      Platform.isLinux || Platform.isAndroid ? '__errno_location' : '__error';
+  // Android uses bionic (__errno), not glibc (__errno_location).
+  final symbol = Platform.isAndroid
+      ? '__errno'
+      : Platform.isLinux
+          ? '__errno_location'
+          : '__error';
   return library
       .lookupFunction<_ErrnoLocationNative, _ErrnoLocation>(symbol)()
       .value;

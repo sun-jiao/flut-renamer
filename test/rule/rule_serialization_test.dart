@@ -136,8 +136,10 @@ void main() {
       RuleTransliterate,
       RuleTruncate,
     ]);
-    expect(restored.map((rule) => rule.toMap()),
-        rules.map((rule) => rule.toMap()));
+    expect(
+      restored.map((rule) => rule.toMap()),
+      rules.map((rule) => rule.toMap()),
+    );
   });
 
   test('ignores malformed YAML rule files', () async {
