@@ -122,7 +122,7 @@ jobs:
         api: [29, 35]
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
-      - uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4
+      - uses: actions/setup-java@v6
         with:
           distribution: temurin
           java-version: '21'
