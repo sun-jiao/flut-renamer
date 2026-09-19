@@ -43,8 +43,12 @@ tasks.withType<KotlinCompile>().configureEach {
     }
 }
 
-configure<ApplicationExtension> {
+// Flutter reads this block to discover the package before an APK exists.
+android {
     namespace = "net.sunjiao.renamer"
+}
+
+configure<ApplicationExtension> {
     compileSdk = 37
     ndkVersion = flutter.ndkVersion
 

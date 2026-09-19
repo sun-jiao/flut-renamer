@@ -38,6 +38,8 @@ jobs:
         run: node --test tool/boot_ios_simulator_test.cjs
       - name: Test Android SDK installer
         run: node --test tool/install_android_sdk_test.cjs
+      - name: Test Android launch configuration
+        run: node --test tool/android_launch_config_test.cjs
 
   integration-linux:
     name: Linux integration test
