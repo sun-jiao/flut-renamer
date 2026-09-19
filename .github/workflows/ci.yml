@@ -171,22 +171,27 @@ jobs:
           channel: stable
           architecture: arm64
           flutter-version: ${{ env.FLUTTER_VERSION }}
-      - run: flutter pub get --enforce-lockfile
       - name: Keep the existing CocoaPods dependency manager
         # This project has custom Podfile logic. Avoid spending every clean CI
         # run auto-migrating an ephemeral checkout to Swift Package Manager.
         run: flutter config --no-enable-swift-package-manager
+      - run: flutter pub get --enforce-lockfile
       - name: Create and boot a disposable iPhone simulator
         run: node tool/boot_ios_simulator.cjs
       - name: Verify Flutter can see the booted simulator
         run: |
-          xcrun simctl list devices | tee integration-simulator-state.log
+          xcodebuild -version | tee integration-simulator-state.log
+          xcrun --sdk iphonesimulator --show-sdk-version | tee -a integration-simulator-state.log
+          xcrun simctl list devices | tee -a integration-simulator-state.log
           flutter devices --device-timeout 60 | tee -a integration-simulator-state.log
       - name: Run iOS integration tests (no signing secrets needed)
         env:
           # The timeout also covers compiling, installing, and connecting the
-          # integration-test host. A clean Xcode build regularly exceeds 2m.
-          RENAMER_TEST_TIMEOUT: 10m
+          # integration-test host. A clean Xcode build regularly exceeds 2m,
+          # but a launched app should expose its VM service well before 5m.
+          RENAMER_TEST_TIMEOUT: 5m
+          RENAMER_FLUTTER_VERBOSE: true
+          RENAMER_RETRY_IOS_STARTUP: true
         run: bash tool/integration_ci.sh "$RENAMER_SIMULATOR_ID" integration_test/platform_test.dart
       - name: Capture simulator diagnostics
         if: failure() && env.RENAMER_SIMULATOR_ID != ''
