@@ -1,0 +1,5 @@
+# Native integration suites compile, install, launch, and connect to a fresh
+# application host while the suite is still reported as "loading". A clean
+# Xcode build on GitHub-hosted macOS runners regularly takes more than two
+# minutes, so keep this separate from each test's own Timeout.
+suite_load_timeout: 10m

@@ -163,7 +163,7 @@ jobs:
   integration-ios:
     name: Integration / iOS simulator
     runs-on: macos-15
-    timeout-minutes: 40
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
       - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
@@ -172,9 +172,21 @@ jobs:
           architecture: arm64
           flutter-version: ${{ env.FLUTTER_VERSION }}
       - run: flutter pub get --enforce-lockfile
+      - name: Keep the existing CocoaPods dependency manager
+        # This project has custom Podfile logic. Avoid spending every clean CI
+        # run auto-migrating an ephemeral checkout to Swift Package Manager.
+        run: flutter config --no-enable-swift-package-manager
       - name: Create and boot a disposable iPhone simulator
         run: node tool/boot_ios_simulator.cjs
+      - name: Verify Flutter can see the booted simulator
+        run: |
+          xcrun simctl list devices | tee integration-simulator-state.log
+          flutter devices --device-timeout 60 | tee -a integration-simulator-state.log
       - name: Run iOS integration tests (no signing secrets needed)
+        env:
+          # The timeout also covers compiling, installing, and connecting the
+          # integration-test host. A clean Xcode build regularly exceeds 2m.
+          RENAMER_TEST_TIMEOUT: 10m
         run: bash tool/integration_ci.sh "$RENAMER_SIMULATOR_ID" integration_test/platform_test.dart
       - name: Capture simulator diagnostics
         if: failure() && env.RENAMER_SIMULATOR_ID != ''

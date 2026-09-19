@@ -9,9 +9,10 @@ if [[ "${GITHUB_ACTIONS:-}" != true || "${RUNNER_ENVIRONMENT:-}" != github-hoste
 fi
 test_device=${1:?device ID is required}
 test_target=${2:?test entry point is required}
+test_timeout=${RENAMER_TEST_TIMEOUT:-10m}
 if [[ "$test_device" == emulator-* ]]; then
   trap 'adb -s "$test_device" logcat -d > integration-device.log 2>&1 || true' EXIT
 fi
 flutter test "$test_target" -d "$test_device" --no-pub \
-  --dart-define=RENAMER_CI_TESTS=true --timeout 2m --reporter expanded \
+  --dart-define=RENAMER_CI_TESTS=true --timeout "$test_timeout" --reporter expanded \
   2>&1 | tee integration-platform.log
