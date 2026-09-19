@@ -107,11 +107,18 @@ void main() {
       await f.addRule(makeRule());
       await f.until(() => source.newName == targetName);
       await f.tapRename();
-      await f.until(() => f.file(targetName).existsSync());
+      // existsSync is already true before a case-only rename on NTFS/APFS.
+      await f.until(
+        () => f.root
+            .listSync()
+            .any((entity) => p.basename(entity.path) == targetName),
+      );
       expect(f.file(targetName).readAsStringSync(), 'payload-$label');
       // APFS/NTFS can resolve the old spelling after a case-only rename.
-      expect(f.root.listSync().map((e) => p.basename(e.path)),
-          isNot(contains(sourceName)),);
+      expect(
+        f.root.listSync().map((e) => p.basename(e.path)),
+        isNot(contains(sourceName)),
+      );
       expect(find.text(targetName), findsWidgets);
     });
   }
@@ -535,7 +542,7 @@ class Fixture {
   RulesPageState get rules => tester.state(find.byType(RulesPage));
   Finder inFiles(Finder finder) =>
       find.descendant(of: find.byType(FilesPage), matching: finder);
-  File file(String name) => File(p.join(root.path, name));
+  File file(String name) => File(p.normalize(p.join(root.path, name)));
 
   Future<void> start() async {
     root = Directory.systemTemp.createTempSync('case-');
@@ -590,6 +597,7 @@ class Fixture {
   }
 
   Future<void> close() async {
+    await Logger().flush();
     if (find.byType(FilesPage).evaluate().isNotEmpty) {
       await tester.tap(inFiles(find.byTooltip(L10n.current.removeAll)));
       await tester.tap(

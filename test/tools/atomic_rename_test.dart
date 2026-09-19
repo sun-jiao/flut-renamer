@@ -32,9 +32,35 @@ void main() {
 
     await expectLater(
       atomicRenameNoReplace(source, destination.path),
-      throwsA(isA<FileSystemException>()),
+      throwsA(
+        isA<FileSystemException>().having(
+          (e) => e.osError?.errorCode,
+          'OS error code',
+          greaterThan(0),
+        ),
+      ),
     );
     expect(await source.readAsString(), 'source');
     expect(await destination.readAsString(), 'destination');
+  });
+
+  test('missing source retains the native error code on repeated calls',
+      () async {
+    for (var index = 0; index < 3; index++) {
+      await expectLater(
+        atomicRenameNoReplace(
+          File('${directory.path}/missing'),
+          '${directory.path}/target',
+        ),
+        throwsA(
+          isA<FileSystemException>().having(
+            (e) => e.osError?.errorCode,
+            'OS error code',
+            greaterThan(0),
+          ),
+        ),
+      );
+    }
+    expect(directory.listSync(), isEmpty);
   });
 }

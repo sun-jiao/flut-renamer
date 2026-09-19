@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flut_renamer/tools/logger.dart';
+import 'package:intl/intl.dart';
 
 void main() {
   late Directory temporaryDirectory;
@@ -14,6 +16,68 @@ void main() {
   });
 
   tearDown(() => temporaryDirectory.delete(recursive: true));
+
+  test('writes numeric timestamps without initialized locale data', () async {
+    final previous = Intl.defaultLocale;
+    Intl.defaultLocale = 'zz_ZZ';
+    try {
+      await logger.logRename('before', 'after');
+      expect(
+        await logger.readLogs(),
+        matches(
+          r'^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\] RENAME: "before" -> "after"\n$',
+        ),
+      );
+    } finally {
+      Intl.defaultLocale = previous;
+    }
+  });
+
+  test('readLogs waits for pending writes', () async {
+    final pending = logger.logRename('before', 'after');
+    expect(await logger.readLogs(), contains('"before" -> "after"'));
+    await pending;
+  });
+
+  test('failed write does not strand the queue across error zones', () async {
+    var fail = true;
+    final isolated = Logger.forTesting(() async {
+      if (fail) throw const FileSystemException('injected failure');
+      return temporaryDirectory;
+    });
+    final uncaught = <Object>[];
+    await runZonedGuarded(
+      () async {
+        await expectLater(
+          isolated.logRename('bad', 'bad'),
+          throwsA(isA<FileSystemException>()),
+        );
+      },
+      (error, stack) => uncaught.add(error),
+    );
+    fail = false;
+    await isolated
+        .logRename('good', 'after')
+        .timeout(const Duration(seconds: 2));
+    expect(await isolated.readLogs(), contains('"good" -> "after"'));
+    expect(uncaught, isEmpty);
+  });
+
+  test('failed queued write is reported and later writes still work', () async {
+    var fail = true;
+    final isolated = Logger.forTesting(() async {
+      if (fail) throw const FileSystemException('injected log failure');
+      return temporaryDirectory;
+    });
+    await expectLater(
+      isolated.logRename('bad', 'bad'),
+      throwsA(isA<FileSystemException>()),
+    );
+    await isolated.flush();
+    fail = false;
+    await isolated.logRename('good', 'after');
+    expect(await isolated.readLogs(), contains('"good" -> "after"'));
+  });
 
   test('rotates logs before they grow past the configured limit', () async {
     await logger.logRename('old-path-that-fills-the-log', 'new-path');

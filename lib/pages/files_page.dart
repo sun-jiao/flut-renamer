@@ -275,6 +275,9 @@ class FilesPageState extends State<FilesPage> {
           Platform.isAndroid && file.path.startsWith('content://');
       final targetExists =
           validateCollisions && !isAndroidUri && await File(newPath).exists();
+      final isSameSource = targetExists &&
+          _normalisedPath(file.path) == _normalisedPath(newPath) &&
+          await FileSystemEntity.identical(file.path, newPath);
       final isDuplicate = validateCollisions &&
           _files.any((other) => other != file && other.newPath == newPath);
 
@@ -283,7 +286,7 @@ class FilesPageState extends State<FilesPage> {
       file.newName = newName;
       if (validateCollisions &&
           newName != filename &&
-          (targetExists || isDuplicate)) {
+          ((targetExists && !isSameSource) || isDuplicate)) {
         file.error = L10n.current.fileAlreadyExists;
         return;
       }

@@ -17,6 +17,8 @@ class RulePersistence {
         rules.map((r) => r.toMap()).toList();
     final yamlWriter = YamlWriter();
     final yamlString = yamlWriter.write(ruleMaps);
+    // path_provider can return a cache path that has not been created yet.
+    await file.parent.create(recursive: true);
     await file.writeAsString(yamlString, encoding: utf8);
   }
 

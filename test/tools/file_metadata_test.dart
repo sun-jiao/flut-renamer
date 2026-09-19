@@ -111,8 +111,10 @@ void main() {
     expect(metadata.inited, isTrue);
     expect(
       metadata.getByName('File:Size'),
-      matches(RegExp(r'^\d+\.\d{2}Bytes$')),
+      // Directory stat sizes depend on the filesystem (e.g. 4096 on ext4).
+      matches(RegExp(r'^\d+\.\d{2}(Bytes|KB|MB|GB|TB|PB)$')),
     );
+    expect(metadata.getByName('Photo:CamName'), isEmpty);
   });
 
   test('formats each short duration branch', () {

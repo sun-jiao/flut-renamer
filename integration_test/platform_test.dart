@@ -25,17 +25,22 @@ import 'support/environment.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   late Directory root;
-  File file(String name) => File(p.join(root.path, name));
+  File file(String name) => File(p.normalize(p.join(root.path, name)));
   setUpAll(() async {
     await requireTestEnvironment();
     await L10n.load(const Locale('en'));
     await Shared.init();
   });
   setUp(() async {
-    root = await (await getTemporaryDirectory()).createTemp('platform-case-');
-  });
-  tearDown(() async {
-    if (await root.exists()) await root.delete(recursive: true);
+    final temporary = await getTemporaryDirectory();
+    await temporary.create(recursive: true);
+    root = await temporary.createTemp('platform-case-');
+    final ownedRoot = root;
+    // Register only after creation succeeds; failed setup has no root to clean.
+    addTearDown(() async {
+      await Logger().flush();
+      if (await ownedRoot.exists()) await ownedRoot.delete(recursive: true);
+    });
   });
 
   testWidgets('native plugin registration and writable app directories',
@@ -47,6 +52,7 @@ void main() {
       await getApplicationSupportDirectory(),
       await getApplicationCacheDirectory(),
     ]) {
+      await directory.create(recursive: true);
       final probe = await directory.createTemp('plugin-probe-');
       try {
         final data = File(p.join(probe.path, 'data'));
@@ -93,9 +99,15 @@ void main() {
         file('target').writeAsStringSync('external');
       }
       await expectLater(
-          atomicRenameNoReplace(source, file('target').path),
-          throwsA(isA<FileSystemException>().having((e) => e.osError?.errorCode,
-              'native error code', greaterThan(0),),),);
+        atomicRenameNoReplace(source, file('target').path),
+        throwsA(
+          isA<FileSystemException>().having(
+            (e) => e.osError?.errorCode,
+            'native error code',
+            greaterThan(0),
+          ),
+        ),
+      );
       expect(source.readAsStringSync(), 'original');
       if (!directoryTarget) {
         expect(file('target').readAsStringSync(), 'external');
@@ -108,9 +120,15 @@ void main() {
       'native missing source reports an OS error without creating target',
       (tester) async {
     await expectLater(
-        atomicRenameNoReplace(file('missing'), file('target').path),
-        throwsA(isA<FileSystemException>().having(
-            (e) => e.osError?.errorCode, 'native error code', greaterThan(0),),),);
+      atomicRenameNoReplace(file('missing'), file('target').path),
+      throwsA(
+        isA<FileSystemException>().having(
+          (e) => e.osError?.errorCode,
+          'native error code',
+          greaterThan(0),
+        ),
+      ),
+    );
     expect(root.listSync(), isEmpty);
   });
 
@@ -148,9 +166,10 @@ void main() {
     ];
     await RulePersistence.saveRules(rules, targetFile: file('rules.yaml'));
     expect(
-        (await RulePersistence.loadRules(sourceFile: file('rules.yaml')))
-            .map((e) => e.toMap()),
-        rules.map((e) => e.toMap()),);
+      (await RulePersistence.loadRules(sourceFile: file('rules.yaml')))
+          .map((e) => e.toMap()),
+      rules.map((e) => e.toMap()),
+    );
     await Logger().clearLogs();
     await Logger().logRename(file('before').path, file('after').path);
     expect(await Logger().readLogs(), contains(file('after').path));
@@ -158,33 +177,36 @@ void main() {
     expect(await Logger().readLogs(), isEmpty);
   });
 
-  testWidgets('app action renames an app-private file on the native device',
-      (tester) async {
-    await RulePersistence.saveRules([]);
-    Shared.removeRenamed = false;
-    Shared.removeRules = false;
-    Shared.onlySelected = false;
-    Shared.fileOrDir = 'Files';
-    Shared.doNotRemindAgain = true;
-    final source = file('source.txt')..writeAsStringSync('native UI');
-    await tester.pumpWidget(const app.RenamerApp(locale: Locale('en')));
-    await tester.pumpAndSettle();
-    final files = tester.state<FilesPageState>(find.byType(FilesPage));
-    final rules = tester.state<RulesPageState>(find.byType(RulesPage));
-    FilesPage.addFiles([FileEntity(source)]);
-    files.update();
-    rules.addRule(RuleInsert('new-', 0, false, false, true));
-    await tester.pumpAndSettle();
-    await tester.tap(find.byIcon(Icons.play_arrow_rounded));
-    for (var i = 0; i < 100 && !file('new-source.txt').existsSync(); i++) {
-      await tester.pump(const Duration(milliseconds: 100));
-    }
-    expect(file('new-source.txt').readAsStringSync(), 'native UI');
-    expect(source.existsSync(), isFalse);
-    expect(tester.takeException(), isNull);
-    await tester.pumpAndSettle();
-    await tester.pumpWidget(const SizedBox());
-  }, timeout: const Timeout(Duration(minutes: 2)),);
+  testWidgets(
+    'app action renames an app-private file on the native device',
+    (tester) async {
+      await RulePersistence.saveRules([]);
+      Shared.removeRenamed = false;
+      Shared.removeRules = false;
+      Shared.onlySelected = false;
+      Shared.fileOrDir = 'Files';
+      Shared.doNotRemindAgain = true;
+      final source = file('source.txt')..writeAsStringSync('native UI');
+      await tester.pumpWidget(const app.RenamerApp(locale: Locale('en')));
+      await tester.pumpAndSettle();
+      final files = tester.state<FilesPageState>(find.byType(FilesPage));
+      final rules = tester.state<RulesPageState>(find.byType(RulesPage));
+      FilesPage.addFiles([FileEntity(source)]);
+      files.update();
+      rules.addRule(RuleInsert('new-', 0, false, false, true));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(Icons.play_arrow_rounded));
+      for (var i = 0; i < 100 && !file('new-source.txt').existsSync(); i++) {
+        await tester.pump(const Duration(milliseconds: 100));
+      }
+      expect(file('new-source.txt').readAsStringSync(), 'native UI');
+      expect(source.existsSync(), isFalse);
+      expect(tester.takeException(), isNull);
+      await tester.pumpAndSettle();
+      await tester.pumpWidget(const SizedBox());
+    },
+    timeout: const Timeout(Duration(minutes: 2)),
+  );
 
   if (Platform.isAndroid) {
     // Direct channel checks must not be masked by Dart's fallback handling.
@@ -201,15 +223,19 @@ void main() {
         (tester) async {
       final uri = file('missing').uri.toString();
       await expectLater(
-          channel.invokeMethod<Object?>('readFile', {'uri': uri}),
-          throwsA(isA<PlatformException>()
-              .having((e) => e.code, 'code', 'READ_ERROR'),),);
+        channel.invokeMethod<Object?>('readFile', {'uri': uri}),
+        throwsA(
+          isA<PlatformException>().having((e) => e.code, 'code', 'READ_ERROR'),
+        ),
+      );
       expect(await PlatformFilePicker.readFile(uri), isNull);
     });
     testWidgets('Android empty media request completes without prompting',
         (tester) async {
       final result = await channel.invokeMapMethod<String, dynamic>(
-          'requestMediaWritePermission', {'uris': <String>[]},);
+        'requestMediaWritePermission',
+        {'uris': <String>[]},
+      );
       expect(result, {'candidates': [], 'approved': []});
     });
   }
@@ -219,9 +245,13 @@ void main() {
       // App-private URLs need no grant: this verifies channel wiring, not a
       // user-selected external security-scoped resource authorization.
       expect(
-          await PlatformFilePicker.changeScopedAccess(root.path, true), isTrue,);
-      expect(await PlatformFilePicker.changeScopedAccess(root.path, false),
-          isTrue,);
+        await PlatformFilePicker.changeScopedAccess(root.path, true),
+        isTrue,
+      );
+      expect(
+        await PlatformFilePicker.changeScopedAccess(root.path, false),
+        isTrue,
+      );
     });
   }
 }

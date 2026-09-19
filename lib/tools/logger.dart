@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
-import 'package:intl/intl.dart';
 
 class Logger {
   static final Logger _instance = Logger._internal();
@@ -45,13 +44,20 @@ class Logger {
     );
     final task = previousTask.then((_) async {
       final file = await _getLogFile();
-      final timestamp =
-          DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+      // Audit timestamps are a fixed numeric format, not localized UI. They
+      // must also work before MaterialApp initializes intl date symbols.
+      final now = DateTime.now();
+      String two(int value) => value.toString().padLeft(2, '0');
+      final timestamp = '${now.year.toString().padLeft(4, '0')}-'
+          '${two(now.month)}-${two(now.day)} '
+          '${two(now.hour)}:${two(now.minute)}:${two(now.second)}';
       final logEntry = '[$timestamp] RENAME: "$oldPath" -> "$newPath"\n';
       await _rotateIfNeeded(file, utf8.encode(logEntry).length);
       await file.writeAsString(logEntry, mode: FileMode.append, flush: true);
     });
-    _writeTask = task;
+    // Settle the queue in the originating error zone. Retaining a failed
+    // future can strand later operations in a different Flutter test zone.
+    _writeTask = task.then<void>((_) {}, onError: (Object _, StackTrace __) {});
     return task;
   }
 
@@ -61,11 +67,20 @@ class Logger {
   }
 
   Future<String> readLogs() async {
+    await flush();
     final file = await _getLogFile();
     if (await file.exists()) {
       return await file.readAsString();
     }
     return '';
+  }
+
+  /// Wait for queued best-effort writes without leaking failures into the next
+  /// test/operation. Individual logRename callers still receive their errors.
+  Future<void> flush() async {
+    await (_writeTask ?? Future<void>.value()).catchError(
+      (Object _, StackTrace __) {},
+    );
   }
 
   /// Deletes the active and rotated audit logs.
@@ -82,7 +97,7 @@ class Logger {
         if (await candidate.exists()) await candidate.delete();
       }
     });
-    _writeTask = task;
+    _writeTask = task.then<void>((_) {}, onError: (Object _, StackTrace __) {});
     return task;
   }
 

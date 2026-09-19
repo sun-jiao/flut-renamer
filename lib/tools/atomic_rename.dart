@@ -207,9 +207,14 @@ Future<FileSystemEntity> _moveFileExNoReplace(
     final library = DynamicLibrary.open('kernel32.dll');
     final moveFileEx =
         library.lookupFunction<_MoveFileExWNative, _MoveFileExW>('MoveFileExW');
+    // Resolve first: GetProcAddress/FFI symbol lookup can reset last-error.
+    final getLastError =
+        library.lookupFunction<_GetLastErrorNative, _GetLastError>(
+      'GetLastError',
+      isLeaf: true,
+    );
     if (moveFileEx(oldPathPointer, newPathPointer, 0) == 0) {
-      final error = library
-          .lookupFunction<_GetLastErrorNative, _GetLastError>('GetLastError')();
+      final error = getLastError();
       throw FileSystemException(
         'Atomic rename without replacement failed',
         newPath,
