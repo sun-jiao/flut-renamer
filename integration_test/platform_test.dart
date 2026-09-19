@@ -211,25 +211,6 @@ void main() {
   if (Platform.isAndroid) {
     // Direct channel checks must not be masked by Dart's fallback handling.
     const channel = MethodChannel('net.sunjiao.renamer/picker');
-    testWidgets(
-        'Android ContentResolver reads file URI bytes via native channel',
-        (tester) async {
-      final source = file('native.bin')..writeAsBytesSync([0, 128, 255]);
-      final result = await channel
-          .invokeMethod<Uint8List>('readFile', {'uri': source.uri.toString()});
-      expect(result, [0, 128, 255]);
-    });
-    testWidgets('Android missing URI returns READ_ERROR and Dart fallback',
-        (tester) async {
-      final uri = file('missing').uri.toString();
-      await expectLater(
-        channel.invokeMethod<Object?>('readFile', {'uri': uri}),
-        throwsA(
-          isA<PlatformException>().having((e) => e.code, 'code', 'READ_ERROR'),
-        ),
-      );
-      expect(await PlatformFilePicker.readFile(uri), isNull);
-    });
     testWidgets('Android empty media request completes without prompting',
         (tester) async {
       final result = await channel.invokeMapMethod<String, dynamic>(

@@ -105,8 +105,6 @@ void main() {
           };
         case 'getMetaData':
           return {'size': 12};
-        case 'readFile':
-          return Uint8List.fromList([1, 2]);
         case 'getEmbeddedMetadata':
           return {'artist': 4};
       }
@@ -118,10 +116,6 @@ void main() {
     expect(permission.candidates, {'one'});
     expect(permission.approved, {'two'});
     expect(await PlatformFilePicker.getMetaData('uri'), {'size': 12});
-    expect(
-      await PlatformFilePicker.readFile('uri'),
-      Uint8List.fromList([1, 2]),
-    );
     expect(
       await PlatformFilePicker.getEmbeddedMetadata('uri'),
       {'artist': '4'},
@@ -142,7 +136,6 @@ void main() {
           .having((value) => value.approved, 'approved', isEmpty),
     );
     expect(await PlatformFilePicker.getMetaData('uri'), isNull);
-    expect(await PlatformFilePicker.readFile('uri'), isNull);
     expect(await PlatformFilePicker.getEmbeddedMetadata('uri'), isEmpty);
   });
 

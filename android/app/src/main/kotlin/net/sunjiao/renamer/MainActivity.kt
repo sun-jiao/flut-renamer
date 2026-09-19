@@ -91,14 +91,6 @@ class MainActivity: FlutterActivity() {
                         result.error("ARGS_ERROR", "Uri is null", null)
                     }
                 }
-                "readFile" -> {
-                    val uriString = call.argument<String>("uri")
-                    if (uriString != null) {
-                        readFile(uriString, result)
-                    } else {
-                        result.error("ARGS_ERROR", "Uri is null", null)
-                    }
-                }
                 "getEmbeddedMetadata" -> {
                     val uriString = call.argument<String>("uri")
                     if (uriString != null) {
@@ -446,28 +438,6 @@ class MainActivity: FlutterActivity() {
         }
 
         result.success(metadata)
-    }
-
-    private fun readFile(uriString: String, result: MethodChannel.Result) {
-        Thread {
-            try {
-                val uri = Uri.parse(uriString)
-                val inputStream = contentResolver.openInputStream(uri)
-                val bytes = inputStream?.readBytes()
-                inputStream?.close()
-                runOnUiThread {
-                    if (bytes != null) {
-                        result.success(bytes)
-                    } else {
-                        result.error("READ_ERROR", "Could not read bytes", null)
-                    }
-                }
-            } catch (e: Exception) {
-                runOnUiThread {
-                    result.error("READ_ERROR", e.localizedMessage, null)
-                }
-            }
-        }.start()
     }
 
     private fun getEmbeddedMetadata(uriString: String, result: MethodChannel.Result) {

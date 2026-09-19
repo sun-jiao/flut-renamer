@@ -143,17 +143,6 @@ class PlatformFilePicker {
     }
   }
 
-  static Future<Uint8List?> readFile(String uri) async {
-    try {
-      return await _channel.invokeMethod<Uint8List>(
-        'readFile',
-        {'uri': uri},
-      );
-    } on PlatformException {
-      return null;
-    }
-  }
-
   static Future<Map<String, String>> getEmbeddedMetadata(String uri) async {
     try {
       final metadata = await _channel.invokeMethod<Map<dynamic, dynamic>>(
