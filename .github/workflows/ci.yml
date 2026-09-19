@@ -136,7 +136,31 @@ jobs:
             echo 'Android command-line tools are missing from the hosted runner.' >&2
             exit 1
           fi
-          "$sdk_manager" --sdk_root="$sdk_root" 'platforms;android-37'
+          # Use a known stable tools revision that understands API 37's
+          # major.minor metadata; do not rely on the runner's preinstalled age.
+          # Ignore only yes's expected SIGPIPE, not sdkmanager's exit status.
+          set +o pipefail
+          yes | "$sdk_manager" --sdk_root="$sdk_root" --channel=0 'cmdline-tools;23.0'
+          set -o pipefail
+          sdk_manager="$sdk_root/cmdline-tools/23.0/bin/sdkmanager"
+          echo "$sdk_root/cmdline-tools/23.0/bin" >> "$GITHUB_PATH"
+          # API 37's published package includes its minor version. Gradle's
+          # integer compileSdk/targetSdk remain 37 (AGP >= 9.1.1).
+          sdk_package='platforms;android-37.0'
+          "$sdk_manager" --version
+          "$sdk_manager" --sdk_root="$sdk_root" --list --channel=0 \
+            | tee integration-sdk-packages.log > /dev/null
+          if ! awk -F '|' -v package="$sdk_package" '
+            { name=$1; gsub(/^[[:space:]]+|[[:space:]]+$/, "", name) }
+            name == package { found=1 }
+            END { exit !found }
+          ' integration-sdk-packages.log; then
+            echo "Required SDK package $sdk_package is not in the stable repository. No SDK downgrade was attempted." >&2
+            cat integration-sdk-packages.log
+            exit 1
+          fi
+          "$sdk_manager" --sdk_root="$sdk_root" --channel=0 "$sdk_package"
+          test -f "$sdk_root/platforms/android-37.0/android.jar"
       - name: Enable KVM access
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules

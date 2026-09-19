@@ -55,6 +55,7 @@ GitHub-hosted runners provide built-in isolation, and mobile simulators are crea
 Test files are stored in a dedicated subdirectory within the application's temporary directory; native contract tests delete this subdirectory during teardown.
 
 - Android: Uses a fresh AVD; API 29 verifies the syscall path when `renameat2` is not exported by libc, while API 35 verifies the path used in newer versions.
+- The compile and target SDK remain API 37. Google's stable repository publishes the package as `platforms;android-37.0`, not `platforms;android-37`. CI first installs pinned command-line tools 23.0 to handle the SDK metadata, checks that exact platform package before installing it, retains `integration-sdk-packages.log`, and fails without downgrading if it is missing. Emulator API levels are independent of the compile SDK.
 - iOS: Selects the latest version with an iPhone device type from available installed iOS runtimes, creates a dedicated device, and runs tests after startup; cleans up only the UDID created for the job (leaving other simulators untouched). No distribution signing certificate is required.
 - Matrix jobs fail independently (no `continue-on-error`); timeouts are set to 35 minutes for desktop, 45 for Android, and 40 for iOS.
 - All new jobs upload `integration-<platform>` logs, retained for 7 days; Android collects logcat before shutting down the simulator, while iOS collects system logs upon failure.
