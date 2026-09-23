@@ -179,5 +179,6 @@
   "semanticsReorderableList": "La liste des règles est actuellement vide. Appuyez sur le bouton \"Ajouter une règle\" pour en ajouter une. Les règles sont exécutées dans l'ordre. Vous pouvez réorganiser cette liste en la faisant glisser vers le haut ou vers le bas, ou en la plaçant en haut ou en bas. Lorsque le curseur est sur une règle, faites défiler verticalement pour changer d'action, et double-cliquez pour sélectionner l'action.",
   "semanticsOpenMetadataDialog": "Double-cliquez pour ouvrir une boîte de dialogue et sélectionner une balise de métadonnées à insérer.",
   "semanticsMultipleActionsHint": ", faites défiler vers le haut ou vers le bas pour changer d'action.",
-  "semanticSwitchNumberToStartAndToEnd": "Changement de direction de comptage entre du début et de la fin, comptant actuellement à partir de {toEnd, select, true{la fin} false{le début} other{}}"
+  "semanticSwitchNumberToStartAndToEnd": "Changement de direction de comptage entre du début et de la fin, comptant actuellement à partir de {toEnd, select, true{la fin} false{le début} other{}}",
+  "showThumbnails": "Miniatures des images"
 }

@@ -180,5 +180,6 @@
   "semanticsOpenMetadataDialog": "انقر مرتين لفتح مربع حوار واختيار العلامات الوصفية التي تريد إدراجها.",
   "semanticsMultipleActionsHint": "، انقر للأعلى أو للأسفل للتبديل إلى إجراء آخر.",
   "semanticSwitchNumberToStartAndToEnd": "تبديل اتجاه العد بين البداية والنهاية، حاليًا يتم العد من {toEnd, select, true{النهاية} false{البداية} other{}}",
-  "semanticNumberWithDirection": "تبديل اتجاه العد بين البداية والنهاية"
+  "semanticNumberWithDirection": "تبديل اتجاه العد بين البداية والنهاية",
+  "showThumbnails": "الصور المصغرة"
 }

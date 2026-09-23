@@ -143,6 +143,20 @@ class PlatformFilePicker {
     }
   }
 
+  /// Returns a small, decoded preview rather than transferring the original.
+  static Future<Uint8List?> getThumbnail(String uri) async {
+    try {
+      return await _channel.invokeMethod<Uint8List>(
+        'getThumbnail',
+        {'uri': uri},
+      );
+    } on PlatformException {
+      return null;
+    } on MissingPluginException {
+      return null;
+    }
+  }
+
   static Future<Map<String, String>> getEmbeddedMetadata(String uri) async {
     try {
       final metadata = await _channel.invokeMethod<Map<dynamic, dynamic>>(

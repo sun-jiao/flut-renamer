@@ -19,11 +19,14 @@ void main() {
     var onlySelected = false;
     var removeRenamed = true;
     var removeRules = false;
+    var showThumbnails = false;
 
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
           bottomNavigationBar: HomeToolBar(
+            showThumbnailsCallback: (value) => showThumbnails = value,
+            showThumbnailsValue: () => showThumbnails,
             onlySelectedCallback: (value) => onlySelected = value,
             onlySelectedValue: () => onlySelected,
             removeRenamedCallback: (value) => removeRenamed = value,
@@ -34,6 +37,16 @@ void main() {
         ),
       ),
     );
+
+    final thumbnailButton = find.byWidgetPredicate(
+      (widget) =>
+          widget is IconButton && widget.tooltip == L10n.current.showThumbnails,
+    );
+    expect(tester.widget<IconButton>(thumbnailButton).isSelected, isFalse);
+    await tester.tap(thumbnailButton);
+    await tester.pump();
+    expect(showThumbnails, isTrue);
+    expect(tester.widget<IconButton>(thumbnailButton).isSelected, isTrue);
 
     final onlySelectedChip =
         find.widgetWithText(FilterChip, L10n.current.onlySelected);
@@ -64,6 +77,8 @@ void main() {
       MaterialApp(
         home: Scaffold(
           bottomNavigationBar: HomeToolBar(
+            showThumbnailsCallback: (_) {},
+            showThumbnailsValue: () => false,
             onlySelectedCallback: (_) {},
             onlySelectedValue: () => false,
             removeRenamedCallback: (_) {},
@@ -75,6 +90,7 @@ void main() {
       ),
     );
 
+    expect(find.byTooltip(L10n.current.showThumbnails), findsOneWidget);
     expect(find.text(L10n.current.onlySelected), findsNothing);
     await tester.tap(find.byTooltip(L10n.current.expandOptions));
     await tester.pump();

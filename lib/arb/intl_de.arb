@@ -179,5 +179,6 @@
   "semanticsReorderableList": "Die Regel-Liste ist derzeit leer. Klicken Sie auf \"Regel hinzufügen\", um eine Regel hinzuzufügen. Regeln werden sequenziell ausgeführt. Diese Liste kann neu angeordnet werden, sodass Sie Regeln nach oben, unten, an den Anfang oder das Ende verschieben können. Wenn der Cursor über einer Regel steht, verwenden Sie eine vertikale Wischgeste, um zwischen verschiedenen Aktionen zu wechseln, und doppelklicken Sie, um die ausgewählte Aktion auszuführen.",
   "semanticsOpenMetadataDialog": "Doppelklicken Sie, um einen Dialog zu öffnen und Metadatentags auszuwählen, die eingefügt werden sollen.",
   "semanticsMultipleActionsHint": ", blättern Sie nach oben oder unten, um weitere Aktionen anzuzeigen.",
-  "semanticSwitchNumberToStartAndToEnd": "Wechseln der Zählrichtung zwischen vom Anfang und vom Ende, aktuell wird gezählt ab {toEnd, select, true{dem Ende} false{dem Anfang} other{}}"
+  "semanticSwitchNumberToStartAndToEnd": "Wechseln der Zählrichtung zwischen vom Anfang und vom Ende, aktuell wird gezählt ab {toEnd, select, true{dem Ende} false{dem Anfang} other{}}",
+  "showThumbnails": "Bildminiaturen"
 }

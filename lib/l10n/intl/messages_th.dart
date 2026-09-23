@@ -353,6 +353,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "showHiddenFiles": MessageLookupByLibrary.simpleMessage(
       "แสดงไฟล์ที่ซ่อนอยู่",
     ),
+    "showThumbnails": MessageLookupByLibrary.simpleMessage("ภาพขนาดย่อ"),
     "sourceCode": MessageLookupByLibrary.simpleMessage("โค้ดต้นฉบับ"),
     "sr": MessageLookupByLibrary.simpleMessage("เซอร์เบีย"),
     "startIndex": MessageLookupByLibrary.simpleMessage("ดัชนีเริ่มต้น"),

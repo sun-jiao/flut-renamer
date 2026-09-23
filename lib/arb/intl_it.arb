@@ -179,5 +179,6 @@
   "semanticsReorderableList": "La lista delle regole è attualmente vuota. Tocca \"Aggiungi regola\" per aggiungerne una. Le regole vengono eseguite in sequenza. È possibile riordinare la lista trascinando verso l'alto o il basso e spostando le regole in cima o in fondo. Tocca con due dita su una regola per attivare le azioni e tocca due volte per eseguire l'azione selezionata.",
   "semanticsOpenMetadataDialog": "Tocca due volte per aprire un dialogo e selezionare un tag dei metadati da inserire.",
   "semanticsMultipleActionsHint": ", scorri su e giù per passare ad altre azioni.",
-  "semanticSwitchNumberToStartAndToEnd": "Cambiamento della direzione del conteggio tra dall'inizio e dalla fine, attualmente il conteggio da {toEnd, select, true{la fine} false{l'inizio} other{}}"
+  "semanticSwitchNumberToStartAndToEnd": "Cambiamento della direzione del conteggio tra dall'inizio e dalla fine, attualmente il conteggio da {toEnd, select, true{la fine} false{l'inizio} other{}}",
+  "showThumbnails": "Miniature delle immagini"
 }

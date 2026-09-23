@@ -6,6 +6,7 @@ import 'package:flut_renamer/entity/theme_extension.dart';
 import 'package:flut_renamer/l10n/l10n.dart';
 import 'package:flut_renamer/pages/files_page.dart';
 import 'package:flut_renamer/tools/ex_file.dart';
+import 'package:flut_renamer/widget/file_thumbnail.dart';
 import 'package:flut_renamer/tools/file_metadata.dart';
 
 void main() {
@@ -109,6 +110,8 @@ void main() {
       (tester) async {
     final key = GlobalKey<FilesPageState>();
     var generationCount = 0;
+    var showThumbnails = false;
+    late StateSetter rebuild;
     final entity = FileEntity(File('assets/icon.png'));
     FilesPage.addFiles([entity]);
     await tester.runAsync(entity.initMetadata);
@@ -124,14 +127,20 @@ void main() {
           ],
         ),
         home: Scaffold(
-          body: FilesPage(
-            key: key,
-            getNewName: (name, FileMetadata _) =>
-                'generated-${++generationCount}',
-            clearRules: () {},
-            resetRules: () {},
-            dependsOnFileOrder: () => false,
-            requiresMetadata: () => false,
+          body: StatefulBuilder(
+            builder: (context, setState) {
+              rebuild = setState;
+              return FilesPage(
+                key: key,
+                showThumbnails: showThumbnails,
+                getNewName: (name, FileMetadata _) =>
+                    'generated-${++generationCount}',
+                clearRules: () {},
+                resetRules: () {},
+                dependsOnFileOrder: () => false,
+                requiresMetadata: () => false,
+              );
+            },
           ),
         ),
       ),
@@ -141,6 +150,17 @@ void main() {
     expect(entity.fileOrDir(), 'File');
     expect(find.text('icon.png'), findsOneWidget);
 
+    expect(generationCount, 1);
+    expect(find.byType(FileThumbnail), findsNothing);
+    rebuild(() => showThumbnails = true);
+    await tester.pump();
+    await tester.pump();
+    expect(find.byType(FileThumbnail), findsOneWidget);
+    expect(find.text('icon.png'), findsOneWidget);
+    expect(generationCount, 1);
+    rebuild(() => showThumbnails = false);
+    await tester.pump();
+    expect(find.byType(FileThumbnail), findsNothing);
     expect(generationCount, 1);
 
     await tester.tap(find.byType(Checkbox).last);

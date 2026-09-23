@@ -1634,6 +1634,16 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Image thumbnails`
+  String get showThumbnails {
+    return Intl.message(
+      'Image thumbnails',
+      name: 'showThumbnails',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

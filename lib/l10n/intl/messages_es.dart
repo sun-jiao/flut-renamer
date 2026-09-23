@@ -384,6 +384,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "showHiddenFiles": MessageLookupByLibrary.simpleMessage(
       "Mostrar archivos ocultos",
     ),
+    "showThumbnails": MessageLookupByLibrary.simpleMessage(
+      "Miniaturas de imágenes",
+    ),
     "sourceCode": MessageLookupByLibrary.simpleMessage("Código fuente"),
     "sr": MessageLookupByLibrary.simpleMessage("Serbio"),
     "startIndex": MessageLookupByLibrary.simpleMessage("Índice inicial"),

@@ -1,5 +1,11 @@
 package net.sunjiao.renamer
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
+import android.util.Size
+import java.io.ByteArrayOutputStream
+import java.util.concurrent.Executors
 import android.app.Activity
 import android.content.ContentValues
 import android.content.Intent
@@ -23,6 +29,8 @@ class MainActivity: FlutterActivity() {
     private val REQUEST_CODE_OPEN_TREE = 2
     private val REQUEST_CODE_MEDIA_WRITE = 3
     private val MEDIA_WRITE_BATCH_SIZE = 2_000
+
+    private val thumbnailExecutor = Executors.newFixedThreadPool(2)
 
     private var pendingResult: MethodChannel.Result? = null
     private var pendingMediaWriteResult: MethodChannel.Result? = null
@@ -87,6 +95,14 @@ class MainActivity: FlutterActivity() {
                     val uriString = call.argument<String>("uri")
                     if (uriString != null) {
                         getMetaData(uriString, result)
+                    } else {
+                        result.error("ARGS_ERROR", "Uri is null", null)
+                    }
+                }
+                "getThumbnail" -> {
+                    val uriString = call.argument<String>("uri")
+                    if (uriString != null) {
+                        getThumbnail(uriString, result)
                     } else {
                         result.error("ARGS_ERROR", "Uri is null", null)
                     }
@@ -438,6 +454,77 @@ class MainActivity: FlutterActivity() {
         }
 
         result.success(metadata)
+    }
+
+    private fun getThumbnail(uriString: String, result: MethodChannel.Result) {
+        thumbnailExecutor.execute {
+            val bytes = try {
+                val uri = Uri.parse(uriString)
+                if (contentResolver.getType(uri)?.startsWith("image/") == true) {
+                    val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        try {
+                            contentResolver.loadThumbnail(uri, Size(168, 168), null)
+                        } catch (_: Exception) {
+                            decodeThumbnail(uri)
+                        }
+                    } else {
+                        decodeThumbnail(uri)
+                    }
+                    bitmap?.let {
+                        try {
+                            ByteArrayOutputStream().use { output ->
+                                it.compress(Bitmap.CompressFormat.PNG, 100, output)
+                                output.toByteArray()
+                            }
+                        } finally {
+                            it.recycle()
+                        }
+                    }
+                } else null
+            } catch (e: Exception) {
+                Log.d("Renamer", "Thumbnail is unavailable for $uriString", e)
+                null
+            }
+            runOnUiThread { result.success(bytes) }
+        }
+    }
+
+    private fun decodeThumbnail(uri: Uri): Bitmap? {
+        val options = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+        contentResolver.openInputStream(uri)?.use {
+            BitmapFactory.decodeStream(it, null, options)
+        }
+        if (options.outWidth <= 0 || options.outHeight <= 0) return null
+        options.inSampleSize = 1
+        while (maxOf(options.outWidth, options.outHeight) / options.inSampleSize > 336) {
+            options.inSampleSize *= 2
+        }
+        options.inJustDecodeBounds = false
+        val decoded = contentResolver.openInputStream(uri)?.use {
+            BitmapFactory.decodeStream(it, null, options)
+        } ?: return null
+        val matrix = Matrix()
+        try {
+            contentResolver.openInputStream(uri)?.use {
+                val exif = ExifInterface(it)
+                if (exif.isFlipped) matrix.postScale(-1f, 1f)
+                matrix.postRotate(exif.rotationDegrees.toFloat())
+            }
+        } catch (_: Exception) {
+            // Images without EXIF orientation already have their display order.
+        }
+        val scale = minOf(1f, 168f / maxOf(decoded.width, decoded.height))
+        matrix.postScale(scale, scale)
+        val thumbnail = Bitmap.createBitmap(
+            decoded, 0, 0, decoded.width, decoded.height, matrix, true
+        )
+        if (thumbnail !== decoded) decoded.recycle()
+        return thumbnail
+    }
+
+    override fun onDestroy() {
+        thumbnailExecutor.shutdown()
+        super.onDestroy()
     }
 
     private fun getEmbeddedMetadata(uriString: String, result: MethodChannel.Result) {

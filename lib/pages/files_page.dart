@@ -18,16 +18,20 @@ import '../tools/rename.dart';
 import '../tools/rename_transaction.dart';
 import '../widget/custom_dialog.dart';
 import '../widget/custom_drop.dart';
+import '../widget/file_thumbnail.dart';
 
 class FilesPage extends StatefulWidget {
   const FilesPage({
     super.key,
+    this.showThumbnails = false,
     required this.getNewName,
     required this.clearRules,
     required this.resetRules,
     required this.dependsOnFileOrder,
     required this.requiresMetadata,
   });
+
+  final bool showThumbnails;
 
   final FutureOr<String> Function(String name, FileMetadata metadata)
       getNewName;
@@ -497,6 +501,13 @@ class FilesPageState extends State<FilesPage> {
             },
           ),
         ),
+        if (widget.showThumbnails)
+          TableCell(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: FileThumbnail(key: ValueKey(file.path), file: file),
+            ),
+          ),
         _rowTextCell(file),
         _rowTextCell(file, isNew: true),
         TableCell(
@@ -546,6 +557,13 @@ class FilesPageState extends State<FilesPage> {
                 ),
               ),
             ),
+            if (widget.showThumbnails)
+              TableCell(
+                child: Tooltip(
+                  message: L10n.current.showThumbnails,
+                  child: const Icon(Icons.image_outlined),
+                ),
+              ),
             TableCell(
               child: Center(
                 child: Text(L10n.current.currentName),
@@ -576,12 +594,13 @@ class FilesPageState extends State<FilesPage> {
 
   Widget _table(List<TableRow> children, {Key? key}) => Table(
         key: key,
-        columnWidths: const <int, TableColumnWidth>{
-          0: IntrinsicColumnWidth(),
-          1: IntrinsicColumnWidth(),
-          2: FlexColumnWidth(1.2),
-          3: FlexColumnWidth(1.5),
-          4: IntrinsicColumnWidth(),
+        columnWidths: <int, TableColumnWidth>{
+          0: const IntrinsicColumnWidth(),
+          1: const IntrinsicColumnWidth(),
+          if (widget.showThumbnails) 2: const FixedColumnWidth(56),
+          widget.showThumbnails ? 3 : 2: const FlexColumnWidth(1.2),
+          widget.showThumbnails ? 4 : 3: const FlexColumnWidth(1.5),
+          widget.showThumbnails ? 5 : 4: const IntrinsicColumnWidth(),
         },
         defaultVerticalAlignment: TableCellVerticalAlignment.middle,
         border: TableBorder.all(width: 24, color: Colors.transparent),

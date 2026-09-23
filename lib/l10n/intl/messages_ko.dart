@@ -293,6 +293,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "이 옵션을 선택하고 \"규칙 추가\" 버튼을 클릭하여이 규칙을 추가할 수 있습니다.",
     ),
     "showHiddenFiles": MessageLookupByLibrary.simpleMessage("숨김 파일 보기"),
+    "showThumbnails": MessageLookupByLibrary.simpleMessage("이미지 썸네일"),
     "sourceCode": MessageLookupByLibrary.simpleMessage("소스 코드"),
     "sr": MessageLookupByLibrary.simpleMessage("세르비아어"),
     "startIndex": MessageLookupByLibrary.simpleMessage("시작 인덱스"),

@@ -278,6 +278,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "。选择该项并点击“添加规则”按钮即可添加该规则",
     ),
     "showHiddenFiles": MessageLookupByLibrary.simpleMessage("显示隐藏文件"),
+    "showThumbnails": MessageLookupByLibrary.simpleMessage("图片缩略图"),
     "sourceCode": MessageLookupByLibrary.simpleMessage("源代码"),
     "sr": MessageLookupByLibrary.simpleMessage("塞尔维亚语"),
     "startIndex": MessageLookupByLibrary.simpleMessage("起始索引"),

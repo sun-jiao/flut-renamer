@@ -179,5 +179,6 @@
   "semanticsReorderableList": "ルールリストは現在空です。ルールは順番に実行されます。リストを並べ替えてルールを上下に移動したり、先頭や末尾に移動したりすることができます。ルールを選択した状態で、垂直スワイプジェスチャを使用して異なる操作を切り替え、ダブルクリックして選択した操作を実行します。",
   "semanticsOpenMetadataDialog": "ダブルクリックしてダイアログを開き、挿入するメタデータタグを選択します。",
   "semanticsMultipleActionsHint": "上下にスワイプして他の操作に移動します。",
-  "semanticSwitchNumberToStartAndToEnd": "開始から終わりまでの数え方を切り替え、現在は{toEnd, select, true{終わり} false{始まり} other{}}から数えています"
+  "semanticSwitchNumberToStartAndToEnd": "開始から終わりまでの数え方を切り替え、現在は{toEnd, select, true{終わり} false{始まり} other{}}から数えています",
+  "showThumbnails": "画像のサムネイル"
 }

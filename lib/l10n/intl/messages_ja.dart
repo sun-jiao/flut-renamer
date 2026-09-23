@@ -285,6 +285,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "。この項目を選択し、「ルールを追加」ボタンをクリックしてルールを追加します。",
     ),
     "showHiddenFiles": MessageLookupByLibrary.simpleMessage("隠しファイルを表示する"),
+    "showThumbnails": MessageLookupByLibrary.simpleMessage("画像のサムネイル"),
     "sourceCode": MessageLookupByLibrary.simpleMessage("ソースコード"),
     "sr": MessageLookupByLibrary.simpleMessage("セルビア語"),
     "startIndex": MessageLookupByLibrary.simpleMessage("開始インデックス"),

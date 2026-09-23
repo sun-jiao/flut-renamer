@@ -183,5 +183,6 @@
   "insertRandomString": "插入随机字符串",
   "randomStringLength": "随机字符串长度",
   "randomStringLengthHint": "8",
-  "randomStringLengthError": "长度应在1-32之间"
+  "randomStringLengthError": "长度应在1-32之间",
+  "showThumbnails": "图片缩略图"
 }

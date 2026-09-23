@@ -366,6 +366,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "showHiddenFiles": MessageLookupByLibrary.simpleMessage(
       "Gizli dosyaları göster",
     ),
+    "showThumbnails": MessageLookupByLibrary.simpleMessage(
+      "Resim küçük resimleri",
+    ),
     "sourceCode": MessageLookupByLibrary.simpleMessage("Kaynak Kodu"),
     "sr": MessageLookupByLibrary.simpleMessage("Sırpça"),
     "startIndex": MessageLookupByLibrary.simpleMessage("Başlangıç İndeksi"),

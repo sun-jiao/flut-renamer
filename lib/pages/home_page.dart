@@ -15,9 +15,14 @@ import '../widget/custom_dialog.dart';
 import 'rules_page.dart';
 import 'files_page.dart';
 
-class HomePage extends StatelessWidget {
-  HomePage({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   final GlobalKey<FilesPageState> filesKey = GlobalKey<FilesPageState>();
   final GlobalKey<RulesPageState> rulesKey = GlobalKey<RulesPageState>();
 
@@ -25,6 +30,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final filesPage = FilesPage(
       key: filesKey,
+      showThumbnails: Shared.showThumbnails,
       getNewName: (String name, FileMetadata metadata) async {
         for (Rule rule in rulesKey.currentState?.rules ?? []) {
           name = await rule.newName(name, metadata: metadata);
@@ -56,6 +62,10 @@ class HomePage extends StatelessWidget {
 
     return Scaffold(
       bottomNavigationBar: HomeToolBar(
+        showThumbnailsCallback: (value) => setState(() {
+          Shared.showThumbnails = value;
+        }),
+        showThumbnailsValue: () => Shared.showThumbnails,
         onlySelectedCallback: (value) => Shared.onlySelected = value,
         onlySelectedValue: () => Shared.onlySelected,
         removeRenamedCallback: (value) => Shared.removeRenamed = value,
@@ -107,6 +117,8 @@ class HomePage extends StatelessWidget {
 class HomeToolBar extends StatefulWidget {
   const HomeToolBar({
     super.key,
+    required this.showThumbnailsCallback,
+    required this.showThumbnailsValue,
     required this.onlySelectedCallback,
     required this.onlySelectedValue,
     required this.removeRenamedCallback,
@@ -114,6 +126,9 @@ class HomeToolBar extends StatefulWidget {
     required this.removeRulesCallback,
     required this.removeRulesValue,
   });
+
+  final void Function(bool) showThumbnailsCallback;
+  final bool Function() showThumbnailsValue;
 
   final void Function(bool) onlySelectedCallback;
   final bool Function() onlySelectedValue;
@@ -156,6 +171,15 @@ class _HomeToolBarState extends State<HomeToolBar> {
   }
 
   List<IconButton> _iconButtons() => [
+        IconButton(
+          tooltip: L10n.current.showThumbnails,
+          isSelected: widget.showThumbnailsValue(),
+          icon: const Icon(Icons.image_outlined),
+          selectedIcon: const Icon(Icons.image),
+          onPressed: () => setState(() {
+            widget.showThumbnailsCallback(!widget.showThumbnailsValue());
+          }),
+        ),
         IconButton(
           tooltip: L10n.current.appInfo,
           icon: const Icon(Icons.info_rounded),

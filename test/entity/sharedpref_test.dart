@@ -3,6 +3,23 @@ import 'package:flut_renamer/entity/sharedpref.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
+  test('thumbnails default off and retain both choices across initialization',
+      () async {
+    SharedPreferences.setMockInitialValues({});
+    await Shared.init();
+    expect(Shared.showThumbnails, isFalse);
+
+    Shared.showThumbnails = true;
+    await Shared.init();
+    expect(Shared.showThumbnails, isTrue);
+    expect(Shared.pref.getBool('show_thumbnails'), isTrue);
+
+    Shared.showThumbnails = false;
+    await Shared.init();
+    expect(Shared.showThumbnails, isFalse);
+    expect(Shared.pref.getBool('show_thumbnails'), isFalse);
+  });
+
   test('loads persisted settings and writes each changed setting', () async {
     SharedPreferences.setMockInitialValues({
       'file_or_dir': 'Directories',

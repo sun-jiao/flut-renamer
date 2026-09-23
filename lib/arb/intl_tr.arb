@@ -178,5 +178,6 @@
   "semanticsReorderableList": "Kural listesi şu anda boş. Bir tane eklemek için 'Kural Ekle' düğmesine tıklayın. Kurallar sırayla uygulanır. Bu liste yeniden düzenlenebilir, böylece kuralları yukarı ve aşağı taşıyabilir, onları listenin başına veya sonuna taşıyabilirsiniz. Bir kural üzerindeyken, dikey kaydırma hareketleri arasında geçiş yapmak ve seçilen işlemi çift tıklayarak gerçekleştirmek için kullanın.",
   "semanticsOpenMetadataDialog": "Açıklamak için çift tıklayın ve içinden eklemek istediğiniz meta veri etiketini seçin.",
   "semanticsMultipleActionsHint": ", Diğer işlemlere geçmek için yukarı veya aşağı kaydırın.",
-  "semanticSwitchNumberToStartAndToEnd": "Başlangıçtan ve sondan sayma yönünü değiştirme, şu anda {toEnd, select, true{son} false{başlangıç} other{}} sayımından"
+  "semanticSwitchNumberToStartAndToEnd": "Başlangıçtan ve sondan sayma yönünü değiştirme, şu anda {toEnd, select, true{son} false{başlangıç} other{}} sayımından",
+  "showThumbnails": "Resim küçük resimleri"
 }

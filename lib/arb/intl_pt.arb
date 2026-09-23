@@ -179,5 +179,6 @@
   "semanticsReorderableList": "A lista de regras está vazia agora. Clique em \"Adicionar regra\" para adicionar uma. As regras são executadas em ordem. Esta lista pode ser reordenada, permitindo mover as regras para cima ou para baixo, bem como movê-las para o topo ou para o final. Com o cursor sobre uma regra, use o gesto de rolagem vertical para alternar entre diferentes ações e clique duplo para executar a ação selecionada.",
   "semanticsOpenMetadataDialog": "Clique duplo para abrir um diálogo e selecionar as tags de metadados a serem inseridas.",
   "semanticsMultipleActionsHint": ", role para cima ou para baixo para alternar entre outras ações.",
-  "semanticSwitchNumberToStartAndToEnd": "Alternar direção de contagem entre do início e do fim, atualmente contando a partir de {toEnd, select, true{o final} false{o início} other{}}"
+  "semanticSwitchNumberToStartAndToEnd": "Alternar direção de contagem entre do início e do fim, atualmente contando a partir de {toEnd, select, true{o final} false{o início} other{}}",
+  "showThumbnails": "Miniaturas de imagens"
 }

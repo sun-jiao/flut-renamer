@@ -318,5 +318,6 @@
   "insertRandomString": "Insert random string",
   "randomStringLength": "Random string length",
   "randomStringLengthHint": "8",
-  "randomStringLengthError": "Length should be between 1 and 32"
+  "randomStringLengthError": "Length should be between 1 and 32",
+  "showThumbnails": "Image thumbnails"
 }
