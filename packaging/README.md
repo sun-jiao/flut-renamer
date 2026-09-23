@@ -103,3 +103,8 @@ The Linux packaging scripts require an already-built native Flutter release
 bundle. CI installs FPM 1.16.0, RPM tools, libarchive tools, zstd, Flatpak and
 AppImage dependencies. `github_appimage_build.sh` verifies the pinned
 appimagetool 1.9.1 binary for each CPU before running it.
+
+Linux packaging requires ImageMagick (`convert`). The scripts resize
+`assets/desktop.png` to a stripped 256×256 PNG before installing it into the
+hicolor icon theme for Flatpak, Deb, RPM, Pacman and Nix. The source image is
+preserved. This also keeps Flatpak exports below its 512×512 raster icon limit.
