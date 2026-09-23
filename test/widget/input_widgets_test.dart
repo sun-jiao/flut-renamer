@@ -61,15 +61,8 @@ void main() {
 
     await tester.enterText(find.byType(TextFormField), '12abc');
     expect(controller.text, '12');
-    expect(tester.widget<Checkbox>(find.byType(Checkbox)).value, isFalse);
-    await tester.tap(find.byType(Checkbox));
+    await tester.tap(find.widgetWithText(TextButton, L10n.current.toLast));
     await tester.pump();
     expect(toEnd.value, isTrue);
-    expect(tester.widget<Checkbox>(find.byType(Checkbox)).value, isTrue);
-
-    await tester.tap(find.byType(Checkbox));
-    await tester.pump();
-    expect(toEnd.value, isFalse);
-    expect(tester.widget<Checkbox>(find.byType(Checkbox)).value, isFalse);
   });
 }

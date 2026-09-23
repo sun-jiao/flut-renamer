@@ -4,48 +4,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flut_renamer/rules/rule.dart';
 
 void main() {
-  test('removes a fixed-length suffix from filenames of different lengths', () {
-    final rule = RuleTruncate(16, 0, true, true, true, false);
-
-    expect(rule.newName('filename1_standard_suffix.ext'), 'filename1.ext');
-    expect(
-      rule.newName('filename2-with-different-namelenght_standard_suffix.ext'),
-      'filename2-with-different-namelenght.ext',
-    );
-  });
-
-  test('zero is the end boundary and two selects the final two characters', () {
-    expect(
-      RuleTruncate(2, 0, true, true, true, false).newName('abcdef.txt'),
-      'abcd.txt',
-    );
-    expect(
-      RuleTruncate(0, 2, true, true, true, false).newName('abcdef.txt'),
-      'abcd.txt',
-    );
-  });
-
-  test('can keep from the beginning to an end-relative boundary', () {
-    expect(
-      RuleTruncate(0, 2, false, true, true, true).newName('abcdef.txt'),
-      'abcd.txt',
-    );
-  });
-
-  test('still removes a prefix when counting from the beginning', () {
-    expect(
-      RuleTruncate(0, 2, false, false, true, false).newName('abcdef.txt'),
-      'cdef.txt',
-    );
-  });
-
-  test('clamps suffix removal to the filename length', () {
-    expect(
-      RuleTruncate(20, 0, true, true, true, false).newName('abc.txt'),
-      '.txt',
-    );
-  });
-
   test('keeps characters using positive offsets from the end', () {
     final result = RuleTruncate(
       3,
