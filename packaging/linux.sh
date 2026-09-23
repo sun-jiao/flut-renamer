@@ -15,13 +15,16 @@ test -x "$bundle/flut-renamer"
 mkdir -p "$out"
 work=$(mktemp -d)
 trap 'rm -rf -- "$work"' EXIT
+# Use the same correctly sized icon for native packages and the Nix archive.
+convert assets/desktop.png -resize 256x256 -background none -gravity center \
+  -extent 256x256 -strip "PNG32:$work/desktop.png"
 root="$work/root"
 mkdir -p "$root/opt/flut-renamer" "$root/usr/bin" "$root/usr/share/applications" \
   "$root/usr/share/icons/hicolor/256x256/apps" "$root/usr/share/licenses/flut-renamer"
 cp -a "$bundle/." "$root/opt/flut-renamer/"
 ln -s /opt/flut-renamer/flut-renamer "$root/usr/bin/flut-renamer"
 sed 's/^Icon=.*/Icon=flut-renamer/' appimage/flut-renamer.desktop > "$root/usr/share/applications/flut-renamer.desktop"
-install -m644 assets/desktop.png "$root/usr/share/icons/hicolor/256x256/apps/flut-renamer.png"
+install -m644 "$work/desktop.png" "$root/usr/share/icons/hicolor/256x256/apps/flut-renamer.png"
 install -m644 LICENSE "$root/usr/share/licenses/flut-renamer/LICENSE"
 desktop-file-validate "$root/usr/share/applications/flut-renamer.desktop"
 
@@ -50,7 +53,7 @@ fi
 # Self-contained Nix input: default.nix and the native bundle travel together.
 mkdir -p "$work/nix/bundle"
 cp -a "$bundle/." "$work/nix/bundle/"
-cp assets/desktop.png LICENSE "$work/nix/"
+cp "$work/desktop.png" LICENSE "$work/nix/"
 cp "$root/usr/share/applications/flut-renamer.desktop" "$work/nix/"
 sed -e "s/@VERSION@/$version/g" -e "s/@SYSTEM@/${native_arch}-linux/g" \
   packaging/nix/default.nix > "$work/nix/default.nix"

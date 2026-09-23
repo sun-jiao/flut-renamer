@@ -7,6 +7,8 @@ import re
 from pathlib import Path
 from urllib.parse import quote
 
+from release_version import parse_tag
+
 
 def sha256(path):
     with path.open('rb') as stream:
@@ -16,9 +18,7 @@ def sha256(path):
 def generate(assets, repository, tag):
     if not re.fullmatch(r'[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+', repository):
         raise ValueError('Expected an owner/repository GitHub repository')
-    if not re.fullmatch(r'v\d+\.\d+\.\d+', tag):
-        raise ValueError('Release tags must use vX.Y.Z')
-    version = tag[1:]
+    _, version = parse_tag(tag)
     homepage = f'https://github.com/{repository}'
     base = f'{homepage}/releases/download/{quote(tag, safe="")}'
     # Read all required inputs before writing any manifests.
@@ -51,7 +51,7 @@ end
     (assets / 'flut-renamer.json').write_text(json.dumps(scoop, indent=2) + '\n')
     winget = {
         '$schema': 'https://aka.ms/winget-manifest.singleton.1.6.0.schema.json',
-        'PackageIdentifier': 'SunJiao.FlutRenamer',
+        'PackageIdentifier': 'FlutRenamer.FlutRenamer',
         'PackageVersion': version,
         'PackageLocale': 'en-US',
         'Publisher': 'Sun Jiao',
@@ -72,7 +72,7 @@ end
         'ManifestVersion': '1.6.0',
     }
     # JSON is valid YAML 1.2, avoiding a runtime PyYAML dependency in release CI.
-    (assets / 'SunJiao.FlutRenamer.yaml').write_text(json.dumps(winget, indent=2) + '\n')
+    (assets / 'FlutRenamer.FlutRenamer.yaml').write_text(json.dumps(winget, indent=2) + '\n')
     files = sorted(p for p in assets.iterdir() if p.is_file() and p.name != 'SHA256SUMS')
     (assets / 'SHA256SUMS').write_text(''.join(f'{sha256(p)}  {p.name}\n' for p in files))
 
