@@ -21,7 +21,7 @@
 Install from the Google Play Store or download the *.apk from [releases].
 
 ### Linux
-Download the *.AppImage or *.tar.gz from [releases].
+Download AppImage, Flatpak, Deb, RPM, or Nix packages for x86_64 / arm64 from [releases]. Pacman packages are available for x86_64. See [package installation instructions](packaging/README.md).
 
 For Arch Linux users, just run:
 ```shell
@@ -30,10 +30,10 @@ yay -S flut-renamer-bin # binary version
 ```
 
 ### Windows
-Download the *.exe from [releases].
+Download the *.exe from [releases], or use the attached Scoop / Winget manifests. See [package installation instructions](packaging/README.md).
 
 ### macOS
-Download the *.dmg from [releases].
+Download the *.dmg from [releases], or use the attached Homebrew cask. See [package installation instructions](packaging/README.md).
 
 ### iOS
 Download the *.ipa from [releases] and install it using AltStore or other tools.
