@@ -7,7 +7,7 @@ pkgs.stdenv.mkDerivation {
   nativeBuildInputs = with pkgs; [ autoPatchelfHook wrapGAppsHook3 ];
   buildInputs = with pkgs; [
     gtk3 glib pango cairo atk gdk-pixbuf libepoxy fontconfig
-    libGL stdenv.cc.cc.lib xz
+    libGL stdenv.cc.cc.lib xz jdk17_headless
   ];
   # Flutter loads the graphics driver dynamically.
   runtimeDependencies = [ pkgs.libGL ];
@@ -26,6 +26,10 @@ pkgs.stdenv.mkDerivation {
   '';
   preFixup = ''
     addAutoPatchelfSearchPath $out/lib/flut-renamer/lib
+    # libdartjni.so links to libjvm.so. OpenJDK keeps it below JAVA_HOME,
+    # outside the top-level lib directory normally searched by the hook.
+    test -f ${pkgs.jdk17_headless.home}/lib/server/libjvm.so
+    addAutoPatchelfSearchPath ${pkgs.jdk17_headless.home}/lib/server
   '';
   meta = {
     description = "Batch rename files and directories";

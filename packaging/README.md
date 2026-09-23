@@ -29,7 +29,9 @@ a compatible system (glibc 2.39 or newer and GTK 3); the AppImage bundles the
 Flutter libraries but does not bundle all system libraries. Flatpak uses the
 GNOME 50 runtime and grants host filesystem access for batch renaming and drag
 and drop. Nix packages patch the native binaries against Nixpkgs dependencies;
-CI builds each architecture with Nixpkgs 26.05 before upload.
+CI builds each architecture with Nixpkgs 26.05 before upload. The Nix package
+includes headless OpenJDK 17 to resolve the bundled `libdartjni.so` dependency
+on `libjvm.so`; autoPatchelf searches OpenJDK's `lib/server` directory explicitly.
 
 `SHA256SUMS` covers every other release asset. Manager manifests are generated
 from the actual DMG/EXE hashes and the workflow repository, so forks get their
