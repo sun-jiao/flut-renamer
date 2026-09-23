@@ -7,6 +7,8 @@ import re
 from pathlib import Path
 from urllib.parse import quote
 
+from release_version import parse_tag
+
 
 def sha256(path):
     with path.open('rb') as stream:
@@ -16,9 +18,7 @@ def sha256(path):
 def generate(assets, repository, tag):
     if not re.fullmatch(r'[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+', repository):
         raise ValueError('Expected an owner/repository GitHub repository')
-    if not re.fullmatch(r'v\d+\.\d+\.\d+', tag):
-        raise ValueError('Release tags must use vX.Y.Z')
-    version = tag[1:]
+    _, version = parse_tag(tag)
     homepage = f'https://github.com/{repository}'
     base = f'{homepage}/releases/download/{quote(tag, safe="")}'
     # Read all required inputs before writing any manifests.

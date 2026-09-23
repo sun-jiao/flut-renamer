@@ -1,9 +1,21 @@
 # Release packages
 
-Pushing a `vX.Y.Z` tag matching the version in `pubspec.yaml` runs
+Pushing a `vX.Y.Z` or `vX.Y.Z-suffix` tag whose base version matches `pubspec.yaml` runs
 `.github/workflows/main.yml`. All jobs must succeed before publishing. Existing
 Android signing secrets are still required. No registry credentials are needed
 for the new packages. `x86` here means **x86_64**, not 32-bit i686.
+
+Tags such as `v1.6.3-new-packages-test` are published as GitHub prereleases.
+Linux package versions use the base `1.6.3` to match the compiled application;
+these test packages therefore have the same native package version as the
+corresponding stable release. Homebrew, Scoop and Winget manifests retain the
+suffix in their version, and all download URLs retain the complete tag.
+Suffixes may contain ASCII letters, digits, hyphens, and dot-separated segments
+(for example, `beta`, `rc.1`, or `new-packages-test`).
+
+Linux arm64 bootstraps Flutter from the exact official Git tag specified by
+`FLUTTER_VERSION`, because flutter-action's SDK archive lookup does not provide
+a Linux arm64 bundle. Other platforms continue to use flutter-action.
 
 | Platform | Release assets |
 | --- | --- |

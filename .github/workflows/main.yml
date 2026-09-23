@@ -32,20 +32,32 @@ jobs:
             native_arch: aarch64
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
-      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
-        with:
-          channel: stable
-          architecture: ${{ matrix.architecture }}
-          flutter-version: ${{ env.FLUTTER_VERSION }}
-      - run: flutter pub get --enforce-lockfile
       - name: Validate release version
         env:
           RELEASE_TAG: ${{ github.ref_name }}
         run: |
-          version="${RELEASE_TAG#v}"
-          [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]
-          test "$version" = "$(sed -n 's/^version: \([^+]*\).*/\1/p' pubspec.yaml)"
+          version=$(python3 packaging/release_version.py --tag "$RELEASE_TAG")
           echo "RELEASE_VERSION=$version" >> "$GITHUB_ENV"
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
+        if: matrix.architecture == 'x64'
+        with:
+          channel: stable
+          architecture: x64
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+      - name: Bootstrap Flutter on Linux arm64
+        if: matrix.architecture == 'arm64'
+        # The SDK archive index has no Linux arm64 bundle. Flutter's own
+        # bootstrap downloads the native Dart SDK and engine artifacts.
+        run: |
+          flutter_root="$RUNNER_TEMP/flutter-${FLUTTER_VERSION}"
+          git clone --depth 1 --branch "$FLUTTER_VERSION" \
+            https://github.com/flutter/flutter.git "$flutter_root"
+          echo "$flutter_root/bin" >> "$GITHUB_PATH"
+          echo "FLUTTER_ROOT=$flutter_root" >> "$GITHUB_ENV"
+          echo "PUB_CACHE=$HOME/.pub-cache" >> "$GITHUB_ENV"
+          "$flutter_root/bin/flutter" --version
+          "$flutter_root/bin/flutter" precache --linux
+      - run: flutter pub get --enforce-lockfile
       - name: Install Linux packaging dependencies
         run: |
           sudo apt-get update
@@ -238,4 +250,5 @@ jobs:
           artifactErrorsFailBuild: true
           allowUpdates: true
           generateReleaseNotes: true
+          prerelease: ${{ contains(github.ref_name, '-') }}
           artifacts: flut-renamer-release/*

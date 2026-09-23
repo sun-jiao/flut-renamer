@@ -38,6 +38,20 @@ class ReleaseMetadataTest(unittest.TestCase):
         generate(self.assets, 'example/fork', 'v1.2.3')
         self.assertEqual(sums, (self.assets / 'SHA256SUMS').read_text().splitlines())
 
+    def test_suffix_tag_preserves_manifest_versions_and_download_urls(self):
+        tag = 'v1.6.3-new-packages-test'
+        generate(self.assets, 'example/fork', tag)
+        scoop = json.loads((self.assets / 'flut-renamer.json').read_text())
+        winget = json.loads((self.assets / 'SunJiao.FlutRenamer.yaml').read_text())
+        url = f'https://github.com/example/fork/releases/download/{tag}/flut-renamer.exe'
+        self.assertEqual(scoop['architecture']['64bit']['url'], url)
+        self.assertEqual(winget['Installers'][0]['InstallerUrl'], url)
+        self.assertEqual(scoop['version'], tag[1:])
+        self.assertEqual(winget['PackageVersion'], tag[1:])
+        cask = (self.assets / 'flut-renamer.rb').read_text()
+        self.assertIn(f'/releases/download/{tag}/flut-renamer.dmg', cask)
+        self.assertIn(f'version "{tag[1:]}"', cask)
+
     def test_missing_asset_fails_before_writing_manifests(self):
         (self.assets / 'flut-renamer.exe').unlink()
         with self.assertRaises(FileNotFoundError):
@@ -45,7 +59,7 @@ class ReleaseMetadataTest(unittest.TestCase):
         self.assertFalse((self.assets / 'flut-renamer.rb').exists())
 
     def test_rejects_unsupported_or_injected_versions(self):
-        for tag in ['v1.2', 'v1.2.3-rc1', 'v1.2.3\nmalicious', 'v1.2.3"']:
+        for tag in ['v1.2', 'v1.2.3-', 'v1.2.3-test/invalid', 'v1.2.3\nmalicious', 'v1.2.3"']:
             with self.subTest(tag=tag), self.assertRaises(ValueError):
                 generate(self.assets, 'example/fork', tag)
         with self.assertRaises(ValueError):
