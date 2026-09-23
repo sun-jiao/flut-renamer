@@ -51,7 +51,7 @@ end
     (assets / 'flut-renamer.json').write_text(json.dumps(scoop, indent=2) + '\n')
     winget = {
         '$schema': 'https://aka.ms/winget-manifest.singleton.1.6.0.schema.json',
-        'PackageIdentifier': 'SunJiao.FlutRenamer',
+        'PackageIdentifier': 'FlutRenamer.FlutRenamer',
         'PackageVersion': version,
         'PackageLocale': 'en-US',
         'Publisher': 'Sun Jiao',
@@ -72,7 +72,7 @@ end
         'ManifestVersion': '1.6.0',
     }
     # JSON is valid YAML 1.2, avoiding a runtime PyYAML dependency in release CI.
-    (assets / 'SunJiao.FlutRenamer.yaml').write_text(json.dumps(winget, indent=2) + '\n')
+    (assets / 'FlutRenamer.FlutRenamer.yaml').write_text(json.dumps(winget, indent=2) + '\n')
     files = sorted(p for p in assets.iterdir() if p.is_file() and p.name != 'SHA256SUMS')
     (assets / 'SHA256SUMS').write_text(''.join(f'{sha256(p)}  {p.name}\n' for p in files))
 

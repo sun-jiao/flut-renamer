@@ -22,7 +22,7 @@ a Linux arm64 bundle. Other platforms continue to use flutter-action.
 | Linux x86_64 / arm64 | `.AppImage`, `.flatpak`, `.deb`, `.rpm`, `.nix.tar.gz`, native `.tar.gz` |
 | Linux x86_64 | `.pkg.tar.zst` (Pacman) |
 | macOS | Existing `.dmg` plus `flut-renamer.rb` (Homebrew cask) |
-| Windows x64 | Existing portable `.exe` plus `flut-renamer.json` (Scoop) and `SunJiao.FlutRenamer.yaml` (Winget) |
+| Windows x64 | Existing portable `.exe` plus `flut-renamer.json` (Scoop) and `FlutRenamer.FlutRenamer.yaml` (Winget) |
 
 Linux uses native Ubuntu 24.04 runners. The native packages and AppImages require
 a compatible system (glibc 2.39 or newer and GTK 3); the AppImage bundles the
@@ -90,8 +90,8 @@ then validate and install the downloaded manifest:
 
 ```powershell
 winget settings --enable LocalManifestFiles
-winget validate --manifest .\SunJiao.FlutRenamer.yaml
-winget install --manifest .\SunJiao.FlutRenamer.yaml
+winget validate --manifest .\FlutRenamer.FlutRenamer.yaml
+winget install --manifest .\FlutRenamer.FlutRenamer.yaml
 ```
 
 ## Local checks

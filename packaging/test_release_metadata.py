@@ -19,7 +19,7 @@ class ReleaseMetadataTest(unittest.TestCase):
     def test_manifests_reference_actual_assets_and_repository(self):
         generate(self.assets, 'example/fork', 'v1.2.3')
         scoop = json.loads((self.assets / 'flut-renamer.json').read_text())
-        winget = json.loads((self.assets / 'SunJiao.FlutRenamer.yaml').read_text())
+        winget = json.loads((self.assets / 'FlutRenamer.FlutRenamer.yaml').read_text())
         exe = self.assets / 'flut-renamer.exe'
         digest = hashlib.sha256(exe.read_bytes()).hexdigest()
         url = 'https://github.com/example/fork/releases/download/v1.2.3/flut-renamer.exe'
@@ -42,7 +42,7 @@ class ReleaseMetadataTest(unittest.TestCase):
         tag = 'v1.6.3-new-packages-test'
         generate(self.assets, 'example/fork', tag)
         scoop = json.loads((self.assets / 'flut-renamer.json').read_text())
-        winget = json.loads((self.assets / 'SunJiao.FlutRenamer.yaml').read_text())
+        winget = json.loads((self.assets / 'FlutRenamer.FlutRenamer.yaml').read_text())
         url = f'https://github.com/example/fork/releases/download/{tag}/flut-renamer.exe'
         self.assertEqual(scoop['architecture']['64bit']['url'], url)
         self.assertEqual(winget['Installers'][0]['InstallerUrl'], url)
