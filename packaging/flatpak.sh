@@ -16,7 +16,9 @@ mkdir -p "$out"
 flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 flatpak install --user --noninteractive --arch="$flatpak_arch" flathub \
   "org.gnome.Platform//$runtime_version" "org.gnome.Sdk//$runtime_version"
-flatpak build-init --user --arch="$flatpak_arch" "$work/app" "$app_id" \
+# build-init searches installed runtimes, including the user installation.
+# Unlike remote-add/install, it does not accept --user.
+flatpak build-init --arch="$flatpak_arch" "$work/app" "$app_id" \
   org.gnome.Sdk org.gnome.Platform "$runtime_version"
 mkdir -p "$work/app/files/lib/flut-renamer" "$work/app/files/bin" \
   "$work/app/files/share/applications" "$work/app/files/share/icons/hicolor/256x256/apps"
