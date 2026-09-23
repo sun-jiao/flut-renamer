@@ -164,6 +164,8 @@ void main() {
       ),
     );
 
+    expect(tester.widget<Checkbox>(find.byType(Checkbox).at(0)).value, isTrue);
+    expect(tester.widget<Checkbox>(find.byType(Checkbox).at(1)).value, isFalse);
     final fields = find.byType(TextFormField);
     await tester.enterText(fields.at(0), '1');
     await tester.enterText(fields.at(1), '3');
@@ -175,6 +177,39 @@ void main() {
     expect(saved?.i1toEnd, isTrue);
     expect(saved?.keepBetween, isFalse);
     expect(saved?.ignoreExtension, isFalse);
+  });
+
+  testWidgets('TruncateDialog creates an end-relative suffix removal rule',
+      (tester) async {
+    RuleTruncate? saved;
+    await tester.pumpWidget(
+      host(TruncateDialog(onSave: (rule) => saved = rule as RuleTruncate)),
+    );
+
+    final fields = find.byType(TextFormField);
+    final checkboxes = find.byType(Checkbox);
+    expect(tester.widget<Checkbox>(checkboxes.at(0)).value, isFalse);
+    expect(tester.widget<Checkbox>(checkboxes.at(1)).value, isFalse);
+    await tester.enterText(fields.at(0), '16');
+    await tester.tap(checkboxes.at(0));
+    await tester.tap(checkboxes.at(1));
+    await tester
+        .tap(find.widgetWithText(TextButton, L10n.current.keepCharacters));
+    await tester.pump();
+    expect(find.text(L10n.current.removeCharacters), findsOneWidget);
+    await tester.tap(find.widgetWithText(TextButton, L10n.current.add));
+    await tester.pumpAndSettle();
+
+    expect(saved?.i1toEnd, isTrue);
+    expect(saved?.i2toEnd, isTrue);
+    expect(saved?.index2, 0);
+    expect(saved?.keepBetween, isFalse);
+    expect(saved?.ignoreExtension, isTrue);
+    expect(saved?.newName('filename1_standard_suffix.ext'), 'filename1.ext');
+    expect(
+      saved?.newName('filename2-with-different-namelenght_standard_suffix.ext'),
+      'filename2-with-different-namelenght.ext',
+    );
   });
 
   testWidgets('TransliterateDialog restores and saves the selected type',
