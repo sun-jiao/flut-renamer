@@ -4,6 +4,17 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flut_renamer/rules/rule.dart';
 
 void main() {
+  test('issue #46: case-sensitive replacement changes extension casing',
+      () async {
+    final rule = RuleReplace('.SRT', '.srt', 0, false, true, false, false);
+    const basename =
+        'Warau.Matryoshka.EP06.1080p.U-NEXT.WEB-DL.AAC2.0.H.264-MagicStar';
+
+    expect(await rule.newName('$basename.SRT'), '$basename.srt');
+    expect(await rule.newName('$basename.Srt'), '$basename.Srt');
+    expect(await rule.newName('$basename.srt'), '$basename.srt');
+  });
+
   test('basic replace', () async {
     String fileName = "file_example_file_name_file.file";
     String targetString = "file";

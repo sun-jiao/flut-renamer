@@ -41,6 +41,12 @@ void main() {
       () => RuleReplace('old', 'new', 1, false, true, false, true)
     ),
     (
+      'issue #46: case-sensitive extension replacement',
+      'Warau.Matryoshka.EP06.1080p.U-NEXT.WEB-DL.AAC2.0.H.264-MagicStar.SRT',
+      'Warau.Matryoshka.EP06.1080p.U-NEXT.WEB-DL.AAC2.0.H.264-MagicStar.srt',
+      () => RuleReplace('.SRT', '.srt', 0, false, true, false, false)
+    ),
+    (
       'regex captures',
       'photo-42.txt',
       '42-photo.txt',
