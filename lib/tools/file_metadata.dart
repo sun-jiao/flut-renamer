@@ -18,17 +18,14 @@ import 'platform_channel.dart';
 final metadataTagRegex = RegExp(r'\{([A-Za-z]+:[A-Za-z]+)\}');
 
 class FileMetadata {
-  FileMetadata(this.file) {
+  FileMetadata(FileSystemEntity source)
+      : file = source is Link ? source.toFileSystemEntity() : source {
     if (Platform.isAndroid && file.path.startsWith('content://')) {
       return;
     }
 
     if (!file.existsSync()) {
       throw PathNotFoundException(file.path, const OSError());
-    }
-
-    while (file is Link) {
-      file = (file as Link).toFileSystemEntity();
     }
   }
 
@@ -57,7 +54,7 @@ class FileMetadata {
     }
   }
 
-  late final FileSystemEntity file;
+  final FileSystemEntity file;
   late FileStat _stat;
   late Uint8List _bytes;
   late Map<String, IfdTag> _exif;

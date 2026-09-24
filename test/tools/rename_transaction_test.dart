@@ -14,6 +14,85 @@ void main() {
 
   tearDown(() => temporaryDirectory.delete(recursive: true));
 
+  test(
+    'rollback relocates descendants accessed through a directory link',
+    () async {
+      final target =
+          await Directory('${temporaryDirectory.path}/target').create();
+      final child =
+          await File('${target.path}/before.txt').writeAsString('child');
+      final alias =
+          await Link('${temporaryDirectory.path}/alias').create('target');
+      final last =
+          await File('${temporaryDirectory.path}/last').writeAsString('last');
+      final result = await commitRenameTransaction(
+        [
+          alias.path.toFileEntity()..newName = 'alias-new',
+          '${alias.path}/before.txt'.toFileEntity()..newName = 'after.txt',
+          last.path.toFileEntity()..newName = 'last-new',
+        ],
+        operation: (file, _) async {
+          if (file.path == last.path) return null;
+          return FileEntity(await file.entity.rename(file.newPath));
+        },
+      );
+      expect(result.succeeded, isFalse);
+      expect(result.entities.first.entity, isA<Link>());
+      expect(result.entities[1].path, '${alias.path}/before.txt');
+      expect(alias.targetSync(), 'target');
+      expect(child.readAsStringSync(), 'child');
+      expect(File('${target.path}/after.txt').existsSync(), isFalse);
+    },
+    skip: Platform.isWindows,
+  );
+
+  for (final failRollback in [false, true]) {
+    test(
+      'preserves links after parent moves and rollback '
+      '${failRollback ? 'fails' : 'succeeds'}',
+      () async {
+        final parent =
+            await Directory('${temporaryDirectory.path}/folder').create();
+        final target =
+            await File('${parent.path}/target.txt').writeAsString('target');
+        final link = await Link('${parent.path}/before').create('target.txt');
+        final last =
+            await File('${temporaryDirectory.path}/last').writeAsString('last');
+        final parentEntry = parent.path.toFileEntity()..newName = 'folder-new';
+        final linkEntry = link.path.toFileEntity()..newName = 'after';
+        final lastEntry = last.path.toFileEntity()..newName = 'last-new';
+        var failed = false;
+
+        final result = await commitRenameTransaction(
+          [parentEntry, linkEntry, lastEntry],
+          operation: (file, _) async {
+            if (file.path == last.path) {
+              failed = true;
+              return null;
+            }
+            if (failed && failRollback) return null;
+            return FileEntity(await file.entity.rename(file.newPath));
+          },
+        );
+
+        final expectedParent = failRollback
+            ? '${temporaryDirectory.path}/folder-new'
+            : parent.path;
+        final expectedLink =
+            '$expectedParent/${failRollback ? 'after' : 'before'}';
+        expect(result.succeeded, isFalse);
+        expect(result.entities[1].entity, isA<Link>());
+        expect(result.entities[1].path, expectedLink);
+        expect(Link(expectedLink).targetSync(), 'target.txt');
+        expect(File('$expectedParent/target.txt').readAsStringSync(), 'target');
+        expect(File(expectedLink).readAsStringSync(), 'target');
+        expect(last.readAsStringSync(), 'last');
+        expect(target.existsSync(), !failRollback);
+      },
+      skip: Platform.isWindows,
+    );
+  }
+
   test('rolls back completed renames when a later rename fails', () async {
     final first = File('${temporaryDirectory.path}/first.txt');
     final second = File('${temporaryDirectory.path}/second.txt');

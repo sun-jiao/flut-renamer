@@ -130,19 +130,18 @@ class FileEntity {
       );
 
   String fileOrDir([bool returnLink = false]) {
-    FileSystemEntity file = entity;
-
-    while (file is Link) {
-      if (returnLink) {
-        return 'Link';
-      } else {
-        file = file.toFileSystemEntity();
-      }
+    if (entity is Link) {
+      if (returnLink) return 'Link';
+      // Let the OS resolve relative targets and detect cycles. Unresolvable
+      // links belong in the file list, so they can still be inspected/removed.
+      return FileSystemEntity.typeSync(path) == FileSystemEntityType.directory
+          ? 'Dir'
+          : 'File';
     }
 
-    if (file is File) {
+    if (entity is File) {
       return 'File';
-    } else if (file is Directory) {
+    } else if (entity is Directory) {
       return 'Dir';
     }
 
@@ -164,7 +163,7 @@ extension ExPlatformFile on PlatformFile {
 
 extension ExLink on Link {
   FileSystemEntity toFileSystemEntity() =>
-      _toFileSystemEntity(this, (link) => link.targetSync());
+      _toFileSystemEntity(this, (link) => link.resolveSymbolicLinksSync());
 }
 
 extension ExPathString on String {
@@ -181,11 +180,12 @@ extension ExPathString on String {
 }
 
 FileSystemEntity _toFileSystemEntity<T>(T file, String Function(T file) func) {
-  FileSystemEntity entity;
-
-  entity = File(func.call(file));
-  if (!entity.existsSync()) entity = Directory(func.call(file));
-  if (!entity.existsSync()) entity = Link(func.call(file));
-
-  return entity;
+  final path = func(file);
+  // Keep the selected link itself as the rename source, including dangling
+  // links. A missing path must not be mistaken for a link.
+  return switch (FileSystemEntity.typeSync(path, followLinks: false)) {
+    FileSystemEntityType.directory => Directory(path),
+    FileSystemEntityType.link => Link(path),
+    _ => File(path),
+  };
 }

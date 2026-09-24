@@ -129,6 +129,55 @@ void main() {
       '02:05.00',
     );
   });
+
+  test(
+    'reads metadata through relative file and directory links',
+    () async {
+      final directory = await Directory.systemTemp.createTemp('renamer_links_');
+      addTearDown(() => directory.delete(recursive: true));
+      final target =
+          await File('${directory.path}/target.txt').writeAsString('12345');
+      await Directory('${directory.path}/folder').create();
+      final fileLink =
+          await Link('${directory.path}/file-link').create('target.txt');
+      final folderLink =
+          await Link('${directory.path}/folder-link').create('folder');
+
+      final entity = fileLink.path.toFileEntity();
+      await entity.initMetadata();
+      final targetMetadata = FileMetadata(target);
+      await targetMetadata.init();
+      expect(entity.path, fileLink.path);
+      expect(entity.metadata!.getByName('File:Size'), '5.00Bytes');
+      expect(await entity.metadata!.md5, await targetMetadata.md5);
+
+      final folderMetadata = FileMetadata(folderLink);
+      await folderMetadata.init();
+      expect(folderMetadata.file, isA<Directory>());
+      expect(folderMetadata.inited, isTrue);
+      expect(folderMetadata.getByName('Photo:CamName'), isEmpty);
+    },
+    skip: Platform.isWindows,
+  );
+
+  test(
+    'unresolvable link metadata reports a filesystem error',
+    () async {
+      final directory = await Directory.systemTemp.createTemp('renamer_links_');
+      addTearDown(() => directory.delete(recursive: true));
+      final dangling =
+          await Link('${directory.path}/dangling').create('missing');
+      final cycle = await Link('${directory.path}/cycle').create('cycle');
+      for (final link in [dangling, cycle]) {
+        await expectLater(
+          link.path.toFileEntity().initMetadata(),
+          throwsA(isA<FileSystemException>()),
+        );
+        expect(link.existsSync(), isTrue);
+      }
+    },
+    skip: Platform.isWindows,
+  );
 }
 
 const _jpegWithExifTimestamp = <int>[

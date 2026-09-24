@@ -126,7 +126,9 @@ void _updateCurrentEntity(
   FileEntity renamed,
 ) {
   current[index] = renamed;
-  if (previous.entity is Directory && previous.path != renamed.path) {
+  // Selected descendants may also use a directory link as their path prefix.
+  // Check its new location because the old link has already moved.
+  if (previous.path != renamed.path && renamed.fileOrDir() == 'Dir') {
     _relocateDescendants(current, index, previous.path, renamed.path);
   }
 }
@@ -150,7 +152,9 @@ void _relocateDescendants(
     final relocatedPath = p.join(newDirectory, relativePath);
     final entity = current[index].entity is Directory
         ? Directory(relocatedPath)
-        : File(relocatedPath);
+        : current[index].entity is Link
+            ? Link(relocatedPath)
+            : File(relocatedPath);
     current[index] = FileEntity(entity, newName: current[index].newName);
   }
 }
@@ -223,7 +227,8 @@ Future<FileEntity> _temporaryEntity(FileEntity file, int index) async {
   while (true) {
     final name = '.${file.name}.renamer-tmp-$stamp-$index-$attempt';
     final path = '${file.directory}${Platform.pathSeparator}$name';
-    if (await FileSystemEntity.type(path) == FileSystemEntityType.notFound) {
+    if (await FileSystemEntity.type(path, followLinks: false) ==
+        FileSystemEntityType.notFound) {
       return FileEntity(file.entity, newName: name);
     }
     attempt++;
@@ -251,7 +256,10 @@ Future<void> _rescanLocalState(
   for (var index = 0; index < originals.length; index++) {
     if (originals[index].path.startsWith('content://')) continue;
 
-    final originalType = await FileSystemEntity.type(originals[index].path);
+    final originalType = await FileSystemEntity.type(
+      originals[index].path,
+      followLinks: false,
+    );
     if (originalType != FileSystemEntityType.notFound) {
       current[index] = FileEntity(
         _entityForType(
@@ -262,7 +270,10 @@ Future<void> _rescanLocalState(
       continue;
     }
 
-    final renamedType = await FileSystemEntity.type(current[index].path);
+    final renamedType = await FileSystemEntity.type(
+      current[index].path,
+      followLinks: false,
+    );
     if (renamedType != FileSystemEntityType.notFound) {
       current[index] = FileEntity(
         _entityForType(
@@ -275,7 +286,11 @@ Future<void> _rescanLocalState(
 }
 
 FileSystemEntity _entityForType(String path, FileSystemEntityType type) =>
-    type == FileSystemEntityType.directory ? Directory(path) : File(path);
+    switch (type) {
+      FileSystemEntityType.directory => Directory(path),
+      FileSystemEntityType.link => Link(path),
+      _ => File(path),
+    };
 
 Future<FileEntity?> _renameOperation(
   FileEntity file,
