@@ -25,11 +25,15 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final GlobalKey<FilesPageState> filesKey = GlobalKey<FilesPageState>();
   final GlobalKey<RulesPageState> rulesKey = GlobalKey<RulesPageState>();
+  bool _renaming = false;
 
   @override
   Widget build(BuildContext context) {
     final filesPage = FilesPage(
       key: filesKey,
+      onRenamingChanged: (value) {
+        if (mounted) setState(() => _renaming = value);
+      },
       showThumbnails: Shared.showThumbnails,
       getNewName: (String name, FileMetadata metadata) async {
         for (Rule rule in rulesKey.currentState?.rules ?? []) {
@@ -53,35 +57,47 @@ class _HomePageState extends State<HomePage> {
       },
     );
 
-    final rulesPage = RulesPage(
-      key: rulesKey,
-      onRuleChanged: () {
-        filesKey.currentState?.update();
-      },
+    final rulesPage = _lockWhileRenaming(
+      RulesPage(
+        key: rulesKey,
+        onRuleChanged: () {
+          filesKey.currentState?.update();
+        },
+      ),
     );
 
     return Scaffold(
-      bottomNavigationBar: HomeToolBar(
-        showThumbnailsCallback: (value) => setState(() {
-          Shared.showThumbnails = value;
-        }),
-        showThumbnailsValue: () => Shared.showThumbnails,
-        onlySelectedCallback: (value) => Shared.onlySelected = value,
-        onlySelectedValue: () => Shared.onlySelected,
-        removeRenamedCallback: (value) => Shared.removeRenamed = value,
-        removeRenamedValue: () => Shared.removeRenamed,
-        removeRulesCallback: (value) => Shared.removeRules = value,
-        removeRulesValue: () => Shared.removeRules,
+      bottomNavigationBar: _lockWhileRenaming(
+        HomeToolBar(
+          showThumbnailsCallback: (value) => setState(() {
+            Shared.showThumbnails = value;
+          }),
+          showThumbnailsValue: () => Shared.showThumbnails,
+          onlySelectedCallback: (value) => Shared.onlySelected = value,
+          onlySelectedValue: () => Shared.onlySelected,
+          removeRenamedCallback: (value) => Shared.removeRenamed = value,
+          removeRenamedValue: () => Shared.removeRenamed,
+          removeRulesCallback: (value) => Shared.removeRules = value,
+          removeRulesValue: () => Shared.removeRules,
+        ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          filesKey.currentState?.renameFiles(
-            remove: Shared.removeRenamed,
-            onlySelected: Shared.onlySelected,
-          );
-        },
+        onPressed: _renaming
+            ? null
+            : () {
+                filesKey.currentState?.renameFiles(
+                  remove: Shared.removeRenamed,
+                  onlySelected: Shared.onlySelected,
+                );
+              },
         tooltip: L10n.current.rename,
-        child: const Icon(Icons.play_arrow_rounded),
+        child: _renaming
+            ? const SizedBox(
+                width: 24,
+                height: 24,
+                child: CircularProgressIndicator(strokeWidth: 2),
+              )
+            : const Icon(Icons.play_arrow_rounded),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       body: SafeArea(
@@ -112,6 +128,11 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
+  Widget _lockWhileRenaming(Widget child) => ExcludeFocus(
+        excluding: _renaming,
+        child: AbsorbPointer(absorbing: _renaming, child: child),
+      );
 }
 
 class HomeToolBar extends StatefulWidget {

@@ -110,14 +110,25 @@ Future<bool> _performRename(
   }
   if (renamed == null) return false;
 
-  current[index] = renamed;
-  if (file.entity is Directory && file.path != renamed.path) {
-    _relocateDescendants(current, index, file.path, renamed.path);
-  }
+  _updateCurrentEntity(current, index, file, renamed);
   if (!identical(renamed, file)) {
     completedSteps.add(_CompletedRename(index, previousName));
   }
   return true;
+}
+
+/// Forward moves and rollback must both relocate descendants. Otherwise the
+/// next child rollback would still address the directory's former location.
+void _updateCurrentEntity(
+  List<FileEntity> current,
+  int index,
+  FileEntity previous,
+  FileEntity renamed,
+) {
+  current[index] = renamed;
+  if (previous.entity is Directory && previous.path != renamed.path) {
+    _relocateDescendants(current, index, previous.path, renamed.path);
+  }
 }
 
 /// A directory move changes the paths of every selected descendant. Keep their
@@ -130,7 +141,8 @@ void _relocateDescendants(
   String newDirectory,
 ) {
   for (var index = 0; index < current.length; index++) {
-    if (index == renamedIndex || !p.isWithin(oldDirectory, current[index].path)) {
+    if (index == renamedIndex ||
+        !p.isWithin(oldDirectory, current[index].path)) {
       continue;
     }
 
@@ -154,7 +166,9 @@ Future<void> _rollback(
     renamed.newName = step.previousName;
     try {
       final restored = await operation(renamed, context);
-      if (restored != null) current[step.index] = restored;
+      if (restored != null) {
+        _updateCurrentEntity(current, step.index, renamed, restored);
+      }
     } catch (_) {
       // Continue rolling back the other entries, then rescan all local paths.
     }

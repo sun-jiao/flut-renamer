@@ -70,6 +70,83 @@ void main() {
     expect(await File(result.entities.first.path).readAsString(), 'source');
   });
 
+  test('rolls back nested directories before restoring their child names',
+      () async {
+    final outer = Directory('${temporaryDirectory.path}/outer');
+    final inner =
+        await Directory('${outer.path}/inner').create(recursive: true);
+    final child = await File('${inner.path}/before.txt').writeAsString('child');
+    final last =
+        await File('${temporaryDirectory.path}/last.txt').writeAsString('last');
+    final files = [
+      FileEntity(outer, newName: 'outer-new'),
+      FileEntity(inner, newName: 'inner-new'),
+      FileEntity(child, newName: 'after.txt'),
+      FileEntity(last, newName: 'last-new.txt'),
+    ];
+
+    final result = await commitRenameTransaction(
+      files,
+      operation: (file, _) async {
+        if (file.path == last.path) return null;
+        return FileEntity(await file.entity.rename(file.newPath));
+      },
+    );
+
+    expect(result.succeeded, isFalse);
+    expect(
+      result.entities.map((file) => file.path),
+      [outer.path, inner.path, child.path, last.path],
+    );
+    expect(await child.readAsString(), 'child');
+    expect(await last.readAsString(), 'last');
+    expect(
+      (await temporaryDirectory.list(recursive: true).toList())
+          .map((entity) => entity.path),
+      unorderedEquals([outer.path, inner.path, child.path, last.path]),
+    );
+  });
+
+  for (final failParentRollback in [false, true]) {
+    test(
+        'retains actual descendant paths when '
+        '${failParentRollback ? 'parent' : 'child'} rollback fails', () async {
+      final parent =
+          await Directory('${temporaryDirectory.path}/folder').create();
+      final child =
+          await File('${parent.path}/before.txt').writeAsString('child');
+      final last = await File('${temporaryDirectory.path}/last.txt')
+          .writeAsString('last');
+      final result = await commitRenameTransaction(
+        [
+          FileEntity(parent, newName: 'folder-new'),
+          FileEntity(child, newName: 'after.txt'),
+          FileEntity(last, newName: 'last-new.txt'),
+        ],
+        operation: (file, _) async {
+          if (file.path == last.path ||
+              file.newName == (failParentRollback ? 'folder' : 'before.txt')) {
+            throw const FileSystemException('Injected failure');
+          }
+          return FileEntity(await file.entity.rename(file.newPath));
+        },
+      );
+
+      final parentPath = failParentRollback
+          ? '${temporaryDirectory.path}/folder-new'
+          : parent.path;
+      final childPath =
+          '$parentPath/${failParentRollback ? 'before.txt' : 'after.txt'}';
+      expect(result.succeeded, isFalse);
+      expect(
+        result.entities.map((file) => file.path),
+        [parentPath, childPath, last.path],
+      );
+      expect(await File(childPath).readAsString(), 'child');
+      expect(await last.readAsString(), 'last');
+    });
+  }
+
   test('uses temporary names to swap two files', () async {
     final first = File('${temporaryDirectory.path}/first.txt');
     final second = File('${temporaryDirectory.path}/second.txt');

@@ -29,6 +29,7 @@ class FilesPage extends StatefulWidget {
     required this.resetRules,
     required this.dependsOnFileOrder,
     required this.requiresMetadata,
+    this.onRenamingChanged,
   });
 
   final bool showThumbnails;
@@ -44,6 +45,9 @@ class FilesPage extends StatefulWidget {
 
   /// Whether any active rule will read metadata while generating a name.
   final bool Function() requiresMetadata;
+
+  /// Lets the parent lock rule/settings edits for the same operation.
+  final ValueChanged<bool>? onRenamingChanged;
 
   @override
   State<FilesPage> createState() => FilesPageState();
@@ -63,6 +67,7 @@ void _addUniqueFiles(Iterable<FileEntity> files) {
 class FilesPageState extends State<FilesPage> {
   bool _dragging = false;
   bool _renaming = false;
+  bool _deferredUpdate = false;
   bool _pickingIOSFiles = false;
 
   Future<void> _releaseUnusedIOSAccess() async {
@@ -86,6 +91,7 @@ class FilesPageState extends State<FilesPage> {
   final _BoundedTaskQueue _metadataQueue = _BoundedTaskQueue(maxConcurrent: 8);
 
   Future<void> addFileFromPicker() async {
+    if (_renaming) return;
     late Iterable<FileEntity> entities;
     if (Platform.isAndroid) {
       if (!Shared.doNotRemindAgain) {
@@ -132,7 +138,7 @@ class FilesPageState extends State<FilesPage> {
         }
         if (!mounted) return;
         final files = await PlatformFilePicker.fileAccess(context, dirs.first);
-        if (files == null || !mounted) return;
+        if (files == null || !mounted || _renaming) return;
         setState(() {
           _addUniqueFiles(files.map((path) => path.toFileEntity()));
         });
@@ -170,6 +176,7 @@ class FilesPageState extends State<FilesPage> {
         return;
       }
     }
+    if (!mounted || _renaming) return;
     setState(() {
       _addUniqueFiles(entities);
     });
@@ -210,6 +217,12 @@ class FilesPageState extends State<FilesPage> {
       );
 
   void update() {
+    if (_renaming) {
+      // An already pending rule import/load may finish after the UI is locked.
+      // Reject an uncommitted plan, or refresh once the active commit finishes.
+      _deferredUpdate = true;
+      return;
+    }
     _invalidateNewNames();
     setState(() {});
   }
@@ -383,6 +396,7 @@ class FilesPageState extends State<FilesPage> {
   }
 
   Future<void> _sortFiles(FileSortField field) async {
+    if (_renaming) return;
     final generation = ++_sortGeneration;
     late final bool ascending;
     setState(() {
@@ -399,7 +413,7 @@ class FilesPageState extends State<FilesPage> {
       await preloadFileSortMetadata(List<FileEntity>.of(_files));
     }
 
-    if (!mounted || generation != _sortGeneration) return;
+    if (!mounted || _renaming || generation != _sortGeneration) return;
 
     setState(() {
       _invalidateNewNamesForOrderChange();
@@ -411,6 +425,7 @@ class FilesPageState extends State<FilesPage> {
   }
 
   void _reorderFiles(int oldIndex, int newIndex) {
+    if (_renaming) return;
     final visibleFiles = _filteredList();
     final movedFile = visibleFiles.removeAt(oldIndex);
 
@@ -519,6 +534,7 @@ class FilesPageState extends State<FilesPage> {
           child: Checkbox(
             value: file.selected,
             onChanged: (val) {
+              if (_renaming) return;
               if (val != null) {
                 setState(() {
                   file.selected = val;
@@ -539,6 +555,7 @@ class FilesPageState extends State<FilesPage> {
         TableCell(
           child: IconButton(
             onPressed: () {
+              if (_renaming) return;
               setState(() {
                 _invalidateNewNames();
                 _files.remove(file);
@@ -569,6 +586,7 @@ class FilesPageState extends State<FilesPage> {
                   value: _files.isNotEmpty &&
                       _files.every((element) => element.selected),
                   onChanged: (_) {
+                    if (_renaming) return;
                     setState(() {
                       if (_files.every((element) => element.selected)) {
                         for (var element in _files) {
@@ -606,6 +624,7 @@ class FilesPageState extends State<FilesPage> {
                 message: L10n.current.removeAll,
                 child: IconButton(
                   onPressed: () {
+                    if (_renaming) return;
                     setState(() {
                       _invalidateNewNames();
                       _files.clear();
@@ -636,7 +655,15 @@ class FilesPageState extends State<FilesPage> {
       );
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) => ExcludeFocus(
+        excluding: _renaming,
+        child: AbsorbPointer(
+          absorbing: _renaming,
+          child: _buildContent(context),
+        ),
+      );
+
+  Widget _buildContent(BuildContext context) {
     final filteredFiles = _filteredList();
 
     return Column(
@@ -649,6 +676,7 @@ class FilesPageState extends State<FilesPage> {
               CustomDrop<String>(
                 value: Shared.fileOrDir,
                 onChanged: (String? newValue) {
+                  if (_renaming) return;
                   setState(() {
                     Shared.fileOrDir = newValue!;
                   });
@@ -667,6 +695,7 @@ class FilesPageState extends State<FilesPage> {
                     hintText: L10n.current.filter,
                   ),
                   onChanged: (val) {
+                    if (_renaming) return;
                     setState(() {
                       _filter = val;
                     });
@@ -716,8 +745,9 @@ class FilesPageState extends State<FilesPage> {
         _table(_headerRow()),
         Expanded(
           child: DropTarget(
-            enable: !(Platform.isIOS || Platform.isAndroid),
+            enable: !_renaming && !(Platform.isIOS || Platform.isAndroid),
             onDragDone: (detail) async {
+              if (_renaming) return;
               for (var xFile in detail.files) {
                 final FileEntity file = xFile.toFileEntity();
 
@@ -733,6 +763,7 @@ class FilesPageState extends State<FilesPage> {
               });
             },
             onDragEntered: (detail) {
+              if (_renaming) return;
               setState(() {
                 _dragging = true;
               });
@@ -796,8 +827,11 @@ class FilesPageState extends State<FilesPage> {
     bool remove = true,
     bool onlySelected = false,
   }) async {
-    if (_renaming) return;
-    _renaming = true;
+    if (_renaming || !mounted) return;
+    // Discard a metadata sort that started before this operation, even if its
+    // result arrives after the rename has finished.
+    _sortGeneration++;
+    _setRenaming(true);
 
     try {
       final requestedFiles = _files
@@ -806,6 +840,7 @@ class FilesPageState extends State<FilesPage> {
       for (final file in requestedFiles) {
         await _newNameFuture(file);
       }
+      if (!mounted || _deferredUpdate) return;
       final filesToRename = await _buildRenamePlan(requestedFiles);
       var noError = filesToRename.length == requestedFiles.length;
 
@@ -828,7 +863,7 @@ class FilesPageState extends State<FilesPage> {
       final mediaPermission = Platform.isAndroid
           ? await PlatformFilePicker.requestMediaWritePermission(mediaUris)
           : const MediaWritePermission.empty();
-      if (!mounted) return;
+      if (!mounted || _deferredUpdate) return;
 
       final deniedFiles = filesToRename.where(
         (file) =>
@@ -872,9 +907,20 @@ class FilesPageState extends State<FilesPage> {
         widget.clearRules.call();
       }
     } finally {
-      _renaming = false;
+      if (_deferredUpdate) {
+        _deferredUpdate = false;
+        _invalidateNewNames();
+      }
+      _setRenaming(false);
       await _releaseUnusedIOSAccess();
     }
+  }
+
+  void _setRenaming(bool value) {
+    _renaming = value;
+    _dragging = false;
+    if (mounted) setState(() {});
+    widget.onRenamingChanged?.call(value);
   }
 
   Future<List<FileEntity>> _buildRenamePlan(
