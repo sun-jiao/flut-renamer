@@ -42,7 +42,10 @@ dependencies:
   cross_file: ^0.3.5+5
   crypto: ^3.0.7
   cyrtranslit: ^1.0.1
-  desktop_drop: ^0.8.4 # not compatible with iOS
+  desktop_drop:
+    git:
+      url: https://github.com/sun-jiao/flutter-plugins.git
+      path: packages/desktop_drop
   exif: ^3.3.0
   ffi: ^2.1.4
   file_manager: ^1.0.2
