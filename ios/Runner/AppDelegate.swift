@@ -187,7 +187,8 @@ import UniformTypeIdentifiers
                         lstat(destinationURL.path, &destinationStat) == 0 &&
                         sourceStat.st_dev == destinationStat.st_dev &&
                         sourceStat.st_ino == destinationStat.st_ino {
-                        status = rename(sourceURL.path, destinationURL.path)
+                        // Qualify the POSIX function to avoid UIResponder.rename(_:).
+                        status = Darwin.rename(sourceURL.path, destinationURL.path)
                         errorCode = errno
                     }
                 }
