@@ -138,6 +138,9 @@ jobs:
       - run: flutter pub get --enforce-lockfile
       - name: Install compile SDK
         run: bash tool/install_android_sdk.sh
+      - name: Generate Android Gradle Wrapper
+        if: matrix.api == 35
+        run: flutter build apk --debug --config-only
       - name: Test Android document URI handling
         # Robolectric runs both API 29 and 35; run the suite once per workflow.
         if: matrix.api == 35
