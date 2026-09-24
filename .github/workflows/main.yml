@@ -86,7 +86,7 @@ jobs:
           tar -xzf "dist/flut-renamer-${RELEASE_VERSION}-${{ matrix.native_arch }}.nix.tar.gz" -C "$RUNNER_TEMP/nix-package"
           nix-build "$RUNNER_TEMP/nix-package" --no-out-link
       - name: Upload Linux packages
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: flut-renamer-linux-${{ matrix.architecture }}
           path: dist/*
@@ -130,7 +130,7 @@ jobs:
           flutter build apk --release
           flutter build apk --release --split-per-abi
       - name: Upload Android APKs
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: flut-renamer-android
           path: build/app/outputs/flutter-apk/*.apk
@@ -167,7 +167,7 @@ jobs:
       - name: Build single-file executable
         run: enigmavirtualbox cli 'flut-renamer.evb'
       - name: Upload Windows executable
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: flut-renamer-win
           path: flut-renamer.exe
@@ -199,7 +199,7 @@ jobs:
       - name: Build unsigned DMG
         run: appdmg ./dmg/config.json ./build/macos/Build/Products/Release/flut-renamer.dmg
       - name: Upload macOS DMG
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: flut-renamer-macos
           path: build/macos/Build/Products/Release/flut-renamer.dmg
@@ -212,7 +212,7 @@ jobs:
           cp -R build/ios/iphoneos/Runner.app Payload/Runner.app
           ditto -c -k --sequesterRsrc --keepParent Payload flut-renamer-ios-unsigned.ipa
       - name: Upload unsigned iOS IPA
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: flut-renamer-ios-unsigned
           path: flut-renamer-ios-unsigned.ipa

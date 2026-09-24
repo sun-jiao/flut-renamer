@@ -73,7 +73,7 @@ jobs:
           xvfb-run -a -s '-screen 0 1920x1080x24' bash tool/integration_linux.sh --no-pub 2>&1 | tee integration-linux.log
       - name: Upload integration test log
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: integration-linux-log
           path: integration-linux.log
@@ -108,7 +108,7 @@ jobs:
         run: bash tool/integration_ci.sh ${{ matrix.device }} integration_test/desktop_test.dart
       - name: Upload platform diagnostics
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: integration-${{ matrix.device }}
           path: integration-*.log
@@ -144,7 +144,7 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
       - name: Run on a fresh Android emulator
-        uses: reactivecircus/android-emulator-runner@62dbb605bba737720e10b196cb4220d374026a6d # v2.34.0
+        uses: reactivecircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d # v2.38.0
         with:
           api-level: ${{ matrix.api }}
           arch: x86_64
@@ -155,7 +155,7 @@ jobs:
           script: bash tool/integration_ci.sh emulator-5554 integration_test/platform_test.dart
       - name: Upload Android diagnostics
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: integration-android-${{ matrix.api }}
           path: |
@@ -207,7 +207,7 @@ jobs:
           xcrun simctl delete "$RENAMER_SIMULATOR_ID"
       - name: Upload iOS diagnostics
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: integration-ios
           path: integration-*.log
