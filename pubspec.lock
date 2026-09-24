@@ -188,10 +188,9 @@ packages:
   desktop_drop:
     dependency: "direct main"
     description:
-      name: desktop_drop
-      sha256: "47ded09c85909edfed644fd4cbb5051b040d0aed5c79e7e062ea4b3b7156dbe4"
-      url: "https://pub.dev"
-    source: hosted
+      path: "../flutter-plugins/packages/desktop_drop"
+      relative: true
+    source: path
     version: "0.8.4"
   equatable:
     dependency: transitive

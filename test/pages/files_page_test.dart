@@ -1,6 +1,9 @@
+import 'dart:async';
 import 'dart:io';
 
+import 'package:desktop_drop/desktop_drop.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flut_renamer/entity/theme_extension.dart';
 import 'package:flut_renamer/l10n/l10n.dart';
@@ -15,6 +18,68 @@ void main() {
   setUpAll(() async {
     await L10n.load(const Locale('en'));
   });
+
+  testWidgets(
+    'Linux native URI drops add decoded files after drag exit',
+    (tester) async {
+      final directory = Directory.systemTemp.createTempSync('renamer-drop-');
+      addTearDown(() => directory.deleteSync(recursive: true));
+      final imageFile =
+          File('assets/icon.png').copySync('${directory.path}/照片 #1.png');
+      final secondFile =
+          File('assets/icon.png').copySync('${directory.path}/second.png');
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: ThemeData(
+            extensions: <ThemeExtension<dynamic>>[
+              FileListColors(
+                primaryColor: Colors.white,
+                secondaryColor: Colors.grey.shade100,
+              ),
+            ],
+          ),
+          home: Scaffold(
+            body: FilesPage(
+              getNewName: (name, FileMetadata _) => name,
+              clearRules: () {},
+              resetRules: () {},
+              dependsOnFileOrder: () => false,
+              requiresMetadata: () => false,
+            ),
+          ),
+        ),
+      );
+      final position = tester.getCenter(find.byType(DropTarget));
+      Future<void> send(String method, dynamic arguments) async {
+        final done = Completer<void>();
+        tester.binding.defaultBinaryMessenger.handlePlatformMessage(
+          'desktop_drop',
+          const StandardMethodCodec()
+              .encodeMethodCall(MethodCall(method, arguments)),
+          (_) => done.complete(),
+        );
+        await done.future;
+        await tester.pump();
+      }
+
+      await send('updated', [position.dx, position.dy]);
+      // GTK emits drag-leave before the asynchronous file resolution finishes.
+      await send('exited', null);
+      final image = imageFile.uri.toString();
+      final second = secondFile.uri.toString();
+      await send('performOperation_linux', [
+        '$image\r\n$second\r\n$image\r\n',
+        [position.dx, position.dy],
+      ]);
+      expect(find.byType(Checkbox), findsNWidgets(3));
+      await tester.enterText(find.byType(TextField), '照片 #1');
+      await tester.pump();
+      expect(find.byType(Checkbox), findsNWidgets(2));
+      await tester.tap(find.byTooltip(L10n.current.removeAll));
+      await tester.pump();
+    },
+    skip: !Platform.isLinux,
+  );
 
   testWidgets('filters, selects, and clears files from the list',
       (tester) async {

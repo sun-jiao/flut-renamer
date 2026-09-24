@@ -47,3 +47,6 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 *.AppImage
+
+# Local dependency checkouts
+/pubspec_overrides.yaml
