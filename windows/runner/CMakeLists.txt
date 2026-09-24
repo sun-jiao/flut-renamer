@@ -20,6 +20,12 @@ add_executable(${BINARY_NAME} WIN32
 # that need different build settings.
 apply_standard_settings(${BINARY_NAME})
 
+# Preserve MoveFileExW's error code before returning through Dart FFI. Build
+# beside the runner and include the helper in Debug/Profile/Release bundles.
+add_library(renamer_atomic_rename SHARED "atomic_rename.cpp")
+apply_standard_settings(renamer_atomic_rename)
+add_dependencies(${BINARY_NAME} renamer_atomic_rename)
+
 # Add preprocessor definitions for the build version.
 target_compile_definitions(${BINARY_NAME} PRIVATE "FLUTTER_VERSION=\"${FLUTTER_VERSION}\"")
 target_compile_definitions(${BINARY_NAME} PRIVATE "FLUTTER_VERSION_MAJOR=${FLUTTER_VERSION_MAJOR}")

@@ -132,6 +132,45 @@ void main() {
     expect(root.listSync(), isEmpty);
   });
 
+  testWidgets(
+    'Windows rename preserves error codes across FFI calls',
+    (tester) async {
+      final target = file('target')..writeAsStringSync('external');
+      Matcher windowsError(int code) => throwsA(
+            isA<FileSystemException>().having(
+              (e) => e.osError?.errorCode,
+              'Windows error code',
+              code,
+            ),
+          );
+
+      // Exercise cold and warmed-up FFI calls, including success after failure
+      // and failure after success. Error values must belong to the current move.
+      for (var index = 0; index < 10; index++) {
+        final source = file('source-$index')
+          ..writeAsStringSync('original-$index');
+        await expectLater(
+          atomicRenameNoReplace(source, target.path),
+          windowsError(183), // ERROR_ALREADY_EXISTS
+        );
+        expect(source.readAsStringSync(), 'original-$index');
+        expect(target.readAsStringSync(), 'external');
+
+        final moved =
+            await atomicRenameNoReplace(source, file('moved-$index').path);
+        expect(File(moved.path).readAsStringSync(), 'original-$index');
+        expect(source.existsSync(), isFalse);
+        await expectLater(
+          atomicRenameNoReplace(source, file('unused').path),
+          windowsError(2), // ERROR_FILE_NOT_FOUND
+        );
+        expect(file('unused').existsSync(), isFalse);
+      }
+      expect(root.listSync(), hasLength(11));
+    },
+    skip: !Platform.isWindows,
+  );
+
   testWidgets('native swap transaction leaves no temporary files',
       (tester) async {
     file('a').writeAsStringSync('a');

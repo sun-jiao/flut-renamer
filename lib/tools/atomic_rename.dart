@@ -51,18 +51,24 @@ typedef _RenameX = int Function(
 );
 typedef _ErrnoLocationNative = Pointer<Int32> Function();
 typedef _ErrnoLocation = Pointer<Int32> Function();
-typedef _MoveFileExWNative = Int32 Function(
+typedef _WindowsRenameNative = Uint32 Function(
   Pointer<Utf16> oldPath,
   Pointer<Utf16> newPath,
-  Uint32 flags,
 );
-typedef _MoveFileExW = int Function(
+typedef _WindowsRename = int Function(
   Pointer<Utf16> oldPath,
   Pointer<Utf16> newPath,
-  int flags,
 );
-typedef _GetLastErrorNative = Uint32 Function();
-typedef _GetLastError = int Function();
+
+// Keep the library loaded for the lifetime of the FFI function. Resolve beside
+// the executable so loading does not depend on the working directory.
+final _windowsRenameLibrary = DynamicLibrary.open(
+  '${File(Platform.resolvedExecutable).parent.path}/renamer_atomic_rename.dll',
+);
+final _windowsRename =
+    _windowsRenameLibrary.lookupFunction<_WindowsRenameNative, _WindowsRename>(
+  'RenamerAtomicRenameNoReplace',
+);
 
 /// Atomically renames [entity] without replacing an existing destination on
 /// supported platforms.
@@ -214,17 +220,11 @@ Future<FileSystemEntity> _moveFileExNoReplace(
   final oldPathPointer = entity.path.toNativeUtf16();
   final newPathPointer = newPath.toNativeUtf16();
   try {
-    final library = DynamicLibrary.open('kernel32.dll');
-    final moveFileEx =
-        library.lookupFunction<_MoveFileExWNative, _MoveFileExW>('MoveFileExW');
-    // Resolve first: GetProcAddress/FFI symbol lookup can reset last-error.
-    final getLastError =
-        library.lookupFunction<_GetLastErrorNative, _GetLastError>(
-      'GetLastError',
-      isLeaf: true,
-    );
-    if (moveFileEx(oldPathPointer, newPathPointer, 0) == 0) {
-      final error = getLastError();
+    // Capture GetLastError inside the same native call as MoveFileExW. Even
+    // with symbols pre-resolved, returning through Dart can reset last-error.
+    // This is deliberately not a leaf call: filesystem operations can block.
+    final error = _windowsRename(oldPathPointer, newPathPointer);
+    if (error != 0) {
       throw FileSystemException(
         'Atomic rename without replacement failed',
         newPath,
