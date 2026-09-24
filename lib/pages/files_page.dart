@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:desktop_drop/desktop_drop.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart' as p;
 
 import '../entity/theme_extension.dart';
 import '../l10n/l10n.dart';
@@ -87,7 +86,9 @@ class FilesPageState extends State<FilesPage> {
   int _sortGeneration = 0;
   final Map<FileEntity, Future<void>> _newNameFutures = {};
   int _newNameGeneration = 0;
-  int? _collisionValidationGeneration;
+  Future<void>? _newNamesReady;
+  final Set<FileEntity> _collisionErrors = {};
+  int _collisionCheckRevision = 0;
   final _BoundedTaskQueue _metadataQueue = _BoundedTaskQueue(maxConcurrent: 8);
 
   Future<void> addFileFromPicker() async {
@@ -230,7 +231,9 @@ class FilesPageState extends State<FilesPage> {
   void _invalidateNewNames() {
     _newNameGeneration++;
     _newNameFutures.clear();
-    _collisionValidationGeneration = null;
+    _newNamesReady = null;
+    _collisionErrors.clear();
+    _collisionCheckRevision++;
     for (final file in _files) {
       file.newName = null;
       file.error = null;
@@ -239,58 +242,44 @@ class FilesPageState extends State<FilesPage> {
 
   Future<void> _newNameFuture(FileEntity file) {
     final generation = _newNameGeneration;
-    if (!widget.dependsOnFileOrder()) {
-      return _newNameFutures.putIfAbsent(
-        file,
-        () => widget.requiresMetadata()
-            ? _metadataQueue.run(() => getNewName(file, generation: generation))
-            : getNewName(file, generation: generation),
-      );
+    if (!_files.contains(file)) {
+      return getNewName(file, generation: generation);
     }
 
-    // A sequential rule such as Increment must run in the current file-list
-    // order, rather than in the order asynchronous metadata reads complete.
-    Future<void> preceding = Future.value();
-    late final Future<void> requestedFuture;
-    for (final precedingFile in _files) {
-      final previous = preceding;
-      final future = _newNameFutures.putIfAbsent(
-        precedingFile,
-        () => previous.then(
-          (_) => getNewName(
-            precedingFile,
-            generation: generation,
-            validateCollisions: false,
-          ),
-        ),
-      );
-      if (identical(precedingFile, file)) {
-        requestedFuture = future;
+    if (_files.any((entry) => !_newNameFutures.containsKey(entry))) {
+      // A target occupied by another source is safe only once that source's
+      // final name is known. Generate the whole batch before checking it.
+      _collisionCheckRevision++;
+      final files = List<FileEntity>.of(_files);
+      Future<void> preceding = Future.value();
+      for (final entry in files) {
+        final previous = preceding;
+        preceding = _newNameFutures.putIfAbsent(entry, () {
+          Future<void> generate() => getNewName(entry, generation: generation);
+          if (widget.dependsOnFileOrder()) {
+            return previous.then((_) => generate());
+          }
+          return widget.requiresMetadata()
+              ? _metadataQueue.run(generate)
+              : generate();
+        });
       }
-      preceding = future;
-    }
 
-    if (_collisionValidationGeneration != generation) {
-      _collisionValidationGeneration = generation;
-      preceding.then((_) => _validateNewNameCollisions(generation));
+      late final Future<void> ready;
+      ready = Future.wait(files.map((entry) => _newNameFutures[entry]!))
+          .then((_) async {
+        if (identical(_newNamesReady, ready)) {
+          await _validateNewNameCollisions(generation);
+        }
+      });
+      _newNamesReady = ready;
     }
-
-    if (_files.contains(file)) {
-      return requestedFuture;
-    }
-
-    // The file may have been removed between scheduling a build and running
-    // its FutureBuilder. Its cached value can still be calculated directly.
-    return _newNameFutures.putIfAbsent(
-      file,
-      () => getNewName(file, generation: generation),
-    );
+    return _newNamesReady!;
   }
 
   Future<void> getNewName(
     FileEntity file, {
     int? generation,
-    bool validateCollisions = true,
   }) async {
     final requestedGeneration = generation ?? _newNameGeneration;
     if (_files.isNotEmpty && identical(file, _files.first)) {
@@ -299,44 +288,26 @@ class FilesPageState extends State<FilesPage> {
 
     if (requestedGeneration != _newNameGeneration) return;
 
-    late final String filename;
-
-    if (Platform.isAndroid && file.path.startsWith('content://')) {
-      await file.initMetadata();
-      if (requestedGeneration != _newNameGeneration) return;
-      filename = file.metadata!.androidRealName;
-    } else {
-      filename = file.name;
-    }
-
+    var filename = file.name;
     try {
+      if (Platform.isAndroid && file.path.startsWith('content://')) {
+        await file.initMetadata();
+        if (requestedGeneration != _newNameGeneration) return;
+        filename = file.metadata!.androidRealName;
+      }
       final newName = replaceSpecialCharacters(
         await widget.getNewName(filename, file.metadataForRename),
       );
-      final newPath = p.join(file.directory, newName);
-      final isAndroidUri =
-          Platform.isAndroid && file.path.startsWith('content://');
-      final targetExists =
-          validateCollisions && !isAndroidUri && await File(newPath).exists();
-      final isSameSource = targetExists &&
-          _normalisedPath(file.path) == _normalisedPath(newPath) &&
-          await FileSystemEntity.identical(file.path, newPath);
-      final isDuplicate = validateCollisions &&
-          _files.any((other) => other != file && other.newPath == newPath);
 
       if (requestedGeneration != _newNameGeneration) return;
 
       file.newName = newName;
-      if (validateCollisions &&
-          newName != filename &&
-          ((targetExists && !isSameSource) || isDuplicate)) {
-        file.error = L10n.current.fileAlreadyExists;
-        return;
-      }
+      _collisionErrors.remove(file);
     } catch (e, s) {
       debugPrintStack(stackTrace: s);
       if (requestedGeneration != _newNameGeneration) return;
       file.newName = filename;
+      _collisionErrors.remove(file);
       file.error = e.toString();
       return;
     }
@@ -345,37 +316,8 @@ class FilesPageState extends State<FilesPage> {
   }
 
   Future<void> _validateNewNameCollisions(int generation) async {
-    if (generation != _newNameGeneration) return;
-
-    final sources = _files.map(_sourcePathKey).toSet();
-    final targets = <String, List<FileEntity>>{};
-    for (final file in _files.where((file) => file.error == null)) {
-      targets.putIfAbsent(_targetPathKey(file), () => []).add(file);
-    }
-
-    for (final group in targets.values) {
-      if (group.length > 1) {
-        for (final file in group) {
-          file.error = L10n.current.fileAlreadyExists;
-        }
-      }
-    }
-
-    for (final file in _files.where((file) => file.error == null)) {
-      final target = _targetPathKey(file);
-      final isAndroidUri =
-          Platform.isAndroid && file.path.startsWith('content://');
-      if (!isAndroidUri &&
-          target != _sourcePathKey(file) &&
-          !sources.contains(target) &&
-          await FileSystemEntity.type(
-                file.newPath,
-                followLinks: false,
-              ) !=
-              FileSystemEntityType.notFound) {
-        file.error = L10n.current.fileAlreadyExists;
-      }
-    }
+    if (!mounted || generation != _newNameGeneration || _renaming) return;
+    await _buildRenamePlan(List<FileEntity>.of(_files), generation: generation);
 
     if (mounted && generation == _newNameGeneration) {
       setState(() {});
@@ -924,13 +866,18 @@ class FilesPageState extends State<FilesPage> {
   }
 
   Future<List<FileEntity>> _buildRenamePlan(
-    List<FileEntity> requestedFiles,
-  ) async {
+    List<FileEntity> requestedFiles, {
+    int? generation,
+  }) async {
+    final requestedGeneration = generation ?? _newNameGeneration;
+    final revision = ++_collisionCheckRevision;
     final localFiles = <FileEntity>[];
     final safFiles = <FileEntity>[];
     for (final file in requestedFiles) {
       file.newName = replaceSpecialCharacters(file.newName);
-      if (file.error != null) continue;
+      // Recheck collision errors for this batch: the selected subset or disk
+      // contents may have changed since preview. Preserve generation errors.
+      if (file.error != null && !_collisionErrors.contains(file)) continue;
       if (Platform.isAndroid && file.path.startsWith('content://')) {
         safFiles.add(file);
       } else {
@@ -938,15 +885,19 @@ class FilesPageState extends State<FilesPage> {
       }
     }
 
+    // Snapshot paths before asynchronous filesystem checks. Only publish the
+    // result if both the names and this validation request are still current.
+    final sources = {for (final file in localFiles) file: _sourcePathKey(file)};
+    final targets = {for (final file in localFiles) file: _targetPathKey(file)};
+    final paths = {for (final file in localFiles) file: file.newPath};
+    final collisions = <FileEntity>{};
     final targetGroups = <String, List<FileEntity>>{};
     for (final file in localFiles) {
-      targetGroups.putIfAbsent(_targetPathKey(file), () => []).add(file);
+      targetGroups.putIfAbsent(targets[file]!, () => []).add(file);
     }
     for (final group in targetGroups.values) {
       if (group.length > 1) {
-        for (final file in group) {
-          file.error = L10n.current.fileAlreadyExists;
-        }
+        collisions.addAll(group);
       }
     }
 
@@ -958,26 +909,39 @@ class FilesPageState extends State<FilesPage> {
       final plannedMoves = localFiles
           .where(
             (file) =>
-                file.error == null &&
-                _sourcePathKey(file) != _targetPathKey(file),
+                !collisions.contains(file) && sources[file] != targets[file],
           )
           .toList();
-      final movingSources = plannedMoves.map(_sourcePathKey).toSet();
+      final movingSources = plannedMoves.map((file) => sources[file]).toSet();
       for (final file in plannedMoves) {
-        final target = _targetPathKey(file);
+        final target = targets[file];
         if (!movingSources.contains(target) &&
             await FileSystemEntity.type(
-                  file.newPath,
+                  paths[file]!,
                   followLinks: false,
                 ) !=
                 FileSystemEntityType.notFound) {
-          file.error = L10n.current.fileAlreadyExists;
+          collisions.add(file);
           foundBlockedMove = true;
         }
       }
     }
 
-    return [...localFiles.where((file) => file.error == null), ...safFiles];
+    if (requestedGeneration != _newNameGeneration ||
+        revision != _collisionCheckRevision) {
+      return [];
+    }
+    for (final file in requestedFiles) {
+      if (_collisionErrors.remove(file)) file.error = null;
+    }
+    for (final file in collisions) {
+      file.error = L10n.current.fileAlreadyExists;
+    }
+    _collisionErrors.addAll(collisions);
+    return [
+      ...localFiles.where((file) => !collisions.contains(file)),
+      ...safFiles,
+    ];
   }
 
   String _sourcePathKey(FileEntity file) => _normalisedPath(file.path);

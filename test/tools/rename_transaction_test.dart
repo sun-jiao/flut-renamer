@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flut_renamer/tools/atomic_rename.dart';
 import 'package:flut_renamer/tools/ex_file.dart';
 import 'package:flut_renamer/tools/rename_transaction.dart';
 
@@ -13,6 +14,61 @@ void main() {
   });
 
   tearDown(() => temporaryDirectory.delete(recursive: true));
+
+  for (final reverse in [false, true]) {
+    test('vacates occupied sources in a rename chain, reversed=$reverse',
+        () async {
+      final first =
+          await File('${temporaryDirectory.path}/a').writeAsString('a');
+      final second =
+          await File('${temporaryDirectory.path}/b').writeAsString('b');
+      final files = [
+        FileEntity(first, newName: 'b'),
+        FileEntity(second, newName: 'c'),
+      ];
+      final result = await commitRenameTransaction(
+        reverse ? files.reversed.toList() : files,
+        operation: (file, _) async => FileEntity(
+          await atomicRenameNoReplace(file.entity, file.newPath),
+        ),
+      );
+      expect(result.succeeded, isTrue);
+      expect(first.existsSync(), isFalse);
+      expect(second.readAsStringSync(), 'a');
+      expect(File('${temporaryDirectory.path}/c').readAsStringSync(), 'b');
+      expect(temporaryDirectory.listSync(), hasLength(2));
+    });
+  }
+
+  test('restores all chain sources when a later rename fails', () async {
+    final first = await File('${temporaryDirectory.path}/a').writeAsString('a');
+    final second =
+        await File('${temporaryDirectory.path}/b').writeAsString('b');
+    final last =
+        await File('${temporaryDirectory.path}/last').writeAsString('last');
+    final result = await commitRenameTransaction(
+      [
+        FileEntity(first, newName: 'b'),
+        FileEntity(second, newName: 'c'),
+        FileEntity(last, newName: 'last-new'),
+      ],
+      operation: (file, _) async {
+        if (file.path == last.path) return null;
+        return FileEntity(
+          await atomicRenameNoReplace(file.entity, file.newPath),
+        );
+      },
+    );
+    expect(result.succeeded, isFalse);
+    expect(first.readAsStringSync(), 'a');
+    expect(second.readAsStringSync(), 'b');
+    expect(last.readAsStringSync(), 'last');
+    expect(
+      result.entities.map((file) => file.path),
+      [first.path, second.path, last.path],
+    );
+    expect(temporaryDirectory.listSync(), hasLength(3));
+  });
 
   test(
     'rollback relocates descendants accessed through a directory link',

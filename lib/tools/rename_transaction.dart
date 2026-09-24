@@ -181,8 +181,8 @@ Future<void> _rollback(
 
 Set<int> _temporaryIndexes(List<FileEntity> files) {
   final localMoves = <int>[];
-  final sourceKeys = <String>{};
-  final targetKeys = <String>[];
+  final sourceKeys = <String>[];
+  final targetKeys = <String>{};
 
   for (var index = 0; index < files.length; index++) {
     final file = files[index];
@@ -197,9 +197,11 @@ Set<int> _temporaryIndexes(List<FileEntity> files) {
     targetKeys.add(targetKey);
   }
 
+  // Vacate each source that another move targets. For a -> b, b -> c this
+  // means staging b; staging a would leave b occupied when a is committed.
   return {
     for (var moveIndex = 0; moveIndex < localMoves.length; moveIndex++)
-      if (sourceKeys.contains(targetKeys[moveIndex])) localMoves[moveIndex],
+      if (targetKeys.contains(sourceKeys[moveIndex])) localMoves[moveIndex],
   };
 }
 
