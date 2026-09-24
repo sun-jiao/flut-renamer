@@ -63,6 +63,19 @@ void _addUniqueFiles(Iterable<FileEntity> files) {
 class FilesPageState extends State<FilesPage> {
   bool _dragging = false;
   bool _renaming = false;
+  bool _pickingIOSFiles = false;
+
+  Future<void> _releaseUnusedIOSAccess() async {
+    if (!Platform.isIOS || _pickingIOSFiles || _renaming) return;
+    try {
+      await PlatformFilePicker.retainScopedAccess(
+        _files.map((file) => file.path),
+      );
+    } catch (error) {
+      debugPrint('Unable to release unused folder access: $error');
+    }
+  }
+
   String _filter = '';
   FileSortField? _sortField;
   bool _sortAscending = true;
@@ -107,30 +120,43 @@ class FilesPageState extends State<FilesPage> {
         }
       }
 
-      final dirs = await PlatformFilePicker.dirAccess();
-      if (dirs == null || dirs.isEmpty) {
-        return;
-      }
-
-      if (!_files.any((e) => e.parent.path == dirs.first.toString())) {
-        await PlatformFilePicker.changeScopedAccess(
-          dirs.first.toString(),
-          true,
-        );
-      }
-
-      if (mounted) {
-        final files =
-            await PlatformFilePicker.fileAccess(context, dirs.first.toString());
-
-        if (files == null) {
-          return;
+      if (_pickingIOSFiles) return;
+      _pickingIOSFiles = true;
+      try {
+        final dirs = await PlatformFilePicker.dirAccess();
+        if (dirs == null || dirs.isEmpty || !mounted) return;
+        final granted =
+            await PlatformFilePicker.changeScopedAccess(dirs.first, true);
+        if (!granted) {
+          throw FileSystemException('Folder access was denied', dirs.first);
         }
-
-        entities = files.map((e) => e.toString()).map((e) => e.toFileEntity());
-      } else {
-        return;
+        if (!mounted) return;
+        final files = await PlatformFilePicker.fileAccess(context, dirs.first);
+        if (files == null || !mounted) return;
+        setState(() {
+          _addUniqueFiles(files.map((path) => path.toFileEntity()));
+        });
+      } catch (error) {
+        if (mounted) {
+          await showDialog<void>(
+            context: context,
+            builder: (_) => AlertDialog(
+              title: Text(L10n.current.appError),
+              content: Text(error.toString()),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text(L10n.current.ok),
+                ),
+              ],
+            ),
+          );
+        }
+      } finally {
+        _pickingIOSFiles = false;
+        await _releaseUnusedIOSAccess();
       }
+      return;
     } else {
       final result = await FilePicker.pickFiles();
       if (result.isNotEmpty) {
@@ -517,6 +543,7 @@ class FilesPageState extends State<FilesPage> {
                 _invalidateNewNames();
                 _files.remove(file);
               });
+              unawaited(_releaseUnusedIOSAccess());
             },
             icon: const Icon(Icons.delete),
           ),
@@ -583,6 +610,7 @@ class FilesPageState extends State<FilesPage> {
                       _invalidateNewNames();
                       _files.clear();
                     });
+                    unawaited(_releaseUnusedIOSAccess());
                   },
                   icon: const Icon(Icons.delete),
                 ),
@@ -840,19 +868,12 @@ class FilesPageState extends State<FilesPage> {
         }
       });
 
-      if (result.succeeded && remove && Platform.isIOS) {
-        for (final file in filesToRename) {
-          if (!_files.any((e) => e.parent.path == file.parent.path)) {
-            PlatformFilePicker.changeScopedAccess(file.parent.path, false);
-          }
-        }
-      }
-
       if (noError && remove) {
         widget.clearRules.call();
       }
     } finally {
       _renaming = false;
+      await _releaseUnusedIOSAccess();
     }
   }
 

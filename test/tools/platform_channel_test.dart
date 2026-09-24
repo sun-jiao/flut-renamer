@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flut_renamer/tools/platform_channel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,6 +13,67 @@ void main() {
   tearDown(() {
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(pickerChannel, null);
+  });
+
+  test(
+      'coordinated rename returns the provider path and preserves native errors',
+      () async {
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(pickerChannel, (call) async {
+      expect(call.method, 'coordinatedRename');
+      expect(
+        call.arguments,
+        {'source': '/folder/a', 'destination': '/folder/b'},
+      );
+      return '/provider/b';
+    });
+    expect(
+      await PlatformFilePicker.coordinatedRename('/folder/a', '/folder/b'),
+      '/provider/b',
+    );
+
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(pickerChannel, (call) async {
+      throw PlatformException(
+        code: 'RENAME_FAILED',
+        message: 'File exists',
+        details: {'domain': 'NSPOSIXErrorDomain', 'code': 17},
+      );
+    });
+    await expectLater(
+      PlatformFilePicker.coordinatedRename('/folder/a', '/folder/b'),
+      throwsA(
+        isA<FileSystemException>()
+            .having((e) => e.osError?.errorCode, 'native error', 17),
+      ),
+    );
+  });
+
+  test('coordinated rename never treats an empty native response as success',
+      () async {
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(pickerChannel, (_) async => null);
+    await expectLater(
+      PlatformFilePicker.coordinatedRename('/folder/a', '/folder/b'),
+      throwsA(isA<FileSystemException>()),
+    );
+  });
+
+  test('scope reconciliation passes remaining paths and allows releasing all',
+      () async {
+    final retained = <List<dynamic>>[];
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(pickerChannel, (call) async {
+      expect(call.method, 'retainScopedAccess');
+      retained.add((call.arguments as Map)['paths'] as List);
+      return null;
+    });
+    await PlatformFilePicker.retainScopedAccess(['/folder/sub/file']);
+    await PlatformFilePicker.retainScopedAccess([]);
+    expect(retained, [
+      ['/folder/sub/file'],
+      [],
+    ]);
   });
 
   testWidgets('fileAccess accepts iOS path-list responses', (tester) async {

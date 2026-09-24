@@ -29,8 +29,6 @@
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 
-    <key>NSFullDiskAccessUsageDescription</key>
-    <string>For renaming files.</string>
 
 </dict>
 </plist>

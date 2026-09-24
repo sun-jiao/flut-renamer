@@ -35,7 +35,9 @@ class PlatformFilePicker {
   }
 
   static Future<List<String>?> fileAccess(
-      BuildContext context, String startPath,) async {
+    BuildContext context,
+    String startPath,
+  ) async {
     try {
       final result = await _channel.invokeMethod<dynamic>(
         'fileAccess',
@@ -85,7 +87,9 @@ class PlatformFilePicker {
   }
 
   static Future<bool> changeScopedAccess(
-      String targetPath, bool startOrEnd,) async {
+    String targetPath,
+    bool startOrEnd,
+  ) async {
     try {
       return await _channel.invokeMethod(
         'changeScopedAccess',
@@ -97,6 +101,38 @@ class PlatformFilePicker {
     } on PlatformException {
       // TODO: show error message dialog
       rethrow;
+    }
+  }
+
+  /// Releases folder grants that no remaining row uses (including descendants).
+  static Future<void> retainScopedAccess(Iterable<String> paths) async {
+    await _channel.invokeMethod<void>('retainScopedAccess', {
+      'paths': paths.toList(),
+    });
+  }
+
+  static Future<String> coordinatedRename(
+    String source,
+    String destination,
+  ) async {
+    try {
+      final path = await _channel.invokeMethod<String>('coordinatedRename', {
+        'source': source,
+        'destination': destination,
+      });
+      if (path == null) {
+        throw PlatformException(code: 'RENAME_FAILED');
+      }
+      return path;
+    } on PlatformException catch (error) {
+      final details = error.details;
+      throw FileSystemException(
+        error.message ?? 'Coordinated rename failed',
+        destination,
+        details is Map && details['code'] is int
+            ? OSError(error.message ?? error.code, details['code'] as int)
+            : null,
+      );
     }
   }
 
@@ -165,7 +201,7 @@ class PlatformFilePicker {
       );
       return metadata?.map(
             (key, value) => MapEntry(key.toString(), value.toString()),
-      ) ??
+          ) ??
           const {};
     } on PlatformException {
       return const {};

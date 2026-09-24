@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:ffi/ffi.dart';
 
+import 'platform_channel.dart';
+
 const _atFdcwd = -100;
 const _renameNoReplace = 1;
 const _renameExcl = 4;
@@ -71,6 +73,14 @@ Future<FileSystemEntity> atomicRenameNoReplace(
   FileSystemEntity entity,
   String newPath,
 ) async {
+  if (Platform.isIOS) {
+    final path =
+        await PlatformFilePicker.coordinatedRename(entity.path, newPath);
+    if (entity is Directory) return Directory(path);
+    if (entity is Link) return Link(path);
+    return File(path);
+  }
+
   if (Platform.isWindows) {
     return _moveFileExNoReplace(entity, newPath);
   }

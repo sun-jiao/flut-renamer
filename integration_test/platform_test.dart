@@ -221,6 +221,26 @@ void main() {
     });
   }
   if (Platform.isIOS) {
+    testWidgets(
+        'iOS refuses unselected external scopes and cleanup is idempotent',
+        (tester) async {
+      expect(
+        await PlatformFilePicker.changeScopedAccess(
+          '/unselected-external-folder',
+          true,
+        ),
+        isFalse,
+      );
+      await PlatformFilePicker.retainScopedAccess([]);
+      await PlatformFilePicker.retainScopedAccess([]);
+      expect(
+        await PlatformFilePicker.changeScopedAccess(
+          '/unselected-external-folder',
+          false,
+        ),
+        isTrue,
+      );
+    });
     testWidgets('iOS scoped-access channel completes start and stop',
         (tester) async {
       // App-private URLs need no grant: this verifies channel wiring, not a
