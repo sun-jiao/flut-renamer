@@ -184,5 +184,12 @@
   "randomStringLength": "随机字符串长度",
   "randomStringLengthHint": "8",
   "randomStringLengthError": "长度应在1-32之间",
-  "showThumbnails": "图片缩略图"
+  "showThumbnails": "图片缩略图",
+  "numberingMode": "编号方式",
+  "replaceOriginalName": "替换原文件名",
+  "insertIntoOriginalName": "插入原文件名",
+  "descriptionInsertNumber": "保留原文件名，在指定位置插入编号及其前后文本。",
+  "numberPrefix": "编号前文本",
+  "numberSuffix": "编号后文本",
+  "numberPositionHint": "位置 0 表示开头；开启倒数时表示末尾。"
 }

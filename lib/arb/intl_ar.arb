@@ -181,5 +181,12 @@
   "semanticsMultipleActionsHint": "، انقر للأعلى أو للأسفل للتبديل إلى إجراء آخر.",
   "semanticSwitchNumberToStartAndToEnd": "تبديل اتجاه العد بين البداية والنهاية، حاليًا يتم العد من {toEnd, select, true{النهاية} false{البداية} other{}}",
   "semanticNumberWithDirection": "تبديل اتجاه العد بين البداية والنهاية",
-  "showThumbnails": "الصور المصغرة"
+  "showThumbnails": "الصور المصغرة",
+  "numberingMode": "طريقة الترقيم",
+  "replaceOriginalName": "استبدال الاسم الأصلي",
+  "insertIntoOriginalName": "إدراج في الاسم الأصلي",
+  "descriptionInsertNumber": "أدرج الرقم والنص المحيط به مع الاحتفاظ بالاسم الأصلي.",
+  "numberPrefix": "النص قبل الرقم",
+  "numberSuffix": "النص بعد الرقم",
+  "numberPositionHint": "الموضع 0 يعني البداية، أو النهاية عند العد من النهاية."
 }

@@ -179,5 +179,12 @@
   "semanticsOpenMetadataDialog": "Açıklamak için çift tıklayın ve içinden eklemek istediğiniz meta veri etiketini seçin.",
   "semanticsMultipleActionsHint": ", Diğer işlemlere geçmek için yukarı veya aşağı kaydırın.",
   "semanticSwitchNumberToStartAndToEnd": "Başlangıçtan ve sondan sayma yönünü değiştirme, şu anda {toEnd, select, true{son} false{başlangıç} other{}} sayımından",
-  "showThumbnails": "Resim küçük resimleri"
+  "showThumbnails": "Resim küçük resimleri",
+  "numberingMode": "Numaralandırma biçimi",
+  "replaceOriginalName": "Özgün adı değiştir",
+  "insertIntoOriginalName": "Özgün ada ekle",
+  "descriptionInsertNumber": "Özgün adı koruyarak numarayı önündeki ve arkasındaki metinle birlikte ekleyin.",
+  "numberPrefix": "Numaradan önceki metin",
+  "numberSuffix": "Numaradan sonraki metin",
+  "numberPositionHint": "0 konumu başlangıcı, sondan sayıldığında ise sonu belirtir."
 }

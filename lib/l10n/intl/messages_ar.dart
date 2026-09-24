@@ -100,6 +100,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "descriptionInsert": MessageLookupByLibrary.simpleMessage(
       "أدرج النص المحدد (أو بيانات الملف وبيانات EXIF) في الموقع المحدد.",
     ),
+    "descriptionInsertNumber": MessageLookupByLibrary.simpleMessage(
+      "أدرج الرقم والنص المحيط به مع الاحتفاظ بالاسم الأصلي.",
+    ),
     "descriptionRearrange": MessageLookupByLibrary.simpleMessage(
       "قم بتقسيم اسم الملف إلى أجزاء باستخدام الفاصل المحدد وإعادة ترتيبها بترتيب محدد.",
     ),
@@ -184,6 +187,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "قبل فهرس الإدراج",
     ),
     "insertIndex": MessageLookupByLibrary.simpleMessage("فهرس الإدراج"),
+    "insertIntoOriginalName": MessageLookupByLibrary.simpleMessage(
+      "إدراج في الاسم الأصلي",
+    ),
     "insertTagInsideAnother": MessageLookupByLibrary.simpleMessage(
       "يرجى عدم إدراج علامة داخل علامة أخرى.",
     ),
@@ -240,6 +246,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "يُرجى عدم إعادة تسمية المجلدات المحجوزة للنظام.",
     ),
     "numberOfDigits": MessageLookupByLibrary.simpleMessage("عدد الأرقام"),
+    "numberPositionHint": MessageLookupByLibrary.simpleMessage(
+      "الموضع 0 يعني البداية، أو النهاية عند العد من النهاية.",
+    ),
+    "numberPrefix": MessageLookupByLibrary.simpleMessage("النص قبل الرقم"),
+    "numberSuffix": MessageLookupByLibrary.simpleMessage("النص بعد الرقم"),
+    "numberingMode": MessageLookupByLibrary.simpleMessage("طريقة الترقيم"),
     "ok": MessageLookupByLibrary.simpleMessage("موافق"),
     "omitDash": MessageLookupByLibrary.simpleMessage("تجاهل الشرطة"),
     "onlySelected": MessageLookupByLibrary.simpleMessage(
@@ -327,6 +339,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "فشلت عملية إعادة التسمية",
     ),
     "replace": MessageLookupByLibrary.simpleMessage("استبدال"),
+    "replaceOriginalName": MessageLookupByLibrary.simpleMessage(
+      "استبدال الاسم الأصلي",
+    ),
     "replaceToString": m4,
     "replacement": MessageLookupByLibrary.simpleMessage("البديل"),
     "ru": MessageLookupByLibrary.simpleMessage("الروسية"),

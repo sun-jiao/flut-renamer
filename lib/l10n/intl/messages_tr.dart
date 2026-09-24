@@ -103,6 +103,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "descriptionInsert": MessageLookupByLibrary.simpleMessage(
       "Belirtilen konuma belirtilen metni (veya dosya meta verisi ve EXIF verileriyle) ekleyin.",
     ),
+    "descriptionInsertNumber": MessageLookupByLibrary.simpleMessage(
+      "Özgün adı koruyarak numarayı önündeki ve arkasındaki metinle birlikte ekleyin.",
+    ),
     "descriptionRearrange": MessageLookupByLibrary.simpleMessage(
       "Dosya adını kullanıcı tarafından belirtilen bir ayraçla parçalara bölebilir ve belirtilen sıraya göre yeniden düzenleyebilirsiniz.",
     ),
@@ -197,6 +200,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "İndeks Öncesine Ekle",
     ),
     "insertIndex": MessageLookupByLibrary.simpleMessage("Ekleme İndeksi"),
+    "insertIntoOriginalName": MessageLookupByLibrary.simpleMessage(
+      "Özgün ada ekle",
+    ),
     "insertTagInsideAnother": MessageLookupByLibrary.simpleMessage(
       "Lütfen bir etiketin içine başka bir etiket eklemeyin.",
     ),
@@ -245,6 +251,18 @@ class MessageLookup extends MessageLookupByLibrary {
       "Lütfen sistem korumalı klasörleri yeniden adlandırmayın.",
     ),
     "numberOfDigits": MessageLookupByLibrary.simpleMessage("Basamak sayısı"),
+    "numberPositionHint": MessageLookupByLibrary.simpleMessage(
+      "0 konumu başlangıcı, sondan sayıldığında ise sonu belirtir.",
+    ),
+    "numberPrefix": MessageLookupByLibrary.simpleMessage(
+      "Numaradan önceki metin",
+    ),
+    "numberSuffix": MessageLookupByLibrary.simpleMessage(
+      "Numaradan sonraki metin",
+    ),
+    "numberingMode": MessageLookupByLibrary.simpleMessage(
+      "Numaralandırma biçimi",
+    ),
     "ok": MessageLookupByLibrary.simpleMessage("Tamam"),
     "omitDash": MessageLookupByLibrary.simpleMessage("Tireyi Atla"),
     "onlySelected": MessageLookupByLibrary.simpleMessage(
@@ -334,6 +352,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Yeniden Adlandırma Başarısız Oldu",
     ),
     "replace": MessageLookupByLibrary.simpleMessage("Değiştir"),
+    "replaceOriginalName": MessageLookupByLibrary.simpleMessage(
+      "Özgün adı değiştir",
+    ),
     "replaceToString": m4,
     "replacement": MessageLookupByLibrary.simpleMessage("Değiştirme"),
     "ru": MessageLookupByLibrary.simpleMessage("Rusça"),

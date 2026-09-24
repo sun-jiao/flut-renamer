@@ -12,7 +12,7 @@ class RuleInsert implements Rule {
 
   final String insert; // string to be inserted
   final int insertIndex; // insert before character at index
-  final bool toEnd; // true: count from start; false: from end.
+  final bool toEnd; // true: count from end; false: from start.
   final bool withMetadata; // true: replace metadata tag with metadata
   final bool ignoreExtension;
   final String dateFormat;
@@ -55,19 +55,7 @@ class RuleInsert implements Rule {
       insert = metadata.parse(insert, dateFormat: dateFormat);
     }
 
-    int index = insertIndex;
-
-    if (toEnd) {
-      index = newName.length - index;
-    }
-
-    if (index < 0) {
-      index = 0;
-    } else if (index > newName.length) {
-      index = newName.length;
-    }
-
-    newName = newName.substring(0, index) + insert + newName.substring(index);
+    newName = _insertCharacters(newName, insert, insertIndex, toEnd);
 
     return newName + extension;
   }

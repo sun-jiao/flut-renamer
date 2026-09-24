@@ -58,12 +58,15 @@ I tried a few other libraries, such as [`super_drag_and_drop`](https://pub.dev/p
 
 (In fact, I have no Apple development experience at all, and I don’t even know the Swift language. The iOS and macOS native code were completed with the following links as references: [Writing custom platform-specific code](https://docs.flutter.dev/platform-integration/platform-channels?tab=type-mappings-swift-tab#type-mappings-swift-tab), [Providing access to directories](https://developer.apple.com/documentation/uikit/view_controllers/providing_access_to_directories), [juanmartin/renamerApp-ios](https://github.com/juanmartin/renamerApp-ios). Therefore, if there are any errors in the Swift code, please feel free to point them out by opening an issue or a pull request. I'll be very grateful to you.)
 
-## todo:
-- ~~Duplicate name check.~~ (Done.)
-- ~~Convert, including case conversion, Chinese Simplified/Traditional/Pinyin conversion, and Latin/Cyrillic script transliteration.~~ (Done.)
-- ~~Incremental renaming: for example, RenamerFile-1, RenamerFile-2, RenamerFile-3, RenamerFile-4, ...~~ (Done.)
-- ~~Rules re-editing.~~ (Done.)
-- ~~Implement iOS renamer with specific code and Platform channel.~~ (Done.)
+## Characters and emoji in rename rules
+
+Insert positions, numbering positions, truncation ranges, and rearrangement with an empty delimiter count complete visible characters. For example, `👍🏽`, `👨‍👩‍👧‍👦`, and `é` each occupy one position. Position 0 is the beginning, or the end when counting backwards. Positions beyond the name are clamped to its boundaries.
+
+Replacement, removal, and non-empty rearrangement delimiters only match at complete-character boundaries. A target such as `👍` does not match inside `👍🏽`; use the complete emoji to replace or remove it. Limits count only accepted matches.
+
+Regular expressions use Unicode mode. Their syntax and capture references remain available, but matches that cut through a visible character are skipped. In particular, `.` matches a Unicode code point, not an entire multi-code-point emoji: use the full emoji or an expression matching the full sequence. Explicit replacement text and capture references still determine the text inserted.
+
+The **Ignore extension** option excludes the final extension from these operations. Existing saved character positions now use visible-character counts; ASCII-only names are unaffected.
 
 # Screenshots
 ## Desktop
@@ -86,7 +89,7 @@ I tried a few other libraries, such as [`super_drag_and_drop`](https://pub.dev/p
 | ![Ten-inch_Tablet-2](/screenshots/Ten-inch_Tablet-2.png?raw=true) | ![Ten-inch_Tablet-3](/screenshots/Ten-inch_Tablet-3.png?raw=true) |
 
 # Credit
-- Thanks to [m040601](https://aur.archlinux.org/account/m040601) for suggesting a new name for this application. "flut renamer" is inspired by their suggestion "renamer-flutter"
+- Thanks to [m040601](https://aur.archlinux.org/account/m040601) for suggesting a new name for this application. "flut renamer" is inspired by their suggestion.
 - Thanks to [LinuxLinks](https://www.linuxlinks.com) for recommending this application in [their article](https://www.linuxlinks.com/flut-renamer-bulk-file-renamer/).
 - Thanks to [HowToMen](https://www.youtube.com/@howtomen) for recommending this application in [their video](https://www.youtube.com/watch?v=ekUuJyX3ITk).
 - Thanks to [Andy](https://www.justgeek.fr/author/andy/) for recommending this application in [their article](https://www.justgeek.fr/flut-renamer-125392/).

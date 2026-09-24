@@ -180,5 +180,12 @@
   "semanticsOpenMetadataDialog": "ダブルクリックしてダイアログを開き、挿入するメタデータタグを選択します。",
   "semanticsMultipleActionsHint": "上下にスワイプして他の操作に移動します。",
   "semanticSwitchNumberToStartAndToEnd": "開始から終わりまでの数え方を切り替え、現在は{toEnd, select, true{終わり} false{始まり} other{}}から数えています",
-  "showThumbnails": "画像のサムネイル"
+  "showThumbnails": "画像のサムネイル",
+  "numberingMode": "連番の付け方",
+  "replaceOriginalName": "元の名前を置き換える",
+  "insertIntoOriginalName": "元の名前に挿入する",
+  "descriptionInsertNumber": "元の名前を保持したまま、番号とその前後のテキストを挿入します。",
+  "numberPrefix": "番号の前のテキスト",
+  "numberSuffix": "番号の後のテキスト",
+  "numberPositionHint": "位置 0 は先頭を表します。末尾から数える場合は末尾を表します。"
 }

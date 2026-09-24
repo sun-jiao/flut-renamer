@@ -180,5 +180,12 @@
   "semanticsOpenMetadataDialog": "คลิกสองครั้งเพื่อเปิดหน้าต่างและเลือกแท็กเมตาดาต้าที่จะแทรก",
   "semanticsMultipleActionsHint": "เลื่อนขึ้นลงเพื่อเปลี่ยนการดำเนินการ",
   "semanticSwitchNumberToStartAndToEnd": "สลับทิศทางการนับระหว่างจากจุดเริ่มต้นและจากจุดสิ้นสุด ณ ปัจจุบันกำลังนับจาก {toEnd, select, true{จุดสิ้นสุด} false{จุดเริ่มต้น} other{}}",
-  "showThumbnails": "ภาพขนาดย่อ"
+  "showThumbnails": "ภาพขนาดย่อ",
+  "numberingMode": "โหมดการใส่หมายเลข",
+  "replaceOriginalName": "แทนที่ชื่อเดิม",
+  "insertIntoOriginalName": "แทรกในชื่อเดิม",
+  "descriptionInsertNumber": "แทรกหมายเลขพร้อมข้อความก่อนและหลังหมายเลข โดยคงชื่อเดิมไว้",
+  "numberPrefix": "ข้อความก่อนหมายเลข",
+  "numberSuffix": "ข้อความหลังหมายเลข",
+  "numberPositionHint": "ตำแหน่ง 0 หมายถึงจุดเริ่มต้น หรือจุดสิ้นสุดเมื่อนับจากท้ายชื่อ"
 }

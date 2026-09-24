@@ -180,5 +180,12 @@
   "semanticsOpenMetadataDialog": "Double-cliquez pour ouvrir une boîte de dialogue et sélectionner une balise de métadonnées à insérer.",
   "semanticsMultipleActionsHint": ", faites défiler vers le haut ou vers le bas pour changer d'action.",
   "semanticSwitchNumberToStartAndToEnd": "Changement de direction de comptage entre du début et de la fin, comptant actuellement à partir de {toEnd, select, true{la fin} false{le début} other{}}",
-  "showThumbnails": "Miniatures des images"
+  "showThumbnails": "Miniatures des images",
+  "numberingMode": "Mode de numérotation",
+  "replaceOriginalName": "Remplacer le nom d’origine",
+  "insertIntoOriginalName": "Insérer dans le nom d’origine",
+  "descriptionInsertNumber": "Insérer le numéro avec le texte qui l’entoure tout en conservant le nom d’origine.",
+  "numberPrefix": "Texte avant le numéro",
+  "numberSuffix": "Texte après le numéro",
+  "numberPositionHint": "La position 0 correspond au début, ou à la fin si le comptage se fait depuis la fin."
 }

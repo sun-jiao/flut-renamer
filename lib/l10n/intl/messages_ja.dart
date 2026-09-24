@@ -95,6 +95,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "descriptionInsert": MessageLookupByLibrary.simpleMessage(
       "指定された位置に指定されたテキスト（またはファイルメタデータおよびEXIFデータ）を挿入します。",
     ),
+    "descriptionInsertNumber": MessageLookupByLibrary.simpleMessage(
+      "元の名前を保持したまま、番号とその前後のテキストを挿入します。",
+    ),
     "descriptionRearrange": MessageLookupByLibrary.simpleMessage(
       "ファイル名を指定された区切り文字で分割し、提供された順序に従って並べ替えます。",
     ),
@@ -167,6 +170,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "insert": MessageLookupByLibrary.simpleMessage("挿入"),
     "insertBeforeIndex": MessageLookupByLibrary.simpleMessage("指定位置の前に挿入"),
     "insertIndex": MessageLookupByLibrary.simpleMessage("挿入位置"),
+    "insertIntoOriginalName": MessageLookupByLibrary.simpleMessage("元の名前に挿入する"),
     "insertTagInsideAnother": MessageLookupByLibrary.simpleMessage(
       "他のタグ内にタグを挿入しないでください。",
     ),
@@ -207,6 +211,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "システム予約ディレクトリはリネームしないでください。",
     ),
     "numberOfDigits": MessageLookupByLibrary.simpleMessage("桁数"),
+    "numberPositionHint": MessageLookupByLibrary.simpleMessage(
+      "位置 0 は先頭を表します。末尾から数える場合は末尾を表します。",
+    ),
+    "numberPrefix": MessageLookupByLibrary.simpleMessage("番号の前のテキスト"),
+    "numberSuffix": MessageLookupByLibrary.simpleMessage("番号の後のテキスト"),
+    "numberingMode": MessageLookupByLibrary.simpleMessage("連番の付け方"),
     "ok": MessageLookupByLibrary.simpleMessage("OK"),
     "omitDash": MessageLookupByLibrary.simpleMessage("ダッシュを省略"),
     "onlySelected": MessageLookupByLibrary.simpleMessage("選択したファイルのみリネーム"),
@@ -254,6 +264,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "rename": MessageLookupByLibrary.simpleMessage("リネーム"),
     "renameFailed": MessageLookupByLibrary.simpleMessage("リネームに失敗しました"),
     "replace": MessageLookupByLibrary.simpleMessage("置換"),
+    "replaceOriginalName": MessageLookupByLibrary.simpleMessage("元の名前を置き換える"),
     "replaceToString": m4,
     "replacement": MessageLookupByLibrary.simpleMessage("置換文字"),
     "ru": MessageLookupByLibrary.simpleMessage("ロシア語"),

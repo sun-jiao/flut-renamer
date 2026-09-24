@@ -101,6 +101,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "descriptionInsert": MessageLookupByLibrary.simpleMessage(
       "แทรกข้อความที่ระบุ (หรือข้อมูลเมตาดาต้าและ EXIF) ที่ตำแหน่งที่ระบุ",
     ),
+    "descriptionInsertNumber": MessageLookupByLibrary.simpleMessage(
+      "แทรกหมายเลขพร้อมข้อความก่อนและหลังหมายเลข โดยคงชื่อเดิมไว้",
+    ),
     "descriptionRearrange": MessageLookupByLibrary.simpleMessage(
       "แยกชื่อไฟล์เป็นส่วนๆ ด้วยตัวคั่นที่ระบุ และจัดเรียงตามลำดับที่กำหนด",
     ),
@@ -185,6 +188,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "insert": MessageLookupByLibrary.simpleMessage("แทรก"),
     "insertBeforeIndex": MessageLookupByLibrary.simpleMessage("แทรกก่อนดัชนี"),
     "insertIndex": MessageLookupByLibrary.simpleMessage("แทรกดัชนี"),
+    "insertIntoOriginalName": MessageLookupByLibrary.simpleMessage(
+      "แทรกในชื่อเดิม",
+    ),
     "insertTagInsideAnother": MessageLookupByLibrary.simpleMessage(
       "อย่าแทรกแท็กในแท็กอื่น",
     ),
@@ -237,6 +243,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "อย่าเปลี่ยนชื่อโฟลเดอร์ที่ระบบสงวนไว้",
     ),
     "numberOfDigits": MessageLookupByLibrary.simpleMessage("จำนวนหลัก"),
+    "numberPositionHint": MessageLookupByLibrary.simpleMessage(
+      "ตำแหน่ง 0 หมายถึงจุดเริ่มต้น หรือจุดสิ้นสุดเมื่อนับจากท้ายชื่อ",
+    ),
+    "numberPrefix": MessageLookupByLibrary.simpleMessage("ข้อความก่อนหมายเลข"),
+    "numberSuffix": MessageLookupByLibrary.simpleMessage("ข้อความหลังหมายเลข"),
+    "numberingMode": MessageLookupByLibrary.simpleMessage("โหมดการใส่หมายเลข"),
     "ok": MessageLookupByLibrary.simpleMessage("ตกลง"),
     "omitDash": MessageLookupByLibrary.simpleMessage("ละเว้นขีด"),
     "onlySelected": MessageLookupByLibrary.simpleMessage(
@@ -320,6 +332,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "rename": MessageLookupByLibrary.simpleMessage("เปลี่ยนชื่อ"),
     "renameFailed": MessageLookupByLibrary.simpleMessage("เปลี่ยนชื่อล้มเหลว"),
     "replace": MessageLookupByLibrary.simpleMessage("แทนที่"),
+    "replaceOriginalName": MessageLookupByLibrary.simpleMessage(
+      "แทนที่ชื่อเดิม",
+    ),
     "replaceToString": m4,
     "replacement": MessageLookupByLibrary.simpleMessage("การแทนที่ด้วย"),
     "ru": MessageLookupByLibrary.simpleMessage("รัสเซีย"),

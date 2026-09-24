@@ -319,5 +319,12 @@
   "randomStringLength": "Random string length",
   "randomStringLengthHint": "8",
   "randomStringLengthError": "Length should be between 1 and 32",
-  "showThumbnails": "Image thumbnails"
+  "showThumbnails": "Image thumbnails",
+  "numberingMode": "Numbering mode",
+  "replaceOriginalName": "Replace original name",
+  "insertIntoOriginalName": "Insert into original name",
+  "descriptionInsertNumber": "Insert the number with its surrounding text while keeping the original name.",
+  "numberPrefix": "Text before number",
+  "numberSuffix": "Text after number",
+  "numberPositionHint": "Position 0 inserts at the start, or at the end when counting from the end."
 }

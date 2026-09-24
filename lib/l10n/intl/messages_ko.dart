@@ -95,6 +95,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "descriptionInsert": MessageLookupByLibrary.simpleMessage(
       "지정된 위치에 제공된 텍스트(또는 파일 메타데이터 및 EXIF 데이터)를 삽입합니다.",
     ),
+    "descriptionInsertNumber": MessageLookupByLibrary.simpleMessage(
+      "원래 이름을 유지하면서 번호와 번호 앞뒤의 텍스트를 삽입합니다.",
+    ),
     "descriptionRearrange": MessageLookupByLibrary.simpleMessage(
       "파일 이름을 사용자가 지정한 구분 기호로 분할하고 제공된 순서에 따라 다시 정렬합니다.",
     ),
@@ -163,6 +166,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "insert": MessageLookupByLibrary.simpleMessage("삽입"),
     "insertBeforeIndex": MessageLookupByLibrary.simpleMessage("삽입 위치 전에 삽입"),
     "insertIndex": MessageLookupByLibrary.simpleMessage("삽입 위치"),
+    "insertIntoOriginalName": MessageLookupByLibrary.simpleMessage("원래 이름에 삽입"),
     "insertTagInsideAnother": MessageLookupByLibrary.simpleMessage(
       "태그 내에 다른 태그를 삽입하지 마십시오.",
     ),
@@ -203,6 +207,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "시스템 예약 디렉터리를 이름을 변경하지 마십시오.",
     ),
     "numberOfDigits": MessageLookupByLibrary.simpleMessage("자릿수"),
+    "numberPositionHint": MessageLookupByLibrary.simpleMessage(
+      "위치 0은 시작을 의미하며, 끝에서부터 세는 경우에는 끝을 의미합니다.",
+    ),
+    "numberPrefix": MessageLookupByLibrary.simpleMessage("번호 앞 텍스트"),
+    "numberSuffix": MessageLookupByLibrary.simpleMessage("번호 뒤 텍스트"),
+    "numberingMode": MessageLookupByLibrary.simpleMessage("번호 매기기 방식"),
     "ok": MessageLookupByLibrary.simpleMessage("확인"),
     "omitDash": MessageLookupByLibrary.simpleMessage("대시 생략"),
     "onlySelected": MessageLookupByLibrary.simpleMessage("선택한 파일만 이름 변경"),
@@ -262,6 +272,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "rename": MessageLookupByLibrary.simpleMessage("이름 변경"),
     "renameFailed": MessageLookupByLibrary.simpleMessage("이름 변경 실패"),
     "replace": MessageLookupByLibrary.simpleMessage("교체"),
+    "replaceOriginalName": MessageLookupByLibrary.simpleMessage("원래 이름 바꾸기"),
     "replaceToString": m4,
     "replacement": MessageLookupByLibrary.simpleMessage("대체할 문자"),
     "ru": MessageLookupByLibrary.simpleMessage("러시아어"),

@@ -26,29 +26,9 @@ class RuleTruncate implements Rule {
     String newName, extension;
     (newName, extension) = splitFileName(oldName, ignoreExtension);
 
-    int start = index1;
-
-    if (i1toEnd) {
-      start = newName.length - start;
-    }
-
-    int end = index2;
-
-    if (i2toEnd) {
-      end = newName.length - end;
-    }
-
-    if (start < 0) {
-      start = 0;
-    } else if (start > newName.length) {
-      start = newName.length;
-    }
-
-    if (end < 0) {
-      end = 0;
-    } else if (end > newName.length) {
-      end = newName.length;
-    }
+    final characters = newName.characters.toList();
+    int start = _characterPosition(characters.length, index1, i1toEnd);
+    int end = _characterPosition(characters.length, index2, i2toEnd);
 
     if (start > end) {
       final temp = start;
@@ -57,9 +37,9 @@ class RuleTruncate implements Rule {
     }
 
     if (keepBetween) {
-      newName = newName.substring(start, end);
+      newName = characters.sublist(start, end).join();
     } else {
-      newName = newName.replaceRange(start, end, '');
+      newName = characters.take(start).join() + characters.skip(end).join();
     }
 
     return newName + extension;

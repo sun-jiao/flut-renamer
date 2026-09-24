@@ -1644,6 +1644,76 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Numbering mode`
+  String get numberingMode {
+    return Intl.message(
+      'Numbering mode',
+      name: 'numberingMode',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Replace original name`
+  String get replaceOriginalName {
+    return Intl.message(
+      'Replace original name',
+      name: 'replaceOriginalName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Insert into original name`
+  String get insertIntoOriginalName {
+    return Intl.message(
+      'Insert into original name',
+      name: 'insertIntoOriginalName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Insert the number with its surrounding text while keeping the original name.`
+  String get descriptionInsertNumber {
+    return Intl.message(
+      'Insert the number with its surrounding text while keeping the original name.',
+      name: 'descriptionInsertNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Text before number`
+  String get numberPrefix {
+    return Intl.message(
+      'Text before number',
+      name: 'numberPrefix',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Text after number`
+  String get numberSuffix {
+    return Intl.message(
+      'Text after number',
+      name: 'numberSuffix',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Position 0 inserts at the start, or at the end when counting from the end.`
+  String get numberPositionHint {
+    return Intl.message(
+      'Position 0 inserts at the start, or at the end when counting from the end.',
+      name: 'numberPositionHint',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

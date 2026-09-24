@@ -67,7 +67,8 @@ class RuleReplace implements Rule {
     String Function(Match) replacer;
 
     if (isRegex) {
-      target = RegExp(targetString, caseSensitive: caseSensitive);
+      target =
+          RegExp(targetString, caseSensitive: caseSensitive, unicode: true);
       replacer = (match) {
         return replacementString.replaceAllMapped(RegExp(r'\\(\d+)'), (
           reference,
@@ -78,30 +79,32 @@ class RuleReplace implements Rule {
         });
       };
     } else {
-      target =
-          RegExp(RegExp.escape(targetString), caseSensitive: caseSensitive);
+      target = RegExp(
+        RegExp.escape(targetString),
+        caseSensitive: caseSensitive,
+        unicode: true,
+      );
       replacer = (match) => replacementString;
     }
 
-    if (replaceLimit == 0) {
-      newName = newName.replaceAllMapped(target, replacer);
-    } else {
-      final matches = target.allMatches(newName).toList();
-      final count = replaceLimit.abs().clamp(0, matches.length).toInt();
-      final selectedMatches = replaceLimit > 0
-          ? matches.take(count)
-          : matches.skip(matches.length - count);
+    final matches = _wholeCharacterMatches(newName, target).toList();
+    final count = replaceLimit == 0
+        ? matches.length
+        : replaceLimit.abs().clamp(0, matches.length);
+    final selectedMatches = replaceLimit >= 0
+        ? matches.take(count)
+        : matches.skip(matches.length - count);
 
-      // Work backwards so each match range continues to refer to the original
-      // name, even when earlier replacements change its length or add targets.
-      for (final match in selectedMatches.toList().reversed) {
-        newName = newName.replaceRange(
-          match.start,
-          match.end,
-          replacer(match),
-        );
-      }
+    // Build from original match offsets so inserted text is never matched again.
+    final result = StringBuffer();
+    var start = 0;
+    for (final match in selectedMatches) {
+      result.write(newName.substring(start, match.start));
+      result.write(replacer(match));
+      start = match.end;
     }
+    result.write(newName.substring(start));
+    newName = result.toString();
 
     return newName + extension;
   }

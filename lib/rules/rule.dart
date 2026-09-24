@@ -99,8 +99,17 @@ class RuleFactory {
               },
               optional: const {
                 'minimumDigits',
+                'mode',
+                'insertIndex',
+                'toEnd',
+                'suffix',
               },
             ) ||
+            (map.containsKey('mode') &&
+                !IncrementMode.values
+                    .any((mode) => mode.name == map['mode'])) ||
+            (map.containsKey('insertIndex') &&
+                !_isNonNegativeInt(map['insertIndex'])) ||
             !_isNonNegativeInt(map['startIndex']) ||
             !_isNonNegativeInt(map['step']) ||
             (map.containsKey('minimumDigits') &&
@@ -185,6 +194,8 @@ class RuleFactory {
     switch (key) {
       case 'type':
       case 'prefix':
+      case 'suffix':
+      case 'mode':
       case 'targetString':
       case 'replacementString':
       case 'insert':

@@ -94,6 +94,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "descriptionInsert": MessageLookupByLibrary.simpleMessage(
       "在指定位置插入指定文本（或文件元数据和EXIF数据）。",
     ),
+    "descriptionInsertNumber": MessageLookupByLibrary.simpleMessage(
+      "保留原文件名，在指定位置插入编号及其前后文本。",
+    ),
     "descriptionRearrange": MessageLookupByLibrary.simpleMessage(
       "以用户指定的分隔符将文件名分割成若干片段，并根据提供的顺序重新排列。",
     ),
@@ -156,6 +159,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "insert": MessageLookupByLibrary.simpleMessage("插入"),
     "insertBeforeIndex": MessageLookupByLibrary.simpleMessage("在插入位置前侧插入"),
     "insertIndex": MessageLookupByLibrary.simpleMessage("插入位置"),
+    "insertIntoOriginalName": MessageLookupByLibrary.simpleMessage("插入原文件名"),
     "insertRandomString": MessageLookupByLibrary.simpleMessage("插入随机字符串"),
     "insertTagInsideAnother": MessageLookupByLibrary.simpleMessage(
       "请勿在一个标签内插入另一个标签。",
@@ -195,6 +199,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "newName": MessageLookupByLibrary.simpleMessage("新文件名"),
     "noSysDir": MessageLookupByLibrary.simpleMessage("请勿重命名系统保留目录。"),
     "numberOfDigits": MessageLookupByLibrary.simpleMessage("编号位数"),
+    "numberPositionHint": MessageLookupByLibrary.simpleMessage(
+      "位置 0 表示开头；开启倒数时表示末尾。",
+    ),
+    "numberPrefix": MessageLookupByLibrary.simpleMessage("编号前文本"),
+    "numberSuffix": MessageLookupByLibrary.simpleMessage("编号后文本"),
+    "numberingMode": MessageLookupByLibrary.simpleMessage("编号方式"),
     "ok": MessageLookupByLibrary.simpleMessage("确定"),
     "omitDash": MessageLookupByLibrary.simpleMessage("省略短横线"),
     "onlySelected": MessageLookupByLibrary.simpleMessage("仅重命名选中的文件"),
@@ -247,6 +257,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "rename": MessageLookupByLibrary.simpleMessage("重命名"),
     "renameFailed": MessageLookupByLibrary.simpleMessage("重命名失败"),
     "replace": MessageLookupByLibrary.simpleMessage("替换"),
+    "replaceOriginalName": MessageLookupByLibrary.simpleMessage("替换原文件名"),
     "replaceToString": m4,
     "replacement": MessageLookupByLibrary.simpleMessage("替换为"),
     "ru": MessageLookupByLibrary.simpleMessage("俄语"),

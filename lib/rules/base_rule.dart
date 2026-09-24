@@ -32,3 +32,31 @@ abstract interface class Rule {
 
   return (newName, extension);
 }
+
+/// Positions are extended grapheme clusters (user-visible characters).
+int _characterPosition(int length, int index, bool fromEnd) =>
+    (fromEnd ? length - index : index).clamp(0, length);
+
+String _insertCharacters(String name, String text, int index, bool fromEnd) {
+  final characters = name.characters.toList();
+  final position = _characterPosition(characters.length, index, fromEnd);
+  return characters.take(position).join() +
+      text +
+      characters.skip(position).join();
+}
+
+/// RegExp offsets are UTF-16 offsets. Only accept whole-character ranges,
+/// including zero-width matches at character boundaries.
+Iterable<Match> _wholeCharacterMatches(String name, Pattern pattern) sync* {
+  final boundaries = <int>{0};
+  var offset = 0;
+  for (final character in name.characters) {
+    offset += character.length;
+    boundaries.add(offset);
+  }
+  for (final match in pattern.allMatches(name)) {
+    if (boundaries.contains(match.start) && boundaries.contains(match.end)) {
+      yield match;
+    }
+  }
+}

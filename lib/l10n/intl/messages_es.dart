@@ -108,6 +108,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "descriptionInsert": MessageLookupByLibrary.simpleMessage(
       "Insertar texto especificado (o datos de metadatos y EXIF) en la posición especificada.",
     ),
+    "descriptionInsertNumber": MessageLookupByLibrary.simpleMessage(
+      "Inserta el número con el texto que lo rodea y conserva el nombre original.",
+    ),
     "descriptionRearrange": MessageLookupByLibrary.simpleMessage(
       "Dividir el nombre del archivo en segmentos utilizando el delimitador especificado y reorganizarlos según el orden proporcionado por el usuario.",
     ),
@@ -204,6 +207,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Insertar antes del índice",
     ),
     "insertIndex": MessageLookupByLibrary.simpleMessage("Índice de inserción"),
+    "insertIntoOriginalName": MessageLookupByLibrary.simpleMessage(
+      "Insertar en el nombre original",
+    ),
     "insertTagInsideAnother": MessageLookupByLibrary.simpleMessage(
       "No insertes una etiqueta dentro de otra.",
     ),
@@ -266,6 +272,16 @@ class MessageLookup extends MessageLookupByLibrary {
       "No renombres directorios reservados del sistema.",
     ),
     "numberOfDigits": MessageLookupByLibrary.simpleMessage("Número de dígitos"),
+    "numberPositionHint": MessageLookupByLibrary.simpleMessage(
+      "La posición 0 corresponde al inicio o al final si se cuenta desde el final.",
+    ),
+    "numberPrefix": MessageLookupByLibrary.simpleMessage(
+      "Texto antes del número",
+    ),
+    "numberSuffix": MessageLookupByLibrary.simpleMessage(
+      "Texto después del número",
+    ),
+    "numberingMode": MessageLookupByLibrary.simpleMessage("Modo de numeración"),
     "ok": MessageLookupByLibrary.simpleMessage("Aceptar"),
     "omitDash": MessageLookupByLibrary.simpleMessage("Omitir guión"),
     "onlySelected": MessageLookupByLibrary.simpleMessage(
@@ -351,6 +367,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "rename": MessageLookupByLibrary.simpleMessage("Renombrar"),
     "renameFailed": MessageLookupByLibrary.simpleMessage("Error al renombrar"),
     "replace": MessageLookupByLibrary.simpleMessage("Reemplazar"),
+    "replaceOriginalName": MessageLookupByLibrary.simpleMessage(
+      "Sustituir el nombre original",
+    ),
     "replaceToString": m4,
     "replacement": MessageLookupByLibrary.simpleMessage("Reemplazo"),
     "ru": MessageLookupByLibrary.simpleMessage("Ruso"),

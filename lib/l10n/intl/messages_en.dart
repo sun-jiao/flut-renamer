@@ -99,6 +99,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "descriptionInsert": MessageLookupByLibrary.simpleMessage(
       "Insert the specified text (or file metadata and EXIF data) at the designated position.",
     ),
+    "descriptionInsertNumber": MessageLookupByLibrary.simpleMessage(
+      "Insert the number with its surrounding text while keeping the original name.",
+    ),
     "descriptionRearrange": MessageLookupByLibrary.simpleMessage(
       "Splitting the filename by the user-specified delimiter and rearrange segments according to the provided order.",
     ),
@@ -187,6 +190,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Insert before index",
     ),
     "insertIndex": MessageLookupByLibrary.simpleMessage("Insert index"),
+    "insertIntoOriginalName": MessageLookupByLibrary.simpleMessage(
+      "Insert into original name",
+    ),
     "insertRandomString": MessageLookupByLibrary.simpleMessage(
       "Insert random string",
     ),
@@ -248,6 +254,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "Do not rename a system reserved directory.",
     ),
     "numberOfDigits": MessageLookupByLibrary.simpleMessage("Number of digits"),
+    "numberPositionHint": MessageLookupByLibrary.simpleMessage(
+      "Position 0 inserts at the start, or at the end when counting from the end.",
+    ),
+    "numberPrefix": MessageLookupByLibrary.simpleMessage("Text before number"),
+    "numberSuffix": MessageLookupByLibrary.simpleMessage("Text after number"),
+    "numberingMode": MessageLookupByLibrary.simpleMessage("Numbering mode"),
     "ok": MessageLookupByLibrary.simpleMessage("OK"),
     "omitDash": MessageLookupByLibrary.simpleMessage("Omit dash"),
     "onlySelected": MessageLookupByLibrary.simpleMessage("Only selected"),
@@ -340,6 +352,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "rename": MessageLookupByLibrary.simpleMessage("Rename"),
     "renameFailed": MessageLookupByLibrary.simpleMessage("Rename failed"),
     "replace": MessageLookupByLibrary.simpleMessage("Replace"),
+    "replaceOriginalName": MessageLookupByLibrary.simpleMessage(
+      "Replace original name",
+    ),
     "replaceToString": m4,
     "replacement": MessageLookupByLibrary.simpleMessage("Replacement"),
     "ru": MessageLookupByLibrary.simpleMessage("Russian"),

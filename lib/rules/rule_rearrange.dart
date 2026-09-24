@@ -20,7 +20,18 @@ class RuleRearrange implements Rule {
     (newName, extension) = splitFileName(oldName, ignoreExtension);
 
     // split string
-    List<String> substrings = newName.split(delimiter);
+    final List<String> substrings;
+    if (delimiter.isEmpty) {
+      substrings = newName.characters.toList();
+    } else {
+      substrings = [];
+      var start = 0;
+      for (final match in _wholeCharacterMatches(newName, delimiter)) {
+        substrings.add(newName.substring(start, match.start));
+        start = match.end;
+      }
+      substrings.add(newName.substring(start));
+    }
 
     // remove indexes out of limit
     final order = this

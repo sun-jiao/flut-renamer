@@ -105,6 +105,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "descriptionInsert": MessageLookupByLibrary.simpleMessage(
       "Inserisce il testo specificato (o i dati dei metadati del file ed EXIF) in una posizione specificata.",
     ),
+    "descriptionInsertNumber": MessageLookupByLibrary.simpleMessage(
+      "Inserisci il numero con il testo che lo precede e lo segue, mantenendo il nome originale.",
+    ),
     "descriptionRearrange": MessageLookupByLibrary.simpleMessage(
       "Separa il nome del file usando un delimitatore specificato dall\'utente e lo riordina secondo l\'ordine fornito.",
     ),
@@ -201,6 +204,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "insertIndex": MessageLookupByLibrary.simpleMessage(
       "Indice di inserimento",
     ),
+    "insertIntoOriginalName": MessageLookupByLibrary.simpleMessage(
+      "Inserisci nel nome originale",
+    ),
     "insertTagInsideAnother": MessageLookupByLibrary.simpleMessage(
       "Non inserire un tag all\'interno di un altro.",
     ),
@@ -259,6 +265,18 @@ class MessageLookup extends MessageLookupByLibrary {
       "Non rinominare le directory di sistema riservate.",
     ),
     "numberOfDigits": MessageLookupByLibrary.simpleMessage("Numero di cifre"),
+    "numberPositionHint": MessageLookupByLibrary.simpleMessage(
+      "La posizione 0 indica l’inizio, oppure la fine quando si conta dalla fine.",
+    ),
+    "numberPrefix": MessageLookupByLibrary.simpleMessage(
+      "Testo prima del numero",
+    ),
+    "numberSuffix": MessageLookupByLibrary.simpleMessage(
+      "Testo dopo il numero",
+    ),
+    "numberingMode": MessageLookupByLibrary.simpleMessage(
+      "Modalità di numerazione",
+    ),
     "ok": MessageLookupByLibrary.simpleMessage("OK"),
     "omitDash": MessageLookupByLibrary.simpleMessage("Ometti il trattino"),
     "onlySelected": MessageLookupByLibrary.simpleMessage(
@@ -346,6 +364,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Rinomina non riuscita",
     ),
     "replace": MessageLookupByLibrary.simpleMessage("Sostituisci"),
+    "replaceOriginalName": MessageLookupByLibrary.simpleMessage(
+      "Sostituisci il nome originale",
+    ),
     "replaceToString": m4,
     "replacement": MessageLookupByLibrary.simpleMessage("Sostituzione"),
     "ru": MessageLookupByLibrary.simpleMessage("Russo"),

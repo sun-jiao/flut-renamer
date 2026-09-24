@@ -40,11 +40,18 @@ class RuleTransliterate implements Rule {
       case Transliterate.simplified:
         return ChineseHelper.convertToSimplifiedChinese(newName) + extension;
       case Transliterate.pinyin:
+        // The library trims a trailing separator with a rune count used as a
+        // UTF-16 offset. A separator absent from the input avoids trimming an
+        // original trailing underscore (and potentially part of an emoji).
+        var separator = '\u0000';
+        while (newName.contains(separator)) {
+          separator += '\u0000';
+        }
         return PinyinHelper.getPinyin(
               newName,
-              separator: '_',
+              separator: separator,
               format: PinyinFormat.WITH_TONE_MARK,
-            ) +
+            ).replaceAll(separator, '_') +
             extension;
       case Transliterate.cyrillic2Latin:
         return cyrtranslit.cyr2Lat(newName, langCode: langCode) + extension;
