@@ -85,6 +85,30 @@ Each test is limited to 2 minutes with bounded status polling. Remount tests inv
 not a process restart following system termination; YAML round-trip testing is distinct from system import/export picker tests. Test cases involving missing source files or symbolic link conflicts will produce expected `FileSystemException` debug output;
 pass/fail status is determined by the test suite results, though the tests still verify return values ​​and disk contents.
 
+## Android Document URI Unit Tests
+
+The JVM tests in `android/app/src/test/` run separately from `flutter test` and
+the emulator integration tests. Run them from the project root with Flutter,
+Java 21, and the project's Android compile SDK installed:
+
+```bash
+flutter pub get --enforce-lockfile
+(cd android && ./gradlew :app:testDebugUnitTest --console=plain)
+```
+
+Robolectric runs nine scenarios on each of API 29 and 35 (18 test executions).
+They cover bare tree URI expansion, preservation of an existing document ID
+and encoded paths/query parameters, and unchanged standalone document,
+MediaStore, and children-collection URIs. Handler tests exercise the actual
+`MainActivity` capability check, metadata query, and rename methods against a
+fake content provider that changes document IDs on rename. They verify that
+subsequent metadata reads, renames, and rollback renames use the returned ID,
+and that operations on a child never query or rename its tree root.
+
+These tests verify URI routing using Android framework APIs; the fake provider
+does not model real provider permission grants or revocation. The Android API 35
+CI job runs this suite and uploads its HTML/XML reports with Android diagnostics.
+
 ## Scenarios Requiring Verification in Other Environments
 
 The following scenarios are not "theoretically untestable" but cannot be covered by the current Flutter test driver or selected scenarios;

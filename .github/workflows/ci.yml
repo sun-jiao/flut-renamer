@@ -138,6 +138,11 @@ jobs:
       - run: flutter pub get --enforce-lockfile
       - name: Install compile SDK
         run: bash tool/install_android_sdk.sh
+      - name: Test Android document URI handling
+        # Robolectric runs both API 29 and 35; run the suite once per workflow.
+        if: matrix.api == 35
+        working-directory: android
+        run: ./gradlew :app:testDebugUnitTest --console=plain
       - name: Enable KVM access
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -161,6 +166,8 @@ jobs:
           path: |
             integration-*.log
             build/app/outputs/logs/
+            build/app/reports/tests/testDebugUnitTest/
+            build/app/test-results/testDebugUnitTest/
           if-no-files-found: ignore
           retention-days: 7
 

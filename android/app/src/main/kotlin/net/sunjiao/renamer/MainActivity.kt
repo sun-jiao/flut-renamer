@@ -217,11 +217,7 @@ class MainActivity: FlutterActivity() {
     private fun checkSupportsRename(uri: Uri): Boolean {
         var supportsRename = false
         try {
-            val docUri = if (DocumentsContract.isTreeUri(uri)) {
-                DocumentsContract.buildDocumentUriUsingTree(uri, DocumentsContract.getTreeDocumentId(uri))
-            } else {
-                uri
-            }
+            val docUri = resolveDocumentUri(uri)
 
             contentResolver.query(docUri, arrayOf(DocumentsContract.Document.COLUMN_FLAGS), null, null, null)?.use { cursor ->
                 if (cursor.moveToFirst()) {
@@ -241,16 +237,7 @@ class MainActivity: FlutterActivity() {
 
         Thread {
             try {
-                val originalUri = Uri.parse(uriString)
-
-                val documentUri = if (DocumentsContract.isTreeUri(originalUri)) {
-                    DocumentsContract.buildDocumentUriUsingTree(
-                        originalUri,
-                        DocumentsContract.getTreeDocumentId(originalUri)
-                    )
-                } else {
-                    originalUri
-                }
+                val documentUri = resolveDocumentUri(Uri.parse(uriString))
 
                 val newUri = if (checkSupportsRename(documentUri)) {
                     DocumentsContract.renameDocument(contentResolver, documentUri, newName)
@@ -401,15 +388,7 @@ class MainActivity: FlutterActivity() {
     }
 
     private fun getMetaData(uriString: String, result: MethodChannel.Result) {
-        val originalUri = Uri.parse(uriString)
-        val uri = if (DocumentsContract.isTreeUri(originalUri)) {
-            DocumentsContract.buildDocumentUriUsingTree(
-                originalUri,
-                DocumentsContract.getTreeDocumentId(originalUri)
-            )
-        } else {
-            originalUri
-        }
+        val uri = resolveDocumentUri(Uri.parse(uriString))
         val metadata = HashMap<String, Any?>()
         var name: String? = null
 
