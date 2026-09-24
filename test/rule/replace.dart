@@ -4,6 +4,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flut_renamer/rules/rule.dart';
 
 void main() {
+  test('issue #23: empty target leaves the name unchanged', () async {
+    for (final isRegex in [false, true]) {
+      final rule = RuleReplace('', '新增', 0, false, false, isRegex, true);
+      expect(await rule.newName('文件名.txt'), '文件名.txt');
+    }
+  });
+
   test('issue #46: case-sensitive replacement changes extension casing',
       () async {
     final rule = RuleReplace('.SRT', '.srt', 0, false, true, false, false);

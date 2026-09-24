@@ -1,3 +1,5 @@
+import 'dart:ui' show SemanticsAction;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flut_renamer/dialogs/insert_dialog.dart';
@@ -15,6 +17,41 @@ void main() {
   setUpAll(() => L10n.load(const Locale('en')));
 
   Widget host(Widget child) => MaterialApp(home: Scaffold(body: child));
+
+  testWidgets('issue #23: accessibility fills replacement fields without focus',
+      (tester) async {
+    final semantics = tester.ensureSemantics();
+    RuleReplace? saved;
+    await tester.pumpWidget(
+      host(
+        ReplaceDialog(
+          remove: false,
+          onSave: (rule) => saved = rule as RuleReplace,
+        ),
+      ),
+    );
+
+    final fields = find.byType(EditableText);
+    for (final (index, text) in ['旧名', '新名'].indexed) {
+      expect(
+        tester.widget<EditableText>(fields.at(index)).focusNode.hasFocus,
+        isFalse,
+      );
+      final node = tester.getSemantics(fields.at(index));
+      expect(node.getSemanticsData().hasAction(SemanticsAction.setText), isTrue);
+      node.owner!.performAction(node.id, SemanticsAction.setText, text);
+      await tester.pump();
+      expect(tester.widget<EditableText>(fields.at(index)).controller.text, text);
+      expect(tester.getSemantics(fields.at(index)).value, text);
+      expect(find.text(text), findsOneWidget);
+    }
+
+    await tester.tap(find.widgetWithText(TextButton, L10n.current.add));
+    await tester.pumpAndSettle();
+    expect(saved?.targetString, '旧名');
+    expect(saved?.replacementString, '新名');
+    semantics.dispose();
+  });
 
   testWidgets('ReplaceDialog saves edited options into a replace rule',
       (tester) async {
