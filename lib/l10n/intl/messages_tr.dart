@@ -181,6 +181,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "filter": MessageLookupByLibrary.simpleMessage("Filtrele"),
     "fromStart": MessageLookupByLibrary.simpleMessage("Baştan Başla"),
     "goingForward": MessageLookupByLibrary.simpleMessage("İleri Gitme"),
+    "hapticFeedback": MessageLookupByLibrary.simpleMessage(
+      "Dokunsal geri bildirim",
+    ),
     "hideHiddenFiles": MessageLookupByLibrary.simpleMessage(
       "Gizli dosyaları gizle",
     ),

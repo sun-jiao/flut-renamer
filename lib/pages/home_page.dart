@@ -8,6 +8,7 @@ import '../entity/constants.dart';
 import '../entity/sharedpref.dart';
 import '../l10n/l10n.dart';
 import '../rules/rule.dart';
+import '../tools/app_haptics.dart';
 import '../tools/file_metadata.dart';
 import '../tools/logger.dart';
 import '../tools/responsive.dart';
@@ -69,6 +70,8 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       bottomNavigationBar: _lockWhileRenaming(
         HomeToolBar(
+          hapticFeedbackCallback: (value) => Shared.hapticFeedback = value,
+          hapticFeedbackValue: () => Shared.hapticFeedback,
           showThumbnailsCallback: (value) => setState(() {
             Shared.showThumbnails = value;
           }),
@@ -138,6 +141,8 @@ class _HomePageState extends State<HomePage> {
 class HomeToolBar extends StatefulWidget {
   const HomeToolBar({
     super.key,
+    required this.hapticFeedbackCallback,
+    required this.hapticFeedbackValue,
     required this.showThumbnailsCallback,
     required this.showThumbnailsValue,
     required this.onlySelectedCallback,
@@ -147,6 +152,9 @@ class HomeToolBar extends StatefulWidget {
     required this.removeRulesCallback,
     required this.removeRulesValue,
   });
+
+  final void Function(bool) hapticFeedbackCallback;
+  final bool Function() hapticFeedbackValue;
 
   final void Function(bool) showThumbnailsCallback;
   final bool Function() showThumbnailsValue;
@@ -336,6 +344,16 @@ class _HomeToolBarState extends State<HomeToolBar> {
           }),
           selected: widget.removeRulesValue.call(),
         ),
+        if (AppHaptics.supported) ...[
+          box,
+          FilterChip(
+            label: Text(L10n.current.hapticFeedback),
+            selected: widget.hapticFeedbackValue(),
+            onSelected: (value) => setState(() {
+              widget.hapticFeedbackCallback(value);
+            }),
+          ),
+        ],
       ];
 
   void ratingMyApp() => showDialog(

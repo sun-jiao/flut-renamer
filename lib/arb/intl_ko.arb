@@ -180,6 +180,7 @@
   "semanticsOpenMetadataDialog": "더블 클릭하여 대화 상자를 열고 삽입할 메타 데이터 태그를 선택하세요.",
   "semanticsMultipleActionsHint": ", 위 아래로 스와이프하여 다른 작업으로 전환할 수 있습니다.",
   "semanticSwitchNumberToStartAndToEnd": "시작과 끝 사이의 계산 방향 전환, 현재 {toEnd, select, true{끝} false{시작} other{}}부터 계산 중",
+  "hapticFeedback": "햅틱 피드백",
   "showThumbnails": "이미지 썸네일",
   "numberingMode": "번호 매기기 방식",
   "replaceOriginalName": "원래 이름 바꾸기",

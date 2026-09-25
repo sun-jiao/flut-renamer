@@ -186,6 +186,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "filter": MessageLookupByLibrary.simpleMessage("Filter"),
     "fromStart": MessageLookupByLibrary.simpleMessage("Von Anfang an zählen"),
     "goingForward": MessageLookupByLibrary.simpleMessage("Vorwärts"),
+    "hapticFeedback": MessageLookupByLibrary.simpleMessage(
+      "Haptisches Feedback",
+    ),
     "hideHiddenFiles": MessageLookupByLibrary.simpleMessage(
       "Versteckte Dateien ausblenden",
     ),

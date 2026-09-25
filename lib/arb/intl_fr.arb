@@ -180,6 +180,7 @@
   "semanticsOpenMetadataDialog": "Double-cliquez pour ouvrir une boîte de dialogue et sélectionner une balise de métadonnées à insérer.",
   "semanticsMultipleActionsHint": ", faites défiler vers le haut ou vers le bas pour changer d'action.",
   "semanticSwitchNumberToStartAndToEnd": "Changement de direction de comptage entre du début et de la fin, comptant actuellement à partir de {toEnd, select, true{la fin} false{le début} other{}}",
+  "hapticFeedback": "Retour haptique",
   "showThumbnails": "Miniatures des images",
   "numberingMode": "Mode de numérotation",
   "replaceOriginalName": "Remplacer le nom d’origine",

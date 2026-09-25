@@ -153,6 +153,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "filter": MessageLookupByLibrary.simpleMessage("필터"),
     "fromStart": MessageLookupByLibrary.simpleMessage("처음부터 계산"),
     "goingForward": MessageLookupByLibrary.simpleMessage("앞으로"),
+    "hapticFeedback": MessageLookupByLibrary.simpleMessage("햅틱 피드백"),
     "hideHiddenFiles": MessageLookupByLibrary.simpleMessage("숨김 파일 숨기기"),
     "ifFileNotShown": MessageLookupByLibrary.simpleMessage(
       "파일 목록에 파일이 표시되지 않으면 모든 내용을 지우고 계속 진행하십시오.",

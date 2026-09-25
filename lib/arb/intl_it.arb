@@ -180,6 +180,7 @@
   "semanticsOpenMetadataDialog": "Tocca due volte per aprire un dialogo e selezionare un tag dei metadati da inserire.",
   "semanticsMultipleActionsHint": ", scorri su e giù per passare ad altre azioni.",
   "semanticSwitchNumberToStartAndToEnd": "Cambiamento della direzione del conteggio tra dall'inizio e dalla fine, attualmente il conteggio da {toEnd, select, true{la fine} false{l'inizio} other{}}",
+  "hapticFeedback": "Feedback aptico",
   "showThumbnails": "Miniature delle immagini",
   "numberingMode": "Modalità di numerazione",
   "replaceOriginalName": "Sostituisci il nome originale",

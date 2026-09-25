@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
@@ -17,6 +18,7 @@ import '../entity/sharedpref.dart';
 import '../l10n/l10n.dart';
 import '../rules/rule.dart';
 import '../tools/rule_persistence.dart';
+import '../tools/app_haptics.dart';
 
 class RulesPage extends StatefulWidget {
   const RulesPage({super.key, required this.onRuleChanged});
@@ -209,6 +211,7 @@ class RulesPageState extends State<RulesPage> {
         else
           Expanded(
             child: ReorderableListView.builder(
+              onReorderStart: (_) => unawaited(AppHaptics.dragStarted()),
               onReorderItem: (oldIndex, newIndex) {
                 setState(() {
                   final item = _rules.removeAt(oldIndex);

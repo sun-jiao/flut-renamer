@@ -184,6 +184,7 @@
   "randomStringLength": "随机字符串长度",
   "randomStringLengthHint": "8",
   "randomStringLengthError": "长度应在1-32之间",
+  "hapticFeedback": "触觉反馈",
   "showThumbnails": "图片缩略图",
   "numberingMode": "编号方式",
   "replaceOriginalName": "替换原文件名",

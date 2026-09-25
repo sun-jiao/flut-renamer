@@ -171,6 +171,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "filter": MessageLookupByLibrary.simpleMessage("กรอง"),
     "fromStart": MessageLookupByLibrary.simpleMessage("จากจุดเริ่มต้น"),
     "goingForward": MessageLookupByLibrary.simpleMessage("ไปข้างหน้า"),
+    "hapticFeedback": MessageLookupByLibrary.simpleMessage(
+      "การตอบสนองแบบสัมผัส",
+    ),
     "hideHiddenFiles": MessageLookupByLibrary.simpleMessage(
       "ซ่อนไฟล์ที่ซ่อนอยู่",
     ),

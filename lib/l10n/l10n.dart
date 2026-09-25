@@ -1635,6 +1635,16 @@ class L10n {
     );
   }
 
+  /// `Haptic feedback`
+  String get hapticFeedback {
+    return Intl.message(
+      'Haptic feedback',
+      name: 'hapticFeedback',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Image thumbnails`
   String get showThumbnails {
     return Intl.message(

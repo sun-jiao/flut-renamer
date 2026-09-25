@@ -319,6 +319,7 @@
   "randomStringLength": "Random string length",
   "randomStringLengthHint": "8",
   "randomStringLengthError": "Length should be between 1 and 32",
+  "hapticFeedback": "Haptic feedback",
   "showThumbnails": "Image thumbnails",
   "numberingMode": "Numbering mode",
   "replaceOriginalName": "Replace original name",

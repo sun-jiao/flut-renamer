@@ -3,6 +3,18 @@ import 'package:flut_renamer/entity/sharedpref.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
+  test('haptics default on and persist either choice', () async {
+    SharedPreferences.setMockInitialValues({});
+    await Shared.init();
+    expect(Shared.hapticFeedback, isTrue);
+    for (final enabled in [false, true]) {
+      Shared.hapticFeedback = enabled;
+      await Shared.init();
+      expect(Shared.hapticFeedback, enabled);
+      expect(Shared.pref.getBool('haptic_feedback'), enabled);
+    }
+  });
+
   test('thumbnails default off and retain both choices across initialization',
       () async {
     SharedPreferences.setMockInitialValues({});

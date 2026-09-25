@@ -25,6 +25,8 @@ void main() {
       MaterialApp(
         home: Scaffold(
           bottomNavigationBar: HomeToolBar(
+            hapticFeedbackCallback: (_) {},
+            hapticFeedbackValue: () => true,
             showThumbnailsCallback: (value) => showThumbnails = value,
             showThumbnailsValue: () => showThumbnails,
             onlySelectedCallback: (value) => onlySelected = value,
@@ -77,6 +79,8 @@ void main() {
       MaterialApp(
         home: Scaffold(
           bottomNavigationBar: HomeToolBar(
+            hapticFeedbackCallback: (_) {},
+            hapticFeedbackValue: () => true,
             showThumbnailsCallback: (_) {},
             showThumbnailsValue: () => false,
             onlySelectedCallback: (_) {},

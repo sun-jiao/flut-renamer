@@ -146,6 +146,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "filter": MessageLookupByLibrary.simpleMessage("筛选"),
     "fromStart": MessageLookupByLibrary.simpleMessage("从开头计数"),
     "goingForward": MessageLookupByLibrary.simpleMessage("向前"),
+    "hapticFeedback": MessageLookupByLibrary.simpleMessage("触觉反馈"),
     "hideHiddenFiles": MessageLookupByLibrary.simpleMessage("不显示隐藏文件"),
     "ifFileNotShown": MessageLookupByLibrary.simpleMessage(
       "如果文件列表中未显示文件，请清除所有内容并继续。",

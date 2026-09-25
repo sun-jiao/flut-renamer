@@ -155,6 +155,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "filter": MessageLookupByLibrary.simpleMessage("フィルター"),
     "fromStart": MessageLookupByLibrary.simpleMessage("先頭から"),
     "goingForward": MessageLookupByLibrary.simpleMessage("前進中"),
+    "hapticFeedback": MessageLookupByLibrary.simpleMessage("触覚フィードバック"),
     "hideHiddenFiles": MessageLookupByLibrary.simpleMessage("隠しファイルを隠す"),
     "ifFileNotShown": MessageLookupByLibrary.simpleMessage(
       "ファイルがリストに表示されない場合は、すべてクリアして続行してください。",

@@ -181,6 +181,7 @@
   "semanticsMultipleActionsHint": "، انقر للأعلى أو للأسفل للتبديل إلى إجراء آخر.",
   "semanticSwitchNumberToStartAndToEnd": "تبديل اتجاه العد بين البداية والنهاية، حاليًا يتم العد من {toEnd, select, true{النهاية} false{البداية} other{}}",
   "semanticNumberWithDirection": "تبديل اتجاه العد بين البداية والنهاية",
+  "hapticFeedback": "استجابة لمسية",
   "showThumbnails": "الصور المصغرة",
   "numberingMode": "طريقة الترقيم",
   "replaceOriginalName": "استبدال الاسم الأصلي",

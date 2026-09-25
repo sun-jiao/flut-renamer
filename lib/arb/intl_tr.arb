@@ -179,6 +179,7 @@
   "semanticsOpenMetadataDialog": "Açıklamak için çift tıklayın ve içinden eklemek istediğiniz meta veri etiketini seçin.",
   "semanticsMultipleActionsHint": ", Diğer işlemlere geçmek için yukarı veya aşağı kaydırın.",
   "semanticSwitchNumberToStartAndToEnd": "Başlangıçtan ve sondan sayma yönünü değiştirme, şu anda {toEnd, select, true{son} false{başlangıç} other{}} sayımından",
+  "hapticFeedback": "Dokunsal geri bildirim",
   "showThumbnails": "Resim küçük resimleri",
   "numberingMode": "Numaralandırma biçimi",
   "replaceOriginalName": "Özgün adı değiştir",

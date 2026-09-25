@@ -15,6 +15,7 @@ import '../tools/file_metadata.dart';
 import '../entity/sharedpref.dart';
 import '../tools/rename.dart';
 import '../tools/rename_transaction.dart';
+import '../tools/app_haptics.dart';
 import '../widget/custom_dialog.dart';
 import '../widget/custom_drop.dart';
 import '../widget/file_thumbnail.dart';
@@ -477,10 +478,11 @@ class FilesPageState extends State<FilesPage> {
             value: file.selected,
             onChanged: (val) {
               if (_renaming) return;
-              if (val != null) {
+              if (val != null && val != file.selected) {
                 setState(() {
                   file.selected = val;
                 });
+                unawaited(AppHaptics.selectionChanged());
               }
             },
           ),
@@ -528,7 +530,7 @@ class FilesPageState extends State<FilesPage> {
                   value: _files.isNotEmpty &&
                       _files.every((element) => element.selected),
                   onChanged: (_) {
-                    if (_renaming) return;
+                    if (_renaming || _files.isEmpty) return;
                     setState(() {
                       if (_files.every((element) => element.selected)) {
                         for (var element in _files) {
@@ -540,6 +542,7 @@ class FilesPageState extends State<FilesPage> {
                         }
                       }
                     });
+                    unawaited(AppHaptics.selectionChanged());
                   },
                 ),
               ),
@@ -724,6 +727,9 @@ class FilesPageState extends State<FilesPage> {
                   if (_files.isNotEmpty)
                     ReorderableListView.builder(
                       buildDefaultDragHandles: false,
+                      onReorderStart: (_) {
+                        if (!_renaming) unawaited(AppHaptics.dragStarted());
+                      },
                       onReorderItem: _reorderFiles,
                       itemCount: filteredFiles.length,
                       itemBuilder: (context, index) {
@@ -786,20 +792,26 @@ class FilesPageState extends State<FilesPage> {
       final filesToRename = await _buildRenamePlan(requestedFiles);
       var noError = filesToRename.length == requestedFiles.length;
 
-      if (mounted) {
-        setState(() {});
+      if (!mounted || _deferredUpdate) return;
+      setState(() {});
+      if (!noError) {
+        unawaited(AppHaptics.error());
+        return;
       }
-      if (!noError) return;
 
       final mediaUris = <String>[];
-      if (Platform.isAndroid) {
-        for (final file in filesToRename) {
-          if (file.path.startsWith('content://')) {
-            await file.initMetadata();
-            if (file.metadata!.androidRealName != file.newName) {
-              mediaUris.add(file.path);
-            }
+      // Snapshot whether this batch changes any names before the transaction
+      // mutates entities. Empty/unchanged batches must not signal success.
+      var hasNameChanges = false;
+      for (final file in filesToRename) {
+        if (Platform.isAndroid && file.path.startsWith('content://')) {
+          await file.initMetadata();
+          if (file.metadata!.androidRealName != file.newName) {
+            mediaUris.add(file.path);
+            hasNameChanges = true;
           }
+        } else if (file.name != file.newName) {
+          hasNameChanges = true;
         }
       }
       final mediaPermission = Platform.isAndroid
@@ -856,6 +868,13 @@ class FilesPageState extends State<FilesPage> {
 
       if (noError && remove) {
         widget.clearRules.call();
+      }
+      // The transaction has finished, including rollback on failure. Emit at
+      // most one result for the batch, never once per file or at button press.
+      if (!result.succeeded) {
+        unawaited(AppHaptics.error());
+      } else if (hasNameChanges) {
+        unawaited(AppHaptics.success());
       }
     } finally {
       if (_deferredUpdate) {
