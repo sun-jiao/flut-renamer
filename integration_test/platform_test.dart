@@ -15,6 +15,7 @@ import 'package:flut_renamer/pages/rules_page.dart';
 import 'package:flut_renamer/rules/rule.dart';
 import 'package:flut_renamer/tools/atomic_rename.dart';
 import 'package:flut_renamer/tools/ex_file.dart';
+import 'package:flut_renamer/tools/file_creation_time.dart';
 import 'package:flut_renamer/tools/logger.dart';
 import 'package:flut_renamer/tools/platform_channel.dart';
 import 'package:flut_renamer/tools/rename_transaction.dart';
@@ -76,6 +77,41 @@ void main() {
       expect(Shared.pref.containsKey(key), isFalse);
     } finally {
       await Shared.pref.remove(key);
+    }
+  });
+
+  testWidgets(
+      'native creation time remains stable after rename and modification',
+      (tester) async {
+    final source = file('birth-before')..writeAsStringSync('before');
+    final created =
+        await readFileCreationTime(source.path, await source.stat());
+    // Linux/Android filesystems or libc versions may not expose birth time.
+    if (Platform.isMacOS || Platform.isIOS || Platform.isWindows) {
+      expect(created, isNotNull);
+    }
+    if (created != null) {
+      expect(DateTime.now().difference(created).inSeconds.abs(), lessThan(60));
+    }
+    source.writeAsStringSync('after');
+    source.setLastModifiedSync(DateTime.now());
+    final moved = await atomicRenameNoReplace(source, file('birth-after').path);
+    expect(await readFileCreationTime(moved.path, await moved.stat()), created);
+    if (Platform.isMacOS || Platform.isIOS) {
+      // Check native wiring directly so optional-metadata fallback cannot hide it.
+      const channel = MethodChannel('net.sunjiao.renamer/picker');
+      expect(
+        await channel
+            .invokeMethod<int>('getCreationTime', {'path': moved.path}),
+        created!.millisecondsSinceEpoch,
+      );
+      expect(
+        await channel.invokeMethod<int>(
+          'getCreationTime',
+          {'path': file('missing').path},
+        ),
+        isNull,
+      );
     }
   });
 

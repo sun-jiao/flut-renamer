@@ -33,6 +33,18 @@ import UniformTypeIdentifiers
                 }
 
                 switch call.method {
+                case "getCreationTime":
+                    guard let args = call.arguments as? [String: Any],
+                          let path = args["path"] as? String else {
+                        result(self.invalidArgumentsError(for: call.method))
+                        return
+                    }
+                    self.fileQueue.async {
+                        let attributes = try? FileManager.default.attributesOfItem(atPath: path)
+                        let date = attributes?[.creationDate] as? Date
+                        let milliseconds = date.map { Int64($0.timeIntervalSince1970 * 1000) }
+                        DispatchQueue.main.async { result(milliseconds) }
+                    }
                 case "dirAccess":
                     self.dirAccess(result: result)
                 case "fileAccess":

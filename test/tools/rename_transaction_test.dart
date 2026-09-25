@@ -15,6 +15,61 @@ void main() {
 
   tearDown(() => temporaryDirectory.delete(recursive: true));
 
+  for (final failRollback in [false, true]) {
+    test('unselected descendants follow actual rollback, failure=$failRollback',
+        () async {
+      final parent =
+          await Directory('${temporaryDirectory.path}/folder').create();
+      final child = await File('${parent.path}/child').writeAsString('child');
+      final last =
+          await File('${temporaryDirectory.path}/last').writeAsString('last');
+      var failed = false;
+      final result = await commitRenameTransaction(
+        [
+          FileEntity(parent, newName: 'renamed'),
+          FileEntity(last, newName: 'last-new'),
+        ],
+        operation: (file, _) async {
+          if (file.path == last.path) {
+            failed = true;
+            return null;
+          }
+          if (failed && failRollback) return null;
+          return FileEntity(await file.entity.rename(file.newPath));
+        },
+      );
+      final entry = result.relocateDescendant(
+        FileEntity(child, selected: true, newName: 'next', error: 'test'),
+      );
+      expect(result.succeeded, isFalse);
+      expect(
+        entry.path,
+        failRollback ? '${temporaryDirectory.path}/renamed/child' : child.path,
+      );
+      expect(File(entry.path).readAsStringSync(), 'child');
+      expect(entry.selected, isTrue);
+      expect(entry.newName, 'next');
+      expect(entry.error, 'test');
+    });
+  }
+
+  test('relocation preserves link and directory kinds and ignores opaque URIs',
+      () async {
+    final source = '${temporaryDirectory.path}/source';
+    final destination = '${temporaryDirectory.path}/destination';
+    final move = DirectoryMove(source, destination);
+    final folder = move.relocate(FileEntity(Directory('$source/folder')));
+    final link = move.relocate(FileEntity(Link('$source/link')));
+    final sibling = FileEntity(File('$source-other/file'));
+    final uri = FileEntity(File('content://provider/tree$source/file'));
+    expect(folder.entity, isA<Directory>());
+    expect(folder.path, '$destination/folder');
+    expect(link.entity, isA<Link>());
+    expect(link.path, '$destination/link');
+    expect(move.relocate(sibling), same(sibling));
+    expect(move.relocate(uri), same(uri));
+  });
+
   for (final reverse in [false, true]) {
     test('vacates occupied sources in a rename chain, reversed=$reverse',
         () async {

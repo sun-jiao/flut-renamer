@@ -44,6 +44,18 @@ class FileEntity {
 
   String get newPath => p.join(directory, newName);
 
+  /// Relocation keeps row state, but metadata must be read at the new path.
+  FileEntity withPath(String path) => FileEntity(
+        entity is Directory
+            ? Directory(path)
+            : entity is Link
+                ? Link(path)
+                : File(path),
+        selected: selected,
+        error: error,
+        newName: _newName,
+      );
+
   bool isNewNameDuplicate(List<FileEntity> others) {
     final myNewPath = newPath;
     return others.any((other) => other != this && other.newPath == myNewPath);

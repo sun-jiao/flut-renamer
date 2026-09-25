@@ -5,6 +5,41 @@ import 'package:flut_renamer/tools/ex_file.dart';
 import 'package:flut_renamer/tools/file_metadata.dart';
 
 void main() {
+  for (final available in [false, true]) {
+    test('creation tags use birth time or stay empty, available=$available',
+        () async {
+      final directory = await Directory.systemTemp.createTemp('renamer_birth_');
+      addTearDown(() => directory.delete(recursive: true));
+      final file = await File('${directory.path}/sample').writeAsString('data');
+      await file.setLastModified(DateTime(2001, 2, 3, 4, 5, 6));
+      var calls = 0;
+      final metadata = FileMetadata(
+        file,
+        creationTimeReader: (path, stat) async {
+          expect(path, file.path);
+          calls++;
+          return available ? DateTime(1999, 6, 7, 8, 9, 10) : null;
+        },
+      );
+      await metadata.init();
+      await metadata.init();
+      expect(calls, 1);
+      expect(
+        metadata.getByName('File:CreateDate'),
+        available ? '1999-06-07' : '',
+      );
+      expect(
+        metadata.getByName('File:CreateTime', dateFormat: 'yyyyMMdd'),
+        available ? '19990607 08-09-10' : '',
+      );
+      expect(
+        metadata.parse('prefix-{File:CreateDate}-{File:CreateTime}'),
+        available ? 'prefix-1999-06-07-1999-06-07 08-09-10' : 'prefix--',
+      );
+      expect(metadata.getByName('File:ModifyDate'), '2001-02-03');
+    });
+  }
+
   test('formats audio duration using component units', () {
     expect(
       FileMetadata.formatDuration(

@@ -10,6 +10,22 @@ class PlatformFilePicker {
   static const MethodChannel _channel =
       MethodChannel('net.sunjiao.renamer/picker');
 
+  static Future<DateTime?> getCreationTime(String path) async {
+    try {
+      final milliseconds = await _channel.invokeMethod<int>(
+        'getCreationTime',
+        {'path': path},
+      );
+      return milliseconds == null
+          ? null
+          : DateTime.fromMillisecondsSinceEpoch(milliseconds, isUtc: true);
+    } on PlatformException {
+      return null;
+    } on MissingPluginException {
+      return null;
+    }
+  }
+
   static Future<List<String>?> dirAccess() async {
     try {
       final result = await _channel.invokeMethod<dynamic>('dirAccess');

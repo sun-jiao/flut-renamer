@@ -830,6 +830,12 @@ class FilesPageState extends State<FilesPage> {
       if (!mounted) return;
 
       setState(() {
+        final participants = filesToRename.toSet();
+        for (var index = 0; index < _files.length; index++) {
+          if (!participants.contains(_files[index])) {
+            _files[index] = result.relocateDescendant(_files[index]);
+          }
+        }
         for (var index = 0; index < filesToRename.length; index++) {
           final original = filesToRename[index];
           final listIndex = _files.indexOf(original);
@@ -838,9 +844,12 @@ class FilesPageState extends State<FilesPage> {
             _files.removeAt(listIndex);
           } else {
             _files[listIndex] = result.entities[index];
-            if (!result.succeeded) {
-              _files[listIndex].error = L10n.current.renameFailed;
-            }
+          }
+        }
+        _invalidateNewNames();
+        if (!result.succeeded) {
+          for (final file in result.entities) {
+            file.error = L10n.current.renameFailed;
           }
         }
       });

@@ -10,6 +10,35 @@ void main() {
 
   const pickerChannel = MethodChannel('net.sunjiao.renamer/picker');
 
+  test(
+      'creation-time channel converts epoch milliseconds and preserves absence',
+      () async {
+    for (final milliseconds in [0, 1712345678901, null]) {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(pickerChannel, (call) async {
+        expect(call.method, 'getCreationTime');
+        expect(call.arguments, {'path': '/folder/file'});
+        return milliseconds;
+      });
+      expect(
+        (await PlatformFilePicker.getCreationTime('/folder/file'))
+            ?.millisecondsSinceEpoch,
+        milliseconds,
+      );
+    }
+  });
+
+  test('unavailable creation-time channel leaves metadata empty', () async {
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(pickerChannel, (_) async {
+      throw PlatformException(code: 'ACCESS_DENIED');
+    });
+    expect(await PlatformFilePicker.getCreationTime('/folder/file'), isNull);
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(pickerChannel, null);
+    expect(await PlatformFilePicker.getCreationTime('/folder/file'), isNull);
+  });
+
   tearDown(() {
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(pickerChannel, null);

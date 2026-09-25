@@ -15,11 +15,39 @@ class RenameTransactionResult {
   const RenameTransactionResult({
     required this.entities,
     required this.succeeded,
+    this.directoryMoves = const [],
   });
 
   /// The entity currently representing each input item, in input order.
   final List<FileEntity> entities;
   final bool succeeded;
+
+  /// Successful moves in execution order, including staging and rollback.
+  final List<DirectoryMove> directoryMoves;
+
+  /// Updates an entry that did not participate in the transaction.
+  FileEntity relocateDescendant(FileEntity file) {
+    for (final move in directoryMoves) {
+      file = move.relocate(file);
+    }
+    return file;
+  }
+}
+
+class DirectoryMove {
+  const DirectoryMove(this.source, this.destination);
+
+  final String source;
+  final String destination;
+
+  FileEntity relocate(FileEntity file) {
+    if (file.path.startsWith('content://') || !p.isWithin(source, file.path)) {
+      return file;
+    }
+    return file.withPath(
+      p.join(destination, p.relative(file.path, from: source)),
+    );
+  }
 }
 
 /// Commits a preflighted rename plan and rolls completed moves back on failure.
@@ -42,6 +70,7 @@ Future<RenameTransactionResult> commitRenameTransaction(
       .toList(growable: false);
   final finalNames = files.map((file) => file.newName).toList(growable: false);
   final completedSteps = <_CompletedRename>[];
+  final directoryMoves = <DirectoryMove>[];
   final temporaryIndexes = _temporaryIndexes(files);
   final renameOrder = _deepestPathsFirst(files);
 
@@ -53,16 +82,27 @@ Future<RenameTransactionResult> commitRenameTransaction(
       files[index].name,
       current,
       completedSteps,
+      directoryMoves,
       // The operation checks context.mounted before showing UI.
       // ignore: use_build_context_synchronously
       context,
       operation,
     )) {
-      // The operation checks context.mounted before showing UI.
-      // ignore: use_build_context_synchronously
-      await _rollback(current, completedSteps, context, operation);
+      await _rollback(
+        current,
+        completedSteps,
+        directoryMoves,
+        // The operation checks context.mounted before showing UI.
+        // ignore: use_build_context_synchronously
+        context,
+        operation,
+      );
       await _rescanLocalState(files, current);
-      return RenameTransactionResult(entities: current, succeeded: false);
+      return RenameTransactionResult(
+        entities: current,
+        succeeded: false,
+        directoryMoves: List.unmodifiable(directoryMoves),
+      );
     }
   }
 
@@ -77,20 +117,35 @@ Future<RenameTransactionResult> commitRenameTransaction(
       previousName,
       current,
       completedSteps,
+      directoryMoves,
       // The operation checks context.mounted before showing UI.
       // ignore: use_build_context_synchronously
       context,
       operation,
     )) {
-      // The operation itself checks context.mounted before showing UI.
-      // ignore: use_build_context_synchronously
-      await _rollback(current, completedSteps, context, operation);
+      await _rollback(
+        current,
+        completedSteps,
+        directoryMoves,
+        // The operation checks context.mounted before showing UI.
+        // ignore: use_build_context_synchronously
+        context,
+        operation,
+      );
       await _rescanLocalState(files, current);
-      return RenameTransactionResult(entities: current, succeeded: false);
+      return RenameTransactionResult(
+        entities: current,
+        succeeded: false,
+        directoryMoves: List.unmodifiable(directoryMoves),
+      );
     }
   }
 
-  return RenameTransactionResult(entities: current, succeeded: true);
+  return RenameTransactionResult(
+    entities: current,
+    succeeded: true,
+    directoryMoves: List.unmodifiable(directoryMoves),
+  );
 }
 
 Future<bool> _performRename(
@@ -99,6 +154,7 @@ Future<bool> _performRename(
   String previousName,
   List<FileEntity> current,
   List<_CompletedRename> completedSteps,
+  List<DirectoryMove> directoryMoves,
   BuildContext? context,
   RenameOperation operation,
 ) async {
@@ -110,7 +166,7 @@ Future<bool> _performRename(
   }
   if (renamed == null) return false;
 
-  _updateCurrentEntity(current, index, file, renamed);
+  _updateCurrentEntity(current, index, file, renamed, directoryMoves);
   if (!identical(renamed, file)) {
     completedSteps.add(_CompletedRename(index, previousName));
   }
@@ -124,12 +180,17 @@ void _updateCurrentEntity(
   int index,
   FileEntity previous,
   FileEntity renamed,
+  List<DirectoryMove> directoryMoves,
 ) {
   current[index] = renamed;
   // Selected descendants may also use a directory link as their path prefix.
   // Check its new location because the old link has already moved.
-  if (previous.path != renamed.path && renamed.fileOrDir() == 'Dir') {
-    _relocateDescendants(current, index, previous.path, renamed.path);
+  if (previous.path != renamed.path &&
+      !previous.path.startsWith('content://') &&
+      renamed.fileOrDir() == 'Dir') {
+    final move = DirectoryMove(previous.path, renamed.path);
+    directoryMoves.add(move);
+    _relocateDescendants(current, index, move);
   }
 }
 
@@ -139,29 +200,17 @@ void _updateCurrentEntity(
 void _relocateDescendants(
   List<FileEntity> current,
   int renamedIndex,
-  String oldDirectory,
-  String newDirectory,
+  DirectoryMove move,
 ) {
   for (var index = 0; index < current.length; index++) {
-    if (index == renamedIndex ||
-        !p.isWithin(oldDirectory, current[index].path)) {
-      continue;
-    }
-
-    final relativePath = p.relative(current[index].path, from: oldDirectory);
-    final relocatedPath = p.join(newDirectory, relativePath);
-    final entity = current[index].entity is Directory
-        ? Directory(relocatedPath)
-        : current[index].entity is Link
-            ? Link(relocatedPath)
-            : File(relocatedPath);
-    current[index] = FileEntity(entity, newName: current[index].newName);
+    if (index != renamedIndex) current[index] = move.relocate(current[index]);
   }
 }
 
 Future<void> _rollback(
   List<FileEntity> current,
   List<_CompletedRename> completedSteps,
+  List<DirectoryMove> directoryMoves,
   BuildContext? context,
   RenameOperation operation,
 ) async {
@@ -171,7 +220,13 @@ Future<void> _rollback(
     try {
       final restored = await operation(renamed, context);
       if (restored != null) {
-        _updateCurrentEntity(current, step.index, renamed, restored);
+        _updateCurrentEntity(
+          current,
+          step.index,
+          renamed,
+          restored,
+          directoryMoves,
+        );
       }
     } catch (_) {
       // Continue rolling back the other entries, then rescan all local paths.

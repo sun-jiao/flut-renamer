@@ -13,13 +13,17 @@ import 'package:path/path.dart' as p;
 
 import 'ex_file.dart';
 import 'audio_metadata.dart';
+import 'file_creation_time.dart';
 import 'platform_channel.dart';
 
 final metadataTagRegex = RegExp(r'\{([A-Za-z]+:[A-Za-z]+)\}');
 
 class FileMetadata {
-  FileMetadata(FileSystemEntity source)
-      : file = source is Link ? source.toFileSystemEntity() : source {
+  FileMetadata(
+    FileSystemEntity source, {
+    CreationTimeReader creationTimeReader = readFileCreationTime,
+  })  : _creationTimeReader = creationTimeReader,
+        file = source is Link ? source.toFileSystemEntity() : source {
     if (Platform.isAndroid && file.path.startsWith('content://')) {
       return;
     }
@@ -35,6 +39,7 @@ class FileMetadata {
         await _initFromSaf();
       } else {
         _stat = await file.stat();
+        _created = await _creationTimeReader(file.path, _stat);
 
         if (file is Directory) {
           _clearContentMetadata();
@@ -55,6 +60,8 @@ class FileMetadata {
   }
 
   final FileSystemEntity file;
+  final CreationTimeReader _creationTimeReader;
+  DateTime? _created;
   late FileStat _stat;
   late Uint8List _bytes;
   late Map<String, IfdTag> _exif;
@@ -101,9 +108,13 @@ class FileMetadata {
       case 'File:Size':
         return _formatFileSize(_stat.size);
       case 'File:CreateDate':
-        return _formatDate(_stat.changed.toLocal(), dateFormat);
+        return _created == null
+            ? ''
+            : _formatDate(_created!.toLocal(), dateFormat);
       case 'File:CreateTime':
-        return _formatTime(_stat.changed.toLocal(), dateFormat);
+        return _created == null
+            ? ''
+            : _formatTime(_created!.toLocal(), dateFormat);
       case 'File:ModifyDate':
         return _formatDate(_stat.modified.toLocal(), dateFormat);
       case 'File:ModifyTime':
@@ -328,6 +339,8 @@ class FileMetadata {
   }
 
   Future<void> _initFromSaf() async {
+    // SAF exposes last-modified time, not birth time. Keep creation tags empty.
+    _created = null;
     final metaMap = await PlatformFilePicker.getMetaData(file.path);
     androidRealName = (metaMap?['name'] as String?) ?? "unknown";
 
