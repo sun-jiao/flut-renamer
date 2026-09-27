@@ -30,28 +30,33 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m3(targetString) => "ลบ: \"${targetString}\"";
 
-  static String m4(targetString, replacementString) =>
+  static String m4(count) => "เปลี่ยนชื่อ (${count})";
+
+  static String m5(count, hidden) =>
+      "ในขอบเขต ${count} รายการ · ซ่อน ${hidden} รายการ";
+
+  static String m6(targetString, replacementString) =>
       "แทนที่: แทนที่ \"${targetString}\" ด้วย \"${replacementString}\"";
 
-  static String m5(toEnd) =>
+  static String m7(toEnd) =>
       "สลับทิศทางการนับระหว่างจากจุดเริ่มต้นและจากจุดสิ้นสุด ณ ปัจจุบันกำลังนับจาก ${Intl.select(toEnd, {'true': 'จุดสิ้นสุด', 'false': 'จุดเริ่มต้น', 'other': ''})}";
 
-  static String m6(value) =>
+  static String m8(value) =>
       "นี่คือปุ่มลดลง ที่ตอนนี้เลือกคือ \"${value}\" กดสองครั้งเพื่อเปิดปุ่มลดลงและเลือกค่าอื่น";
 
-  static String m7(last) => "แก้ไขล่าสุดเมื่อ ${last}";
+  static String m9(last) => "แก้ไขล่าสุดเมื่อ ${last}";
 
-  static String m8(last, size) => "แก้ไขล่าสุดเมื่อ ${last} ขนาดไฟล์ ${size}";
+  static String m10(last, size) => "แก้ไขล่าสุดเมื่อ ${last} ขนาดไฟล์ ${size}";
 
-  static String m9(entityType, selectStatus, filename) =>
+  static String m11(entityType, selectStatus, filename) =>
       "${Intl.select(selectStatus, {'true': 'ไฟล์ที่เลือก', 'false': 'ไฟล์ที่ไม่ได้เลือก', 'other': 'อ็อบเจ็กต์ในระบบไฟล์'})} ชื่อไฟล์คือ ${filename} และ";
 
-  static String m10(type) => "การเปลี่ยนตัวอักษร: ${type}";
+  static String m12(type) => "การเปลี่ยนตัวอักษร: ${type}";
 
-  static String m11(langName, type) =>
+  static String m13(langName, type) =>
       "การเปลี่ยนตัวอักษร: แปลงจาก ${langName} ${type}";
 
-  static String m12(
+  static String m14(
     iTwoToEnd,
     iOneOrdinal,
     iOneToEnd,
@@ -345,12 +350,15 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "removeToString": m3,
     "rename": MessageLookupByLibrary.simpleMessage("เปลี่ยนชื่อ"),
+    "renameCount": m4,
     "renameFailed": MessageLookupByLibrary.simpleMessage("เปลี่ยนชื่อล้มเหลว"),
+    "renameScope": MessageLookupByLibrary.simpleMessage("ขอบเขตการเปลี่ยนชื่อ"),
+    "renameTargetSummary": m5,
     "replace": MessageLookupByLibrary.simpleMessage("แทนที่"),
     "replaceOriginalName": MessageLookupByLibrary.simpleMessage(
       "แทนที่ชื่อเดิม",
     ),
-    "replaceToString": m4,
+    "replaceToString": m6,
     "replacement": MessageLookupByLibrary.simpleMessage("การแทนที่ด้วย"),
     "ru": MessageLookupByLibrary.simpleMessage("รัสเซีย"),
     "rulesSequentially": MessageLookupByLibrary.simpleMessage(
@@ -358,13 +366,18 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "save": MessageLookupByLibrary.simpleMessage("บันทึก"),
     "saveRules": MessageLookupByLibrary.simpleMessage("บันทึกกฎ"),
+    "scopeAll": MessageLookupByLibrary.simpleMessage("รายการที่เพิ่มทั้งหมด"),
+    "scopeSelected": MessageLookupByLibrary.simpleMessage(
+      "รายการที่เลือก (รวมรายการที่ซ่อน)",
+    ),
+    "scopeVisible": MessageLookupByLibrary.simpleMessage("ผลการกรองปัจจุบัน"),
     "select": MessageLookupByLibrary.simpleMessage("เลือก"),
     "selectAll": MessageLookupByLibrary.simpleMessage("เลือกทั้งหมด"),
-    "semanticSwitchNumberToStartAndToEnd": m5,
-    "semanticsDropdownButton": m6,
-    "semanticsFileManagerDirSubtitle": m7,
-    "semanticsFileManagerSubtitle": m8,
-    "semanticsFileManagerTitle": m9,
+    "semanticSwitchNumberToStartAndToEnd": m7,
+    "semanticsDropdownButton": m8,
+    "semanticsFileManagerDirSubtitle": m9,
+    "semanticsFileManagerSubtitle": m10,
+    "semanticsFileManagerTitle": m11,
     "semanticsFilesDropdownButton": MessageLookupByLibrary.simpleMessage(
       "เลือกเพื่อจำกัดเป้าหมายการเปลี่ยนชื่อให้เฉพาะของส่วนนี้",
     ),
@@ -406,8 +419,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "transliterateSimplified": MessageLookupByLibrary.simpleMessage(
       "แปลงเป็นอักษรจีนตัวย่อ",
     ),
-    "transliterateToString": m10,
-    "transliterateToStringCyrillic": m11,
+    "transliterateToString": m12,
+    "transliterateToStringCyrillic": m13,
     "transliterateTraditional": MessageLookupByLibrary.simpleMessage(
       "แปลงเป็นอักษรจีนตัวดั้งเดิม",
     ),
@@ -415,7 +428,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "แปลงเป็นอักษรละตินตัวใหญ่",
     ),
     "truncate": MessageLookupByLibrary.simpleMessage("ตัด"),
-    "truncateToString": m12,
+    "truncateToString": m14,
     "ua": MessageLookupByLibrary.simpleMessage("ยูเครน"),
     "viewLog": MessageLookupByLibrary.simpleMessage("ดูบันทึก"),
   };

@@ -27,6 +27,7 @@ class _HomePageState extends State<HomePage> {
   final GlobalKey<FilesPageState> filesKey = GlobalKey<FilesPageState>();
   final GlobalKey<RulesPageState> rulesKey = GlobalKey<RulesPageState>();
   bool _renaming = false;
+  int _targetCount = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +35,9 @@ class _HomePageState extends State<HomePage> {
       key: filesKey,
       onRenamingChanged: (value) {
         if (mounted) setState(() => _renaming = value);
+      },
+      onTargetCountChanged: (count) {
+        if (mounted) setState(() => _targetCount = count);
       },
       showThumbnails: Shared.showThumbnails,
       getNewName: (String name, FileMetadata metadata) async {
@@ -76,25 +80,23 @@ class _HomePageState extends State<HomePage> {
             Shared.showThumbnails = value;
           }),
           showThumbnailsValue: () => Shared.showThumbnails,
-          onlySelectedCallback: (value) => Shared.onlySelected = value,
-          onlySelectedValue: () => Shared.onlySelected,
           removeRenamedCallback: (value) => Shared.removeRenamed = value,
           removeRenamedValue: () => Shared.removeRenamed,
           removeRulesCallback: (value) => Shared.removeRules = value,
           removeRulesValue: () => Shared.removeRules,
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _renaming
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _renaming || _targetCount == 0
             ? null
             : () {
                 filesKey.currentState?.renameFiles(
                   remove: Shared.removeRenamed,
-                  onlySelected: Shared.onlySelected,
                 );
               },
         tooltip: L10n.current.rename,
-        child: _renaming
+        label: Text(L10n.current.renameCount(_targetCount)),
+        icon: _renaming
             ? const SizedBox(
                 width: 24,
                 height: 24,
@@ -145,8 +147,6 @@ class HomeToolBar extends StatefulWidget {
     required this.hapticFeedbackValue,
     required this.showThumbnailsCallback,
     required this.showThumbnailsValue,
-    required this.onlySelectedCallback,
-    required this.onlySelectedValue,
     required this.removeRenamedCallback,
     required this.removeRenamedValue,
     required this.removeRulesCallback,
@@ -158,9 +158,6 @@ class HomeToolBar extends StatefulWidget {
 
   final void Function(bool) showThumbnailsCallback;
   final bool Function() showThumbnailsValue;
-
-  final void Function(bool) onlySelectedCallback;
-  final bool Function() onlySelectedValue;
 
   final void Function(bool) removeRenamedCallback;
   final bool Function() removeRenamedValue;
@@ -320,14 +317,6 @@ class _HomeToolBarState extends State<HomeToolBar> {
       );
 
   List<Widget> _chips() => [
-        box,
-        FilterChip(
-          label: Text(L10n.current.onlySelected),
-          onSelected: (value) => setState(() {
-            widget.onlySelectedCallback.call(value);
-          }),
-          selected: widget.onlySelectedValue.call(),
-        ),
         box,
         FilterChip(
           label: Text(L10n.current.removeRenamed),

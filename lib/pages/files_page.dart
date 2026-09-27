@@ -20,6 +20,8 @@ import '../widget/custom_dialog.dart';
 import '../widget/custom_drop.dart';
 import '../widget/file_thumbnail.dart';
 
+enum RenameScope { visible, all, selected }
+
 class FilesPage extends StatefulWidget {
   const FilesPage({
     super.key,
@@ -30,9 +32,11 @@ class FilesPage extends StatefulWidget {
     required this.dependsOnFileOrder,
     required this.requiresMetadata,
     this.onRenamingChanged,
+    this.onTargetCountChanged,
   });
 
   final bool showThumbnails;
+  final ValueChanged<int>? onTargetCountChanged;
 
   final FutureOr<String> Function(String name, FileMetadata metadata)
       getNewName;
@@ -65,6 +69,16 @@ void _addUniqueFiles(Iterable<FileEntity> files) {
 }
 
 class FilesPageState extends State<FilesPage> {
+  RenameScope _scope =
+      Shared.onlySelected ? RenameScope.selected : RenameScope.visible;
+  int? _reportedTargetCount;
+
+  List<FileEntity> _renameTargets() => switch (_scope) {
+        RenameScope.visible => _filteredList(),
+        RenameScope.all => List.of(_files),
+        RenameScope.selected => _files.where((file) => file.selected).toList(),
+      };
+
   bool _dragging = false;
   bool _renaming = false;
   bool _deferredUpdate = false;
@@ -318,7 +332,7 @@ class FilesPageState extends State<FilesPage> {
 
   Future<void> _validateNewNameCollisions(int generation) async {
     if (!mounted || generation != _newNameGeneration || _renaming) return;
-    await _buildRenamePlan(List<FileEntity>.of(_files), generation: generation);
+    await _buildRenamePlan(_renameTargets(), generation: generation);
 
     if (mounted && generation == _newNameGeneration) {
       setState(() {});
@@ -481,6 +495,7 @@ class FilesPageState extends State<FilesPage> {
               if (val != null && val != file.selected) {
                 setState(() {
                   file.selected = val;
+                  if (_scope == RenameScope.selected) _invalidateNewNames();
                 });
                 unawaited(AppHaptics.selectionChanged());
               }
@@ -522,25 +537,22 @@ class FilesPageState extends State<FilesPage> {
             const TableCell(child: SizedBox()),
             TableCell(
               child: Tooltip(
-                message: _files.isNotEmpty &&
-                        _files.every((element) => element.selected)
+                message: _filteredList().isNotEmpty &&
+                        _filteredList().every((element) => element.selected)
                     ? L10n.current.cancelAll
                     : L10n.current.selectAll,
                 child: Checkbox(
-                  value: _files.isNotEmpty &&
-                      _files.every((element) => element.selected),
+                  value: _filteredList().isNotEmpty &&
+                      _filteredList().every((element) => element.selected),
                   onChanged: (_) {
-                    if (_renaming || _files.isEmpty) return;
+                    final visible = _filteredList();
+                    if (_renaming || visible.isEmpty) return;
                     setState(() {
-                      if (_files.every((element) => element.selected)) {
-                        for (var element in _files) {
-                          element.selected = false;
-                        }
-                      } else {
-                        for (var element in _files) {
-                          element.selected = true;
-                        }
+                      final select = !visible.every((file) => file.selected);
+                      for (final file in visible) {
+                        file.selected = select;
                       }
+                      if (_scope == RenameScope.selected) _invalidateNewNames();
                     });
                     unawaited(AppHaptics.selectionChanged());
                   },
@@ -610,6 +622,19 @@ class FilesPageState extends State<FilesPage> {
 
   Widget _buildContent(BuildContext context) {
     final filteredFiles = _filteredList();
+    final targets = _renameTargets();
+    final visibleSet = filteredFiles.toSet();
+    final hiddenCount =
+        targets.where((file) => !visibleSet.contains(file)).length;
+    final targetCount = targets.length;
+    if (_reportedTargetCount != targetCount) {
+      _reportedTargetCount = targetCount;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted && _reportedTargetCount == targetCount) {
+          widget.onTargetCountChanged?.call(targetCount);
+        }
+      });
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -624,6 +649,7 @@ class FilesPageState extends State<FilesPage> {
                   if (_renaming) return;
                   setState(() {
                     Shared.fileOrDir = newValue!;
+                    _invalidateNewNames();
                   });
                 },
                 items: const <String>['Files', 'Directories', 'Files & Dirs'],
@@ -643,6 +669,7 @@ class FilesPageState extends State<FilesPage> {
                     if (_renaming) return;
                     setState(() {
                       _filter = val;
+                      _invalidateNewNames();
                     });
                   },
                 ),
@@ -686,7 +713,44 @@ class FilesPageState extends State<FilesPage> {
             ],
           ),
         ),
-        const SizedBox(height: 16),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              DropdownButtonFormField<RenameScope>(
+                key: const ValueKey('renameScope'),
+                initialValue: _scope,
+                isExpanded: true,
+                decoration:
+                    InputDecoration(labelText: L10n.current.renameScope),
+                items: [
+                  DropdownMenuItem(
+                    value: RenameScope.visible,
+                    child: Text(L10n.current.scopeVisible),
+                  ),
+                  DropdownMenuItem(
+                    value: RenameScope.all,
+                    child: Text(L10n.current.scopeAll),
+                  ),
+                  DropdownMenuItem(
+                    value: RenameScope.selected,
+                    child: Text(L10n.current.scopeSelected),
+                  ),
+                ],
+                onChanged: (value) {
+                  if (_renaming || value == null || value == _scope) return;
+                  setState(() {
+                    _scope = value;
+                    Shared.onlySelected = value == RenameScope.selected;
+                    _invalidateNewNames();
+                  });
+                },
+              ),
+              Text(L10n.current.renameTargetSummary(targetCount, hiddenCount)),
+            ],
+          ),
+        ),
         _table(_headerRow()),
         Expanded(
           child: DropTarget(
@@ -773,7 +837,7 @@ class FilesPageState extends State<FilesPage> {
 
   Future<void> renameFiles({
     bool remove = true,
-    bool onlySelected = false,
+    bool? onlySelected,
   }) async {
     if (_renaming || !mounted) return;
     // Discard a metadata sort that started before this operation, even if its
@@ -782,9 +846,12 @@ class FilesPageState extends State<FilesPage> {
     _setRenaming(true);
 
     try {
-      final requestedFiles = _files
-          .where((file) => file.selected || !onlySelected)
-          .toList(growable: false);
+      // Snapshot the explicit scope before awaiting preview or permission work.
+      // The optional override is retained for existing programmatic callers.
+      final requestedFiles = onlySelected == null
+          ? _renameTargets()
+          : _files.where((file) => file.selected || !onlySelected).toList();
+      if (requestedFiles.isEmpty) return;
       for (final file in requestedFiles) {
         await _newNameFuture(file);
       }

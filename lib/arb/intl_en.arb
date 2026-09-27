@@ -1,4 +1,27 @@
 {
+  "renameScope": "Rename scope",
+  "scopeVisible": "Current filtered results",
+  "scopeAll": "All loaded items",
+  "scopeSelected": "Selected items (including hidden)",
+  "renameTargetSummary": "{count} items in scope · {hidden} hidden",
+  "renameCount": "Rename ({count})",
+  "@renameTargetSummary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "hidden": {
+        "type": "int"
+      }
+    }
+  },
+  "@renameCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "importRulesBefore": "Add before existing rules",
   "importRulesAfter": "Add after existing rules",
   "importRulesReplace": "Replace existing rules",

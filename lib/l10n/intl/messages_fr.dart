@@ -30,29 +30,34 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m3(targetString) => "Suppression : \"${targetString}\"";
 
-  static String m4(targetString, replacementString) =>
+  static String m4(count) => "Renommer (${count})";
+
+  static String m5(count, hidden) =>
+      "${count} éléments concernés · ${hidden} masqués";
+
+  static String m6(targetString, replacementString) =>
       "Remplacement : Remplacer \"${targetString}\" par \"${replacementString}\".";
 
-  static String m5(toEnd) =>
+  static String m7(toEnd) =>
       "Changement de direction de comptage entre du début et de la fin, comptant actuellement à partir de ${Intl.select(toEnd, {'true': 'la fin', 'false': 'le début', 'other': ''})}";
 
-  static String m6(value) =>
+  static String m8(value) =>
       "Ceci est un bouton déroulant, la valeur actuelle est \"${value}\", double-cliquez pour ouvrir et sélectionner une autre valeur.";
 
-  static String m7(last) => "Dernière modification : ${last}.";
+  static String m9(last) => "Dernière modification : ${last}.";
 
-  static String m8(last, size) =>
+  static String m10(last, size) =>
       "Dernière modification : ${last}, Taille : ${size}.";
 
-  static String m9(entityType, selectStatus, filename) =>
+  static String m11(entityType, selectStatus, filename) =>
       "${Intl.select(selectStatus, {'true': 'Sélectionné', 'false': 'Non sélectionné', 'other': ''})}${Intl.select(entityType, {'File': 'fichier', 'Directory': 'répertoire', 'Link': 'lien', 'other': 'objet du système de fichiers'})} nommé ${filename},";
 
-  static String m10(type) => "Translittération : ${type}.";
+  static String m12(type) => "Translittération : ${type}.";
 
-  static String m11(langName, type) =>
+  static String m13(langName, type) =>
       "Translittération : De ${langName} à ${type}.";
 
-  static String m12(
+  static String m14(
     iTwoToEnd,
     iOneOrdinal,
     iOneToEnd,
@@ -388,12 +393,15 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "removeToString": m3,
     "rename": MessageLookupByLibrary.simpleMessage("Renommer"),
+    "renameCount": m4,
     "renameFailed": MessageLookupByLibrary.simpleMessage("Échec du renommage"),
+    "renameScope": MessageLookupByLibrary.simpleMessage("Portée du renommage"),
+    "renameTargetSummary": m5,
     "replace": MessageLookupByLibrary.simpleMessage("Remplacer"),
     "replaceOriginalName": MessageLookupByLibrary.simpleMessage(
       "Remplacer le nom d’origine",
     ),
-    "replaceToString": m4,
+    "replaceToString": m6,
     "replacement": MessageLookupByLibrary.simpleMessage("Remplacement"),
     "ru": MessageLookupByLibrary.simpleMessage("Russe"),
     "rulesSequentially": MessageLookupByLibrary.simpleMessage(
@@ -401,13 +409,22 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "save": MessageLookupByLibrary.simpleMessage("Enregistrer"),
     "saveRules": MessageLookupByLibrary.simpleMessage("Enregistrer les règles"),
+    "scopeAll": MessageLookupByLibrary.simpleMessage(
+      "Tous les éléments chargés",
+    ),
+    "scopeSelected": MessageLookupByLibrary.simpleMessage(
+      "Éléments sélectionnés (même masqués)",
+    ),
+    "scopeVisible": MessageLookupByLibrary.simpleMessage(
+      "Résultats du filtre actuel",
+    ),
     "select": MessageLookupByLibrary.simpleMessage("Sélectionner"),
     "selectAll": MessageLookupByLibrary.simpleMessage("Tout sélectionner"),
-    "semanticSwitchNumberToStartAndToEnd": m5,
-    "semanticsDropdownButton": m6,
-    "semanticsFileManagerDirSubtitle": m7,
-    "semanticsFileManagerSubtitle": m8,
-    "semanticsFileManagerTitle": m9,
+    "semanticSwitchNumberToStartAndToEnd": m7,
+    "semanticsDropdownButton": m8,
+    "semanticsFileManagerDirSubtitle": m9,
+    "semanticsFileManagerSubtitle": m10,
+    "semanticsFileManagerTitle": m11,
     "semanticsFilesDropdownButton": MessageLookupByLibrary.simpleMessage(
       ". Sélectionnez ceci pour limiter les cibles de renommage à cette plage",
     ),
@@ -451,8 +468,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "transliterateSimplified": MessageLookupByLibrary.simpleMessage(
       "Convertir en chinois simplifié",
     ),
-    "transliterateToString": m10,
-    "transliterateToStringCyrillic": m11,
+    "transliterateToString": m12,
+    "transliterateToStringCyrillic": m13,
     "transliterateTraditional": MessageLookupByLibrary.simpleMessage(
       "Convertir en chinois traditionnel",
     ),
@@ -460,7 +477,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Convertir en majuscules latines",
     ),
     "truncate": MessageLookupByLibrary.simpleMessage("Tronquer"),
-    "truncateToString": m12,
+    "truncateToString": m14,
     "ua": MessageLookupByLibrary.simpleMessage("Ukrainien"),
     "viewLog": MessageLookupByLibrary.simpleMessage("Voir le journal"),
   };

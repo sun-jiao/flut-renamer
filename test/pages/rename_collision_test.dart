@@ -21,7 +21,9 @@ void main() {
   setUpAll(() => L10n.load(const Locale('en')));
   setUp(() async {
     directory = Directory.systemTemp.createTempSync('renamer_collision_');
-    SharedPreferences.setMockInitialValues({'file_or_dir': 'Files'});
+    SharedPreferences.setMockInitialValues(
+      {'file_or_dir': 'Files', 'only_selected': false},
+    );
     await Shared.init();
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(pathProvider, (_) async => directory.path);
@@ -44,6 +46,125 @@ void main() {
             .where((entry) => entry.path.contains('.renamer-tmp-')),
         isEmpty,
       );
+
+  Future<void> chooseScope(WidgetTester tester, String label) async {
+    await tester.tap(find.byKey(const ValueKey('renameScope')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(label).last);
+    await _settle(tester);
+  }
+
+  testWidgets(
+      'default scope respects text and type filters and keeps numbering',
+      (tester) async {
+    final hidden = addFile('hidden.txt');
+    final visible = addFile('visible.txt');
+    final folder =
+        FileEntity(Directory('${directory.path}/visible-folder')..createSync());
+    var number = 0;
+    await _withPage(
+      tester,
+      [hidden, visible, folder],
+      (name, _) => '${++number}.txt',
+      (state) async {
+        // Filtering does not renumber the preview; the visible item remains #2.
+        number = 0;
+        await tester.enterText(find.byType(TextField), 'visible');
+        await _settle(tester);
+        expect(
+          find.text(L10n.current.renameTargetSummary(1, 0)),
+          findsOneWidget,
+        );
+        expect(visible.newName, '2.txt');
+        await tester.runAsync(() => state.renameFiles(remove: false));
+        expect(read('2.txt'), 'visible.txt');
+        expect(hidden.existsSync(), isTrue);
+        expect(folder.existsSync(), isTrue);
+        expect(File('${directory.path}/1.txt').existsSync(), isFalse);
+      },
+      ordered: true,
+    );
+  });
+
+  testWidgets(
+      'all scope explicitly includes filtered-out files and directories',
+      (tester) async {
+    final files = [addFile('visible.txt'), addFile('hidden.txt')];
+    final folder =
+        FileEntity(Directory('${directory.path}/folder')..createSync());
+    await _withPage(tester, [...files, folder], (name, _) => 'new-$name',
+        (state) async {
+      await tester.enterText(find.byType(TextField), 'visible');
+      await _settle(tester);
+      await chooseScope(tester, L10n.current.scopeAll);
+      expect(find.text(L10n.current.renameTargetSummary(3, 2)), findsOneWidget);
+      await tester.runAsync(() => state.renameFiles(remove: false));
+      expect(read('new-visible.txt'), 'visible.txt');
+      expect(read('new-hidden.txt'), 'hidden.txt');
+      expect(Directory('${directory.path}/new-folder').existsSync(), isTrue);
+    });
+  });
+
+  testWidgets(
+      'header selects visible rows and selected scope reports hidden ones',
+      (tester) async {
+    final visible = addFile('visible.txt');
+    final hidden = addFile('hidden.txt');
+    await _withPage(tester, [visible, hidden], (name, _) => 'new-$name',
+        (state) async {
+      await tester.enterText(find.byType(TextField), 'visible');
+      await _settle(tester);
+      await tester.tap(find.byType(Checkbox).first);
+      await tester.pump();
+      expect(visible.selected, isTrue);
+      expect(hidden.selected, isFalse);
+      await tester.tap(find.byType(Checkbox).first);
+      await tester.pump();
+      expect(visible.selected, isFalse);
+      expect(hidden.selected, isFalse);
+      await tester.tap(find.byType(Checkbox).first);
+      await tester.enterText(find.byType(TextField), 'hidden');
+      await _settle(tester);
+      await chooseScope(tester, L10n.current.scopeSelected);
+      expect(find.text(L10n.current.renameTargetSummary(1, 1)), findsOneWidget);
+      await tester.runAsync(() => state.renameFiles(remove: false));
+      expect(read('new-visible.txt'), 'visible.txt');
+      expect(hidden.existsSync(), isTrue);
+    });
+  });
+
+  testWidgets(
+      'filtered scope rejects a destination occupied by a hidden source',
+      (tester) async {
+    final files = [addFile('a'), addFile('b')];
+    await _withPage(tester, files, (name, _) => name == 'a' ? 'b' : 'c',
+        (state) async {
+      await tester.enterText(find.byType(TextField), 'a');
+      await _settle(tester);
+      expect(files.first.error, L10n.current.fileAlreadyExists);
+      await tester.runAsync(() => state.renameFiles(remove: false));
+      expect(read('a'), 'a');
+      expect(read('b'), 'b');
+      await chooseScope(tester, L10n.current.scopeAll);
+      expect(files.map((file) => file.error), everyElement(isNull));
+      await tester.runAsync(() => state.renameFiles(remove: false));
+      expect(read('b'), 'a');
+      expect(read('c'), 'b');
+    });
+  });
+
+  testWidgets('empty filtered scope leaves every file untouched',
+      (tester) async {
+    final files = [addFile('a')];
+    await _withPage(tester, files, (name, _) => 'new-$name', (state) async {
+      await tester.enterText(find.byType(TextField), 'no-match');
+      await _settle(tester);
+      expect(find.text(L10n.current.renameTargetSummary(0, 0)), findsOneWidget);
+      await tester.runAsync(() => state.renameFiles());
+      expect(read('a'), 'a');
+      expect(File('${directory.path}/new-a').existsSync(), isFalse);
+    });
+  });
 
   testWidgets('rearrange preview and commit allow a two-file swap',
       (tester) async {

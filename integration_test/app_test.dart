@@ -308,9 +308,10 @@ void main() {
     );
   });
 
-  scenario('native preferences persist toolbar changes', (f) async {
-    await f.tester
-        .tap(find.widgetWithText(FilterChip, L10n.current.onlySelected));
+  scenario('native preferences persist selected scope', (f) async {
+    await f.tester.tap(find.byKey(const ValueKey('renameScope')));
+    await f.tester.pumpAndSettle();
+    await f.tester.tap(find.text(L10n.current.scopeSelected).last);
     await f.tester.pumpAndSettle();
     await Shared.pref.reload();
     expect(Shared.pref.getBool('only_selected'), isTrue);

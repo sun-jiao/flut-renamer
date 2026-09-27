@@ -16,7 +16,6 @@ void main() {
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.reset);
 
-    var onlySelected = false;
     var removeRenamed = true;
     var removeRules = false;
     var showThumbnails = false;
@@ -29,8 +28,6 @@ void main() {
             hapticFeedbackValue: () => true,
             showThumbnailsCallback: (value) => showThumbnails = value,
             showThumbnailsValue: () => showThumbnails,
-            onlySelectedCallback: (value) => onlySelected = value,
-            onlySelectedValue: () => onlySelected,
             removeRenamedCallback: (value) => removeRenamed = value,
             removeRenamedValue: () => removeRenamed,
             removeRulesCallback: (value) => removeRules = value,
@@ -49,14 +46,6 @@ void main() {
     await tester.pump();
     expect(showThumbnails, isTrue);
     expect(tester.widget<IconButton>(thumbnailButton).isSelected, isTrue);
-
-    final onlySelectedChip =
-        find.widgetWithText(FilterChip, L10n.current.onlySelected);
-    await tester.drag(find.byType(ListView), const Offset(-300, 0));
-    await tester.pumpAndSettle();
-    await tester.tap(onlySelectedChip);
-    await tester.pump();
-    expect(onlySelected, isTrue);
 
     await tester.tap(
       find.widgetWithText(FilterChip, L10n.current.removeRenamed),
@@ -83,8 +72,6 @@ void main() {
             hapticFeedbackValue: () => true,
             showThumbnailsCallback: (_) {},
             showThumbnailsValue: () => false,
-            onlySelectedCallback: (_) {},
-            onlySelectedValue: () => false,
             removeRenamedCallback: (_) {},
             removeRenamedValue: () => true,
             removeRulesCallback: (_) {},
@@ -95,13 +82,13 @@ void main() {
     );
 
     expect(find.byTooltip(L10n.current.showThumbnails), findsOneWidget);
-    expect(find.text(L10n.current.onlySelected), findsNothing);
+    expect(find.text(L10n.current.removeRenamed), findsNothing);
     await tester.tap(find.byTooltip(L10n.current.expandOptions));
     await tester.pump();
-    expect(find.text(L10n.current.onlySelected), findsOneWidget);
+    expect(find.text(L10n.current.removeRenamed), findsOneWidget);
 
     await tester.tap(find.byTooltip(L10n.current.collapseOptions));
     await tester.pump();
-    expect(find.text(L10n.current.onlySelected), findsNothing);
+    expect(find.text(L10n.current.removeRenamed), findsNothing);
   });
 }

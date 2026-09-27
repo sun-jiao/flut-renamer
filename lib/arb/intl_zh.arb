@@ -1,4 +1,10 @@
 {
+  "renameScope": "重命名范围",
+  "scopeVisible": "当前筛选结果",
+  "scopeAll": "全部已添加项目",
+  "scopeSelected": "已选项目（包括隐藏项）",
+  "renameTargetSummary": "范围内 {count} 项 · 隐藏 {hidden} 项",
+  "renameCount": "重命名（{count}）",
   "importRulesBefore": "添加到现有规则之前",
   "importRulesAfter": "添加到现有规则之后",
   "importRulesReplace": "替代现有规则",

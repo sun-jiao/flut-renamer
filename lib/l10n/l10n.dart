@@ -55,6 +55,66 @@ class L10n {
     return Localizations.of<L10n>(context, L10n);
   }
 
+  /// `Rename scope`
+  String get renameScope {
+    return Intl.message(
+      'Rename scope',
+      name: 'renameScope',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Current filtered results`
+  String get scopeVisible {
+    return Intl.message(
+      'Current filtered results',
+      name: 'scopeVisible',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All loaded items`
+  String get scopeAll {
+    return Intl.message(
+      'All loaded items',
+      name: 'scopeAll',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Selected items (including hidden)`
+  String get scopeSelected {
+    return Intl.message(
+      'Selected items (including hidden)',
+      name: 'scopeSelected',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{count} items in scope · {hidden} hidden`
+  String renameTargetSummary(int count, int hidden) {
+    return Intl.message(
+      '$count items in scope · $hidden hidden',
+      name: 'renameTargetSummary',
+      desc: '',
+      args: [count, hidden],
+    );
+  }
+
+  /// `Rename ({count})`
+  String renameCount(int count) {
+    return Intl.message(
+      'Rename ($count)',
+      name: 'renameCount',
+      desc: '',
+      args: [count],
+    );
+  }
+
   /// `Add before existing rules`
   String get importRulesBefore {
     return Intl.message(

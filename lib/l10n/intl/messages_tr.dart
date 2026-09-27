@@ -30,26 +30,30 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m3(targetString) => "Kaldır: \"${targetString}\"";
 
-  static String m4(targetString, replacementString) =>
+  static String m4(count) => "Yeniden adlandır (${count})";
+
+  static String m5(count, hidden) => "Kapsamda ${count} öğe · ${hidden} gizli";
+
+  static String m6(targetString, replacementString) =>
       "Değiştir: \"${targetString}\" hedef metni \"${replacementString}\" ile değiştirin.";
 
-  static String m5(toEnd) =>
+  static String m7(toEnd) =>
       "Başlangıçtan ve sondan sayma yönünü değiştirme, şu anda ${Intl.select(toEnd, {'true': 'son', 'false': 'başlangıç', 'other': ''})} sayımından";
 
-  static String m6(value) =>
+  static String m8(value) =>
       "Bu bir açılır düğmedir, şu anda seçili olan \'${value}\', başka bir değer seçmek için çift tıklayın.";
 
-  static String m8(last, size) =>
+  static String m10(last, size) =>
       "En son değiştirilme zamanı ${last}, dosya boyutu ${size}";
 
-  static String m9(entityType, selectStatus, filename) =>
+  static String m11(entityType, selectStatus, filename) =>
       "${Intl.select(selectStatus, {'true': 'seçili olan', 'false': 'seçili olmayan', 'other': ''})}${Intl.select(entityType, {'File': 'dosya', 'Directory': 'dizin', 'Link': 'bağlantı', 'other': 'dosya sistem öğesi'})}, adı ${filename}.";
 
-  static String m10(type) => "Harf Değiştirme: ${type}.";
+  static String m12(type) => "Harf Değiştirme: ${type}.";
 
-  static String m11(langName, type) => "Harf Değiştirme: ${langName} ${type}.";
+  static String m13(langName, type) => "Harf Değiştirme: ${langName} ${type}.";
 
-  static String m12(
+  static String m14(
     iTwoToEnd,
     iOneOrdinal,
     iOneToEnd,
@@ -363,14 +367,19 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "removeToString": m3,
     "rename": MessageLookupByLibrary.simpleMessage("Yeniden Adlandır"),
+    "renameCount": m4,
     "renameFailed": MessageLookupByLibrary.simpleMessage(
       "Yeniden Adlandırma Başarısız Oldu",
     ),
+    "renameScope": MessageLookupByLibrary.simpleMessage(
+      "Yeniden adlandırma kapsamı",
+    ),
+    "renameTargetSummary": m5,
     "replace": MessageLookupByLibrary.simpleMessage("Değiştir"),
     "replaceOriginalName": MessageLookupByLibrary.simpleMessage(
       "Özgün adı değiştir",
     ),
-    "replaceToString": m4,
+    "replaceToString": m6,
     "replacement": MessageLookupByLibrary.simpleMessage("Değiştirme"),
     "ru": MessageLookupByLibrary.simpleMessage("Rusça"),
     "rulesSequentially": MessageLookupByLibrary.simpleMessage(
@@ -378,12 +387,19 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "save": MessageLookupByLibrary.simpleMessage("Kaydet"),
     "saveRules": MessageLookupByLibrary.simpleMessage("Kuralları Kaydet"),
+    "scopeAll": MessageLookupByLibrary.simpleMessage("Yüklenen tüm öğeler"),
+    "scopeSelected": MessageLookupByLibrary.simpleMessage(
+      "Seçili öğeler (gizli olanlar dahil)",
+    ),
+    "scopeVisible": MessageLookupByLibrary.simpleMessage(
+      "Geçerli filtre sonuçları",
+    ),
     "select": MessageLookupByLibrary.simpleMessage("Seç"),
     "selectAll": MessageLookupByLibrary.simpleMessage("Tümünü Seç"),
-    "semanticSwitchNumberToStartAndToEnd": m5,
-    "semanticsDropdownButton": m6,
-    "semanticsFileManagerSubtitle": m8,
-    "semanticsFileManagerTitle": m9,
+    "semanticSwitchNumberToStartAndToEnd": m7,
+    "semanticsDropdownButton": m8,
+    "semanticsFileManagerSubtitle": m10,
+    "semanticsFileManagerTitle": m11,
     "semanticsFilesDropdownButton": MessageLookupByLibrary.simpleMessage(
       ". Yeniden adlandırma hedefini bu kapsamda sınırlamak için bu öğeyi seçin",
     ),
@@ -427,8 +443,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "transliterateSimplified": MessageLookupByLibrary.simpleMessage(
       "Basitleştirilmiş Çince\'ye Dönüştür",
     ),
-    "transliterateToString": m10,
-    "transliterateToStringCyrillic": m11,
+    "transliterateToString": m12,
+    "transliterateToStringCyrillic": m13,
     "transliterateTraditional": MessageLookupByLibrary.simpleMessage(
       "Geleneksel Çince\'ye Dönüştür",
     ),
@@ -436,7 +452,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Büyük Latin Harfine Dönüştür",
     ),
     "truncate": MessageLookupByLibrary.simpleMessage("Kırp"),
-    "truncateToString": m12,
+    "truncateToString": m14,
     "ua": MessageLookupByLibrary.simpleMessage("Ukraynaca"),
     "viewLog": MessageLookupByLibrary.simpleMessage("Günlüğü Görüntüle"),
   };

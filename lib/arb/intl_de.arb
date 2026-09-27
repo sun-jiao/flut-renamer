@@ -1,4 +1,10 @@
 {
+  "renameScope": "Umbenennungsumfang",
+  "scopeVisible": "Aktuelle Filterergebnisse",
+  "scopeAll": "Alle geladenen Einträge",
+  "scopeSelected": "Ausgewählte Einträge (auch ausgeblendete)",
+  "renameTargetSummary": "{count} Einträge im Umfang · {hidden} ausgeblendet",
+  "renameCount": "Umbenennen ({count})",
   "importRulesBefore": "Vor vorhandenen Regeln hinzufügen",
   "importRulesAfter": "Nach vorhandenen Regeln hinzufügen",
   "importRulesReplace": "Vorhandene Regeln ersetzen",

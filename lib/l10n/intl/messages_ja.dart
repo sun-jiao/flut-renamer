@@ -29,27 +29,31 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m3(targetString) => "削除：「${targetString}」";
 
-  static String m4(targetString, replacementString) =>
+  static String m4(count) => "名前変更（${count}）";
+
+  static String m5(count, hidden) => "対象 ${count} 件・非表示 ${hidden} 件";
+
+  static String m6(targetString, replacementString) =>
       "置換：「${targetString}」を「${replacementString}」に置換します。";
 
-  static String m5(toEnd) =>
+  static String m7(toEnd) =>
       "開始から終わりまでの数え方を切り替え、現在は${Intl.select(toEnd, {'true': '終わり', 'false': '始まり', 'other': ''})}から数えています";
 
-  static String m6(value) =>
+  static String m8(value) =>
       "これはドロップダウンボタンです。現在選択されているのは「${value}」です。ダブルクリックしてドロップダウンボタンを開き、別の値を選択します。";
 
-  static String m7(last) => "最終更新日は${last}です。";
+  static String m9(last) => "最終更新日は${last}です。";
 
-  static String m8(last, size) => "最終更新日は${last}、ファイルサイズは${size}です。";
+  static String m10(last, size) => "最終更新日は${last}、ファイルサイズは${size}です。";
 
-  static String m9(entityType, selectStatus, filename) =>
+  static String m11(entityType, selectStatus, filename) =>
       "${Intl.select(selectStatus, {'true': '選択中の', 'false': '選択されていない', 'other': ''})}${Intl.select(entityType, {'File': 'ファイル', 'Directory': 'ディレクトリ', 'Link': 'リンク', 'other': 'ファイルシステムオブジェクト'})}、ファイル名は${filename}、";
 
-  static String m10(type) => "転写：${type}。";
+  static String m12(type) => "転写：${type}。";
 
-  static String m11(langName, type) => "転写：${type}：${langName}。";
+  static String m13(langName, type) => "転写：${type}：${langName}。";
 
-  static String m12(
+  static String m14(
     iTwoToEnd,
     iOneOrdinal,
     iOneToEnd,
@@ -269,10 +273,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "removeRules": MessageLookupByLibrary.simpleMessage("リネーム後にすべてのルールを削除"),
     "removeToString": m3,
     "rename": MessageLookupByLibrary.simpleMessage("リネーム"),
+    "renameCount": m4,
     "renameFailed": MessageLookupByLibrary.simpleMessage("リネームに失敗しました"),
+    "renameScope": MessageLookupByLibrary.simpleMessage("名前変更の対象"),
+    "renameTargetSummary": m5,
     "replace": MessageLookupByLibrary.simpleMessage("置換"),
     "replaceOriginalName": MessageLookupByLibrary.simpleMessage("元の名前を置き換える"),
-    "replaceToString": m4,
+    "replaceToString": m6,
     "replacement": MessageLookupByLibrary.simpleMessage("置換文字"),
     "ru": MessageLookupByLibrary.simpleMessage("ロシア語"),
     "rulesSequentially": MessageLookupByLibrary.simpleMessage(
@@ -280,13 +287,16 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "save": MessageLookupByLibrary.simpleMessage("保存"),
     "saveRules": MessageLookupByLibrary.simpleMessage("ルールを保存"),
+    "scopeAll": MessageLookupByLibrary.simpleMessage("追加したすべての項目"),
+    "scopeSelected": MessageLookupByLibrary.simpleMessage("選択した項目（非表示を含む）"),
+    "scopeVisible": MessageLookupByLibrary.simpleMessage("現在の絞り込み結果"),
     "select": MessageLookupByLibrary.simpleMessage("選択"),
     "selectAll": MessageLookupByLibrary.simpleMessage("すべて選択"),
-    "semanticSwitchNumberToStartAndToEnd": m5,
-    "semanticsDropdownButton": m6,
-    "semanticsFileManagerDirSubtitle": m7,
-    "semanticsFileManagerSubtitle": m8,
-    "semanticsFileManagerTitle": m9,
+    "semanticSwitchNumberToStartAndToEnd": m7,
+    "semanticsDropdownButton": m8,
+    "semanticsFileManagerDirSubtitle": m9,
+    "semanticsFileManagerSubtitle": m10,
+    "semanticsFileManagerTitle": m11,
     "semanticsFilesDropdownButton": MessageLookupByLibrary.simpleMessage(
       "。この項目を選択して、リネーム対象をこの範囲に制限します。",
     ),
@@ -320,12 +330,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "transliterateLower": MessageLookupByLibrary.simpleMessage("小文字のラテン文字に変換"),
     "transliteratePinyin": MessageLookupByLibrary.simpleMessage("中国語をピンインに変換"),
     "transliterateSimplified": MessageLookupByLibrary.simpleMessage("簡体字に変換"),
-    "transliterateToString": m10,
-    "transliterateToStringCyrillic": m11,
+    "transliterateToString": m12,
+    "transliterateToStringCyrillic": m13,
     "transliterateTraditional": MessageLookupByLibrary.simpleMessage("繁体字に変換"),
     "transliterateUpper": MessageLookupByLibrary.simpleMessage("大文字のラテン文字に変換"),
     "truncate": MessageLookupByLibrary.simpleMessage("切り詰め"),
-    "truncateToString": m12,
+    "truncateToString": m14,
     "ua": MessageLookupByLibrary.simpleMessage("ウクライナ語"),
     "viewLog": MessageLookupByLibrary.simpleMessage("ログを表示"),
   };

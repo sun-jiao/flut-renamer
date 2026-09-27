@@ -29,27 +29,31 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m3(targetString) => "\"${targetString}\"을(를) 제거합니다.";
 
-  static String m4(targetString, replacementString) =>
+  static String m4(count) => "이름 변경 (${count})";
+
+  static String m5(count, hidden) => "대상 ${count}개 · 숨김 ${hidden}개";
+
+  static String m6(targetString, replacementString) =>
       "대상 문자열을 \"${replacementString}\"(으)로 대체합니다.";
 
-  static String m5(toEnd) =>
+  static String m7(toEnd) =>
       "시작과 끝 사이의 계산 방향 전환, 현재 ${Intl.select(toEnd, {'true': '끝', 'false': '시작', 'other': ''})}부터 계산 중";
 
-  static String m6(value) =>
+  static String m8(value) =>
       "현재 선택된 값은 \"${value}\"입니다. 두 번 탭하여 드롭다운을 열고 다른 값을 선택하세요.";
 
-  static String m7(last) => "마지막 수정 시간은 ${last}입니다.";
+  static String m9(last) => "마지막 수정 시간은 ${last}입니다.";
 
-  static String m8(last, size) => "마지막 수정 시간은 ${last}이고 파일 크기는 ${size}입니다.";
+  static String m10(last, size) => "마지막 수정 시간은 ${last}이고 파일 크기는 ${size}입니다.";
 
-  static String m9(entityType, selectStatus, filename) =>
+  static String m11(entityType, selectStatus, filename) =>
       "${Intl.select(selectStatus, {'true': '선택한', 'false': '선택하지 않은', 'other': ''})}${Intl.select(entityType, {'File': '파일', 'Directory': '디렉터리', 'Link': '링크', 'other': '파일 시스템 항목'})} 이름은 ${filename},";
 
-  static String m10(type) => "음역: ${type}.";
+  static String m12(type) => "음역: ${type}.";
 
-  static String m11(langName, type) => "음역: ${langName} ${type}.";
+  static String m13(langName, type) => "음역: ${langName} ${type}.";
 
-  static String m12(
+  static String m14(
     iTwoToEnd,
     iOneOrdinal,
     iOneToEnd,
@@ -277,10 +281,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "removeRules": MessageLookupByLibrary.simpleMessage("이름 변경 후 모든 규칙 제거"),
     "removeToString": m3,
     "rename": MessageLookupByLibrary.simpleMessage("이름 변경"),
+    "renameCount": m4,
     "renameFailed": MessageLookupByLibrary.simpleMessage("이름 변경 실패"),
+    "renameScope": MessageLookupByLibrary.simpleMessage("이름 변경 범위"),
+    "renameTargetSummary": m5,
     "replace": MessageLookupByLibrary.simpleMessage("교체"),
     "replaceOriginalName": MessageLookupByLibrary.simpleMessage("원래 이름 바꾸기"),
-    "replaceToString": m4,
+    "replaceToString": m6,
     "replacement": MessageLookupByLibrary.simpleMessage("대체할 문자"),
     "ru": MessageLookupByLibrary.simpleMessage("러시아어"),
     "rulesSequentially": MessageLookupByLibrary.simpleMessage(
@@ -288,13 +295,16 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "save": MessageLookupByLibrary.simpleMessage("저장"),
     "saveRules": MessageLookupByLibrary.simpleMessage("규칙 저장"),
+    "scopeAll": MessageLookupByLibrary.simpleMessage("추가한 모든 항목"),
+    "scopeSelected": MessageLookupByLibrary.simpleMessage("선택한 항목 (숨겨진 항목 포함)"),
+    "scopeVisible": MessageLookupByLibrary.simpleMessage("현재 필터 결과"),
     "select": MessageLookupByLibrary.simpleMessage("선택"),
     "selectAll": MessageLookupByLibrary.simpleMessage("모두 선택"),
-    "semanticSwitchNumberToStartAndToEnd": m5,
-    "semanticsDropdownButton": m6,
-    "semanticsFileManagerDirSubtitle": m7,
-    "semanticsFileManagerSubtitle": m8,
-    "semanticsFileManagerTitle": m9,
+    "semanticSwitchNumberToStartAndToEnd": m7,
+    "semanticsDropdownButton": m8,
+    "semanticsFileManagerDirSubtitle": m9,
+    "semanticsFileManagerSubtitle": m10,
+    "semanticsFileManagerTitle": m11,
     "semanticsFilesDropdownButton": MessageLookupByLibrary.simpleMessage(
       "이 옵션을 선택하여 이름 변경 대상을 해당 범위로 제한합니다.",
     ),
@@ -330,14 +340,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "transliterateSimplified": MessageLookupByLibrary.simpleMessage(
       "간체 중국어로 변환",
     ),
-    "transliterateToString": m10,
-    "transliterateToStringCyrillic": m11,
+    "transliterateToString": m12,
+    "transliterateToStringCyrillic": m13,
     "transliterateTraditional": MessageLookupByLibrary.simpleMessage(
       "번체 중국어로 변환",
     ),
     "transliterateUpper": MessageLookupByLibrary.simpleMessage("대문자 라틴 문자로 변환"),
     "truncate": MessageLookupByLibrary.simpleMessage("줄이기"),
-    "truncateToString": m12,
+    "truncateToString": m14,
     "ua": MessageLookupByLibrary.simpleMessage("우크라이나어"),
     "viewLog": MessageLookupByLibrary.simpleMessage("로그 보기"),
   };

@@ -1,4 +1,10 @@
 {
+  "renameScope": "نطاق إعادة التسمية",
+  "scopeVisible": "نتائج التصفية الحالية",
+  "scopeAll": "كل العناصر المحمّلة",
+  "scopeSelected": "العناصر المحددة (بما فيها المخفية)",
+  "renameTargetSummary": "{count} عنصر ضمن النطاق · {hidden} مخفي",
+  "renameCount": "إعادة التسمية ({count})",
   "importRulesBefore": "إضافة قبل القواعد الحالية",
   "importRulesAfter": "إضافة بعد القواعد الحالية",
   "importRulesReplace": "استبدال القواعد الحالية",

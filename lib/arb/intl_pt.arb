@@ -1,4 +1,10 @@
 {
+  "renameScope": "Âmbito da renomeação",
+  "scopeVisible": "Resultados do filtro atual",
+  "scopeAll": "Todos os itens carregados",
+  "scopeSelected": "Itens selecionados (incluindo ocultos)",
+  "renameTargetSummary": "{count} itens incluídos · {hidden} ocultos",
+  "renameCount": "Renomear ({count})",
   "importRulesBefore": "Adicionar antes das regras existentes",
   "importRulesAfter": "Adicionar após as regras existentes",
   "importRulesReplace": "Substituir as regras existentes",

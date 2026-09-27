@@ -1,4 +1,10 @@
 {
+  "renameScope": "名前変更の対象",
+  "scopeVisible": "現在の絞り込み結果",
+  "scopeAll": "追加したすべての項目",
+  "scopeSelected": "選択した項目（非表示を含む）",
+  "renameTargetSummary": "対象 {count} 件・非表示 {hidden} 件",
+  "renameCount": "名前変更（{count}）",
   "importRulesBefore": "既存のルールの前に追加",
   "importRulesAfter": "既存のルールの後に追加",
   "importRulesReplace": "既存のルールを置き換える",

@@ -244,8 +244,6 @@ void main() {
             hapticFeedbackValue: () => Shared.hapticFeedback,
             showThumbnailsCallback: (_) {},
             showThumbnailsValue: () => false,
-            onlySelectedCallback: (_) {},
-            onlySelectedValue: () => false,
             removeRenamedCallback: (_) {},
             removeRenamedValue: () => true,
             removeRulesCallback: (_) {},

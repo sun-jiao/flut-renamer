@@ -184,6 +184,21 @@ void main() {
     await tester.runAsync(() async {
       final ready = Completer<String>();
       await tester.pumpWidget(_app(const HomePage()));
+      await tester.pump();
+      expect(find.text(L10n.current.renameCount(1)), findsOneWidget);
+      await tester.enterText(find.byType(TextField), 'no-match');
+      await tester.pump();
+      await tester.pump();
+      expect(find.text(L10n.current.renameCount(0)), findsOneWidget);
+      expect(
+        tester
+            .widget<FloatingActionButton>(find.byType(FloatingActionButton))
+            .onPressed,
+        isNull,
+      );
+      await tester.enterText(find.byType(TextField), '');
+      await tester.pump();
+      await tester.pump();
       final rules = tester.state<RulesPageState>(find.byType(RulesPage));
       final files = tester.state<FilesPageState>(find.byType(FilesPage));
       rules.rules

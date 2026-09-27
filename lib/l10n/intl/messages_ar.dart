@@ -30,27 +30,32 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m3(targetString) => "إزالة: \"${targetString}\"";
 
-  static String m4(targetString, replacementString) =>
+  static String m4(count) => "إعادة التسمية (${count})";
+
+  static String m5(count, hidden) =>
+      "${count} عنصر ضمن النطاق · ${hidden} مخفي";
+
+  static String m6(targetString, replacementString) =>
       "استبدال: استبدال \"${targetString}\" بـ \"${replacementString}\".";
 
-  static String m5(toEnd) =>
+  static String m7(toEnd) =>
       "تبديل اتجاه العد بين البداية والنهاية، حاليًا يتم العد من ${Intl.select(toEnd, {'true': 'النهاية', 'false': 'البداية', 'other': ''})}";
 
-  static String m6(value) =>
+  static String m8(value) =>
       "هذا زر منسدل، القيمة المحددة الآن هي \'${value}\'، انقر مرتين لفتح الزر المنسدل واختيار قيمة أخرى.";
 
-  static String m7(last) => "آخر تعديل كان في ${last}.";
+  static String m9(last) => "آخر تعديل كان في ${last}.";
 
-  static String m8(last, size) => "آخر تعديل كان في ${last}، الحجم: ${size}.";
+  static String m10(last, size) => "آخر تعديل كان في ${last}، الحجم: ${size}.";
 
-  static String m9(entityType, selectStatus, filename) =>
+  static String m11(entityType, selectStatus, filename) =>
       "${Intl.select(selectStatus, {'true': 'المحدد', 'false': 'غير المحدد', 'other': ''})} ${Intl.select(entityType, {'File': 'ملف', 'Directory': 'دليل', 'Link': 'رابط', 'other': 'كائن في نظام الملفات'})}، الاسم: ${filename}،";
 
-  static String m10(type) => "تحويل الحروف: ${type}.";
+  static String m12(type) => "تحويل الحروف: ${type}.";
 
-  static String m11(langName, type) => "تحويل: ${langName}${type}.";
+  static String m13(langName, type) => "تحويل: ${langName}${type}.";
 
-  static String m12(
+  static String m14(
     iTwoToEnd,
     iOneOrdinal,
     iOneToEnd,
@@ -348,14 +353,17 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "removeToString": m3,
     "rename": MessageLookupByLibrary.simpleMessage("إعادة التسمية"),
+    "renameCount": m4,
     "renameFailed": MessageLookupByLibrary.simpleMessage(
       "فشلت عملية إعادة التسمية",
     ),
+    "renameScope": MessageLookupByLibrary.simpleMessage("نطاق إعادة التسمية"),
+    "renameTargetSummary": m5,
     "replace": MessageLookupByLibrary.simpleMessage("استبدال"),
     "replaceOriginalName": MessageLookupByLibrary.simpleMessage(
       "استبدال الاسم الأصلي",
     ),
-    "replaceToString": m4,
+    "replaceToString": m6,
     "replacement": MessageLookupByLibrary.simpleMessage("البديل"),
     "ru": MessageLookupByLibrary.simpleMessage("الروسية"),
     "rulesSequentially": MessageLookupByLibrary.simpleMessage(
@@ -363,16 +371,23 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "save": MessageLookupByLibrary.simpleMessage("حفظ"),
     "saveRules": MessageLookupByLibrary.simpleMessage("حفظ القواعد"),
+    "scopeAll": MessageLookupByLibrary.simpleMessage("كل العناصر المحمّلة"),
+    "scopeSelected": MessageLookupByLibrary.simpleMessage(
+      "العناصر المحددة (بما فيها المخفية)",
+    ),
+    "scopeVisible": MessageLookupByLibrary.simpleMessage(
+      "نتائج التصفية الحالية",
+    ),
     "select": MessageLookupByLibrary.simpleMessage("تحديد"),
     "selectAll": MessageLookupByLibrary.simpleMessage("تحديد الكل"),
     "semanticNumberWithDirection": MessageLookupByLibrary.simpleMessage(
       "تبديل اتجاه العد بين البداية والنهاية",
     ),
-    "semanticSwitchNumberToStartAndToEnd": m5,
-    "semanticsDropdownButton": m6,
-    "semanticsFileManagerDirSubtitle": m7,
-    "semanticsFileManagerSubtitle": m8,
-    "semanticsFileManagerTitle": m9,
+    "semanticSwitchNumberToStartAndToEnd": m7,
+    "semanticsDropdownButton": m8,
+    "semanticsFileManagerDirSubtitle": m9,
+    "semanticsFileManagerSubtitle": m10,
+    "semanticsFileManagerTitle": m11,
     "semanticsFilesDropdownButton": MessageLookupByLibrary.simpleMessage(
       ". حدد هذا الخيار لتحديد المجال الذي يقتصر فيه تغيير الاسم عليه",
     ),
@@ -414,8 +429,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "transliterateSimplified": MessageLookupByLibrary.simpleMessage(
       "تحويل إلى الصيغة الصينية المبسطة",
     ),
-    "transliterateToString": m10,
-    "transliterateToStringCyrillic": m11,
+    "transliterateToString": m12,
+    "transliterateToStringCyrillic": m13,
     "transliterateTraditional": MessageLookupByLibrary.simpleMessage(
       "تحويل إلى الصيغة الصينية التقليدية",
     ),
@@ -423,7 +438,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "تحويل إلى أحرف لاتينية كبيرة",
     ),
     "truncate": MessageLookupByLibrary.simpleMessage("اقتصاص"),
-    "truncateToString": m12,
+    "truncateToString": m14,
     "ua": MessageLookupByLibrary.simpleMessage("الأوكرانية"),
     "viewLog": MessageLookupByLibrary.simpleMessage("عرض السجل"),
   };

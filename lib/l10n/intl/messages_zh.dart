@@ -29,26 +29,30 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m3(targetString) => "删除：“${targetString}”";
 
-  static String m4(targetString, replacementString) =>
+  static String m4(count) => "重命名（${count}）";
+
+  static String m5(count, hidden) => "范围内 ${count} 项 · 隐藏 ${hidden} 项";
+
+  static String m6(targetString, replacementString) =>
       "替换：将“${targetString}”替换为“${replacementString}”。";
 
-  static String m5(toEnd) =>
+  static String m7(toEnd) =>
       "切换计数方式是zhèng shǔ还是dào shǔ，当前是${Intl.select(toEnd, {'true': 'dào shǔ', 'false': 'zhèng shǔ', 'other': ''})}";
 
-  static String m6(value) => "这是一个下拉按钮，现在选中的是“${value}”，双击以打开下拉按钮并选取另一个值。";
+  static String m8(value) => "这是一个下拉按钮，现在选中的是“${value}”，双击以打开下拉按钮并选取另一个值。";
 
-  static String m7(last) => "上次修改时间是${last}。";
+  static String m9(last) => "上次修改时间是${last}。";
 
-  static String m8(last, size) => "上次修改时间是${last}，文件大小是${size}。";
+  static String m10(last, size) => "上次修改时间是${last}，文件大小是${size}。";
 
-  static String m9(entityType, selectStatus, filename) =>
+  static String m11(entityType, selectStatus, filename) =>
       "${Intl.select(selectStatus, {'true': '已选中的', 'false': '未选中的', 'other': ''})}${Intl.select(entityType, {'File': '文件', 'Directory': '文件夹', 'Link': '链接', 'other': '文件系统对象'})}，文件名叫${filename}，";
 
-  static String m10(type) => "转写：${type}。";
+  static String m12(type) => "转写：${type}。";
 
-  static String m11(langName, type) => "转写：将${langName}${type}。";
+  static String m13(langName, type) => "转写：将${langName}${type}。";
 
-  static String m12(
+  static String m14(
     iTwoToEnd,
     iOneOrdinal,
     iOneToEnd,
@@ -260,10 +264,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "removeRules": MessageLookupByLibrary.simpleMessage("重命名后移除所有规则"),
     "removeToString": m3,
     "rename": MessageLookupByLibrary.simpleMessage("重命名"),
+    "renameCount": m4,
     "renameFailed": MessageLookupByLibrary.simpleMessage("重命名失败"),
+    "renameScope": MessageLookupByLibrary.simpleMessage("重命名范围"),
+    "renameTargetSummary": m5,
     "replace": MessageLookupByLibrary.simpleMessage("替换"),
     "replaceOriginalName": MessageLookupByLibrary.simpleMessage("替换原文件名"),
-    "replaceToString": m4,
+    "replaceToString": m6,
     "replacement": MessageLookupByLibrary.simpleMessage("替换为"),
     "ru": MessageLookupByLibrary.simpleMessage("俄语"),
     "rulesSequentially": MessageLookupByLibrary.simpleMessage(
@@ -271,13 +278,16 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "save": MessageLookupByLibrary.simpleMessage("保存"),
     "saveRules": MessageLookupByLibrary.simpleMessage("保存规则"),
+    "scopeAll": MessageLookupByLibrary.simpleMessage("全部已添加项目"),
+    "scopeSelected": MessageLookupByLibrary.simpleMessage("已选项目（包括隐藏项）"),
+    "scopeVisible": MessageLookupByLibrary.simpleMessage("当前筛选结果"),
     "select": MessageLookupByLibrary.simpleMessage("选择"),
     "selectAll": MessageLookupByLibrary.simpleMessage("全选"),
-    "semanticSwitchNumberToStartAndToEnd": m5,
-    "semanticsDropdownButton": m6,
-    "semanticsFileManagerDirSubtitle": m7,
-    "semanticsFileManagerSubtitle": m8,
-    "semanticsFileManagerTitle": m9,
+    "semanticSwitchNumberToStartAndToEnd": m7,
+    "semanticsDropdownButton": m8,
+    "semanticsFileManagerDirSubtitle": m9,
+    "semanticsFileManagerSubtitle": m10,
+    "semanticsFileManagerTitle": m11,
     "semanticsFilesDropdownButton": MessageLookupByLibrary.simpleMessage(
       "。选择该项以将重命名目标限制在该范围内",
     ),
@@ -311,12 +321,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "transliterateLower": MessageLookupByLibrary.simpleMessage("转换为小写拉丁字符"),
     "transliteratePinyin": MessageLookupByLibrary.simpleMessage("转换中文为拼音"),
     "transliterateSimplified": MessageLookupByLibrary.simpleMessage("转换为简体中文"),
-    "transliterateToString": m10,
-    "transliterateToStringCyrillic": m11,
+    "transliterateToString": m12,
+    "transliterateToStringCyrillic": m13,
     "transliterateTraditional": MessageLookupByLibrary.simpleMessage("转换为繁体中文"),
     "transliterateUpper": MessageLookupByLibrary.simpleMessage("转换为大写拉丁字符"),
     "truncate": MessageLookupByLibrary.simpleMessage("截取"),
-    "truncateToString": m12,
+    "truncateToString": m14,
     "ua": MessageLookupByLibrary.simpleMessage("乌克兰语"),
     "viewLog": MessageLookupByLibrary.simpleMessage("查看日志"),
   };

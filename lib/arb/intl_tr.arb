@@ -1,4 +1,10 @@
 {
+  "renameScope": "Yeniden adlandırma kapsamı",
+  "scopeVisible": "Geçerli filtre sonuçları",
+  "scopeAll": "Yüklenen tüm öğeler",
+  "scopeSelected": "Seçili öğeler (gizli olanlar dahil)",
+  "renameTargetSummary": "Kapsamda {count} öğe · {hidden} gizli",
+  "renameCount": "Yeniden adlandır ({count})",
   "importRulesBefore": "Mevcut kurallardan önce ekle",
   "importRulesAfter": "Mevcut kurallardan sonra ekle",
   "importRulesReplace": "Mevcut kuralları değiştir",

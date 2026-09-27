@@ -1,4 +1,10 @@
 {
+  "renameScope": "ขอบเขตการเปลี่ยนชื่อ",
+  "scopeVisible": "ผลการกรองปัจจุบัน",
+  "scopeAll": "รายการที่เพิ่มทั้งหมด",
+  "scopeSelected": "รายการที่เลือก (รวมรายการที่ซ่อน)",
+  "renameTargetSummary": "ในขอบเขต {count} รายการ · ซ่อน {hidden} รายการ",
+  "renameCount": "เปลี่ยนชื่อ ({count})",
   "importRulesBefore": "เพิ่มก่อนกฎที่มีอยู่",
   "importRulesAfter": "เพิ่มหลังกฎที่มีอยู่",
   "importRulesReplace": "แทนที่กฎที่มีอยู่",
