@@ -31,7 +31,9 @@ The `integration-linux` job in GitHub Actions automatically runs the full suite 
 ## Other Platforms: GitHub Actions
 
 Pushing to `main`, submitting a PR, or manually triggering the `CI` workflow on the Actions page executes the following matrix.
-Newly added platforms that have not yet been tested locally rely on the actual results from their respective jobs. | Environment | Test Entry Point | Number of Scenarios | Key Focus |
+Newly added platforms that have not yet been tested locally rely on the actual results from their respective jobs.
+
+| Environment | Test Entry Point | Number of Scenarios | Key Focus |
 | --- | --- | --- | --- |
 | Linux | `desktop_test.dart` | 45 | 35 application workflows + 10 native contract tests |
 | Windows 2022 / x64 | `desktop_test.dart` | 44 | MoveFileExW, case-only renaming, real plugins, full desktop workflows |
@@ -63,8 +65,10 @@ Test files are stored in a dedicated subdirectory within the application's tempo
 
 Execution follows the [Flutter integration testing documentation](https://docs.flutter.dev/testing/integration-tests).
 Runner types are based on the [GitHub-hosted runners documentation](https://docs.github.com/en/actions/reference/runners/github-hosted-runners).
-The minimum macOS version aligns with the 10.15 requirement of the current `shared_preferences_foundation`;
-Android error code retrieval uses [bionic's `__errno`](https://android.googlesource.com/platform/bionic/+/master/libc/include/errno.h) to prevent false positives regarding "atomic rename unavailability" in error paths. ## Coverage Matrix
+The macOS deployment target is 12.0, matching the current project configuration;
+Android error code retrieval uses [bionic's `__errno`](https://android.googlesource.com/platform/bionic/+/master/libc/include/errno.h) to prevent false positives regarding "atomic rename unavailability" in error paths.
+
+## Coverage Matrix
 
 | Category | Scenarios and Key Assertions |
 | --- | --- |
