@@ -1,4 +1,9 @@
 {
+  "importRulesBefore": "기존 규칙 앞에 추가",
+  "importRulesAfter": "기존 규칙 뒤에 추가",
+  "importRulesReplace": "기존 규칙 교체",
+  "noValidRules": "파일에 유효한 규칙이 없거나 파일을 읽을 수 없습니다.",
+
   "@@locale": "ko",
   "appName": "Flut Renamer",
   "lowercaseAppName": "flut renamer",

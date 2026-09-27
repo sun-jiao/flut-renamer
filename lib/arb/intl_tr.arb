@@ -1,4 +1,9 @@
 {
+  "importRulesBefore": "Mevcut kurallardan önce ekle",
+  "importRulesAfter": "Mevcut kurallardan sonra ekle",
+  "importRulesReplace": "Mevcut kuralları değiştir",
+  "noValidRules": "Dosya geçerli kural içermiyor veya okunamadı.",
+
   "@@locale": "tr",
   "appName": "Flut Renamer",
   "lowercaseAppName": "flut renamer",

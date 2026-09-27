@@ -1,4 +1,9 @@
 {
+  "importRulesBefore": "إضافة قبل القواعد الحالية",
+  "importRulesAfter": "إضافة بعد القواعد الحالية",
+  "importRulesReplace": "استبدال القواعد الحالية",
+  "noValidRules": "لا يحتوي الملف على قواعد صالحة أو تعذرت قراءته.",
+
   "@@locale": "ar",
   "appName": "مُعيد التسمية",
   "lowercaseAppName": "flut renamer",

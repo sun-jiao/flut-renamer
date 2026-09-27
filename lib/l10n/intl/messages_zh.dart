@@ -152,6 +152,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "如果文件列表中未显示文件，请清除所有内容并继续。",
     ),
     "ignoreExtension": MessageLookupByLibrary.simpleMessage("忽略扩展名"),
+    "importRulesAfter": MessageLookupByLibrary.simpleMessage("添加到现有规则之后"),
+    "importRulesBefore": MessageLookupByLibrary.simpleMessage("添加到现有规则之前"),
+    "importRulesReplace": MessageLookupByLibrary.simpleMessage("替代现有规则"),
     "increment": MessageLookupByLibrary.simpleMessage("递增"),
     "incrementToString": m0,
     "indexIncrementalStep": MessageLookupByLibrary.simpleMessage("索引递增量"),
@@ -199,6 +202,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "musicYear": MessageLookupByLibrary.simpleMessage("曲目的出版年份"),
     "newName": MessageLookupByLibrary.simpleMessage("新文件名"),
     "noSysDir": MessageLookupByLibrary.simpleMessage("请勿重命名系统保留目录。"),
+    "noValidRules": MessageLookupByLibrary.simpleMessage("文件不包含有效规则或无法读取。"),
     "numberOfDigits": MessageLookupByLibrary.simpleMessage("编号位数"),
     "numberPositionHint": MessageLookupByLibrary.simpleMessage(
       "位置 0 表示开头；开启倒数时表示末尾。",

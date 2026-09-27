@@ -1,4 +1,9 @@
 {
+  "importRulesBefore": "Añadir antes de las reglas existentes",
+  "importRulesAfter": "Añadir después de las reglas existentes",
+  "importRulesReplace": "Reemplazar las reglas existentes",
+  "noValidRules": "El archivo no contiene reglas válidas o no se pudo leer.",
+
   "@@locale": "es",
   "appName": "Flut Renamer",
   "lowercaseAppName": "flut renamer",

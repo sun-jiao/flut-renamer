@@ -159,6 +159,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "파일 목록에 파일이 표시되지 않으면 모든 내용을 지우고 계속 진행하십시오.",
     ),
     "ignoreExtension": MessageLookupByLibrary.simpleMessage("확장자 무시"),
+    "importRulesAfter": MessageLookupByLibrary.simpleMessage("기존 규칙 뒤에 추가"),
+    "importRulesBefore": MessageLookupByLibrary.simpleMessage("기존 규칙 앞에 추가"),
+    "importRulesReplace": MessageLookupByLibrary.simpleMessage("기존 규칙 교체"),
     "increment": MessageLookupByLibrary.simpleMessage("증가"),
     "incrementToString": m0,
     "indexIncrementalStep": MessageLookupByLibrary.simpleMessage("인덱스 증가 단계"),
@@ -206,6 +209,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "newName": MessageLookupByLibrary.simpleMessage("새 파일 이름"),
     "noSysDir": MessageLookupByLibrary.simpleMessage(
       "시스템 예약 디렉터리를 이름을 변경하지 마십시오.",
+    ),
+    "noValidRules": MessageLookupByLibrary.simpleMessage(
+      "파일에 유효한 규칙이 없거나 파일을 읽을 수 없습니다.",
     ),
     "numberOfDigits": MessageLookupByLibrary.simpleMessage("자릿수"),
     "numberPositionHint": MessageLookupByLibrary.simpleMessage(

@@ -176,6 +176,15 @@ class MessageLookup extends MessageLookupByLibrary {
       "إذا لم تظهر الملفات في القائمة، يُرجى مسح الكل والمحاولة مجدداً.",
     ),
     "ignoreExtension": MessageLookupByLibrary.simpleMessage("تجاهل الامتداد"),
+    "importRulesAfter": MessageLookupByLibrary.simpleMessage(
+      "إضافة بعد القواعد الحالية",
+    ),
+    "importRulesBefore": MessageLookupByLibrary.simpleMessage(
+      "إضافة قبل القواعد الحالية",
+    ),
+    "importRulesReplace": MessageLookupByLibrary.simpleMessage(
+      "استبدال القواعد الحالية",
+    ),
     "increment": MessageLookupByLibrary.simpleMessage("زيادة"),
     "incrementToString": m0,
     "indexIncrementalStep": MessageLookupByLibrary.simpleMessage(
@@ -245,6 +254,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "newName": MessageLookupByLibrary.simpleMessage("الاسم الجديد"),
     "noSysDir": MessageLookupByLibrary.simpleMessage(
       "يُرجى عدم إعادة تسمية المجلدات المحجوزة للنظام.",
+    ),
+    "noValidRules": MessageLookupByLibrary.simpleMessage(
+      "لا يحتوي الملف على قواعد صالحة أو تعذرت قراءته.",
     ),
     "numberOfDigits": MessageLookupByLibrary.simpleMessage("عدد الأرقام"),
     "numberPositionHint": MessageLookupByLibrary.simpleMessage(

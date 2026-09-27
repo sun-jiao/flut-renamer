@@ -179,6 +179,15 @@ class MessageLookup extends MessageLookupByLibrary {
       "If files does not shown in file list, please clear all and continue.",
     ),
     "ignoreExtension": MessageLookupByLibrary.simpleMessage("Ignore Extension"),
+    "importRulesAfter": MessageLookupByLibrary.simpleMessage(
+      "Add after existing rules",
+    ),
+    "importRulesBefore": MessageLookupByLibrary.simpleMessage(
+      "Add before existing rules",
+    ),
+    "importRulesReplace": MessageLookupByLibrary.simpleMessage(
+      "Replace existing rules",
+    ),
     "increment": MessageLookupByLibrary.simpleMessage("Increment"),
     "incrementToString": m0,
     "indexIncrementalStep": MessageLookupByLibrary.simpleMessage(
@@ -253,6 +262,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "newName": MessageLookupByLibrary.simpleMessage("New name"),
     "noSysDir": MessageLookupByLibrary.simpleMessage(
       "Do not rename a system reserved directory.",
+    ),
+    "noValidRules": MessageLookupByLibrary.simpleMessage(
+      "The file contains no valid rules or could not be read.",
     ),
     "numberOfDigits": MessageLookupByLibrary.simpleMessage("Number of digits"),
     "numberPositionHint": MessageLookupByLibrary.simpleMessage(

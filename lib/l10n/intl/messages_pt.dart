@@ -190,6 +190,15 @@ class MessageLookup extends MessageLookupByLibrary {
       "Se os arquivos não estiverem listados, limpe tudo e continue.",
     ),
     "ignoreExtension": MessageLookupByLibrary.simpleMessage("Ignorar extensão"),
+    "importRulesAfter": MessageLookupByLibrary.simpleMessage(
+      "Adicionar após as regras existentes",
+    ),
+    "importRulesBefore": MessageLookupByLibrary.simpleMessage(
+      "Adicionar antes das regras existentes",
+    ),
+    "importRulesReplace": MessageLookupByLibrary.simpleMessage(
+      "Substituir as regras existentes",
+    ),
     "increment": MessageLookupByLibrary.simpleMessage("Incrementar"),
     "incrementToString": m0,
     "indexIncrementalStep": MessageLookupByLibrary.simpleMessage(
@@ -261,6 +270,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "newName": MessageLookupByLibrary.simpleMessage("Novo nome"),
     "noSysDir": MessageLookupByLibrary.simpleMessage(
       "Não renomeie diretórios protegidos pelo sistema.",
+    ),
+    "noValidRules": MessageLookupByLibrary.simpleMessage(
+      "O arquivo não contém regras válidas ou não pôde ser lido.",
     ),
     "numberOfDigits": MessageLookupByLibrary.simpleMessage("Número de dígitos"),
     "numberPositionHint": MessageLookupByLibrary.simpleMessage(

@@ -198,6 +198,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "ignoreExtension": MessageLookupByLibrary.simpleMessage(
       "Dateierweiterung ignorieren",
     ),
+    "importRulesAfter": MessageLookupByLibrary.simpleMessage(
+      "Nach vorhandenen Regeln hinzufügen",
+    ),
+    "importRulesBefore": MessageLookupByLibrary.simpleMessage(
+      "Vor vorhandenen Regeln hinzufügen",
+    ),
+    "importRulesReplace": MessageLookupByLibrary.simpleMessage(
+      "Vorhandene Regeln ersetzen",
+    ),
     "increment": MessageLookupByLibrary.simpleMessage("Inkrementieren"),
     "incrementToString": m0,
     "indexIncrementalStep": MessageLookupByLibrary.simpleMessage(
@@ -269,6 +278,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "newName": MessageLookupByLibrary.simpleMessage("Neuer Dateiname"),
     "noSysDir": MessageLookupByLibrary.simpleMessage(
       "Reservierte Systemverzeichnisse nicht umbenennen.",
+    ),
+    "noValidRules": MessageLookupByLibrary.simpleMessage(
+      "Die Datei enthält keine gültigen Regeln oder konnte nicht gelesen werden.",
     ),
     "numberOfDigits": MessageLookupByLibrary.simpleMessage(
       "Anzahl der Ziffern",

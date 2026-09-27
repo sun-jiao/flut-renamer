@@ -191,6 +191,15 @@ class MessageLookup extends MessageLookupByLibrary {
       "Dosya listesinde dosyalar görüntülenmiyorsa, tüm içeriği temizleyin ve devam edin.",
     ),
     "ignoreExtension": MessageLookupByLibrary.simpleMessage("Uzantıyı Yoksay"),
+    "importRulesAfter": MessageLookupByLibrary.simpleMessage(
+      "Mevcut kurallardan sonra ekle",
+    ),
+    "importRulesBefore": MessageLookupByLibrary.simpleMessage(
+      "Mevcut kurallardan önce ekle",
+    ),
+    "importRulesReplace": MessageLookupByLibrary.simpleMessage(
+      "Mevcut kuralları değiştir",
+    ),
     "increment": MessageLookupByLibrary.simpleMessage("Artır"),
     "incrementToString": m0,
     "indexIncrementalStep": MessageLookupByLibrary.simpleMessage(
@@ -252,6 +261,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "newName": MessageLookupByLibrary.simpleMessage("Yeni Dosya Adı"),
     "noSysDir": MessageLookupByLibrary.simpleMessage(
       "Lütfen sistem korumalı klasörleri yeniden adlandırmayın.",
+    ),
+    "noValidRules": MessageLookupByLibrary.simpleMessage(
+      "Dosya geçerli kural içermiyor veya okunamadı.",
     ),
     "numberOfDigits": MessageLookupByLibrary.simpleMessage("Basamak sayısı"),
     "numberPositionHint": MessageLookupByLibrary.simpleMessage(

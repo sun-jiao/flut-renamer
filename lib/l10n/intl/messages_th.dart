@@ -181,6 +181,15 @@ class MessageLookup extends MessageLookupByLibrary {
       "หากไม่มีไฟล์แสดงในรายการโปรดล้างข้อมูลทั้งหมดและลองอีกครั้ง",
     ),
     "ignoreExtension": MessageLookupByLibrary.simpleMessage("ละเว้นนามสกุล"),
+    "importRulesAfter": MessageLookupByLibrary.simpleMessage(
+      "เพิ่มหลังกฎที่มีอยู่",
+    ),
+    "importRulesBefore": MessageLookupByLibrary.simpleMessage(
+      "เพิ่มก่อนกฎที่มีอยู่",
+    ),
+    "importRulesReplace": MessageLookupByLibrary.simpleMessage(
+      "แทนที่กฎที่มีอยู่",
+    ),
     "increment": MessageLookupByLibrary.simpleMessage("เพิ่ม"),
     "incrementToString": m0,
     "indexIncrementalStep": MessageLookupByLibrary.simpleMessage(
@@ -244,6 +253,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "newName": MessageLookupByLibrary.simpleMessage("ชื่อใหม่"),
     "noSysDir": MessageLookupByLibrary.simpleMessage(
       "อย่าเปลี่ยนชื่อโฟลเดอร์ที่ระบบสงวนไว้",
+    ),
+    "noValidRules": MessageLookupByLibrary.simpleMessage(
+      "ไฟล์ไม่มีกฎที่ถูกต้องหรือไม่สามารถอ่านได้",
     ),
     "numberOfDigits": MessageLookupByLibrary.simpleMessage("จำนวนหลัก"),
     "numberPositionHint": MessageLookupByLibrary.simpleMessage(

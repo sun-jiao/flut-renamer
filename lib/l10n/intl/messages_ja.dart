@@ -161,6 +161,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "ファイルがリストに表示されない場合は、すべてクリアして続行してください。",
     ),
     "ignoreExtension": MessageLookupByLibrary.simpleMessage("拡張子を無視"),
+    "importRulesAfter": MessageLookupByLibrary.simpleMessage("既存のルールの後に追加"),
+    "importRulesBefore": MessageLookupByLibrary.simpleMessage("既存のルールの前に追加"),
+    "importRulesReplace": MessageLookupByLibrary.simpleMessage("既存のルールを置き換える"),
     "increment": MessageLookupByLibrary.simpleMessage("増加"),
     "incrementToString": m0,
     "indexIncrementalStep": MessageLookupByLibrary.simpleMessage(
@@ -210,6 +213,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "newName": MessageLookupByLibrary.simpleMessage("新しいファイル名"),
     "noSysDir": MessageLookupByLibrary.simpleMessage(
       "システム予約ディレクトリはリネームしないでください。",
+    ),
+    "noValidRules": MessageLookupByLibrary.simpleMessage(
+      "ファイルに有効なルールが含まれていないか、読み取れません。",
     ),
     "numberOfDigits": MessageLookupByLibrary.simpleMessage("桁数"),
     "numberPositionHint": MessageLookupByLibrary.simpleMessage(

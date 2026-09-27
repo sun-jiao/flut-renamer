@@ -55,6 +55,46 @@ class L10n {
     return Localizations.of<L10n>(context, L10n);
   }
 
+  /// `Add before existing rules`
+  String get importRulesBefore {
+    return Intl.message(
+      'Add before existing rules',
+      name: 'importRulesBefore',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add after existing rules`
+  String get importRulesAfter {
+    return Intl.message(
+      'Add after existing rules',
+      name: 'importRulesAfter',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Replace existing rules`
+  String get importRulesReplace {
+    return Intl.message(
+      'Replace existing rules',
+      name: 'importRulesReplace',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The file contains no valid rules or could not be read.`
+  String get noValidRules {
+    return Intl.message(
+      'The file contains no valid rules or could not be read.',
+      name: 'noValidRules',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Flut Renamer`
   String get appName {
     return Intl.message('Flut Renamer', name: 'appName', desc: '', args: []);

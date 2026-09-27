@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:desktop_drop/desktop_drop.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:path/path.dart' as path;
 import 'package:yaml_writer/yaml_writer.dart';
 
 import '../dialogs/transliterate_dialog.dart';
@@ -20,6 +22,8 @@ import '../rules/rule.dart';
 import '../tools/rule_persistence.dart';
 import '../tools/app_haptics.dart';
 
+enum _RuleImportMode { before, after, replace }
+
 class RulesPage extends StatefulWidget {
   const RulesPage({super.key, required this.onRuleChanged});
 
@@ -34,6 +38,9 @@ final List<Rule> _rules = [];
 class RulesPageState extends State<RulesPage> {
   List<Rule> get rules => _rules;
 
+  bool _importing = false;
+  bool _dragging = false;
+
   @override
   void initState() {
     super.initState();
@@ -42,6 +49,7 @@ class RulesPageState extends State<RulesPage> {
 
   Future<void> _loadTempRules() async {
     final rules = await RulePersistence.loadRules();
+    if (!mounted) return;
     if (rules.isNotEmpty) {
       setState(() {
         _rules.clear();
@@ -108,6 +116,72 @@ class RulesPageState extends State<RulesPage> {
     }
   }
 
+  Future<void> _importDroppedRules(DropDoneDetails details) async {
+    if (_importing || !(ModalRoute.of(context)?.isCurrent ?? true)) return;
+    setState(() => _dragging = false);
+    final files = details.files.where(
+      (file) => const ['.yaml', '.yml']
+          .contains(path.extension(file.path).toLowerCase()),
+    );
+    if (files.isEmpty) return;
+
+    setState(() => _importing = true);
+    try {
+      final importedRules = <Rule>[];
+      for (final file in files) {
+        final loaded =
+            await RulePersistence.loadRules(sourceFile: File(file.path));
+        if (!mounted) return;
+        if (loaded.isEmpty) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(L10n.current.noValidRules)),
+          );
+          return;
+        }
+        importedRules.addAll(loaded);
+      }
+      if (!mounted) return;
+      final mode = await showDialog<_RuleImportMode>(
+        context: context,
+        builder: (context) => SimpleDialog(
+          title: Text(L10n.current.loadRules),
+          children: [
+            for (final entry in {
+              _RuleImportMode.before: L10n.current.importRulesBefore,
+              _RuleImportMode.after: L10n.current.importRulesAfter,
+              _RuleImportMode.replace: L10n.current.importRulesReplace,
+            }.entries)
+              SimpleDialogOption(
+                onPressed: () => Navigator.pop(context, entry.key),
+                child: Text(entry.value),
+              ),
+            SimpleDialogOption(
+              onPressed: () => Navigator.pop(context),
+              child: Text(L10n.current.cancel),
+            ),
+          ],
+        ),
+      );
+      if (!mounted || mode == null) return;
+      setState(() {
+        switch (mode) {
+          case _RuleImportMode.before:
+            _rules.insertAll(0, importedRules);
+          case _RuleImportMode.after:
+            _rules.addAll(importedRules);
+          case _RuleImportMode.replace:
+            _rules
+              ..clear()
+              ..addAll(importedRules);
+        }
+      });
+      widget.onRuleChanged();
+      await _saveTempRules();
+    } finally {
+      if (mounted) setState(() => _importing = false);
+    }
+  }
+
   void showRuleDialog() {
     switch (Shared.ruleName) {
       case 'Replace':
@@ -129,6 +203,29 @@ class RulesPageState extends State<RulesPage> {
 
   @override
   Widget build(BuildContext context) {
+    final content = _buildRules(context);
+    if (!(Platform.isWindows || Platform.isMacOS || Platform.isLinux)) {
+      return content;
+    }
+    return DropTarget(
+      enable: !_importing,
+      onDragDone: _importDroppedRules,
+      onDragEntered: (_) {
+        if (ModalRoute.of(context)?.isCurrent ?? true) {
+          setState(() => _dragging = true);
+        }
+      },
+      onDragExited: (_) => setState(() => _dragging = false),
+      child: ColoredBox(
+        color: _dragging
+            ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.12)
+            : Colors.transparent,
+        child: content,
+      ),
+    );
+  }
+
+  Widget _buildRules(BuildContext context) {
     return Column(
       children: [
         Padding(
