@@ -55,6 +55,126 @@ class L10n {
     return Localizations.of<L10n>(context, L10n);
   }
 
+  /// `Naming table`
+  String get mappingMenu {
+    return Intl.message(
+      'Naming table',
+      name: 'mappingMenu',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Import CSV / TSV mapping`
+  String get importMapping {
+    return Intl.message(
+      'Import CSV / TSV mapping',
+      name: 'importMapping',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Export current preview as CSV`
+  String get exportMapping {
+    return Intl.message(
+      'Export current preview as CSV',
+      name: 'exportMapping',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Clear mapping and resume rules`
+  String get clearMapping {
+    return Intl.message(
+      'Clear mapping and resume rules',
+      name: 'clearMapping',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Import a UTF-8 table with source,new_name columns. Sources must already be loaded.`
+  String get mappingHint {
+    return Intl.message(
+      'Import a UTF-8 table with source,new_name columns. Sources must already be loaded.',
+      name: 'mappingHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mapping mode: rules paused; only mapped items are targeted.`
+  String get mappingActive {
+    return Intl.message(
+      'Mapping mode: rules paused; only mapped items are targeted.',
+      name: 'mappingActive',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Row {row}: {reason}`
+  String mappingRowError(int row, String reason) {
+    return Intl.message(
+      'Row $row: $reason',
+      name: 'mappingRowError',
+      desc: '',
+      args: [row, reason],
+    );
+  }
+
+  /// `Invalid UTF-8 CSV/TSV. Use source,new_name headers and two columns, with at least one mapping.`
+  String get mappingFormatError {
+    return Intl.message(
+      'Invalid UTF-8 CSV/TSV. Use source,new_name headers and two columns, with at least one mapping.',
+      name: 'mappingFormatError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Source must be an absolute path or content URI matching a loaded item. Export a template first.`
+  String get mappingSourceError {
+    return Intl.message(
+      'Source must be an absolute path or content URI matching a loaded item. Export a template first.',
+      name: 'mappingSourceError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Duplicate source. Each source may appear only once.`
+  String get mappingDuplicateError {
+    return Intl.message(
+      'Duplicate source. Each source may appear only once.',
+      name: 'mappingDuplicateError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New name must be a filename, without path separators, control characters, reserved names or trailing dots/spaces.`
+  String get mappingNameError {
+    return Intl.message(
+      'New name must be a filename, without path separators, control characters, reserved names or trailing dots/spaces.',
+      name: 'mappingNameError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mapping files must not exceed 5 MiB.`
+  String get mappingSizeError {
+    return Intl.message(
+      'Mapping files must not exceed 5 MiB.',
+      name: 'mappingSizeError',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Rename scope`
   String get renameScope {
     return Intl.message(
@@ -1338,7 +1458,16 @@ class L10n {
     num insertIndex,
   ) {
     return Intl.message(
-      'Insert "$insert" at the $insertIndex${Intl.select(ordinal, {'o1': 'st', 'o2': 'nd', 'o3': 'rd', 'other': 'th'})}${Intl.select(toEnd, {'true': '-to-end', 'false': '', 'other': ''})} character.',
+      'Insert "$insert" at the $insertIndex${Intl.select(ordinal, {
+            'o1': 'st',
+            'o2': 'nd',
+            'o3': 'rd',
+            'other': 'th'
+          })}${Intl.select(toEnd, {
+            'true': '-to-end',
+            'false': '',
+            'other': ''
+          })} character.',
       name: 'insertToString',
       desc: '',
       args: [toEnd, ordinal, insert, insertIndex],
@@ -1396,7 +1525,29 @@ class L10n {
     num iTwo,
   ) {
     return Intl.message(
-      'Truncate: ${Intl.select(keepType, {'true': 'keep only', 'false': 'remove', 'other': ''})} characters between the $iOne${Intl.select(iTwoOrdinal, {'o1': 'st', 'o2': 'nd', 'o3': 'rd', 'other': 'th'})}${Intl.select(iOneToEnd, {'true': '-to-end', 'false': '', 'other': ''})} character and the $iTwo${Intl.select(iOneOrdinal, {'o1': 'st', 'o2': 'nd', 'o3': 'rd', 'other': 'th'})}${Intl.select(iTwoToEnd, {'true': '-to-end', 'false': '', 'other': ''})}.',
+      'Truncate: ${Intl.select(keepType, {
+            'true': 'keep only',
+            'false': 'remove',
+            'other': ''
+          })} characters between the $iOne${Intl.select(iTwoOrdinal, {
+            'o1': 'st',
+            'o2': 'nd',
+            'o3': 'rd',
+            'other': 'th'
+          })}${Intl.select(iOneToEnd, {
+            'true': '-to-end',
+            'false': '',
+            'other': ''
+          })} character and the $iTwo${Intl.select(iOneOrdinal, {
+            'o1': 'st',
+            'o2': 'nd',
+            'o3': 'rd',
+            'other': 'th'
+          })}${Intl.select(iTwoToEnd, {
+            'true': '-to-end',
+            'false': '',
+            'other': ''
+          })}.',
       name: 'truncateToString',
       desc: '',
       args: [
@@ -1588,7 +1739,16 @@ class L10n {
     String filename,
   ) {
     return Intl.message(
-      '${Intl.select(selectStatus, {'true': 'Selected', 'false': 'Unselected', 'other': ''})} ${Intl.select(entityType, {'File': 'File', 'Directory': 'Folder', 'Link': 'Link', 'other': 'File system entity'})}, filename is $filename, ',
+      '${Intl.select(selectStatus, {
+            'true': 'Selected',
+            'false': 'Unselected',
+            'other': ''
+          })} ${Intl.select(entityType, {
+            'File': 'File',
+            'Directory': 'Folder',
+            'Link': 'Link',
+            'other': 'File system entity'
+          })}, filename is $filename, ',
       name: 'semanticsFileManagerTitle',
       desc: '',
       args: [entityType, selectStatus, filename],
@@ -1688,7 +1848,11 @@ class L10n {
   /// `Switching counting direction between from the beginning and from the end, currently counting from {toEnd, select, true{the end} false{the beginning} other{}}`
   String semanticSwitchNumberToStartAndToEnd(String toEnd) {
     return Intl.message(
-      'Switching counting direction between from the beginning and from the end, currently counting from ${Intl.select(toEnd, {'true': 'the end', 'false': 'the beginning', 'other': ''})}',
+      'Switching counting direction between from the beginning and from the end, currently counting from ${Intl.select(toEnd, {
+            'true': 'the end',
+            'false': 'the beginning',
+            'other': ''
+          })}',
       name: 'semanticSwitchNumberToStartAndToEnd',
       desc: '',
       args: [toEnd],

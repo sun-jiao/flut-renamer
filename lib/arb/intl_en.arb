@@ -1,4 +1,26 @@
 {
+  "mappingMenu": "Naming table",
+  "importMapping": "Import CSV / TSV mapping",
+  "exportMapping": "Export current preview as CSV",
+  "clearMapping": "Clear mapping and resume rules",
+  "mappingHint": "Import a UTF-8 table with source,new_name columns. Sources must already be loaded.",
+  "mappingActive": "Mapping mode: rules paused; only mapped items are targeted.",
+  "mappingRowError": "Row {row}: {reason}",
+  "mappingFormatError": "Invalid UTF-8 CSV/TSV. Use source,new_name headers and two columns, with at least one mapping.",
+  "mappingSourceError": "Source must be an absolute path or content URI matching a loaded item. Export a template first.",
+  "mappingDuplicateError": "Duplicate source. Each source may appear only once.",
+  "mappingNameError": "New name must be a filename, without path separators, control characters, reserved names or trailing dots/spaces.",
+  "mappingSizeError": "Mapping files must not exceed 5 MiB.",
+  "@mappingRowError": {
+    "placeholders": {
+      "row": {
+        "type": "int"
+      },
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
   "renameScope": "Rename scope",
   "scopeVisible": "Current filtered results",
   "scopeAll": "All loaded items",

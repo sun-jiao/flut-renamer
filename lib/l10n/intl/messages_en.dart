@@ -67,6 +67,8 @@ class MessageLookup extends MessageLookupByLibrary {
   ) =>
       "Truncate: ${Intl.select(keepType, {'true': 'keep only', 'false': 'remove', 'other': ''})} characters between the ${iOne}${Intl.select(iTwoOrdinal, {'o1': 'st', 'o2': 'nd', 'o3': 'rd', 'other': 'th'})}${Intl.select(iOneToEnd, {'true': '-to-end', 'false': '', 'other': ''})} character and the ${iTwo}${Intl.select(iOneOrdinal, {'o1': 'st', 'o2': 'nd', 'o3': 'rd', 'other': 'th'})}${Intl.select(iTwoToEnd, {'true': '-to-end', 'false': '', 'other': ''})}.";
 
+  static String m15(row, reason) => "Row ${row}: ${reason}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "aboutContent": MessageLookupByLibrary.simpleMessage(
@@ -372,6 +374,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "renameFailed": MessageLookupByLibrary.simpleMessage("Rename failed"),
     "renameScope": MessageLookupByLibrary.simpleMessage("Rename scope"),
     "renameTargetSummary": m5,
+    "mappingMenu": MessageLookupByLibrary.simpleMessage("Naming table"),
+    "importMapping": MessageLookupByLibrary.simpleMessage("Import CSV / TSV mapping"),
+    "exportMapping": MessageLookupByLibrary.simpleMessage("Export current preview as CSV"),
+    "clearMapping": MessageLookupByLibrary.simpleMessage("Clear mapping and resume rules"),
+    "mappingHint": MessageLookupByLibrary.simpleMessage("Import a UTF-8 table with source,new_name columns. Sources must already be loaded."),
+    "mappingActive": MessageLookupByLibrary.simpleMessage("Mapping mode: rules paused; only mapped items are targeted."),
+    "mappingRowError": m15,
+    "mappingFormatError": MessageLookupByLibrary.simpleMessage("Invalid UTF-8 CSV/TSV. Use source,new_name headers and two columns, with at least one mapping."),
+    "mappingSourceError": MessageLookupByLibrary.simpleMessage("Source must be an absolute path or content URI matching a loaded item. Export a template first."),
+    "mappingDuplicateError": MessageLookupByLibrary.simpleMessage("Duplicate source. Each source may appear only once."),
+    "mappingNameError": MessageLookupByLibrary.simpleMessage("New name must be a filename, without path separators, control characters, reserved names or trailing dots/spaces."),
+    "mappingSizeError": MessageLookupByLibrary.simpleMessage("Mapping files must not exceed 5 MiB."),
     "replace": MessageLookupByLibrary.simpleMessage("Replace"),
     "replaceOriginalName": MessageLookupByLibrary.simpleMessage(
       "Replace original name",

@@ -63,6 +63,8 @@ class MessageLookup extends MessageLookupByLibrary {
   ) =>
       "截取：${Intl.select(keepType, {'true': '仅保留', 'false': '移除', 'other': ''})}从${Intl.select(iOneToEnd, {'true': '倒数的', 'false': '', 'other': ''})}第${iOne}个字符至${Intl.select(iTwoToEnd, {'true': '倒数的', 'false': '', 'other': ''})}第${iTwo}个字符之间的内容。";
 
+  static String m15(row, reason) => "第 ${row} 行：${reason}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "aboutContent": MessageLookupByLibrary.simpleMessage(
@@ -268,6 +270,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "renameFailed": MessageLookupByLibrary.simpleMessage("重命名失败"),
     "renameScope": MessageLookupByLibrary.simpleMessage("重命名范围"),
     "renameTargetSummary": m5,
+    "mappingMenu": MessageLookupByLibrary.simpleMessage("命名映射表"),
+    "importMapping": MessageLookupByLibrary.simpleMessage("导入 CSV／TSV 命名映射"),
+    "exportMapping": MessageLookupByLibrary.simpleMessage("将当前预览导出为 CSV"),
+    "clearMapping": MessageLookupByLibrary.simpleMessage("清除映射并恢复规则"),
+    "mappingHint": MessageLookupByLibrary.simpleMessage("导入 UTF-8 表格，列名为 source,new_name。来源文件须已添加。"),
+    "mappingActive": MessageLookupByLibrary.simpleMessage("映射模式：已暂停规则，仅处理已匹配的项目。"),
+    "mappingRowError": m15,
+    "mappingFormatError": MessageLookupByLibrary.simpleMessage("UTF-8 CSV／TSV 格式错误。请使用 source,new_name 表头及两列数据，且至少包含一条映射。"),
+    "mappingSourceError": MessageLookupByLibrary.simpleMessage("来源必须是与已添加项目匹配的绝对路径或 content URI。可先导出模板。"),
+    "mappingDuplicateError": MessageLookupByLibrary.simpleMessage("来源重复，每个来源只能出现一次。"),
+    "mappingNameError": MessageLookupByLibrary.simpleMessage("新名称必须是文件名，不能包含路径分隔符、控制字符、保留名称或结尾的点和空格。"),
+    "mappingSizeError": MessageLookupByLibrary.simpleMessage("映射文件不得超过 5 MiB。"),
     "replace": MessageLookupByLibrary.simpleMessage("替换"),
     "replaceOriginalName": MessageLookupByLibrary.simpleMessage("替换原文件名"),
     "replaceToString": m6,

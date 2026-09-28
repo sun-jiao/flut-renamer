@@ -67,6 +67,25 @@ For example, an **Increment** rule in **Replace original name** mode with prefix
 
 Rules are also cached automatically for restoration, but the operating system can clear this temporary storage. Export rules you want to keep. Rule files store renaming instructions, not copies of your files.
 
+### Import a naming table (CSV / TSV)
+
+1. Add the source files or directories to the app and choose the rename scope.
+2. Open the table menu beside **Rename scope** and choose **Export current preview as CSV**. This exports the current scope, with UTF-8 encoding and a BOM for spreadsheet compatibility.
+3. Edit the `new_name` column in a spreadsheet editor, keeping the `source` column as text. Save as **UTF-8 CSV (comma-separated)** or **UTF-8 TSV (tab-separated)**. Excel `.xlsx` files and semicolon-separated CSV are not accepted directly.
+4. Choose **Import CSV / TSV mapping**, review the names and scope count, then press **Rename**. Importing alone never changes files on disk.
+
+```csv
+source,new_name
+/home/me/photos/IMG_001.jpg,Holiday-001.jpg
+/home/me/photos/IMG_002.jpg,Holiday-002.jpg
+```
+
+Both headers are required, in that order. `source` must match an already loaded item's absolute path or Android `content://` URI; the export supplies these identifiers. New names may include an extension and must be filenames, not destination paths. Quote fields containing commas, quotes or line breaks using standard CSV quoting. Files are limited to 5 MiB.
+
+Mapping mode pauses ordinary rules and limits the chosen scope to mapped items. Filtering and selection still apply, and the summary reports hidden targets. Files outside the mapping are left alone. A successful rename consumes that item's mapping; mappings outside the chosen scope remain available for a later batch. Clearing the mapping resumes ordinary rules. Mappings are session-only and are not saved with YAML rules.
+
+Malformed tables, duplicate sources, unloaded sources and invalid target names reject the entire import with a row number, preserving any previously imported mapping. Destination conflicts are shown in the existing preview and checked again before execution; the existing no-overwrite and rollback behavior also applies to mappings. Android provider limitations remain unchanged.
+
 ### Conflicts and failures
 
 For local filesystem paths, the app checks duplicate destinations and existing files before renaming and uses native operations that refuse to overwrite an existing destination. It supports name swaps and renaming parent/child paths within a batch. Android document URIs use the storage provider's rename behavior instead, so their conflict handling depends on that provider.

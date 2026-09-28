@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:typed_data';
 import 'dart:io';
 
 import 'package:desktop_drop/desktop_drop.dart';
@@ -14,6 +16,7 @@ import '../tools/file_sort.dart';
 import '../tools/file_metadata.dart';
 import '../entity/sharedpref.dart';
 import '../tools/rename.dart';
+import '../tools/rename_mapping.dart';
 import '../tools/rename_transaction.dart';
 import '../tools/app_haptics.dart';
 import '../widget/custom_dialog.dart';
@@ -72,12 +75,153 @@ class FilesPageState extends State<FilesPage> {
   RenameScope _scope =
       Shared.onlySelected ? RenameScope.selected : RenameScope.visible;
   int? _reportedTargetCount;
+  Map<FileEntity, String>? _mapping;
 
-  List<FileEntity> _renameTargets() => switch (_scope) {
+  /// Changes the target scope while keeping the preview in sync.
+  void setRenameScope(RenameScope value) {
+    if (_renaming || value == _scope) return;
+    setState(() {
+      _scope = value;
+      Shared.onlySelected = value == RenameScope.selected;
+      _invalidateNewNames();
+    });
+  }
+
+  /// Import is atomic: invalid rows leave the previous mapping untouched.
+  void importRenameMapping(String text, {String delimiter = ','}) {
+    if (_renaming) return;
+    _applyRenameMapping(text, delimiter: delimiter);
+  }
+
+  void _applyRenameMapping(String text, {required String delimiter}) {
+    final parsed = RenameMapping.parse(
+      text,
+      _files.map((file) => file.path),
+      delimiter: delimiter,
+    );
+    final parsedByKey = {
+      for (final entry in parsed.entries)
+        RenameMapping.sourceKey(entry.key): entry.value,
+    };
+    setState(() {
+      _mapping = {
+        for (final file in _files)
+          if (parsedByKey.containsKey(RenameMapping.sourceKey(file.path)))
+            file: parsedByKey[RenameMapping.sourceKey(file.path)]!,
+      };
+      _invalidateNewNames();
+    });
+  }
+
+  Future<void> _mappingError(Object error) async {
+    if (!mounted) return;
+    final message = error is MappingException
+        ? L10n.current.mappingRowError(
+            error.row,
+            switch (error.reason) {
+              MappingError.format => L10n.current.mappingFormatError,
+              MappingError.source => L10n.current.mappingSourceError,
+              MappingError.duplicate => L10n.current.mappingDuplicateError,
+              MappingError.name => L10n.current.mappingNameError,
+              MappingError.tooLarge => L10n.current.mappingSizeError,
+            },
+          )
+        : error is FormatException
+            ? L10n.current.mappingFormatError
+            : error.toString();
+    await showDialog<void>(
+      context: context,
+      builder: (context) => CustomDialog(
+        title: Text(L10n.current.appError),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(L10n.current.ok),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _importMappingFile() async {
+    if (_renaming) return;
+    _setRenaming(true);
+    try {
+      final file = await FilePicker.pickFile(
+        dialogTitle: L10n.current.importMapping,
+        type: FileType.custom,
+        allowedExtensions: ['csv', 'tsv'],
+      );
+      if (file == null || !mounted) return;
+      if (await file.length() > RenameMapping.maxBytes) {
+        throw const MappingException(1, MappingError.tooLarge);
+      }
+      final bytes = await file.readAsBytes();
+      if (!mounted) return;
+      if (bytes.length > RenameMapping.maxBytes) {
+        throw const MappingException(1, MappingError.tooLarge);
+      }
+      _applyRenameMapping(
+        utf8.decode(bytes),
+        delimiter: file.name.toLowerCase().endsWith('.tsv') ? '\t' : ',',
+      );
+    } catch (error) {
+      await _mappingError(error);
+    } finally {
+      if (_deferredUpdate) {
+        _deferredUpdate = false;
+        _invalidateNewNames();
+      }
+      _setRenaming(false);
+    }
+  }
+
+  Future<void> _exportMappingFile() async {
+    if (_renaming) return;
+    _setRenaming(true);
+    try {
+      final targets = _renameTargets();
+      if (targets.isEmpty) return;
+      for (final file in targets) {
+        await _newNameFuture(file);
+      }
+      if (!mounted || _deferredUpdate) return;
+      final text = RenameMapping.encode(
+        targets.map(
+          (file) => (RenameMapping.sourceKey(file.path), file.newName),
+        ),
+      );
+      await FilePicker.saveFile(
+        dialogTitle: L10n.current.exportMapping,
+        fileName: 'rename-mapping.csv',
+        type: FileType.custom,
+        allowedExtensions: ['csv'],
+        bytes: Uint8List.fromList([0xef, 0xbb, 0xbf, ...utf8.encode(text)]),
+      );
+    } catch (error) {
+      await _mappingError(error);
+    } finally {
+      if (_deferredUpdate) {
+        _deferredUpdate = false;
+        _invalidateNewNames();
+      }
+      _setRenaming(false);
+    }
+  }
+
+  void _transferMapping(FileEntity original, FileEntity replacement) {
+    final name = _mapping?.remove(original);
+    if (name != null) _mapping![replacement] = name;
+  }
+
+  List<FileEntity> _renameTargets() => (switch (_scope) {
         RenameScope.visible => _filteredList(),
         RenameScope.all => List.of(_files),
         RenameScope.selected => _files.where((file) => file.selected).toList(),
-      };
+      })
+          .where((file) => _mapping == null || _mapping!.containsKey(file))
+          .toList();
 
   bool _dragging = false;
   bool _renaming = false;
@@ -310,9 +454,11 @@ class FilesPageState extends State<FilesPage> {
         if (requestedGeneration != _newNameGeneration) return;
         filename = file.metadata!.androidRealName;
       }
-      final newName = replaceSpecialCharacters(
-        await widget.getNewName(filename, file.metadataForRename),
-      );
+      final newName = _mapping != null
+          ? (_mapping![file] ?? filename)
+          : replaceSpecialCharacters(
+              await widget.getNewName(filename, file.metadataForRename),
+            );
 
       if (requestedGeneration != _newNameGeneration) return;
 
@@ -517,6 +663,7 @@ class FilesPageState extends State<FilesPage> {
               if (_renaming) return;
               setState(() {
                 _invalidateNewNames();
+                _mapping?.remove(file);
                 _files.remove(file);
               });
               unawaited(_releaseUnusedIOSAccess());
@@ -585,6 +732,7 @@ class FilesPageState extends State<FilesPage> {
                     setState(() {
                       _invalidateNewNames();
                       _files.clear();
+                      _mapping = null;
                     });
                     unawaited(_releaseUnusedIOSAccess());
                   },
@@ -718,36 +866,69 @@ class FilesPageState extends State<FilesPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              DropdownButtonFormField<RenameScope>(
-                key: const ValueKey('renameScope'),
-                initialValue: _scope,
-                isExpanded: true,
-                decoration:
-                    InputDecoration(labelText: L10n.current.renameScope),
-                items: [
-                  DropdownMenuItem(
-                    value: RenameScope.visible,
-                    child: Text(L10n.current.scopeVisible),
+              Row(
+                children: [
+                  Expanded(
+                    child: DropdownButtonFormField<RenameScope>(
+                      key: const ValueKey('renameScope'),
+                      initialValue: _scope,
+                      isExpanded: true,
+                      decoration:
+                          InputDecoration(labelText: L10n.current.renameScope),
+                      items: [
+                        DropdownMenuItem(
+                          value: RenameScope.visible,
+                          child: Text(L10n.current.scopeVisible),
+                        ),
+                        DropdownMenuItem(
+                          value: RenameScope.all,
+                          child: Text(L10n.current.scopeAll),
+                        ),
+                        DropdownMenuItem(
+                          value: RenameScope.selected,
+                          child: Text(L10n.current.scopeSelected),
+                        ),
+                      ],
+                      onChanged: (value) {
+                        if (value != null) setRenameScope(value);
+                      },
+                    ),
                   ),
-                  DropdownMenuItem(
-                    value: RenameScope.all,
-                    child: Text(L10n.current.scopeAll),
+                  PopupMenuButton<String>(
+                    tooltip:
+                        '${L10n.current.mappingMenu}: ${L10n.current.mappingHint}',
+                    icon: const Icon(Icons.table_chart_outlined),
+                    onSelected: (action) {
+                      if (action == 'import') _importMappingFile();
+                      if (action == 'export') _exportMappingFile();
+                    },
+                    itemBuilder: (_) => [
+                      PopupMenuItem(
+                        value: 'import',
+                        child: Text(L10n.current.importMapping),
+                      ),
+                      PopupMenuItem(
+                        value: 'export',
+                        child: Text(L10n.current.exportMapping),
+                      ),
+                    ],
                   ),
-                  DropdownMenuItem(
-                    value: RenameScope.selected,
-                    child: Text(L10n.current.scopeSelected),
-                  ),
+                  if (_mapping != null)
+                    IconButton(
+                      tooltip: L10n.current.clearMapping,
+                      icon: const Icon(Icons.close),
+                      onPressed: () {
+                        if (_renaming) return;
+                        setState(() {
+                          _mapping = null;
+                          _invalidateNewNames();
+                        });
+                      },
+                    ),
                 ],
-                onChanged: (value) {
-                  if (_renaming || value == null || value == _scope) return;
-                  setState(() {
-                    _scope = value;
-                    Shared.onlySelected = value == RenameScope.selected;
-                    _invalidateNewNames();
-                  });
-                },
               ),
               Text(L10n.current.renameTargetSummary(targetCount, hiddenCount)),
+              if (_mapping != null) Text(L10n.current.mappingActive),
             ],
           ),
         ),
@@ -850,7 +1031,13 @@ class FilesPageState extends State<FilesPage> {
       // The optional override is retained for existing programmatic callers.
       final requestedFiles = onlySelected == null
           ? _renameTargets()
-          : _files.where((file) => file.selected || !onlySelected).toList();
+          : _files
+              .where(
+                (file) =>
+                    (file.selected || !onlySelected) &&
+                    (_mapping == null || _mapping!.containsKey(file)),
+              )
+              .toList();
       if (requestedFiles.isEmpty) return;
       for (final file in requestedFiles) {
         await _newNameFuture(file);
@@ -912,13 +1099,20 @@ class FilesPageState extends State<FilesPage> {
         final participants = filesToRename.toSet();
         for (var index = 0; index < _files.length; index++) {
           if (!participants.contains(_files[index])) {
-            _files[index] = result.relocateDescendant(_files[index]);
+            final original = _files[index];
+            _files[index] = result.relocateDescendant(original);
+            _transferMapping(original, _files[index]);
           }
         }
         for (var index = 0; index < filesToRename.length; index++) {
           final original = filesToRename[index];
           final listIndex = _files.indexOf(original);
           if (listIndex < 0) continue;
+          if (result.succeeded) {
+            _mapping?.remove(original);
+          } else {
+            _transferMapping(original, result.entities[index]);
+          }
           if (result.succeeded && remove) {
             _files.removeAt(listIndex);
           } else {
@@ -933,7 +1127,7 @@ class FilesPageState extends State<FilesPage> {
         }
       });
 
-      if (noError && remove) {
+      if (noError && remove && _mapping == null) {
         widget.clearRules.call();
       }
       // The transaction has finished, including rollback on failure. Emit at
@@ -957,7 +1151,7 @@ class FilesPageState extends State<FilesPage> {
     _renaming = value;
     _dragging = false;
     if (mounted) setState(() {});
-    widget.onRenamingChanged?.call(value);
+    if (mounted) widget.onRenamingChanged?.call(value);
   }
 
   Future<List<FileEntity>> _buildRenamePlan(

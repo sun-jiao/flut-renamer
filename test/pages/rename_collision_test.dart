@@ -12,6 +12,7 @@ import 'package:flut_renamer/rules/rule.dart';
 import 'package:flut_renamer/tools/ex_file.dart';
 import 'package:flut_renamer/tools/file_metadata.dart';
 import 'package:flut_renamer/tools/logger.dart';
+import 'package:flut_renamer/tools/rename_mapping.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -125,7 +126,8 @@ void main() {
       await tester.tap(find.byType(Checkbox).first);
       await tester.enterText(find.byType(TextField), 'hidden');
       await _settle(tester);
-      await chooseScope(tester, L10n.current.scopeSelected);
+      state.setRenameScope(RenameScope.selected);
+      await _settle(tester);
       expect(find.text(L10n.current.renameTargetSummary(1, 1)), findsOneWidget);
       await tester.runAsync(() => state.renameFiles(remove: false));
       expect(read('new-visible.txt'), 'visible.txt');
@@ -145,7 +147,8 @@ void main() {
       await tester.runAsync(() => state.renameFiles(remove: false));
       expect(read('a'), 'a');
       expect(read('b'), 'b');
-      await chooseScope(tester, L10n.current.scopeAll);
+      state.setRenameScope(RenameScope.all);
+      await _settle(tester);
       expect(files.map((file) => file.error), everyElement(isNull));
       await tester.runAsync(() => state.renameFiles(remove: false));
       expect(read('b'), 'a');
@@ -163,6 +166,135 @@ void main() {
       await tester.runAsync(() => state.renameFiles());
       expect(read('a'), 'a');
       expect(File('${directory.path}/new-a').existsSync(), isFalse);
+    });
+  });
+
+  testWidgets(
+      'mapping bypasses rules, ignores unmapped files and is consumed once',
+      (tester) async {
+    final first = addFile('a.txt');
+    final other = addFile('b.txt');
+    await _withPage(tester, [first, other], (name, _) => 'rule-$name',
+        (state) async {
+      state.importRenameMapping(RenameMapping.encode([(first.path, '表格.txt')]));
+      await _settle(tester);
+      expect(first.newName, '表格.txt');
+      expect(other.newName, 'b.txt');
+      expect(find.text(L10n.current.renameTargetSummary(1, 0)), findsOneWidget);
+      await tester.runAsync(() => state.renameFiles(remove: false));
+      await _settle(tester);
+      expect(read('表格.txt'), 'a.txt');
+      expect(read('b.txt'), 'b.txt');
+      expect(find.text(L10n.current.renameTargetSummary(0, 0)), findsOneWidget);
+      await tester.runAsync(() => state.renameFiles(remove: false));
+      expect(File('${directory.path}/rule-表格.txt').existsSync(), isFalse);
+      await tester.tap(find.byTooltip(L10n.current.clearMapping));
+      await _settle(tester);
+      expect(find.text(L10n.current.mappingActive), findsNothing);
+      expect(other.newName, 'rule-b.txt');
+    });
+  });
+
+  testWidgets(
+      'invalid replacement import preserves the previous mapping atomically',
+      (tester) async {
+    final first = addFile('a.txt');
+    await _withPage(tester, [first], (name, _) => name, (state) async {
+      state.importRenameMapping(
+        RenameMapping.encode([(first.path, 'valid.txt')]),
+      );
+      await _settle(tester);
+      expect(
+        () => state.importRenameMapping(
+          RenameMapping.encode([
+            (first.path, 'replacement.txt'),
+            ('/missing.txt', 'bad.txt'),
+          ]),
+        ),
+        throwsA(isA<MappingException>()),
+      );
+      await tester.runAsync(() => state.renameFiles(remove: false));
+      expect(read('valid.txt'), 'a.txt');
+      expect(File('${directory.path}/replacement.txt').existsSync(), isFalse);
+    });
+  });
+
+  testWidgets(
+      'mapping observes filtered scope and retains pending hidden entries',
+      (tester) async {
+    final files = [addFile('a'), addFile('b')];
+    await _withPage(tester, files, (name, _) => name, (state) async {
+      state.importRenameMapping(
+        RenameMapping.encode([
+          (files[0].path, 'new-a'),
+          (files[1].path, 'new-b'),
+        ]),
+      );
+      await tester.enterText(find.byType(TextField), 'a');
+      await _settle(tester);
+      await tester.runAsync(() => state.renameFiles(remove: false));
+      expect(read('new-a'), 'a');
+      expect(read('b'), 'b');
+      await chooseScope(tester, L10n.current.scopeAll);
+      expect(find.text(L10n.current.renameTargetSummary(1, 1)), findsOneWidget);
+      await tester.runAsync(() => state.renameFiles(remove: false));
+      expect(read('new-b'), 'b');
+    });
+  });
+
+  testWidgets(
+      'mapping conflicts use existing checks and valid mappings allow swaps',
+      (tester) async {
+    final files = [addFile('a'), addFile('b')];
+    await _withPage(tester, files, (name, _) => name, (state) async {
+      state.importRenameMapping(RenameMapping.encode([(files[0].path, 'b')]));
+      await _settle(tester);
+      expect(files[0].error, L10n.current.fileAlreadyExists);
+      await tester.runAsync(() => state.renameFiles(remove: false));
+      expect(read('a'), 'a');
+      expect(read('b'), 'b');
+      state.importRenameMapping(
+        RenameMapping.encode([
+          (files[0].path, 'b'),
+          (files[1].path, 'a'),
+        ]),
+      );
+      await _settle(tester);
+      await tester.runAsync(() => state.renameFiles(remove: false));
+      expect(read('b'), 'a');
+      expect(read('a'), 'b');
+      expectNoTemporaryFiles();
+    });
+  });
+
+  testWidgets('pending child mapping follows a renamed parent directory',
+      (tester) async {
+    final folder = Directory('${directory.path}/folder')..createSync();
+    final child = File('${folder.path}/child.txt')..writeAsStringSync('child');
+    final entries = [FileEntity(folder), FileEntity(child)];
+    await _withPage(tester, entries, (name, _) => name, (state) async {
+      state.importRenameMapping(
+        RenameMapping.encode([
+          (folder.path, 'renamed-folder'),
+          (child.path, 'renamed-child.txt'),
+        ]),
+      );
+      entries[0].selected = true;
+      state.setRenameScope(RenameScope.selected);
+      await _settle(tester);
+      await tester.runAsync(() => state.renameFiles(remove: false));
+      expect(
+        File('${directory.path}/renamed-folder/child.txt').existsSync(),
+        isTrue,
+      );
+      state.setRenameScope(RenameScope.all);
+      await _settle(tester);
+      await tester.runAsync(() => state.renameFiles(remove: false));
+      expect(
+        File('${directory.path}/renamed-folder/renamed-child.txt')
+            .readAsStringSync(),
+        'child',
+      );
     });
   });
 
