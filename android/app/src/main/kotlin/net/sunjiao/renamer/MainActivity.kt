@@ -150,8 +150,8 @@ class MainActivity: FlutterActivity() {
             return
         }
 
-        val resultList = mutableListOf<String>()
-        var hasUnsupportedFiles = false
+        val result = pendingResult
+        pendingResult = null
 
         if (requestCode == REQUEST_CODE_OPEN_DOC) {
             // get all selected URI
@@ -168,38 +168,67 @@ class MainActivity: FlutterActivity() {
             val takeFlags = data.flags and
                 (Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
 
-            // Keep documents that can be renamed through SAF and media documents
-            // that can be renamed through MediaStore after an explicit user grant.
-            for (uri in uris) {
-                if (checkSupportsRename(uri) || mediaUriFor(uri) != null) {
-                    persistUriPermission(uri, takeFlags)
-                    resultList.add(uri.toString())
-                } else {
-                    Log.w("Renamer", "Filtered unsupported document: $uri")
-                    hasUnsupportedFiles = true
+            // Run the potentially blocking ContentResolver queries on a
+            // background thread so the main thread is not blocked by Binder IPC.
+            Thread {
+                val resultList = mutableListOf<String>()
+                var hasUnsupportedFiles = false
+
+                for (uri in uris) {
+                    if (checkSupportsRename(uri) || mediaUriFor(uri) != null) {
+                        resultList.add(uri.toString())
+                    } else {
+                        Log.w("Renamer", "Filtered unsupported document: $uri")
+                        hasUnsupportedFiles = true
+                    }
                 }
-            }
+
+                Handler(Looper.getMainLooper()).post {
+                    for (uriString in resultList) {
+                        persistUriPermission(Uri.parse(uriString), takeFlags)
+                    }
+                    val resultMap = mapOf(
+                        "paths" to resultList,
+                        "hasUnsupportedFiles" to hasUnsupportedFiles
+                    )
+                    result?.success(resultMap)
+                }
+            }.start()
         } else if (requestCode == REQUEST_CODE_OPEN_TREE) {
             val treeUri = data.data
-            if (treeUri != null) {
+            if (treeUri == null) {
+                result?.success(mapOf("paths" to emptyList<String>(), "hasUnsupportedFiles" to false))
+                return
+            }
+
+            val takeFlags = data.flags and
+                (Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+
+            Thread {
+                val resultList = mutableListOf<String>()
+                var hasUnsupportedFiles = false
+
                 if (checkSupportsRename(treeUri)) {
-                    val takeFlags = data.flags and
-                        (Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-                    persistUriPermission(treeUri, takeFlags)
                     resultList.add(treeUri.toString())
                 } else {
                     Log.w("Renamer", "Filtered unsupported tree: $treeUri")
                     hasUnsupportedFiles = true
                 }
-            }
-        }
 
-        val resultMap = mapOf(
-            "paths" to resultList,
-            "hasUnsupportedFiles" to hasUnsupportedFiles
-        )
-        pendingResult?.success(resultMap)
-        pendingResult = null
+                Handler(Looper.getMainLooper()).post {
+                    for (uriString in resultList) {
+                        persistUriPermission(Uri.parse(uriString), takeFlags)
+                    }
+                    val resultMap = mapOf(
+                        "paths" to resultList,
+                        "hasUnsupportedFiles" to hasUnsupportedFiles
+                    )
+                    result?.success(resultMap)
+                }
+            }.start()
+        } else {
+            result?.success(mapOf("paths" to emptyList<String>(), "hasUnsupportedFiles" to false))
+        }
     }
 
     private fun persistUriPermission(uri: Uri, flags: Int) {
@@ -286,27 +315,31 @@ class MainActivity: FlutterActivity() {
             return
         }
 
-        val candidates = uriStrings.distinct().mapNotNull { uriString ->
-            val documentUri = Uri.parse(uriString)
-            if (checkSupportsRename(documentUri)) {
-                null
-            } else {
-                mediaUriFor(documentUri)?.let { mediaUri ->
-                    MediaWriteCandidate(uriString, mediaUri)
+        Thread {
+            val candidates = uriStrings.distinct().mapNotNull { uriString ->
+                val documentUri = Uri.parse(uriString)
+                if (checkSupportsRename(documentUri)) {
+                    null
+                } else {
+                    mediaUriFor(documentUri)?.let { mediaUri ->
+                        MediaWriteCandidate(uriString, mediaUri)
+                    }
                 }
+            }.distinctBy { it.mediaUri }
+
+            Handler(Looper.getMainLooper()).post {
+                if (candidates.isEmpty()) {
+                    result.success(mapOf("candidates" to emptyList<String>(), "approved" to emptyList<String>()))
+                    return@post
+                }
+
+                pendingMediaWriteResult = result
+                approvedMediaWriteUris.clear()
+                pendingMediaWriteBatches.clear()
+                candidates.chunked(MEDIA_WRITE_BATCH_SIZE).forEach(pendingMediaWriteBatches::addLast)
+                startNextMediaWriteRequest()
             }
-        }.distinctBy { it.mediaUri }
-
-        if (candidates.isEmpty()) {
-            result.success(mapOf("candidates" to emptyList<String>(), "approved" to emptyList<String>()))
-            return
-        }
-
-        pendingMediaWriteResult = result
-        approvedMediaWriteUris.clear()
-        pendingMediaWriteBatches.clear()
-        candidates.chunked(MEDIA_WRITE_BATCH_SIZE).forEach(pendingMediaWriteBatches::addLast)
-        startNextMediaWriteRequest()
+        }.start()
     }
 
     private fun startNextMediaWriteRequest() {
@@ -388,51 +421,53 @@ class MainActivity: FlutterActivity() {
     }
 
     private fun getMetaData(uriString: String, result: MethodChannel.Result) {
-        val uri = resolveDocumentUri(Uri.parse(uriString))
-        val metadata = HashMap<String, Any?>()
-        var name: String? = null
+        Thread {
+            val uri = resolveDocumentUri(Uri.parse(uriString))
+            val metadata = HashMap<String, Any?>()
+            var name: String? = null
 
-        try {
-            contentResolver.query(uri, null, null, null, null)?.use { cursor ->
-                if (cursor.moveToFirst()) {
-                    val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                    if (nameIndex != -1) {
-                        name = cursor.getString(nameIndex)
-                    }
+            try {
+                contentResolver.query(uri, null, null, null, null)?.use { cursor ->
+                    if (cursor.moveToFirst()) {
+                        val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                        if (nameIndex != -1) {
+                            name = cursor.getString(nameIndex)
+                        }
 
-                    val sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
-                    if (sizeIndex != -1) {
-                        metadata["size"] = cursor.getLong(sizeIndex)
-                    }
+                        val sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
+                        if (sizeIndex != -1) {
+                            metadata["size"] = cursor.getLong(sizeIndex)
+                        }
 
-                    val dateIndex = cursor.getColumnIndex(DocumentsContract.Document.COLUMN_LAST_MODIFIED)
-                    if (dateIndex != -1) {
-                        metadata["modified"] = cursor.getLong(dateIndex)
+                        val dateIndex = cursor.getColumnIndex(DocumentsContract.Document.COLUMN_LAST_MODIFIED)
+                        if (dateIndex != -1) {
+                            metadata["modified"] = cursor.getLong(dateIndex)
+                        }
                     }
                 }
+            } catch (e: Exception) {
+                Log.e("Renamer", "Failed to query metadata for $uriString", e)
             }
-        } catch (e: Exception) {
-            Log.e("Renamer", "Failed to query metadata for $uriString", e)
-        }
 
-        if (name.isNullOrEmpty()) {
-            val path = uri.path
-            val lastSegment = uri.lastPathSegment
+            if (name.isNullOrEmpty()) {
+                val path = uri.path
+                val lastSegment = uri.lastPathSegment
 
-            if (!lastSegment.isNullOrEmpty()) {
-                name = lastSegment.substringAfterLast('/').substringAfterLast(':')
-            } else if (!path.isNullOrEmpty()) {
-                name = path.substringAfterLast('/')
+                if (!lastSegment.isNullOrEmpty()) {
+                    name = lastSegment.substringAfterLast('/').substringAfterLast(':')
+                } else if (!path.isNullOrEmpty()) {
+                    name = path.substringAfterLast('/')
+                }
             }
-        }
 
-        metadata["name"] = name ?: "unknown_${System.currentTimeMillis()}"
+            metadata["name"] = name ?: "unknown_${System.currentTimeMillis()}"
 
-        if (!metadata.containsKey("modified")) {
-            metadata["modified"] = System.currentTimeMillis()
-        }
+            if (!metadata.containsKey("modified")) {
+                metadata["modified"] = System.currentTimeMillis()
+            }
 
-        result.success(metadata)
+            runOnUiThread { result.success(metadata) }
+        }.start()
     }
 
     private fun getThumbnail(uriString: String, result: MethodChannel.Result) {
